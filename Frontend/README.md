@@ -8,7 +8,7 @@ https://github.com/google/zopfli
 https://github.com/Jacksgong/webp-converter  
   
 # NPM packages  
-html-minifier, lessc, csso-cli, uglify-js, typescript   
+html-minifier, lessc, csso-cli, uglify-js@3, typescript   
   
 # PIP packages  
 webp-converter  

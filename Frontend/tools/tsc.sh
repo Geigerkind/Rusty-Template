@@ -18,7 +18,7 @@ for f in $(find ./../ts/ -name "*.ts"); do
     fi
 
     if [ "$PATHTOFILE" != "$LAST_PATHTOFILE" ] && [ "$LAST_PATHTOFILE" != "" ] && [ "$FILES" != "" ]; then
-        tsc --alwaysStrict --baseUrl "/" --target "es5" --locale "en" --newLine "lf" --strict --listFiles $FILES --outFile ./../.tmp_js$LAST_PATHTOFILE/merge.js & 
+        tsc --alwaysStrict --baseUrl "/" --target "es6" --locale "en" --newLine "lf" --strict --listFiles $FILES --outFile ./../.tmp_js$LAST_PATHTOFILE/merge.js & 
         FILES=$f;
         LAST_PATHTOFILE=$PATHTOFILE;
     else
@@ -31,5 +31,5 @@ if [ "$FILES" != "" ]; then
         sleep 0.5;
     done
 
-    tsc --alwaysStrict --baseUrl "/" --target "es5" --locale "en" --newLine "lf" --strict --listFiles $FILES --outFile ./../.tmp_js$LAST_PATHTOFILE/merge.js & 
+    tsc --alwaysStrict --baseUrl "/" --target "es6" --locale "en" --newLine "lf" --strict --listFiles $FILES --outFile ./../.tmp_js$LAST_PATHTOFILE/merge.js & 
 fi
