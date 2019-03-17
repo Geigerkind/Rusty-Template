@@ -16,9 +16,9 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder ".", "/me"
   config.vm.synced_folder "./", "/me", type: "rsync", rsync__auto: true, rsync__exclude: ['./Frontend/.*']
 
-  #config.vm.provision "Packages",   type: "shell", run: "once", path: "Vagrant/packages.sh"
-  #config.vm.provision "Zopfli",   type: "shell", run: "once", path: "Vagrant/zopfli.sh"
-  #config.vm.provision "Database",   type: "shell", run: "once", path: "Vagrant/database.sh"
-  #config.vm.provision "Nginx",   type: "shell", run: "once", path: "Vagrant/nginx.sh"
-  #config.vm.provision "Frontend",   type: "shell", run: "once", path: "Vagrant/frontend.sh"
+  config.vm.provision "Packages",   type: "shell", run: "once", path: "Vagrant/packages.sh"
+  config.vm.provision "Zopfli",     type: "shell", run: "once", path: "Vagrant/zopfli.sh"
+  config.vm.provision "Database",   type: "shell", run: "once", path: "Vagrant/database.sh"
+  config.vm.provision "Nginx",      type: "shell", run: "once", path: "Vagrant/nginx.sh"
+  config.vm.provision "Frontend",   type: "shell", run: "once", path: "Vagrant/frontend.sh"
 end
