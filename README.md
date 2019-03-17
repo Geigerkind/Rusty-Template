@@ -6,7 +6,9 @@
 
 ## Installation
 1. Install **vagrant** and **virtualbox** (Windows user should prefer the Linux shell)
-2. Go into the root directory and type **vagrant up**
+2. Import **Vagrant/nginx/ca.pem** as **authority** into your browser
+3. Add **jaylapp.dev 10.10.10.10** into your **hosts file**
+4. Go into the root directory and type **vagrant up**
 
 ## Nett To Know
 - Use **vagrant destroy -f** to destroy the vm
