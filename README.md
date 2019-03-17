@@ -7,7 +7,7 @@
 ## Installation
 1. Install **vagrant** and **virtualbox** (Windows user should prefer the Linux shell)
 2. Import **Vagrant/nginx/ca.pem** as **authority** into your browser
-3. Add the entry **jaylapp.dev 10.10.10.10** into your **hosts file**
+3. Append the entry **jaylapp.dev 10.10.10.10** into your **hosts file**
 4. Go into the root directory and type **vagrant up**
 
 ## Nett To Know
