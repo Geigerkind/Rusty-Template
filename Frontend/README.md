@@ -1,5 +1,5 @@
 ## Nett To Know
-1. Use **Frontend/compile.sh** to recompile the frontend during development
+- Use **Frontend/compile.sh** to recompile the frontend during development
 
 ## Sources  
 - lesscss.org  
