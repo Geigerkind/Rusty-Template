@@ -1,3 +1,9 @@
+## How to contribute
+1. Create a branch with the suffixes *"feature/", "fix/", "hotfix/" etc."
+2. Do your changes
+3. Create a pull request
+4. Wait for someone else to review it
+
 ## Installation
 1. Install **vagrant** and **virtualbox** (Windows user should prefer the Linux shell)
 2. Go into the root directory and type **vagrant up**
