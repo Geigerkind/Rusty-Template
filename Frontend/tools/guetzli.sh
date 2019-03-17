@@ -6,7 +6,7 @@ MEDIA_DIR=$2;
 
 for f in $(find ./../media/ -name "*.jpg"); do
     # Only start a process if < NUM_CORES are running
-    while [ $(ps aux | grep guetzli | wc -l) -gt $NUM_CORES ]; do
+    while [ $(ps aux | grep "guetzli --quality" | wc -l) -gt $NUM_CORES ]; do
         sleep 0.5;
     done
 

@@ -6,7 +6,7 @@ FILES="";
 LAST_PATHTOFILE="";
 for f in $(find ./../ts/ -name "*.ts"); do
     # Only start a process if < NUM_CORES are running
-    while [ $(ps aux | grep tsc | wc -l) -gt $NUM_CORES ]; do
+    while [ $(ps aux | grep "tsc --alwaysStrict" | wc -l) -gt $NUM_CORES ]; do
         sleep 0.5;
     done
 
@@ -27,9 +27,13 @@ for f in $(find ./../ts/ -name "*.ts"); do
     fi
 done
 if [ "$FILES" != "" ]; then
-    while [ $(ps aux | grep tsc | wc -l) -gt $NUM_CORES ]; do
+    while [ $(ps aux | grep "tsc --alwaysStrict" | wc -l) -gt $NUM_CORES ]; do
         sleep 0.5;
     done
 
     tsc --alwaysStrict --baseUrl "/" --target "es6" --locale "en" --newLine "lf" --strict --listFiles $FILES --outFile ./../.tmp_js$LAST_PATHTOFILE/merge.js & 
 fi
+
+while [ $(ps aux | grep "tsc --alwaysStrict" | wc -l) -gt 1 ]; do
+    sleep 0.5;
+done

@@ -10,7 +10,7 @@ NUM_CORES=$1;
 #bash ./tsc.sh $NUM_CORES;
 
 echo "Waiting for tsc to finish...";
-while [ $(ps aux | grep tsc | wc -l) -gt 2 ]; do
+while [ $(ps aux | grep "tsc --alwaysStrict" | wc -l) -gt 1 ]; do
     sleep 0.2;
 done
 
@@ -38,7 +38,7 @@ while [ $(ps aux | grep uglifyjs | wc -l) -gt 1 ]; do
 done
 
 echo "Inlining JS...";
-#mkdir "./../.html";
+mkdir "./../.html";
 for f in $(find ./../html/ -name "*.html" -not -path "./../html/index.html"); do
     FILENAME=$(basename -- "$f");
     PATHTOFILE=$(dirname "$f" | cut -c 11-);
@@ -53,11 +53,11 @@ for f in $(find ./../html/ -name "*.html" -not -path "./../html/index.html"); do
     fi;
 
     INLINE_CSS=$(cat "./../.js_merge/$PATHTOFILE/inline/script.js" | sed -e 's/[\/&]/\\&/g');
-    sed -e "s/{inline_js}/$INLINE_CSS/g" $NEWDIR/$FILENAME > $NEWDIR/$FILENAME.tmp;
+    sed -e "s/{inline_js}/$INLINE_CSS/g" $f > $NEWDIR/$FILENAME.tmp;
 
     if [ -f "./../.js_merge/$PATHTOFILE/script.js" ]; then
         md5=($(md5sum "./../.js_merge/$PATHTOFILE/script.js"));
-        mv "./../.js_merge/$PATHTOFILE/script.js" "./../.js_merge/$PATHTOFILE/script.js?$md5";
+        #mv "./../.js_merge/$PATHTOFILE/script.js" "./../.js_merge/$PATHTOFILE/script.js?$md5";
         FILE_PATH="/js/$PATHTOFILE/script.js?$md5";
         FILE_PATH=$(echo $FILE_PATH | sed -e 's/[\/&]/\\&/g');
         sed -e "s/{js}/$FILE_PATH/g" $NEWDIR/$FILENAME.tmp > $NEWDIR/$FILENAME;
@@ -67,7 +67,7 @@ for f in $(find ./../html/ -name "*.html" -not -path "./../html/index.html"); do
 done
 
 echo "Removing inline files...";
-for f in $(find ./../.js_merge/ -name "*.js\?*" -not -path "*inline*"); do
+for f in $(find ./../.js_merge/ -name "*.js" -not -path "*inline*"); do
     FILENAME=$(basename -- "$f");
     PATHTOFILE=$(dirname "$f" | cut -c 16-);
     NEWDIR="./../.js/$PATHTOFILE";

@@ -12,7 +12,7 @@ TARGET_DIR="/var/www";
 APP_NAME="jaylapp";
 
 # Optimizing the images
-LAST_MEDIA_CHANGE=$(find /media -printf "%T@\n" | sort | tail -1);
+LAST_MEDIA_CHANGE=$(find ./media -printf "%T@\n" | sort | tail -1);
 SAVED_MEDIA_CHANGE="";
 if [ -f ".media_change" ]; then
     SAVED_MEDIA_CHANGE=$(cat .media_change);
@@ -33,18 +33,6 @@ else
     echo $LAST_MEDIA_CHANGE > .media_change;
 fi
 
-# Compiling Less to CSS
-echo "Compiling LessCSS...";
-if [ ! -d ".css" ]; then
-    mkdir ".css";
-    mkdir ".tmp_css";
-    mkdir ".css_merge";
-fi
-bash ./tools/lessc.sh $NUM_CORES;
-
-echo "Merging/Minimizing/Inlining CSS...";
-bash ./tools/inlinecss.sh $NUM_CORES;
-
 # Compiling TS to JS
 echo "Compiling TypeScript...";
 if [ ! -d ".js" ]; then
@@ -56,6 +44,18 @@ bash ./tools/tsc.sh $NUM_CORES;
 
 echo "Merging/Minimizing/Inlining JS...";
 bash ./tools/inlinejs.sh $NUM_CORES;
+
+# Compiling Less to CSS
+echo "Compiling LessCSS...";
+if [ ! -d ".css" ]; then
+    mkdir ".css";
+    mkdir ".tmp_css";
+    mkdir ".css_merge";
+fi
+bash ./tools/lessc.sh $NUM_CORES;
+
+echo "Merging/Minimizing/Inlining CSS...";
+bash ./tools/inlinecss.sh $NUM_CORES;
 
 # Minimize resulting HTML
 echo "Minimizing HTML...";
@@ -82,5 +82,14 @@ mv ./.css $TARGET_DIR/$APP_NAME/css;
 mv ./.js $TARGET_DIR/$APP_NAME/js;
 mv ./.html/* $TARGET_DIR/$APP_NAME/;
 rm -r ./.html;
+
+# Web manifest
+cp ./manifest.json $TARGET_DIR/$APP_NAME/;
+
+# Serviceworker
+cp ./serviceworker.js $TARGET_DIR/$APP_NAME/;
+
+# Robots
+cp ./robots.txt $TARGET_DIR/$APP_NAME/;
 
 echo "Build has been moved to $TARGET_DIR/$APP_NAME!";

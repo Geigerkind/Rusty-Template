@@ -57,7 +57,7 @@ while [ $(ps aux | grep csso | wc -l) -gt 1 ]; do
 done
 
 echo "Inlining CSS...";
-mkdir "./../.html";
+#mkdir "./../.html";
 for f in $(find ./../html/ -name "*.html" -not -path "./../html/index.html"); do
     FILENAME=$(basename -- "$f");
     PATHTOFILE=$(dirname "$f" | cut -c 11-);
@@ -72,11 +72,11 @@ for f in $(find ./../html/ -name "*.html" -not -path "./../html/index.html"); do
     fi;
     
     INLINE_CSS=$(cat "./../.css_merge/$PATHTOFILE/inline/style.css" | sed -e 's/[\/&]/\\&/g');
-    sed -e "s/{inline_css}/$INLINE_CSS/g" $f > $NEWDIR/$FILENAME.tmp;
+    sed -e "s/{inline_css}/$INLINE_CSS/g" $NEWDIR/$FILENAME > $NEWDIR/$FILENAME.tmp;
 
     if [ -f "./../.css_merge/$PATHTOFILE/style.css" ]; then
         md5=($(md5sum "./../.css_merge/$PATHTOFILE/style.css"));
-        mv "./../.css_merge/$PATHTOFILE/style.css" "./../.css_merge/$PATHTOFILE/style.css?$md5";
+        #mv "./../.css_merge/$PATHTOFILE/style.css" "./../.css_merge/$PATHTOFILE/style.css?$md5";
         FILE_PATH="/css/$PATHTOFILE/style.css?$md5";
         FILE_PATH=$(echo $FILE_PATH | sed -e 's/[\/&]/\\&/g');
         sed -e "s/{css}/$FILE_PATH/g" $NEWDIR/$FILENAME.tmp > $NEWDIR/$FILENAME;
@@ -86,7 +86,7 @@ for f in $(find ./../html/ -name "*.html" -not -path "./../html/index.html"); do
 done
 
 echo "Removing inline files...";
-for f in $(find ./../.css_merge/ -name "*.css\?*" -not -path "*inline*"); do
+for f in $(find ./../.css_merge/ -name "*.css" -not -path "*inline*"); do
     FILENAME=$(basename -- "$f");
     PATHTOFILE=$(dirname "$f" | cut -c 17-);
     NEWDIR="./../.css/$PATHTOFILE";

@@ -6,7 +6,7 @@ MEDIA_DIR=$2;
 
 for f in $(find ./../media/ -name "*.png"); do
     # Only start a process if < NUM_CORES are running
-    while [ $(ps aux | grep zopflipng | wc -l) -gt $NUM_CORES ]; do
+    while [ $(ps aux | grep "zopflipng --iterations=" | wc -l) -gt $NUM_CORES ]; do
         sleep 0.5;
     done
 

@@ -4,7 +4,7 @@ NUM_CORES=$1;
 
 for f in $(find ./../less/ -name "*.less"); do
     # Only start a process if < NUM_CORES are running
-    while [ $(ps aux | grep lessc | wc -l) -gt $NUM_CORES ]; do
+    while [ $(ps aux | grep "lessc -ru=all" | wc -l) -gt $NUM_CORES ]; do
         sleep 0.5;
     done
 
