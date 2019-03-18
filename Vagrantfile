@@ -13,7 +13,6 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 80, guest_ip: "127.0.0.1", host: 8080
   config.vm.network "forwarded_port", guest: 443, guest_ip: "127.0.0.1", host: 8081
 
-  config.vm.synced_folder ".", "/me"
   config.vm.synced_folder "./", "/me", type: "rsync", rsync__auto: true, rsync__exclude: ['./Frontend/.*']
 
   config.vm.provision "Packages",   type: "shell", run: "once", path: "Vagrant/packages.sh"

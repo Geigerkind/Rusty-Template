@@ -38,10 +38,9 @@ while [ $(ps aux | grep uglifyjs | wc -l) -gt 1 ]; do
 done
 
 echo "Inlining JS...";
-mkdir "./../.html";
-for f in $(find ./../html/ -name "*.html" -not -path "./../html/index.html"); do
+for f in $(find ./../.html/ -name "*.html"); do
     FILENAME=$(basename -- "$f");
-    PATHTOFILE=$(dirname "$f" | cut -c 11-);
+    PATHTOFILE=$(dirname "$f" | cut -c 12-);
     NEWDIR="./../.html/$PATHTOFILE";
     
     if [ ! -d "$NEWDIR" ]; then
@@ -53,7 +52,7 @@ for f in $(find ./../html/ -name "*.html" -not -path "./../html/index.html"); do
     fi;
 
     INLINE_CSS=$(cat "./../.js_merge/$PATHTOFILE/inline/script.js" | sed -e 's/[\/&]/\\&/g');
-    sed -e "s/{inline_js}/$INLINE_CSS/g" $f > $NEWDIR/$FILENAME.tmp;
+    sed -e "s/{inline_js}/$INLINE_CSS/g" $NEWDIR/$FILENAME > $NEWDIR/$FILENAME.tmp;
 
     if [ -f "./../.js_merge/$PATHTOFILE/script.js" ]; then
         md5=($(md5sum "./../.js_merge/$PATHTOFILE/script.js"));

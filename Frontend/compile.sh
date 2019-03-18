@@ -33,6 +33,10 @@ else
     echo $LAST_MEDIA_CHANGE > .media_change;
 fi
 
+# HTML needs to be prepared
+echo "Preparing HTML...";
+bash ./tools/prepareHTML.sh;
+
 # Compiling TS to JS
 echo "Compiling TypeScript...";
 if [ ! -d ".js" ]; then

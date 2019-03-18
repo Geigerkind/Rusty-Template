@@ -14,8 +14,10 @@
         
         <script>{inline_js}</script>
         <script src="{js}" defer></script>
+
+        {head_placeholder}
     </head>
-    <body>
-        <div>test</div>
+    <body data-keep="true">
+        {body_placeholder}
     </body>
 </html>

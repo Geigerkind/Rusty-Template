@@ -57,10 +57,9 @@ while [ $(ps aux | grep csso | wc -l) -gt 1 ]; do
 done
 
 echo "Inlining CSS...";
-#mkdir "./../.html";
-for f in $(find ./../html/ -name "*.html" -not -path "./../html/index.html"); do
+for f in $(find ./../.html/ -name "*.html"); do
     FILENAME=$(basename -- "$f");
-    PATHTOFILE=$(dirname "$f" | cut -c 11-);
+    PATHTOFILE=$(dirname "$f" | cut -c 12-);
     NEWDIR="./../.html/$PATHTOFILE";
 
     if [ ! -d "$NEWDIR" ]; then
