@@ -96,4 +96,7 @@ cp ./serviceworker.js $TARGET_DIR/$APP_NAME/;
 # Robots
 cp ./robots.txt $TARGET_DIR/$APP_NAME/;
 
+# Favicon
+cp ./favicon.ico $TARGET_DIR/$APP_NAME/;
+
 echo "Build has been moved to $TARGET_DIR/$APP_NAME!";

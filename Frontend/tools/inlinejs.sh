@@ -55,9 +55,9 @@ for f in $(find ./../.html/ -name "*.html"); do
     sed -e "s/{inline_js}/$INLINE_CSS/g" $NEWDIR/$FILENAME > $NEWDIR/$FILENAME.tmp;
 
     if [ -f "./../.js_merge/$PATHTOFILE/script.js" ]; then
-        md5=($(md5sum "./../.js_merge/$PATHTOFILE/script.js"));
+        #md5=($(md5sum "./../.js_merge/$PATHTOFILE/script.js"));
         #mv "./../.js_merge/$PATHTOFILE/script.js" "./../.js_merge/$PATHTOFILE/script.js?$md5";
-        FILE_PATH="/js/$PATHTOFILE/script.js?$md5";
+        FILE_PATH="/js/$PATHTOFILE/script.js";
         FILE_PATH=$(echo $FILE_PATH | sed -e 's/[\/&]/\\&/g');
         sed -e "s/{js}/$FILE_PATH/g" $NEWDIR/$FILENAME.tmp > $NEWDIR/$FILENAME;
     fi

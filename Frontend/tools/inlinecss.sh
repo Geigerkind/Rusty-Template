@@ -74,9 +74,9 @@ for f in $(find ./../.html/ -name "*.html"); do
     sed -e "s/{inline_css}/$INLINE_CSS/g" $NEWDIR/$FILENAME > $NEWDIR/$FILENAME.tmp;
 
     if [ -f "./../.css_merge/$PATHTOFILE/style.css" ]; then
-        md5=($(md5sum "./../.css_merge/$PATHTOFILE/style.css"));
+        #md5=($(md5sum "./../.css_merge/$PATHTOFILE/style.css"));
         #mv "./../.css_merge/$PATHTOFILE/style.css" "./../.css_merge/$PATHTOFILE/style.css?$md5";
-        FILE_PATH="/css/$PATHTOFILE/style.css?$md5";
+        FILE_PATH="/css/$PATHTOFILE/style.css";
         FILE_PATH=$(echo $FILE_PATH | sed -e 's/[\/&]/\\&/g');
         sed -e "s/{css}/$FILE_PATH/g" $NEWDIR/$FILENAME.tmp > $NEWDIR/$FILENAME;
     fi
