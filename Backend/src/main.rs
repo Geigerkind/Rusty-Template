@@ -29,7 +29,7 @@ fn echo(name: String) -> content::Json<String> {
 
 fn main() {
     let mut igniter = rocket::ignite();
-    igniter = igniter.mount("/", routes![index, hi, echo]);
-    igniter = igniter.mount("/foo", routes![bar]);
+    igniter = igniter.mount("/API/", routes![index, hi, echo]);
+    igniter = igniter.mount("/API/foo", routes![bar]);
     igniter.launch();
 }
