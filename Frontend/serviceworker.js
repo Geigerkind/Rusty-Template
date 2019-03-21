@@ -1,10 +1,25 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.1.1/workbox-sw.js');
 
+// Resending google analytics stuff when connectivity is on again
+workbox.googleAnalytics.initialize();
+
+// Caching cachable API calls
 workbox.routing.registerRoute(
     new RegExp('/API/'),
-    new workbox.strategies.NetworkOnly()
+    new workbox.strategies.StaleWhileRevalidate({
+        cacheName: 'api-cache',
+        plugins: [
+          new workbox.cacheableResponse.Plugin({
+            statuses: [200],
+            headers: {
+              'X-Is-Cacheable': 'true',
+            },
+          })
+        ]
+    })
 );
 
+// Caching images
 workbox.routing.registerRoute(
     /\.(?:png|gif|jpg|jpeg|svg|webp)$/,
     new workbox.strategies.CacheFirst({
@@ -18,11 +33,21 @@ workbox.routing.registerRoute(
     })
 );
 
+// Caching js/css primarily
 workbox.routing.registerRoute(
     /\.(?:js|css|html)$/,
     new workbox.strategies.StaleWhileRevalidate({
         cacheName: 'static-resources',
     })
 );
+
+// Caching the index.html
+workbox.routing.registerRoute(
+    /\/$/,
+    new workbox.strategies.StaleWhileRevalidate({
+        cacheName: 'static-resources',
+    })
+);
+
   
   
