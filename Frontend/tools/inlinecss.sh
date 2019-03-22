@@ -9,12 +9,12 @@ done
 
 echo "Merging files...";
 # Manually creating the main files
-for f in $(find ./../.tmp_css/main/ -name "*.css"); do
+for f in $(find ./../.tmp_css/main/ -name "*.css" | sort); do
     PATHTOFILE=$(dirname "$f");
     cat $f >> "$PATHTOFILE/merge.css";
 done
 
-for f in $(find ./../.tmp_css/ -name "*.css" -not -path "./../.tmp_css/main/*"); do
+for f in $(find ./../.tmp_css/ -name "*.css" -not -path "./../.tmp_css/main/*" | sort); do
     PATHTOFILE=$(dirname "$f");
 
     if [ ! -d "$PATHTOFILE" ]; then

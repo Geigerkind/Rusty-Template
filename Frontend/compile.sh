@@ -99,4 +99,7 @@ cp ./robots.txt $TARGET_DIR/$APP_NAME/;
 # Favicon
 cp ./favicon.ico $TARGET_DIR/$APP_NAME/;
 
+# Externel
+cp -r ./external $TARGET_DIR/$APP_NAME/;
+
 echo "Build has been moved to $TARGET_DIR/$APP_NAME!";

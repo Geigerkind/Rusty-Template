@@ -5,14 +5,23 @@ mkdir ./../.html;
 MASTER="./../index.master";
 for dir in ./../html/*/
 do
-    HEAD=$(cat ${dir}head.html | sed -e 's/[\/&]/\\&/g');
-    BODY=$(cat ${dir}body.html | sed -e 's/[\/&]/\\&/g');
-    
     PATHTOFILE=$(echo "$dir" | cut -c 11-);
     NEWDIR="./../.html/$PATHTOFILE";
     NEWFILE="${NEWDIR}index.html";
 
     mkdir -p $NEWDIR;
+
+    cp ${dir}head.html ${NEWDIR}index.head;
+    cp ${dir}body.html ${NEWDIR}index.body;
+
+    bash ./htmlminhelper.sh ${NEWDIR}index.head 1;
+    bash ./htmlminhelper.sh ${NEWDIR}index.body 1;
+
+    HEAD=$(cat ${NEWDIR}index.head | sed -e 's/[\/&]/\\&/g');
+    BODY=$(cat ${NEWDIR}index.body | sed -e 's/[\/&]/\\&/g');
+
+    rm -f ${NEWDIR}index.head;
+    rm -f ${NEWDIR}index.body;
 
     cp $MASTER $NEWFILE;
 
