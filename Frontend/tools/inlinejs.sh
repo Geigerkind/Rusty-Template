@@ -29,7 +29,18 @@ for f in $(find ./../.tmp_js/ -name "merge.js"); do
         mkdir -p $NEWDIR;
     fi
 
-    uglifyjs --compress --mangle --keep-fnames --warn $f --output $NEWDIR/script.js & 
+    COTAINSIT=0;
+    case "$f" in
+        *inline*)
+            COTAINSIT=1;
+        ;;
+    esac
+
+    if [ "$2" == "1" ] || [ $COTAINSIT -eq 1 ] ; then
+        uglifyjs --compress --mangle --keep-fnames --warn $f --output $NEWDIR/script.js & 
+    else
+        cp $f $NEWDIR/script.js;
+    fi
 done
 
 echo "Waiting for uglifyjs to finish...";

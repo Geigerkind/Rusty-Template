@@ -47,7 +47,7 @@ fi
 bash ./tools/tsc.sh $NUM_CORES;
 
 echo "Merging/Minimizing/Inlining JS...";
-bash ./tools/inlinejs.sh $NUM_CORES;
+bash ./tools/inlinejs.sh $NUM_CORES $BUILD_MODE;
 
 # Compiling Less to CSS
 echo "Compiling LessCSS...";
