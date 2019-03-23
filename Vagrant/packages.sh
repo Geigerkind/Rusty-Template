@@ -13,6 +13,9 @@ pacman -S --noconfirm mariadb unixodbc;
 # Webserver related
 pacman -S --noconfirm nginx nginx-mod-brotli;
 
+# Emailserver related
+pacman -S --noconfirm postfix;
+
 # NPM packages
 npm install -g html-minifier;
 npm install -g less;

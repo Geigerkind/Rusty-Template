@@ -19,6 +19,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "Zopfli",     type: "shell", run: "once", path: "Vagrant/zopfli.sh"
   config.vm.provision "Database",   type: "shell", run: "once", path: "Vagrant/database.sh"
   config.vm.provision "Nginx",      type: "shell", run: "once", path: "Vagrant/nginx.sh"
+  config.vm.provision "Postfix",    type: "shell", run: "once", path: "Vagrant/postfix.sh"
   config.vm.provision "Frontend",   type: "shell", run: "once", path: "Vagrant/frontend.sh"
   config.vm.provision "Backend",    type: "shell", run: "once", path: "Vagrant/backend.sh", privileged: false
 end
