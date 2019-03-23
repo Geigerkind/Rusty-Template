@@ -20,4 +20,8 @@
     <body data-keep="true">
         {body_placeholder}
     </body>
+    <footer>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-107735472-3"></script>
+        <script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'UA-107735472-3');</script>
+    </footer>
 </html>
