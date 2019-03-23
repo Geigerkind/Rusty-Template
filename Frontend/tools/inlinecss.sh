@@ -9,12 +9,12 @@ done
 
 echo "Merging files...";
 # Manually creating the main files
-for f in $(find ./../.tmp_css/main/ -name "*.css" | sort); do
+for f in $(find ./../.tmp_css/global/ -name "*.css" | sort); do
     PATHTOFILE=$(dirname "$f");
     cat $f >> "$PATHTOFILE/merge.css";
 done
 
-for f in $(find ./../.tmp_css/ -name "*.css" -not -path "./../.tmp_css/main/*" | sort); do
+for f in $(find ./../.tmp_css/ -name "*.css" -not -path "./../.tmp_css/global/*" | sort); do
     PATHTOFILE=$(dirname "$f");
 
     if [ ! -d "$PATHTOFILE" ]; then
@@ -22,10 +22,10 @@ for f in $(find ./../.tmp_css/ -name "*.css" -not -path "./../.tmp_css/main/*" |
     fi
 
     if [ ! -f "$PATHTOFILE/merge.css" ]; then
-        cat "./../.tmp_css/main/merge.css" > "$PATHTOFILE/merge.css";
+        cat "./../.tmp_css/global/merge.css" > "$PATHTOFILE/merge.css";
         case "$f" in
             *inline*)
-                cat "./../.tmp_css/main/inline/merge.css" > "$PATHTOFILE/merge.css";
+                cat "./../.tmp_css/global/inline/merge.css" > "$PATHTOFILE/merge.css";
             ;;
         esac
     fi

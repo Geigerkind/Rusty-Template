@@ -1,5 +1,6 @@
 ## Nett To Know
 - Use **Frontend/compile.sh** to recompile the frontend during development
+- The html files need to exist and contain at a minimum a space
 
 ## Sources  
 - lesscss.org  
