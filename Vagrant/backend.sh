@@ -3,4 +3,4 @@ rustup default nightly
 
 # Compiling the backend
 cd /me/Backend;
-cargo build;
+cargo build > /dev/null 2> /dev/null;
