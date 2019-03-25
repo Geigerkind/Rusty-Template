@@ -6,6 +6,8 @@ use rocket::response::content;
 use rocket::State;
 use std::sync::Mutex;
 
+pub mod account;
+
 struct Backend {
     count: Mutex<u8>
 }
@@ -56,7 +58,7 @@ fn count(me: State<Backend>) -> content::Json<String> {
 fn main() {
     let mut igniter = rocket::ignite();
     igniter = igniter.manage(Backend { count: Mutex::new(0) });
-    igniter = igniter.mount("/API/", routes![index, hi, echo, count]);
+    igniter = igniter.mount("/API/", routes![index, hi, echo, count, account::foo]);
     igniter = igniter.mount("/API/foo", routes![bar]);
     igniter.launch();
 }
