@@ -9,24 +9,7 @@ use std::sync::Mutex;
 
 pub mod account;
 
-/*
-#[database("mysql")]
-struct DBConn(mysql::Conn);
-impl DBConn {
-    pub fn get_sample(conn: &mysql::Conn) -> &u8 
-    {
-        let res: Vec<u8> = conn.prep_exec("SELECT (1234)", ())
-        .map(|result| {
-            result.map(|x| x.unwrap()).map(|row| {
-                let val = mysql::from_row(row);
-                val
-            }).collect()
-        }).unwrap();
-        res.first().unwrap()
-    }
-}*/
-
-struct Backend {
+pub struct Backend {
     count: Mutex<u8>,
     conn: Mutex<mysql::Pool>
 }
