@@ -3,6 +3,25 @@
 #[macro_use] extern crate rocket;
 
 use rocket::response::content;
+use rocket::State;
+use std::sync::Mutex;
+
+struct Backend {
+    count: Mutex<u8>
+}
+
+impl Backend {
+    pub fn increment(&self)
+    {
+        let mut data = self.count.lock().unwrap();
+        *data += 1;
+    }
+    pub fn get_count(&self) -> u8
+    {
+        let data = self.count.lock().unwrap();
+        *data
+    }
+}
 
 #[get("/")]
 fn index() -> content::Json<&'static str> {
@@ -26,10 +45,18 @@ fn echo(name: String) -> content::Json<String> {
 }
 
 
+#[get("/count")]
+fn count(me: State<Backend>) -> content::Json<String> {
+    me.increment();
+    let data = me.get_count();
+    content::Json(data.to_string())
+}
+
 
 fn main() {
     let mut igniter = rocket::ignite();
-    igniter = igniter.mount("/API/", routes![index, hi, echo]);
+    igniter = igniter.manage(Backend { count: Mutex::new(0) });
+    igniter = igniter.mount("/API/", routes![index, hi, echo, count]);
     igniter = igniter.mount("/API/foo", routes![bar]);
     igniter.launch();
 }
