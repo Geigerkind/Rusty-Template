@@ -9,15 +9,7 @@ pub trait Account {
 impl Account for Backend {
     fn get_sample_account_db_fn(&self) -> i32
     {
-        let conn = self.conn.lock().unwrap();
-        let res: Vec<i32> = conn.prep_exec("SELECT (1234)", ())
-        .map(|result| {
-            result.map(|x| x.unwrap()).map(|row| {
-                let val = mysql::from_row(row);
-                val
-            }).collect()
-        }).unwrap();
-        *res.first().unwrap()
+        0
     }
 }
 

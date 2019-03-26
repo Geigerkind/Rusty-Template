@@ -8,10 +8,13 @@ use rocket::State;
 use std::sync::Mutex;
 
 pub mod account;
+pub mod mysqlconnection;
+
+use mysqlconnection::MySQLConnection;
 
 pub struct Backend {
     count: Mutex<u8>,
-    conn: Mutex<mysql::Pool>
+    conn: MySQLConnection
 }
 
 impl Backend {
@@ -28,15 +31,11 @@ impl Backend {
 
     pub fn get_db_sample(&self) -> i32
     {
-        let conn = self.conn.lock().unwrap();
-        let res: Vec<i32> = conn.prep_exec("SELECT (1234)", ())
-        .map(|result| {
-            result.map(|x| x.unwrap()).map(|row| {
-                let val = mysql::from_row(row);
-                val
-            }).collect()
+        let res: i32 = self.conn.select_value("SELECT (1234)", &|row| {
+            let val = mysql::from_row(row);
+            val
         }).unwrap();
-        *res.first().unwrap()
+        res
     }
 }
 
@@ -82,7 +81,7 @@ fn main() {
     let mut igniter = rocket::ignite();
     igniter = igniter.manage(Backend { 
         count: Mutex::new(0),
-        conn: Mutex::new(mysql::Pool::new("mysql://root@127.0.0.1/test").unwrap())
+        conn: MySQLConnection::new()
     });
     igniter = igniter.mount("/API/", routes![index, hi, echo, count, account::foo, dbtest]);
     igniter = igniter.mount("/API/foo", routes![bar]);
