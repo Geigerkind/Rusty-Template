@@ -11,3 +11,7 @@ mysql -u root mysql -e 'UPDATE `user` SET password=PASSWORD("vagrant") WHERE use
 systemctl restart mysqld;
 
 # TODO: Once we have a structure, import it here!
+bash /me/Database/merger.sh;
+
+mysql -u root -pvagrant < /me/Database/merge.sql;
+rm -f /me/Database/merge.sql;

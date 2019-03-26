@@ -9,12 +9,12 @@ pub trait Account {
 impl Account for Backend {
     fn get_sample_account_db_fn(&self) -> i32
     {
-        let res: i32 = self.conn.select_value("SELECT (1234)", &|row| {
+        let res: i32 = self.db_main.select_value("SELECT (1234)", &|row| {
             let val = mysql::from_row(row);
             val
         }).unwrap();
         res
-    }
+    } 
 }
 
 #[get("/bar")]

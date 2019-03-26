@@ -15,7 +15,7 @@ use mysqlconnection::MySQLConnection;
 
 pub struct Backend {
     count: RwLock<u8>,
-    conn: MySQLConnection
+    db_main: MySQLConnection
 }
 
 impl Backend {
@@ -32,7 +32,7 @@ impl Backend {
 
     pub fn get_db_sample(&self) -> i32
     {
-        let res: i32 = self.conn.select_value("SELECT (1234)", &|row| {
+        let res: i32 = self.db_main.select_value("SELECT (1234)", &|row| {
             let val = mysql::from_row(row);
             val
         }).unwrap();
@@ -82,7 +82,7 @@ fn main() {
     let mut igniter = rocket::ignite();
     igniter = igniter.manage(Backend { 
         count: RwLock::new(0),
-        conn: MySQLConnection::new()
+        db_main: MySQLConnection::new("main")
     });
     igniter = igniter.mount("/API/", routes![index, hi, echo, count, account::foo, dbtest]);
     igniter = igniter.mount("/API/foo", routes![bar]);
