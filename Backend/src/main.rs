@@ -5,7 +5,8 @@
 
 use rocket::response::content;
 use rocket::State;
-use std::sync::Mutex;
+use std::sync::RwLock;
+
 
 pub mod account;
 pub mod mysqlconnection;
@@ -13,19 +14,19 @@ pub mod mysqlconnection;
 use mysqlconnection::MySQLConnection;
 
 pub struct Backend {
-    count: Mutex<u8>,
+    count: RwLock<u8>,
     conn: MySQLConnection
 }
 
 impl Backend {
     pub fn increment(&self)
     {
-        let mut data = self.count.lock().unwrap();
+        let mut data = self.count.write().unwrap();
         *data += 1;
     }
     pub fn get_count(&self) -> u8
     {
-        let data = self.count.lock().unwrap();
+        let data = self.count.read().unwrap();
         *data
     }
 
@@ -80,7 +81,7 @@ fn dbtest(me: State<Backend>) -> content::Json<String>
 fn main() {
     let mut igniter = rocket::ignite();
     igniter = igniter.manage(Backend { 
-        count: Mutex::new(0),
+        count: RwLock::new(0),
         conn: MySQLConnection::new()
     });
     igniter = igniter.mount("/API/", routes![index, hi, echo, count, account::foo, dbtest]);
