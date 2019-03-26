@@ -62,7 +62,7 @@ impl MySQLConnection {
     pub fn new() -> Self
     {
         MySQLConnection {
-            con: mysql::Pool::new("mysql://root@127.0.0.1/test").unwrap()
+            con: mysql::Pool::new("mysql://root:vagrant@127.0.0.1/test").unwrap()
         }
     }
 }
