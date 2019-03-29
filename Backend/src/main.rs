@@ -14,11 +14,13 @@ pub mod mysqlconnection;
 
 use mysqlconnection::MySQLConnection;
 use account::Account;
+use account::Member;
 use word::Word;
 
 pub struct Backend {
     count: RwLock<u8>,
-    db_main: MySQLConnection
+    db_main: MySQLConnection,
+    member: RwLock<Vec<Member>>
 }
 
 impl Backend {
@@ -85,7 +87,8 @@ fn main() {
     let mut igniter = rocket::ignite();
     let backend_obj = Backend { 
         count: RwLock::new(0),
-        db_main: MySQLConnection::new("main")
+        db_main: MySQLConnection::new("main"),
+        member: RwLock::new(Vec::new())
     };
     Account::init(&backend_obj);
     Word::init(&backend_obj);

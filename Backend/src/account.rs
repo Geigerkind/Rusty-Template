@@ -2,6 +2,12 @@ use rocket::response::content;
 use crate::Backend;
 use rocket::State;
 
+pub struct Member {
+    id: u32,
+    mail: String,
+    password: String
+}
+
 pub trait Account {
     fn init(&self);
 
@@ -11,7 +17,15 @@ pub trait Account {
 impl Account for Backend {
     fn init(&self)
     {
-
+        let mut vec = self.member.write().unwrap();
+        *vec = self.db_main.select("SELECT id, mail, password FROM member", &|row|{
+            let (id, mail, pass) = mysql::from_row(row);
+            Member {
+                id: id,
+                mail: mail,
+                password: pass
+            }
+        });
     }
 
     fn get_sample_account_db_fn(&self) -> i32
