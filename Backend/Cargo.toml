@@ -7,3 +7,11 @@ edition = "2018"
 [dependencies]
 rocket = "*"
 mysql = "*"
+serde = "*"
+serde_derive = "*"
+serde_json = "*"
+
+[dependencies.rocket_contrib]
+version = "*"
+default-features = false
+features = ["json"]

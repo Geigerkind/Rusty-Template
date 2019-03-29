@@ -1,7 +1,8 @@
-use rocket::response::content;
 use crate::Backend;
+
+use rocket::response::content;
 use rocket::State;
-use rocket::request::Form;
+use rocket_contrib::json::{Json, JsonValue};
 
 pub struct Member {
     id: u32,
@@ -12,6 +13,7 @@ pub struct Member {
 pub trait Account {
     fn init(&self);
 
+    fn create(&self, params: &PostCreate) -> bool;
     fn delete(&self, params: &PostDelete) -> bool;
 }
 
@@ -29,6 +31,15 @@ impl Account for Backend {
         });
     }
 
+    // TODO: Do hashing, checking if it exists etc.
+    fn create(&self, params: &PostCreate) -> bool
+    {
+        self.db_main.execute_wparams("INSERT IGNORE INTO member (`mail`, `password`) VALUES (:mail, :pass)", params!(
+            "mail" => params.mail.to_owned(),
+            "pass" => params.password.to_owned()
+        ))
+    }
+
     fn delete(&self, params: &PostDelete) -> bool
     {
         self.db_main.execute_wparams("DELETE FROM member WHERE id = :id", params!(
@@ -37,12 +48,26 @@ impl Account for Backend {
     }
 }
 
+/**
+* Rocket request handling
+**/
+
+#[derive(Deserialize)]
+pub struct PostCreate{
+    mail: String,
+    password: String
+}
+#[post("/create", data = "<params>")]
+pub fn create(me: State<Backend>, params: Json<PostCreate>) -> content::Json<String> {
+    content::Json(me.create(&params).to_string())
+}
+
 // TODO: Add validation
-#[derive(FromForm)]
+#[derive(Deserialize)]
 pub struct PostDelete{
     id: u32
 }
 #[post("/delete", data = "<params>")]
-pub fn delete(me: State<Backend>, params: Form<PostDelete>) -> content::Json<String> {
+pub fn delete(me: State<Backend>, params: Json<PostDelete>) -> content::Json<String> {
     content::Json(me.delete(&params).to_string())
 }

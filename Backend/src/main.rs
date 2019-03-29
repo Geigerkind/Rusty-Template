@@ -1,7 +1,9 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
 #[macro_use] extern crate rocket;
+#[macro_use] extern crate rocket_contrib;
 #[macro_use] extern crate mysql;
+#[macro_use] extern crate serde_derive;
 
 use rocket::response::content;
 use rocket::State;
@@ -94,6 +96,6 @@ fn main() {
     Word::init(&backend_obj);
     igniter = igniter.manage(backend_obj);
     igniter = igniter.mount("/API/", routes![index, hi, echo, count, dbtest]);
-    igniter = igniter.mount("/API/account/", routes![account::delete]);
+    igniter = igniter.mount("/API/account/", routes![account::delete, account::create]);
     igniter.launch();
 }
