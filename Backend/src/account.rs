@@ -1,6 +1,7 @@
 use rocket::response::content;
 use crate::Backend;
 use rocket::State;
+use rocket::request::Form;
 
 pub struct Member {
     id: u32,
@@ -11,7 +12,7 @@ pub struct Member {
 pub trait Account {
     fn init(&self);
 
-    fn get_sample_account_db_fn(&self) -> i32;
+    fn delete(&self, params: &PostDelete) -> bool;
 }
 
 impl Account for Backend {
@@ -28,17 +29,20 @@ impl Account for Backend {
         });
     }
 
-    fn get_sample_account_db_fn(&self) -> i32
+    fn delete(&self, params: &PostDelete) -> bool
     {
-        let res: i32 = self.db_main.select_value("SELECT (1234)", &|row| {
-            let val = mysql::from_row(row);
-            val
-        }).unwrap();
-        res
-    } 
+        self.db_main.execute_wparams("DELETE FROM member WHERE id = :id", params!(
+            "id" => params.id
+        ))
+    }
 }
 
-#[get("/bar")]
-pub fn foo(me: State<Backend>) -> content::Json<String> {
-    content::Json(me.get_sample_account_db_fn().to_string())
+// TODO: Add validation
+#[derive(FromForm)]
+pub struct PostDelete{
+    id: u32
+}
+#[post("/delete", data = "<params>")]
+pub fn delete(me: State<Backend>, params: Form<PostDelete>) -> content::Json<String> {
+    content::Json(me.delete(&params).to_string())
 }

@@ -93,7 +93,7 @@ fn main() {
     Account::init(&backend_obj);
     Word::init(&backend_obj);
     igniter = igniter.manage(backend_obj);
-    igniter = igniter.mount("/API/", routes![index, hi, echo, count, account::foo, dbtest]);
-    igniter = igniter.mount("/API/foo", routes![bar]);
+    igniter = igniter.mount("/API/", routes![index, hi, echo, count, dbtest]);
+    igniter = igniter.mount("/API/account/", routes![account::delete]);
     igniter.launch();
 }

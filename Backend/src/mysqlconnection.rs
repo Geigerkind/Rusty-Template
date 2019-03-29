@@ -59,6 +59,19 @@ impl MySQLConnection {
         None
     }
 
+    /**
+    * Normal execution, i.e. update and inserts
+    **/
+
+    pub fn execute(&self, query_str: &str) -> bool
+    {
+        self.con.prep_exec(query_str, ()).unwrap().affected_rows() > 0
+    }
+    pub fn execute_wparams(&self, query_str: &str, params: std::vec::Vec<(std::string::String, mysql::Value)>) -> bool
+    {
+        self.con.prep_exec(query_str, params).unwrap().affected_rows() > 0
+    }
+
     pub fn new(db_name: &str) -> Self
     {
         let mut dns: String = "mysql://root:vagrant@127.0.0.1/".to_owned();
