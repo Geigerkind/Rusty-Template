@@ -9,9 +9,12 @@ use std::sync::RwLock;
 
 
 pub mod account;
+pub mod word;
 pub mod mysqlconnection;
 
 use mysqlconnection::MySQLConnection;
+use account::Account;
+use word::Word;
 
 pub struct Backend {
     count: RwLock<u8>,
@@ -80,10 +83,13 @@ fn dbtest(me: State<Backend>) -> content::Json<String>
 
 fn main() {
     let mut igniter = rocket::ignite();
-    igniter = igniter.manage(Backend { 
+    let backend_obj = Backend { 
         count: RwLock::new(0),
         db_main: MySQLConnection::new("main")
-    });
+    };
+    Account::init(&backend_obj);
+    Word::init(&backend_obj);
+    igniter = igniter.manage(backend_obj);
     igniter = igniter.mount("/API/", routes![index, hi, echo, count, account::foo, dbtest]);
     igniter = igniter.mount("/API/foo", routes![bar]);
     igniter.launch();

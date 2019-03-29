@@ -3,10 +3,17 @@ use crate::Backend;
 use rocket::State;
 
 pub trait Account {
+    fn init(&self);
+
     fn get_sample_account_db_fn(&self) -> i32;
 }
 
 impl Account for Backend {
+    fn init(&self)
+    {
+
+    }
+
     fn get_sample_account_db_fn(&self) -> i32
     {
         let res: i32 = self.db_main.select_value("SELECT (1234)", &|row| {
