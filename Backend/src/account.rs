@@ -42,6 +42,13 @@ impl Account for Backend {
     // TODO: Do hashing, checking if it exists, add it to existing structure, etc.
     fn create(&self, params: &PostCreateMember) -> bool
     {
+        // Double spending check
+        // We dont validate throguh the internal data structure because we may have race conditions
+        if self.db_main.exists_wparams("SELECT id FROM member WHERE LOWER(mail) = :mail LIMIT 1", params!("mail" => params.mail.to_owned().to_lowercase())) 
+        {
+            return false;
+        }
+
         self.db_main.execute_wparams("INSERT IGNORE INTO member (`mail`, `password`) VALUES (:mail, :pass)", params!(
             "mail" => params.mail.to_owned(),
             "pass" => params.password.to_owned()
