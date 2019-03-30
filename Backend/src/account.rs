@@ -22,7 +22,7 @@ pub trait Account {
 
     fn create(&self, params: &PostCreateMember) -> bool;
     fn delete(&self, params: &PostDeleteMember) -> bool;
-    fn get(&self, params: &PostGetMember) -> AccountInformation;
+    fn get(&self, id: u32) -> AccountInformation;
 }
 
 impl Account for Backend {
@@ -55,7 +55,7 @@ impl Account for Backend {
         ))
     }
 
-    fn get(&self, params: &PostGetMember) -> AccountInformation
+    fn get(&self, id: u32) -> AccountInformation
     {
         self.db_main.select_wparams_value("SELECT mail, xp FROM member WHERE id = :id", &|row| {
             let (mail, xp) = mysql::from_row(row);
@@ -64,7 +64,7 @@ impl Account for Backend {
                 xp: xp
             }
         }, params!(
-            "id" => params.id
+            "id" => id
         )).unwrap()
     }
 }
@@ -73,14 +73,10 @@ impl Account for Backend {
 * Rocket request handling
 **/
 
-#[derive(Deserialize)]
-pub struct PostGetMember{
-    id: u32 
-}
-#[get("/get", data = "<params>")]
-pub fn get(me: State<Backend>, params: Json<PostGetMember>) -> content::Json<String>
+#[get("/get/<id>")]
+pub fn get(me: State<Backend>, id: u32) -> content::Json<String>
 {
-    content::Json(to_string(&me.get(&params)).unwrap())
+    content::Json(to_string(&me.get(id)).unwrap())
 }
 
 #[derive(Deserialize)]
