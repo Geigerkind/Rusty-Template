@@ -8,7 +8,8 @@ use serde_json::to_string;
 pub struct Member {
     id: u32,
     mail: String,
-    password: String
+    password: String,
+    xp: u32
 }
 
 #[derive(Serialize)]
@@ -22,21 +23,26 @@ pub trait Account {
 
     fn create(&self, params: &PostCreateMember) -> bool;
     fn delete(&self, params: &PostDeleteMember) -> bool;
-    fn get(&self, id: u32) -> AccountInformation;
+    fn get(&self, id: u32) -> Option<AccountInformation>;
 }
 
 impl Account for Backend {
     fn init(&self)
     {
-        let mut vec = self.member.write().unwrap();
-        *vec = self.db_main.select("SELECT id, mail, password FROM member", &|row|{
-            let (id, mail, pass) = mysql::from_row(row);
+        let mut member = self.member.write().unwrap();
+
+        // We are a little wasteful here because we do not insert it directly but rather create a vector first and then copy it over
+        for entry in self.db_main.select("SELECT id, mail, password, xp FROM member", &|row|{
+            let (id, mail, pass, xp) = mysql::from_row(row);
             Member {
                 id: id,
                 mail: mail,
-                password: pass
+                password: pass,
+                xp: xp
             }
-        });
+        }) {
+            member.insert(entry.id, entry);
+        }
     }
 
     // TODO: Do hashing, checking if it exists, add it to existing structure, etc.
@@ -49,10 +55,25 @@ impl Account for Backend {
             return false;
         }
 
-        self.db_main.execute_wparams("INSERT IGNORE INTO member (`mail`, `password`) VALUES (:mail, :pass)", params!(
+        if self.db_main.execute_wparams("INSERT IGNORE INTO member (`mail`, `password`) VALUES (:mail, :pass)", params!(
             "mail" => params.mail.to_owned(),
-            "pass" => params.password.to_owned()
-        ))
+            "pass" => params.password.to_owned())
+        ) {
+            let mut member = self.member.write().unwrap();
+            let id = self.db_main.select_wparams_value("SELECT id FROM member WHERE LOWER(mail) = :mail", &|row|{
+                let res = mysql::from_row(row);
+                res
+            }, params!(
+                "mail" => params.mail.to_owned().to_lowercase()
+            )).unwrap();
+            member.insert(id, Member {
+                id: id,
+                mail: params.mail.to_owned(),
+                password: params.password.to_owned(),
+                xp: 0
+            });
+        }
+        true
     }
 
     fn delete(&self, params: &PostDeleteMember) -> bool
@@ -62,17 +83,16 @@ impl Account for Backend {
         ))
     }
 
-    fn get(&self, id: u32) -> AccountInformation
+    fn get(&self, id: u32) -> Option<AccountInformation>
     {
-        self.db_main.select_wparams_value("SELECT mail, xp FROM member WHERE id = :id", &|row| {
-            let (mail, xp) = mysql::from_row(row);
-            AccountInformation {
-                mail: mail,
-                xp: xp
-            }
-        }, params!(
-            "id" => id
-        )).unwrap()
+        let member = self.member.read().unwrap();
+        match member.get(&id) {
+            Some(entry) => Some(AccountInformation {
+                mail: entry.mail.clone(),
+                xp: entry.xp
+            }),
+            None => None
+        }
     }
 }
 
@@ -83,7 +103,10 @@ impl Account for Backend {
 #[get("/get/<id>")]
 pub fn get(me: State<Backend>, id: u32) -> content::Json<String>
 {
-    content::Json(to_string(&me.get(id)).unwrap())
+    match me.get(id) {
+        Some(acc_info) => content::Json(to_string(&acc_info).unwrap()),
+        None => content::Json("Error?!".to_string())
+    }
 }
 
 #[derive(Deserialize)]

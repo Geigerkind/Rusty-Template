@@ -8,7 +8,7 @@
 use rocket::response::content;
 use rocket::State;
 use std::sync::RwLock;
-
+use std::collections::HashMap;
 
 pub mod account;
 pub mod word;
@@ -22,7 +22,7 @@ use word::Word;
 pub struct Backend {
     count: RwLock<u8>,
     db_main: MySQLConnection,
-    member: RwLock<Vec<Member>>
+    member: RwLock<HashMap<u32, Member>>
 }
 
 impl Backend {
@@ -90,7 +90,7 @@ fn main() {
     let backend_obj = Backend { 
         count: RwLock::new(0),
         db_main: MySQLConnection::new("main"),
-        member: RwLock::new(Vec::new())
+        member: RwLock::new(HashMap::new())
     };
     Account::init(&backend_obj);
     Word::init(&backend_obj);
