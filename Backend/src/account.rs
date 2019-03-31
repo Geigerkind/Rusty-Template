@@ -67,8 +67,7 @@ impl Account for Backend {
             member.insert(entry.id, entry);
         }
     }
-
-    // TODO: Do hashing etc.
+.
     // TODO: Send validation mail
     fn create(&self, params: &PostCreateMember) -> bool
     {
@@ -79,9 +78,16 @@ impl Account for Backend {
             return false;
         }
 
+        let salt: String = (0..15).map(|_| rand::random::<u8>() as char).collect();
+        let mut hasher = Sha3_512::new();
+        let mut hash_input: String = params.password.clone();
+        hash_input.push_str(&salt);
+        hasher.input(hash_input);
+        let pass = std::str::from_utf8(&hasher.result()).unwrap().to_string();
+
         if self.db_main.execute_wparams("INSERT IGNORE INTO member (`mail`, `password`) VALUES (:mail, :pass)", params!(
             "mail" => params.mail.to_owned(),
-            "pass" => params.password.to_owned())
+            "pass" => pass.clone())
         ) {
             let mut member = self.member.write().unwrap();
             let id = self.db_main.select_wparams_value("SELECT id FROM member WHERE LOWER(mail) = :mail", &|row|{
@@ -93,8 +99,8 @@ impl Account for Backend {
             member.insert(id, Member {
                 id: id,
                 mail: params.mail.to_owned(),
-                password: params.password.to_owned(), // TODO: hash it
-                salt: "".to_string(), // TODO
+                password: pass,
+                salt: salt, 
                 xp: 0,
                 hash_prio: vec![2,2,2],
                 hash_val: vec!["none".to_string(), "none".to_string(), "none".to_string()]
