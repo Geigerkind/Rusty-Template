@@ -109,17 +109,32 @@ impl Account for Backend {
         true
     }
 
-    // TODO: Remove from hashmap
     // We might consider to send a mail first!
     fn delete(&self, params: &ValidationPair) -> bool
     {
+        // This also makes sure that the user actually exists
         if !self.validate(params) {
             return false; // Rather return errors?
         }
 
-        self.db_main.execute_wparams("DELETE FROM member WHERE id = :id", params!(
+        if self.db_main.execute_wparams("DELETE FROM member WHERE id = :id", params!(
             "id" => params.id
-        ))
+        )) {
+            let mut hash_to_member = self.hash_to_member.write().unwrap();
+            let mut member = self.member.write().unwrap();
+            // Creating this scope to reduce the lifetime of the borrow
+            {
+                let entry = member.get(&params.id).unwrap();
+                for i in 0..2 {
+                    if entry.hash_val[i] != "none" {
+                        hash_to_member.remove(&entry.hash_val[i]);
+                    }
+                }
+            }
+            member.remove(&params.id);
+            return true;
+        }
+        false
     }
 
     fn get(&self, id: u32) -> Option<AccountInformation>
