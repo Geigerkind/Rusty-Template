@@ -24,18 +24,19 @@ CREATE TABLE `member` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `mail` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(1025) COLLATE utf8_unicode_ci NOT NULL,
+  `salt` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `joined` int(11) unsigned NOT NULL DEFAULT 0,
   `xp` int(11) unsigned NOT NULL DEFAULT 0,
   `mail_confirmed` tinyint(1) unsigned NOT NULL DEFAULT 0,
   `forgot_password` tinyint(1) unsigned NOT NULL DEFAULT 0,
+  `val_hash1` varchar(512) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'none',
+  `val_prio1` tinyint(1) unsigned NOT NULL DEFAULT 2,
+  `val_hash2` varchar(512) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'none',
+  `val_prio2` tinyint(1) unsigned NOT NULL DEFAULT 2,
+  `val_hash3` varchar(512) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'none',
+  `val_prio3` tinyint(1) unsigned NOT NULL DEFAULT 2,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-/*Data for the table `member` */
-
-LOCK TABLES `member` WRITE;
-
-UNLOCK TABLES;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

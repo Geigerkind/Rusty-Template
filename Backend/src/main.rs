@@ -4,6 +4,8 @@
 #[macro_use] extern crate rocket_contrib;
 #[macro_use] extern crate mysql;
 #[macro_use] extern crate serde_derive;
+extern crate rand;
+
 
 use rocket::response::content;
 use rocket::State;
@@ -22,7 +24,8 @@ use word::Word;
 pub struct Backend {
     count: RwLock<u8>,
     db_main: MySQLConnection,
-    member: RwLock<HashMap<u32, Member>>
+    member: RwLock<HashMap<u32, Member>>,
+    hash_to_member: RwLock<HashMap<String, u32>>
 }
 
 impl Backend {
@@ -90,7 +93,8 @@ fn main() {
     let backend_obj = Backend { 
         count: RwLock::new(0),
         db_main: MySQLConnection::new("main"),
-        member: RwLock::new(HashMap::new())
+        member: RwLock::new(HashMap::new()),
+        hash_to_member: RwLock::new(HashMap::new())
     };
     Account::init(&backend_obj);
     Word::init(&backend_obj);

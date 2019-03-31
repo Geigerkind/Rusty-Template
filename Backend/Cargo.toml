@@ -10,6 +10,8 @@ mysql = "*"
 serde = "*"
 serde_derive = "*"
 serde_json = "*"
+sha3 = "*"
+rand = "*"
 
 [dependencies.rocket_contrib]
 version = "*"
