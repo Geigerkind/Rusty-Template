@@ -67,7 +67,7 @@ impl Account for Backend {
             member.insert(entry.id, entry);
         }
     }
-.
+
     // TODO: Send validation mail
     fn create(&self, params: &PostCreateMember) -> bool
     {
@@ -197,7 +197,31 @@ impl Account for Backend {
     {
         let hash_to_member = self.hash_to_member.read().unwrap();
         match hash_to_member.get(&params.hash) {
-            Some(id) => *id == params.id,
+            Some(id) => {
+                // Updating the prios if necessary
+                let mut member = self.member.write().unwrap();
+                let entry = member.get_mut(id).unwrap();
+                // We need to find the index first
+                for i in 0..2 {
+                    if entry.hash_val[i] == params.hash && entry.hash_prio[i] != 0 {
+                        // Adjusting prios
+                        entry.hash_prio[i] = 0;
+                        entry.hash_prio[(i+1)%3] += 1;
+                        entry.hash_prio[(i+2)%3] += 1;
+
+                        self.db_main.execute_wparams("UPDATE member SET val_prio1=:vp1, val_prio2=:vp2, val_prio3=:vp3 WHERE id=:id", params!(
+                            "vp1" => entry.hash_prio[0],
+                            "vp2" => entry.hash_prio[1],
+                            "vp3" => entry.hash_prio[2],
+                            "id" => *id
+                        ));
+
+                        break;
+                    }
+                }
+
+                *id == params.id
+            },
             None => false
         }
     }
