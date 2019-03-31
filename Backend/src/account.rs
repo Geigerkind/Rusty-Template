@@ -23,13 +23,20 @@ pub struct AccountInformation {
     xp: u32
 }
 
+#[derive(Deserialize)]
+pub struct ValidationPair {
+    hash: String,
+    id: u32
+}
+
 pub trait Account {
     fn init(&self);
 
     fn create(&self, params: &PostCreateMember) -> bool;
-    fn delete(&self, params: &PostDeleteMember) -> bool;
+    fn delete(&self, params: &ValidationPair) -> bool;
     fn get(&self, id: u32) -> Option<AccountInformation>;
     fn login(&self, params: &PostLogin) -> Option<String>;
+    fn validate(&self, params: &ValidationPair) -> bool;
 }
 
 impl Account for Backend {
@@ -97,10 +104,13 @@ impl Account for Backend {
     }
 
     // TODO: Remove from hashmap
-    // TODO: Validation
     // We might consider to send a mail first!
-    fn delete(&self, params: &PostDeleteMember) -> bool
+    fn delete(&self, params: &ValidationPair) -> bool
     {
+        if !self.validate(params) {
+            return false; // Rather return errors?
+        }
+
         self.db_main.execute_wparams("DELETE FROM member WHERE id = :id", params!(
             "id" => params.id
         ))
@@ -176,6 +186,15 @@ impl Account for Backend {
 
         Some(hash)
     }
+
+    fn validate(&self, params: &ValidationPair) -> bool
+    {
+        let hash_to_member = self.hash_to_member.read().unwrap();
+        match hash_to_member.get(&params.hash) {
+            Some(id) => *id == params.id,
+            None => false
+        }
+    }
 }
 
 /**
@@ -202,13 +221,8 @@ pub fn create(me: State<Backend>, params: Json<PostCreateMember>) -> content::Js
     content::Json(me.create(&params).to_string())
 }
 
-// TODO: Add validation
-#[derive(Deserialize)]
-pub struct PostDeleteMember{
-    id: u32
-}
 #[delete("/delete", data = "<params>")]
-pub fn delete(me: State<Backend>, params: Json<PostDeleteMember>) -> content::Json<String>
+pub fn delete(me: State<Backend>, params: Json<ValidationPair>) -> content::Json<String>
 {
     content::Json(me.delete(&params).to_string())
 }
