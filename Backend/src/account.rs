@@ -345,6 +345,12 @@ pub fn get(me: State<Backend>, id: u32) -> content::Json<String>
     }
 }
 
+#[get("/confirm/<id>")]
+pub fn confirm(me: State<Backend>, id: String) -> content::Json<String>
+{
+    content::Json(me.confirm(&id).to_string())
+}
+
 #[derive(Deserialize)]
 pub struct PostCreateMember{
     mail: String,
