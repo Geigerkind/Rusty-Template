@@ -5,6 +5,8 @@
 #[macro_use] extern crate mysql;
 #[macro_use] extern crate serde_derive;
 extern crate rand;
+extern crate lettre;
+extern crate lettre_email;
 
 
 use rocket::response::content;

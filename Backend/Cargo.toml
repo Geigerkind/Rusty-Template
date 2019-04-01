@@ -12,6 +12,8 @@ serde_derive = "*"
 serde_json = "*"
 sha3 = "*"
 rand = "*"
+lettre = "0.9"
+lettre_email = "0.9"
 
 [dependencies.rocket_contrib]
 version = "*"
