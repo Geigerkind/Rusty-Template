@@ -31,6 +31,30 @@ pub struct ValidationPair {
     id: u32
 }
 
+/**
+ * Dominating data structure supporting this module
+ */
+use std::sync::RwLock;
+use std::collections::HashMap;
+pub struct AccountData {
+    member: RwLock<HashMap<u32, Member>>,
+    hash_to_member: RwLock<HashMap<String, u32>>,
+    requires_mail_confirmation: RwLock<HashMap<String, u32>>,
+}
+impl AccountData {
+    pub fn new() -> Self
+    {
+        AccountData {
+            member: RwLock::new(HashMap::new()),
+            hash_to_member: RwLock::new(HashMap::new()),
+            requires_mail_confirmation: RwLock::new(HashMap::new())
+        }
+    }
+}
+
+/**
+ * Module implementation
+ */
 pub trait Account {
     fn init(&self);
 
@@ -45,8 +69,8 @@ pub trait Account {
 impl Account for Backend {
     fn init(&self)
     {
-        let mut hash_to_member = self.hash_to_member.write().unwrap();
-        let mut member = self.member.write().unwrap();
+        let mut hash_to_member = self.data_acc.hash_to_member.write().unwrap();
+        let mut member = self.data_acc.member.write().unwrap();
 
         // We are a little wasteful here because we do not insert it directly but rather create a vector first and then copy it over
         for entry in self.db_main.select("SELECT id, mail, password, salt, xp, mail_confirmed, val_hash1, val_prio1, val_hash2, val_prio2, val_hash3, val_prio3 FROM member", &|row|{
@@ -72,6 +96,7 @@ impl Account for Backend {
         }
     }
 
+    // TODO: Check for validity of inputs!
     fn create(&self, params: &PostCreateMember) -> bool
     {
         // Double spending check
@@ -95,23 +120,26 @@ impl Account for Backend {
             "mail" => params.mail.to_owned(),
             "pass" => pass.clone())
         ) {
-            let mut member = self.member.write().unwrap();
-            let id = self.db_main.select_wparams_value("SELECT id FROM member WHERE LOWER(mail) = :mail", &|row|{
-                let res = mysql::from_row(row);
-                res
-            }, params!(
-                "mail" => params.mail.to_owned().to_lowercase()
-            )).unwrap();
-            member.insert(id, Member {
-                id: id,
-                mail: params.mail.to_owned(),
-                password: pass,
-                salt: salt.clone(), 
-                xp: 0,
-                mail_confirmed: false,
-                hash_prio: vec![2,2,2],
-                hash_val: vec!["none".to_string(), "none".to_string(), "none".to_string()]
-            });
+            let id: u32;
+            { // Keep write locks as short as possible
+                let mut member = self.data_acc.member.write().unwrap();
+                id = self.db_main.select_wparams_value("SELECT id FROM member WHERE LOWER(mail) = :mail", &|row|{
+                    let res = mysql::from_row(row);
+                    res
+                }, params!(
+                    "mail" => params.mail.to_owned().to_lowercase()
+                )).unwrap();
+                member.insert(id, Member {
+                    id: id,
+                    mail: params.mail.to_owned(),
+                    password: pass,
+                    salt: salt.clone(), 
+                    xp: 0,
+                    mail_confirmed: false,
+                    hash_prio: vec![2,2,2],
+                    hash_val: vec!["none".to_string(), "none".to_string(), "none".to_string()]
+                });
+            }
 
             // Sending a confirmation mail
             let mut hasher = Sha3_512::new();
@@ -125,6 +153,9 @@ impl Account for Backend {
             let mut text: String = "TODO: Heartwarming welcome text\nhttps://jaylapp.dev/API/account/confirm/".to_string();
             text.push_str(&mail_id);
             Mail::send_mail(self, &params.mail, name, subject, &text);
+
+            let mut requires_mail_confirmation = self.data_acc.requires_mail_confirmation.write().unwrap();
+            requires_mail_confirmation.insert(mail_id, id);
         }
         true
     }
@@ -140,8 +171,8 @@ impl Account for Backend {
         if self.db_main.execute_wparams("DELETE FROM member WHERE id = :id", params!(
             "id" => params.id
         )) {
-            let mut hash_to_member = self.hash_to_member.write().unwrap();
-            let mut member = self.member.write().unwrap();
+            let mut hash_to_member = self.data_acc.hash_to_member.write().unwrap();
+            let mut member = self.data_acc.member.write().unwrap();
             // Creating this scope to reduce the lifetime of the borrow
             {
                 let entry = member.get(&params.id).unwrap();
@@ -159,7 +190,7 @@ impl Account for Backend {
 
     fn get(&self, id: u32) -> Option<AccountInformation>
     {
-        let member = self.member.read().unwrap();
+        let member = self.data_acc.member.read().unwrap();
         match member.get(&id) {
             Some(entry) => Some(AccountInformation {
                 mail: entry.mail.clone(),
@@ -172,8 +203,8 @@ impl Account for Backend {
     fn login(&self, params: &PostLogin) -> Option<String>
     {
         // Do not change the order else we might end up in a dead lock!
-        let mut hash_to_member = self.hash_to_member.write().unwrap();
-        let mut member = self.member.write().unwrap();
+        let mut hash_to_member = self.data_acc.hash_to_member.write().unwrap();
+        let mut member = self.data_acc.member.write().unwrap();
 
         let lower_mail = params.mail.to_lowercase();
         let mut entry_key: u32 = 0;
@@ -230,14 +261,14 @@ impl Account for Backend {
 
     fn validate(&self, params: &ValidationPair) -> bool
     {
-        let hash_to_member = self.hash_to_member.read().unwrap();
+        let hash_to_member = self.data_acc.hash_to_member.read().unwrap();
         match hash_to_member.get(&params.hash) {
             Some(id) => {
                 // Doing it this way, because write locks need to be avoided
                 let mut work_key = 3;
                 {
                     // Updating the prios if necessary
-                    let member = self.member.read().unwrap();
+                    let member = self.data_acc.member.read().unwrap();
                     let entry = member.get(id).unwrap();
                     // We need to find the index first
                     for i in 0..2 {
@@ -251,7 +282,7 @@ impl Account for Backend {
                 }
                 
                 if work_key < 3 {
-                    let mut member = self.member.write().unwrap();
+                    let mut member = self.data_acc.member.write().unwrap();
                     let entry = member.get_mut(id).unwrap();
 
                     // Adjusting prios
@@ -275,7 +306,29 @@ impl Account for Backend {
 
     fn confirm(&self, id: &str) -> bool
     {
-        true
+        let mut removable = false;
+        {
+            let requires_mail_confirmation = self.data_acc.requires_mail_confirmation.read().unwrap();
+            match requires_mail_confirmation.get(id) {
+                Some(member_id) => {
+                    if self.db_main.execute_wparams("UPDATE member SET mail_confirmed=1 WHERE id=:id", params!(
+                        "id" => *member_id
+                    )) {
+                        let mut member = self.data_acc.member.write().unwrap();
+                        let entry = member.get_mut(member_id).unwrap();
+                        entry.mail_confirmed = true;
+                        removable = true;
+                    }
+                },
+                None => return false
+            }
+        }
+        if removable {
+            let mut  requires_mail_confirmation = self.data_acc.requires_mail_confirmation.write().unwrap();
+            requires_mail_confirmation.remove(id);
+            return true;
+        }
+        false
     }
 }
 

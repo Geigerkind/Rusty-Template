@@ -12,7 +12,6 @@ extern crate lettre_email;
 use rocket::response::content;
 use rocket::State;
 use std::sync::RwLock;
-use std::collections::HashMap;
 
 pub mod account;
 pub mod word;
@@ -21,14 +20,14 @@ pub mod mail;
 
 use mysqlconnection::MySQLConnection;
 use account::Account;
-use account::Member;
+use account::AccountData;
 use word::Word;
 
 pub struct Backend {
     count: RwLock<u8>,
     db_main: MySQLConnection,
-    member: RwLock<HashMap<u32, Member>>,
-    hash_to_member: RwLock<HashMap<String, u32>>
+    // WTB: Field values for traits!
+    data_acc: AccountData,
 }
 
 impl Backend {
@@ -96,8 +95,7 @@ fn main() {
     let backend_obj = Backend { 
         count: RwLock::new(0),
         db_main: MySQLConnection::new("main"),
-        member: RwLock::new(HashMap::new()),
-        hash_to_member: RwLock::new(HashMap::new())
+        data_acc: AccountData::new()
     };
     Account::init(&backend_obj);
     Word::init(&backend_obj);
