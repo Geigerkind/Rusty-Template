@@ -1,4 +1,5 @@
 use crate::Backend;
+use crate::mail::Mail;
 
 use rocket::response::content;
 use rocket::State;
@@ -13,6 +14,7 @@ pub struct Member {
     password: String,
     salt: String,
     xp: u32,
+    mail_confirmed: bool,
     hash_prio: Vec<u8>,
     hash_val: Vec<String>
 }
@@ -37,6 +39,7 @@ pub trait Account {
     fn get(&self, id: u32) -> Option<AccountInformation>;
     fn login(&self, params: &PostLogin) -> Option<String>;
     fn validate(&self, params: &ValidationPair) -> bool;
+    fn confirm(&self, id: &str) -> bool;
 }
 
 impl Account for Backend {
@@ -46,14 +49,15 @@ impl Account for Backend {
         let mut member = self.member.write().unwrap();
 
         // We are a little wasteful here because we do not insert it directly but rather create a vector first and then copy it over
-        for entry in self.db_main.select("SELECT id, mail, password, salt, xp, val_hash1, val_prio1, val_hash2, val_prio2, val_hash3, val_prio3 FROM member", &|row|{
-            let (id, mail, pass, salt, xp, val_hash1, val_prio1, val_hash2, val_prio2, val_hash3, val_prio3) = mysql::from_row(row);
+        for entry in self.db_main.select("SELECT id, mail, password, salt, xp, mail_confirmed, val_hash1, val_prio1, val_hash2, val_prio2, val_hash3, val_prio3 FROM member", &|row|{
+            let (id, mail, pass, salt, xp, mail_confirmed, val_hash1, val_prio1, val_hash2, val_prio2, val_hash3, val_prio3) = mysql::from_row(row);
             Member {
                 id: id,
                 mail: mail,
                 password: pass,
                 salt: salt,
                 xp: xp,
+                mail_confirmed: mail_confirmed,
                 hash_prio: vec![val_prio1, val_prio2, val_prio3],
                 hash_val: vec![val_hash1, val_hash2, val_hash3]
             }
@@ -68,7 +72,6 @@ impl Account for Backend {
         }
     }
 
-    // TODO: Send validation mail
     fn create(&self, params: &PostCreateMember) -> bool
     {
         // Double spending check
@@ -78,14 +81,17 @@ impl Account for Backend {
             return false;
         }
 
+        let mut pass: String;
         let salt: String = (0..15).map(|_| rand::random::<u8>() as char).collect();
-        let mut hasher = Sha3_512::new();
-        let mut hash_input: String = params.password.clone();
-        hash_input.push_str(&salt);
-        hasher.input(hash_input);
-        let pass = std::str::from_utf8(&hasher.result()).unwrap().to_string();
+        {
+            let mut hasher = Sha3_512::new();
+            let mut hash_input: String = params.password.clone();
+            hash_input.push_str(&salt);
+            hasher.input(hash_input);
+            pass = std::str::from_utf8(&hasher.result()).unwrap().to_string();
+        }
 
-        if self.db_main.execute_wparams("INSERT IGNORE INTO member (`mail`, `password`) VALUES (:mail, :pass)", params!(
+        if self.db_main.execute_wparams("INSERT IGNORE INTO member (`mail`, `password`, `joined`) VALUES (:mail, :pass, UNIX_TIMESTAMP())", params!(
             "mail" => params.mail.to_owned(),
             "pass" => pass.clone())
         ) {
@@ -100,11 +106,25 @@ impl Account for Backend {
                 id: id,
                 mail: params.mail.to_owned(),
                 password: pass,
-                salt: salt, 
+                salt: salt.clone(), 
                 xp: 0,
+                mail_confirmed: false,
                 hash_prio: vec![2,2,2],
                 hash_val: vec!["none".to_string(), "none".to_string(), "none".to_string()]
             });
+
+            // Sending a confirmation mail
+            let mut hasher = Sha3_512::new();
+            let mut hash_input: String = id.to_string();
+            hash_input.push_str(&salt);
+            hasher.input(hash_input);
+            let mail_id = std::str::from_utf8(&hasher.result()).unwrap().to_string();
+
+            let name: &str = "TODO: Nickname";
+            let subject: &str = "TODO: Confirm your mail!";
+            let mut text: String = "TODO: Heartwarming welcome text\nhttps://jaylapp.dev/API/account/confirm/".to_string();
+            text.push_str(&mail_id);
+            Mail::send_mail(self, &params.mail, name, subject, &text);
         }
         true
     }
@@ -213,34 +233,49 @@ impl Account for Backend {
         let hash_to_member = self.hash_to_member.read().unwrap();
         match hash_to_member.get(&params.hash) {
             Some(id) => {
-                // Updating the prios if necessary
-                let mut member = self.member.write().unwrap();
-                let entry = member.get_mut(id).unwrap();
-                // We need to find the index first
-                for i in 0..2 {
-                    if entry.hash_val[i] == params.hash {
-                        if entry.hash_prio[i] != 0 {
-                            // Adjusting prios
-                            entry.hash_prio[i] = 0;
-                            entry.hash_prio[(i+1)%3] += 1;
-                            entry.hash_prio[(i+2)%3] += 1;
-
-                            self.db_main.execute_wparams("UPDATE member SET val_prio1=:vp1, val_prio2=:vp2, val_prio3=:vp3 WHERE id=:id", params!(
-                                "vp1" => entry.hash_prio[0],
-                                "vp2" => entry.hash_prio[1],
-                                "vp3" => entry.hash_prio[2],
-                                "id" => *id
-                            ));
+                // Doing it this way, because write locks need to be avoided
+                let mut work_key = 3;
+                {
+                    // Updating the prios if necessary
+                    let member = self.member.read().unwrap();
+                    let entry = member.get(id).unwrap();
+                    // We need to find the index first
+                    for i in 0..2 {
+                        if entry.hash_val[i] == params.hash {
+                            if entry.hash_prio[i] != 0 {
+                                work_key = i;
+                            }
+                            break;
                         }
-
-                        break;
                     }
+                }
+                
+                if work_key < 3 {
+                    let mut member = self.member.write().unwrap();
+                    let entry = member.get_mut(id).unwrap();
+
+                    // Adjusting prios
+                    entry.hash_prio[work_key] = 0;
+                    entry.hash_prio[(work_key+1)%3] += 1;
+                    entry.hash_prio[(work_key+2)%3] += 1;
+
+                    self.db_main.execute_wparams("UPDATE member SET val_prio1=:vp1, val_prio2=:vp2, val_prio3=:vp3 WHERE id=:id", params!(
+                        "vp1" => entry.hash_prio[0],
+                        "vp2" => entry.hash_prio[1],
+                        "vp3" => entry.hash_prio[2],
+                        "id" => *id
+                    ));
                 }
 
                 *id == params.id
             },
             None => false
         }
+    }
+
+    fn confirm(&self, id: &str) -> bool
+    {
+        true
     }
 }
 

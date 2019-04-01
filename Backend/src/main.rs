@@ -17,6 +17,7 @@ use std::collections::HashMap;
 pub mod account;
 pub mod word;
 pub mod mysqlconnection;
+pub mod mail;
 
 use mysqlconnection::MySQLConnection;
 use account::Account;
