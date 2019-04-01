@@ -58,12 +58,20 @@ impl AccountData {
 pub trait Account {
     fn init(&self);
 
-    fn create(&self, params: &PostCreateMember) -> bool;
-    fn delete(&self, params: &ValidationPair) -> bool;
     fn get(&self, id: u32) -> Option<AccountInformation>;
+
+    fn create(&self, params: &PostCreateMember) -> bool;
+    fn confirm(&self, id: &str) -> bool;
+    fn delete(&self, params: &ValidationPair) -> bool;
+    
     fn login(&self, params: &PostLogin) -> Option<String>;
     fn validate(&self, params: &ValidationPair) -> bool;
-    fn confirm(&self, id: &str) -> bool;
+
+    fn send_forgot_mail(&self, params: &ValidationPair) -> bool;
+    fn recv_forgot_mail(&self, id: &str) -> bool;
+
+    fn change_name(&self, params: &PostChangeStr) -> bool;
+    fn change_password(&self, params: &PostChangeStr) -> bool;
 }
 
 impl Account for Backend {
@@ -330,6 +338,26 @@ impl Account for Backend {
         }
         false
     }
+
+    fn send_forgot_mail(&self, params: &ValidationPair) -> bool
+    {
+        true
+    }
+
+    fn recv_forgot_mail(&self, id: &str) -> bool
+    {
+        true
+    }
+
+    fn change_name(&self, params: &PostChangeStr) -> bool
+    {
+        true
+    }
+
+    fn change_password(&self, params: &PostChangeStr) -> bool
+    {
+        true
+    }
 }
 
 /**
@@ -380,4 +408,10 @@ pub fn login(me: State<Backend>, params: Json<PostLogin>) -> content::Json<Strin
         Some(hash) => content::Json(hash),
         None => content::Json("Error?!".to_string()) // 404 ?
     }
+}
+
+#[derive(Deserialize)]
+pub struct PostChangeStr {
+    content: String,
+    validation: ValidationPair
 }
