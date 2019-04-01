@@ -72,6 +72,7 @@ pub trait Account {
 
     fn change_name(&self, params: &PostChangeStr) -> bool;
     fn change_password(&self, params: &PostChangeStr) -> bool;
+    fn change_mail(&self, params: &PostChangeStr) -> bool;
 }
 
 impl Account for Backend {
@@ -100,6 +101,10 @@ impl Account for Backend {
                     hash_to_member.insert(entry.hash_val[i].clone(), entry.id);
                 }
             }
+
+            // Init remaining confirmation mails
+
+
             member.insert(entry.id, entry);
         }
     }
@@ -355,6 +360,11 @@ impl Account for Backend {
     }
 
     fn change_password(&self, params: &PostChangeStr) -> bool
+    {
+        true
+    }
+
+    fn change_mail(&self, params: &PostChangeStr) -> bool
     {
         true
     }
