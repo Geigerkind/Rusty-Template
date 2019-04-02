@@ -440,6 +440,7 @@ impl Account for Backend {
         false
     }
 
+    // TODO: Maybe send confirmation mail?
     fn change_mail(&self, params: &PostChangeStr) -> bool
     {
         if !self.validate(&params.validation) {

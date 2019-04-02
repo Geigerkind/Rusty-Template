@@ -4,9 +4,11 @@
 #[macro_use] extern crate rocket_contrib;
 #[macro_use] extern crate mysql;
 #[macro_use] extern crate serde_derive;
+#[macro_use] extern crate lazy_static;
 extern crate rand;
 extern crate lettre;
 extern crate lettre_email;
+extern crate regex;
 
 
 use rocket::response::content;

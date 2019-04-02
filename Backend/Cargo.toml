@@ -12,8 +12,10 @@ serde_derive = "*"
 serde_json = "*"
 sha3 = "*"
 rand = "*"
-lettre = "0.9"
-lettre_email = "0.9"
+lettre = "*"
+lettre_email = "*"
+regex = "*"
+lazy_static = "*"
 
 [dependencies.rocket_contrib]
 version = "*"
