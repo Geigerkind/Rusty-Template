@@ -401,11 +401,24 @@ impl Account for Backend {
         false
     }
 
-    // TODO: Validate name
     fn change_name(&self, params: &PostChangeStr) -> bool
     {
         if !self.validate(&params.validation) {
             return false; // Rather return errors?
+        }
+
+        if params.content.is_empty() {
+            return false;
+        }
+
+        // Check if the name exists already
+        let lower_name = params.content.to_lowercase();
+        for (_, entry) in &(*self.data_acc.member.read().unwrap()) {
+            if entry.nickname.to_lowercase() == lower_name
+                && entry.id != params.validation.id 
+            {
+                return false;
+            }
         }
 
         if self.db_main.execute_wparams("UPDATE member SET nickname=:nickname WHERE id=:id", params!(
@@ -427,6 +440,10 @@ impl Account for Backend {
             return false; // Rather return errors?
         }
 
+        if params.content.is_empty() {
+            return false;
+        }
+
         if self.db_main.execute_wparams("UPDATE member SET password=:password WHERE id=:id", params!(
             "password" => params.content.clone(),
             "id" => params.validation.id
@@ -445,6 +462,20 @@ impl Account for Backend {
     {
         if !self.validate(&params.validation) {
             return false; // Rather return errors?
+        }
+
+        if !Util::is_valid_mail(self, &params.content) {
+            return false;
+        }
+
+        // Check if the mail exists already
+        let lower_mail = params.content.to_lowercase();
+        for (_, entry) in &(*self.data_acc.member.read().unwrap()) {
+            if entry.mail.to_lowercase() == lower_mail
+                && entry.id != params.validation.id 
+            {
+                return false;
+            }
         }
 
         if self.db_main.execute_wparams("UPDATE member SET mail=:mail WHERE id=:id", params!(
