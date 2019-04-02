@@ -78,7 +78,6 @@ pub trait Account {
 }
 
 impl Account for Backend {
-    // TODO: nickname and xp
     fn init(&self)
     {
         let mut requires_mail_confirmation = self.data_acc.requires_mail_confirmation.write().unwrap();
@@ -87,28 +86,21 @@ impl Account for Backend {
         let mut member = self.data_acc.member.write().unwrap();
 
         // We are a little wasteful here because we do not insert it directly but rather create a vector first and then copy it over
-        for entry in self.db_main.select("SELECT id, mail, password, salt, mail_confirmed, forgot_password, val_hash1, val_prio1, val_hash2, val_prio2, val_hash3, val_prio3 FROM member", &|row|{
-            let (id, mail, pass, salt, mail_confirmed, forgot_password, val_hash1, val_prio1, val_hash2, val_prio2, val_hash3, val_prio3) = mysql::from_row(row);
+        for entry in self.db_main.select("SELECT id, mail, password, salt, mail_confirmed, forgot_password, nickname, xp FROM member", &|row|{
+            let (id, mail, pass, salt, mail_confirmed, forgot_password, nickname, xp) = mysql::from_row(row);
             Member {
                 id: id,
-                nickname: String::new(), //TODO
+                nickname: nickname,
                 mail: mail,
                 password: pass,
                 salt: salt,
-                xp: 0,
+                xp: xp,
                 mail_confirmed: mail_confirmed,
                 forgot_password: forgot_password,
-                hash_prio: vec![val_prio1, val_prio2, val_prio3],
-                hash_val: vec![val_hash1, val_hash2, val_hash3]
+                hash_prio: Vec::new(),
+                hash_val: Vec::new()
             }
         }) {
-            // Chance should be fairly low that we a havea duplicate key
-            for i in 0..2 {
-                if entry.hash_val[i] != "none" {
-                    hash_to_member.insert(entry.hash_val[i].clone(), entry.id);
-                }
-            }
-
             // Init remaining confirmation mails
             if !entry.mail_confirmed {
                 requires_mail_confirmation.insert(Util::sha3(self, vec![&entry.id.to_string(), &entry.salt]), entry.id);
@@ -120,6 +112,23 @@ impl Account for Backend {
             }
 
             member.insert(entry.id, entry);
+        }
+
+        // There is currently no other way to do this, because the library we are using only allow to fetch 12 values per row
+        for entry in self.db_main.select("SELECT id, val_hash1, val_prio1, val_hash2, val_prio2, val_hash3, val_prio3 FROM member", &|row|{
+            let (id, val_hash1, val_prio1, val_hash2, val_prio2, val_hash3, val_prio3): (u32, String, u8, String, u8, String, u8) = mysql::from_row(row);
+            (id, vec![val_hash1, val_hash2, val_hash3], vec![val_prio1, val_prio2, val_prio3])
+        }) {
+            let mem_entry = member.get_mut(&entry.0).unwrap();
+            mem_entry.hash_val = entry.1;
+            mem_entry.hash_prio = entry.2;
+
+            // Chance should be fairly low that we a havea duplicate key
+            for i in 0..2 {
+                if mem_entry.hash_val[i] != "none" {
+                    hash_to_member.insert(mem_entry.hash_val[i].clone(), mem_entry.id);
+                }
+            }
         }
     }
 
