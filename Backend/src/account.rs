@@ -427,7 +427,17 @@ impl Account for Backend {
             return false; // Rather return errors?
         }
 
-        true
+        if self.db_main.execute_wparams("UPDATE member SET password=:password WHERE id=:id", params!(
+            "password" => params.content.clone(),
+            "id" => params.validation.id
+        )) {
+            let mut member = self.data_acc.member.write().unwrap();
+            let entry = member.get_mut(&params.validation.id).unwrap();
+            entry.password = params.content.to_owned();
+            return true;
+        }
+
+        false
     }
 
     fn change_mail(&self, params: &PostChangeStr) -> bool
