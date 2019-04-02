@@ -446,7 +446,17 @@ impl Account for Backend {
             return false; // Rather return errors?
         }
 
-        true
+        if self.db_main.execute_wparams("UPDATE member SET mail=:mail WHERE id=:id", params!(
+            "mail" => params.content.clone(),
+            "id" => params.validation.id
+        )) {
+            let mut member = self.data_acc.member.write().unwrap();
+            let entry = member.get_mut(&params.validation.id).unwrap();
+            entry.mail = params.content.to_owned();
+            return true;
+        }
+
+        false
     }
     
 }
