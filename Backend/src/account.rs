@@ -40,6 +40,7 @@ pub struct AccountData {
     member: RwLock<HashMap<u32, Member>>,
     hash_to_member: RwLock<HashMap<String, u32>>,
     requires_mail_confirmation: RwLock<HashMap<String, u32>>,
+    forgot_password: RwLock<HashMap<String, u32>>,
 }
 impl AccountData {
     pub fn new() -> Self
@@ -47,7 +48,8 @@ impl AccountData {
         AccountData {
             member: RwLock::new(HashMap::new()),
             hash_to_member: RwLock::new(HashMap::new()),
-            requires_mail_confirmation: RwLock::new(HashMap::new())
+            requires_mail_confirmation: RwLock::new(HashMap::new()),
+            forgot_password: RwLock::new(HashMap::new()),
         }
     }
 }
@@ -67,8 +69,8 @@ pub trait Account {
     fn login(&self, params: &PostLogin) -> Option<String>;
     fn validate(&self, params: &ValidationPair) -> bool;
 
-    fn send_forgot_mail(&self, params: &ValidationPair) -> bool;
-    fn recv_forgot_mail(&self, id: &str) -> bool;
+    fn send_forgot_password(&self, params: &ValidationPair) -> bool;
+    fn recv_forgot_password(&self, id: &str) -> bool;
 
     fn change_name(&self, params: &PostChangeStr) -> bool;
     fn change_password(&self, params: &PostChangeStr) -> bool;
@@ -78,6 +80,8 @@ pub trait Account {
 impl Account for Backend {
     fn init(&self)
     {
+        let mut requires_mail_confirmation = self.data_acc.requires_mail_confirmation.write().unwrap();
+        let mut forgot_password = self.data_acc.forgot_password.write().unwrap();
         let mut hash_to_member = self.data_acc.hash_to_member.write().unwrap();
         let mut member = self.data_acc.member.write().unwrap();
 
@@ -103,7 +107,10 @@ impl Account for Backend {
             }
 
             // Init remaining confirmation mails
+            requires_mail_confirmation.insert(Util::sha3(self, vec![&entry.id.to_string(), &entry.salt]), entry.id);
 
+            // Init remaining forgot password mails
+            forgot_password.insert(Util::sha3(self, vec![&entry.id.to_string(), "forgot"]), entry.id);
 
             member.insert(entry.id, entry);
         }
@@ -120,7 +127,7 @@ impl Account for Backend {
         }
 
         let salt: String = (0..15).map(|_| rand::random::<u8>() as char).collect();
-        let mut pass: String = Util::sha3(self, vec![&params.password, &salt]);
+        let pass: String = Util::sha3(self, vec![&params.password, &salt]);
 
         if self.db_main.execute_wparams("INSERT IGNORE INTO member (`mail`, `password`, `joined`) VALUES (:mail, :pass, UNIX_TIMESTAMP())", params!(
             "mail" => params.mail.to_owned(),
@@ -328,32 +335,28 @@ impl Account for Backend {
         false
     }
 
-    fn send_forgot_mail(&self, params: &ValidationPair) -> bool
+    fn send_forgot_password(&self, params: &ValidationPair) -> bool
     {
         if !self.validate(params) {
             return false; // Rather return errors?
         }
 
-        /*
-        let mut hasher = Sha3_512::new();
-        let mut hash_input: String = id.to_string();
-        hash_input.push_str(&salt);
-        hasher.input(hash_input);
-        let mail_id = std::str::from_utf8(&hasher.result()).unwrap().to_string();
+        let forgot_id = Util::sha3(self, vec![&params.id.to_string(), "forgot"]);
+        {
+            let member = self.data_acc.member.read().unwrap();
+            let entry = member.get(&params.id).unwrap();
+            if !Util::send_mail(self, &entry.mail, "TODO: Username", "Forgot password utility", &vec!["TODO: FANCY TEXT\n", &forgot_id].concat()) {
+                return false;
+            }
+        }
 
-        let name: &str = "TODO: Nickname";
-        let subject: &str = "TODO: Confirm your mail!";
-        let mut text: String = "TODO: Heartwarming welcome text\nhttps://jaylapp.dev/API/account/confirm/".to_string();
-        text.push_str(&mail_id);
-        Util::send_mail(self, &params.mail, name, subject, &text);
+        let mut forgot_password = self.data_acc.forgot_password.write().unwrap();
+        forgot_password.insert(forgot_id, params.id);
 
-        let mut requires_mail_confirmation = self.data_acc.requires_mail_confirmation.write().unwrap();
-        requires_mail_confirmation.insert(mail_id, id);
-        */
         true
     }
 
-    fn recv_forgot_mail(&self, id: &str) -> bool
+    fn recv_forgot_password(&self, id: &str) -> bool
     {
         true
     }
@@ -384,6 +387,7 @@ impl Account for Backend {
 
         true
     }
+    
 }
 
 /**
