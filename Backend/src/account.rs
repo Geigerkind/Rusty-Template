@@ -8,6 +8,7 @@ use serde_json::to_string;
 
 pub struct Member {
     id: u32,
+    nickname: String,
     mail: String,
     password: String,
     salt: String,
@@ -89,6 +90,7 @@ impl Account for Backend {
             let (id, mail, pass, salt, mail_confirmed, forgot_password, val_hash1, val_prio1, val_hash2, val_prio2, val_hash3, val_prio3) = mysql::from_row(row);
             Member {
                 id: id,
+                nickname: String::new(), //TODO
                 mail: mail,
                 password: pass,
                 salt: salt,
@@ -148,6 +150,7 @@ impl Account for Backend {
                 )).unwrap();
                 member.insert(id, Member {
                     id: id,
+                    nickname: String::new(), // TODO
                     mail: params.mail.to_owned(),
                     password: pass,
                     salt: salt.clone(), 
@@ -398,13 +401,24 @@ impl Account for Backend {
         false
     }
 
+    // TODO: Validate name
     fn change_name(&self, params: &PostChangeStr) -> bool
     {
         if !self.validate(&params.validation) {
             return false; // Rather return errors?
         }
 
-        true
+        if self.db_main.execute_wparams("UPDATE member SET nickname=:nickname WHERE id=:id", params!(
+            "nickname" => params.content.clone(),
+            "id" => params.validation.id
+        )) {
+            let mut member = self.data_acc.member.write().unwrap();
+            let entry = member.get_mut(&params.validation.id).unwrap();
+            entry.nickname = params.content.to_owned();
+            return true;
+        }
+
+        false
     }
 
     fn change_password(&self, params: &PostChangeStr) -> bool
