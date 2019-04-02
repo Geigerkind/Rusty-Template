@@ -125,13 +125,27 @@ impl Account for Backend {
 
     fn create(&self, params: &PostCreateMember) -> bool
     {
+        if params.mail.is_empty() {
+            return false;
+        }
+
+        if params.password.is_empty() {
+            return false;
+        }
+
         if !Util::is_valid_mail(self, &params.mail) {
             return false;
         }
 
         // Double spending check
-        // We dont validate throguh the internal data structure because we may have race conditions
-        if self.db_main.exists_wparams("SELECT id FROM member WHERE LOWER(mail) = :mail LIMIT 1", params!("mail" => params.mail.to_owned().to_lowercase())) 
+        // We dont validate through the internal data structure because we may have race conditions
+        if self.db_main.exists_wparams("SELECT id FROM member WHERE LOWER(mail) = :mail LIMIT 1", params!("mail" => params.mail.clone().to_lowercase())) 
+        {
+            return false;
+        }
+
+        // Also prevent the same nickname
+        if self.db_main.exists_wparams("SELECT id FROM member WHERE LOWER(nickname) = :nickname LIMIT 1", params!("nickname" => params.nickname.clone().to_lowercase())) 
         {
             return false;
         }
@@ -139,8 +153,9 @@ impl Account for Backend {
         let salt: String = Util::random_str(self, 16);
         let pass: String = Util::sha3(self, vec![&params.password, &salt]);
 
-        if self.db_main.execute_wparams("INSERT IGNORE INTO member (`mail`, `password`, `joined`) VALUES (:mail, :pass, UNIX_TIMESTAMP())", params!(
-            "mail" => params.mail.to_owned(),
+        if self.db_main.execute_wparams("INSERT IGNORE INTO member (`mail`, `password`, `nickname`, `joined`) VALUES (:mail, :pass, :nickname, UNIX_TIMESTAMP())", params!(
+            "nickname" => params.nickname.clone(),
+            "mail" => params.mail.clone(),
             "pass" => pass.clone())
         ) {
             let id: u32;
@@ -154,7 +169,7 @@ impl Account for Backend {
                 )).unwrap();
                 member.insert(id, Member {
                     id: id,
-                    nickname: String::new(), // TODO
+                    nickname: params.nickname.to_owned(),
                     mail: params.mail.to_owned(),
                     password: pass,
                     salt: salt.clone(), 
@@ -176,7 +191,7 @@ impl Account for Backend {
         true
     }
 
-    // We might consider to send a mail first!
+    // TODO: We might consider to send a mail first!
     fn delete(&self, params: &ValidationPair) -> bool
     {
         // This also makes sure that the user actually exists
@@ -531,6 +546,7 @@ pub fn rcv_forgot(me: State<Backend>, id: String) -> content::Json<String>
 
 #[derive(Deserialize)]
 pub struct PostCreateMember{
+    nickname: String,
     mail: String,
     password: String
 }

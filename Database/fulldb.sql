@@ -22,6 +22,7 @@ DROP TABLE IF EXISTS `member`;
 
 CREATE TABLE `member` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `nickname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `mail` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(1025) COLLATE utf8_unicode_ci NOT NULL,
   `salt` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
