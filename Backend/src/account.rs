@@ -1,5 +1,5 @@
 use crate::Backend;
-use crate::mail::Mail;
+use crate::util::Util;
 
 use rocket::response::content;
 use rocket::State;
@@ -119,15 +119,8 @@ impl Account for Backend {
             return false;
         }
 
-        let mut pass: String;
         let salt: String = (0..15).map(|_| rand::random::<u8>() as char).collect();
-        {
-            let mut hasher = Sha3_512::new();
-            let mut hash_input: String = params.password.clone();
-            hash_input.push_str(&salt);
-            hasher.input(hash_input);
-            pass = std::str::from_utf8(&hasher.result()).unwrap().to_string();
-        }
+        let mut pass: String = Util::sha3(self, vec![&params.password, &salt]);
 
         if self.db_main.execute_wparams("INSERT IGNORE INTO member (`mail`, `password`, `joined`) VALUES (:mail, :pass, UNIX_TIMESTAMP())", params!(
             "mail" => params.mail.to_owned(),
@@ -155,17 +148,8 @@ impl Account for Backend {
             }
 
             // Sending a confirmation mail
-            let mut hasher = Sha3_512::new();
-            let mut hash_input: String = id.to_string();
-            hash_input.push_str(&salt);
-            hasher.input(hash_input);
-            let mail_id = std::str::from_utf8(&hasher.result()).unwrap().to_string();
-
-            let name: &str = "TODO: Nickname";
-            let subject: &str = "TODO: Confirm your mail!";
-            let mut text: String = "TODO: Heartwarming welcome text\nhttps://jaylapp.dev/API/account/confirm/".to_string();
-            text.push_str(&mail_id);
-            Mail::send_mail(self, &params.mail, name, subject, &text);
+            let mail_id = Util::sha3(self, vec![&id.to_string(), &salt]);
+            Util::send_mail(self, &params.mail, "TODO: Nickname", "TODO: Confirm your mail!", &vec!["TODO: Heartwarming welcome text\nhttps://jaylapp.dev/API/account/confirm/", &mail_id].concat());
 
             let mut requires_mail_confirmation = self.data_acc.requires_mail_confirmation.write().unwrap();
             requires_mail_confirmation.insert(mail_id, id);
@@ -346,6 +330,26 @@ impl Account for Backend {
 
     fn send_forgot_mail(&self, params: &ValidationPair) -> bool
     {
+        if !self.validate(params) {
+            return false; // Rather return errors?
+        }
+
+        /*
+        let mut hasher = Sha3_512::new();
+        let mut hash_input: String = id.to_string();
+        hash_input.push_str(&salt);
+        hasher.input(hash_input);
+        let mail_id = std::str::from_utf8(&hasher.result()).unwrap().to_string();
+
+        let name: &str = "TODO: Nickname";
+        let subject: &str = "TODO: Confirm your mail!";
+        let mut text: String = "TODO: Heartwarming welcome text\nhttps://jaylapp.dev/API/account/confirm/".to_string();
+        text.push_str(&mail_id);
+        Util::send_mail(self, &params.mail, name, subject, &text);
+
+        let mut requires_mail_confirmation = self.data_acc.requires_mail_confirmation.write().unwrap();
+        requires_mail_confirmation.insert(mail_id, id);
+        */
         true
     }
 
@@ -356,16 +360,28 @@ impl Account for Backend {
 
     fn change_name(&self, params: &PostChangeStr) -> bool
     {
+        if !self.validate(&params.validation) {
+            return false; // Rather return errors?
+        }
+
         true
     }
 
     fn change_password(&self, params: &PostChangeStr) -> bool
     {
+        if !self.validate(&params.validation) {
+            return false; // Rather return errors?
+        }
+
         true
     }
 
     fn change_mail(&self, params: &PostChangeStr) -> bool
     {
+        if !self.validate(&params.validation) {
+            return false; // Rather return errors?
+        }
+
         true
     }
 }

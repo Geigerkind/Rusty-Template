@@ -16,7 +16,7 @@ use std::sync::RwLock;
 pub mod account;
 pub mod word;
 pub mod mysqlconnection;
-pub mod mail;
+pub mod util;
 
 use mysqlconnection::MySQLConnection;
 use account::Account;
