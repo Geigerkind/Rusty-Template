@@ -369,8 +369,16 @@ impl Account for Backend {
             match forgot_password.get(id) {
                 Some(member_id) => {
                     // Sending random generated password
-
-                    if self.db_main.execute_wparams("UPDATE member SET forgot_password=0 WHERE id=:id", params!(
+                    let new_pass = Util::random_str(self, 16);
+                    {
+                        let member = self.data_acc.member.read().unwrap();
+                        let entry = member.get(member_id).unwrap();
+                        if Util::send_mail(self, &entry.mail, "TODO: username", "TODO: Forgot password utility", &vec!["TODO: Text\n New Password: ", &new_pass].concat()) {
+                            return false;
+                        }
+                    }
+                    if self.db_main.execute_wparams("UPDATE member SET forgot_password=0, password=:pass WHERE id=:id", params!(
+                        "pass" => new_pass,
                         "id" => *member_id
                     )) {
                         let mut member = self.data_acc.member.write().unwrap();
