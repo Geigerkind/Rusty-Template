@@ -5,8 +5,6 @@ use rocket::response::content;
 use rocket::State;
 use rocket_contrib::json::Json;
 use serde_json::to_string;
-use sha3::{Digest, Sha3_512};
-use rand;
 
 pub struct Member {
     id: u32,
@@ -221,11 +219,7 @@ impl Account for Backend {
         let mut entry_key: u32 = 0;
         for (id, entry) in &(*member) {
             if entry.mail.to_lowercase() != lower_mail { continue; }
-            let mut hasher = Sha3_512::new();
-            let mut pw_hash_input: String = params.password.clone();
-            pw_hash_input.push_str(&entry.salt);
-            hasher.input(pw_hash_input);
-            if entry.password != std::str::from_utf8(&hasher.result()).unwrap().to_string() { break; } // Password is wrong
+            if entry.password != Util::sha3(self, vec![&params.password, &entry.salt]) { break; } // Password is wrong
             entry_key = *id;
             break
         }
@@ -234,12 +228,7 @@ impl Account for Backend {
             
         // Generate a 128 bit salt for our validation hash
         let salt: String = Util::random_str(self, 16);
-        let mut val_hash = Sha3_512::new();
-        let mut hash_input: String = entry.mail.clone();
-        hash_input.push_str(&params.password);
-        hash_input.push_str(&salt);
-        val_hash.input(hash_input);
-        let hash: String = std::str::from_utf8(&val_hash.result()).unwrap().to_string();
+        let hash: String = Util::sha3(self, vec![&entry.mail, &params.password, &salt]);
 
         // Replace by using the Least recently used strategy
         for i in 0..2 {

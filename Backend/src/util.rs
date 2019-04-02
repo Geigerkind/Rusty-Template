@@ -4,6 +4,7 @@ use lettre_email::EmailBuilder;
 use crate::lettre::Transport;
 use lettre::smtp::SmtpClient;
 use sha3::{Digest, Sha3_512};
+use rand;
 
 pub trait Util {
     fn send_mail(&self, to: &str, username: &str, subject: &str, text: &str) -> bool;
