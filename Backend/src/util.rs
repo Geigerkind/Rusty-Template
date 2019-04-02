@@ -4,12 +4,14 @@ use lettre_email::EmailBuilder;
 use crate::lettre::Transport;
 use lettre::smtp::SmtpClient;
 use sha3::{Digest, Sha3_512};
-use rand;
+
+use rand::Rng; 
+use rand::distributions::Alphanumeric;
 
 pub trait Util {
     fn send_mail(&self, to: &str, username: &str, subject: &str, text: &str) -> bool;
     fn sha3(&self, input: Vec<&str>) -> String;
-    fn random_str(&self, length: u16) -> String;
+    fn random_str(&self, length: usize) -> String;
 }
 
 impl Util for Backend {
@@ -37,8 +39,11 @@ impl Util for Backend {
         std::str::from_utf8(&hasher.result()).unwrap().to_string()
     }
 
-    fn random_str(&self, length: u16) -> String
+    fn random_str(&self, length: usize) -> String
     {
-        (1..length).map(|_| rand::random::<u8>() as char).collect()
+        rand::thread_rng()
+            .sample_iter(&Alphanumeric)
+            .take(length)
+            .collect::<String>()
     }
 }
