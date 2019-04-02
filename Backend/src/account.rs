@@ -444,13 +444,20 @@ impl Account for Backend {
             return false;
         }
 
+        let hash: String;
+        {
+            let member = self.data_acc.member.read().unwrap();
+            let entry = member.get(&params.validation.id).unwrap();
+            hash = Util::sha3(self, vec![&entry.mail, &params.content, &entry.salt]);
+        }
+        
         if self.db_main.execute_wparams("UPDATE member SET password=:password WHERE id=:id", params!(
-            "password" => params.content.clone(),
+            "password" => hash.clone(),
             "id" => params.validation.id
         )) {
             let mut member = self.data_acc.member.write().unwrap();
             let entry = member.get_mut(&params.validation.id).unwrap();
-            entry.password = params.content.to_owned();
+            entry.password = hash.to_owned();
             return true;
         }
 
