@@ -8,6 +8,7 @@ use sha3::{Digest, Sha3_512};
 pub trait Util {
     fn send_mail(&self, to: &str, username: &str, subject: &str, text: &str) -> bool;
     fn sha3(&self, input: Vec<&str>) -> String;
+    fn random_str(&self, length: u16) -> String;
 }
 
 impl Util for Backend {
@@ -33,5 +34,10 @@ impl Util for Backend {
         let mut hasher = Sha3_512::new();
         hasher.input(input.concat());
         std::str::from_utf8(&hasher.result()).unwrap().to_string()
+    }
+
+    fn random_str(&self, length: u16) -> String
+    {
+        (1..length).map(|_| rand::random::<u8>() as char).collect()
     }
 }

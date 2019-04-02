@@ -132,7 +132,7 @@ impl Account for Backend {
             return false;
         }
 
-        let salt: String = (0..15).map(|_| rand::random::<u8>() as char).collect();
+        let salt: String = Util::random_str(self, 16);
         let pass: String = Util::sha3(self, vec![&params.password, &salt]);
 
         if self.db_main.execute_wparams("INSERT IGNORE INTO member (`mail`, `password`, `joined`) VALUES (:mail, :pass, UNIX_TIMESTAMP())", params!(
@@ -233,7 +233,7 @@ impl Account for Backend {
         let entry = member.get_mut(&entry_key).unwrap();
             
         // Generate a 128 bit salt for our validation hash
-        let salt: String = (0..15).map(|_| rand::random::<u8>() as char).collect();
+        let salt: String = Util::random_str(self, 16);
         let mut val_hash = Sha3_512::new();
         let mut hash_input: String = entry.mail.clone();
         hash_input.push_str(&params.password);
@@ -353,7 +353,7 @@ impl Account for Backend {
             {
                 let member = self.data_acc.member.read().unwrap();
                 let entry = member.get(&params.id).unwrap();
-                if !Util::send_mail(self, &entry.mail, "TODO: Username", "Forgot password utility", &vec!["TODO: FANCY TEXT\n", &forgot_id].concat()){
+                if !Util::send_mail(self, &entry.mail, "TODO: Username", "Forgot password utility", &vec!["TODO: FANCY TEXT\nhttps://jaylapp.dev/API/account/forgot/", &forgot_id].concat()){
                     return false;
                 }
             }
@@ -379,6 +379,8 @@ impl Account for Backend {
             let forgot_password = self.data_acc.forgot_password.read().unwrap();
             match forgot_password.get(id) {
                 Some(member_id) => {
+                    // Sending random generated password
+
                     if self.db_main.execute_wparams("UPDATE member SET forgot_password=0 WHERE id=:id", params!(
                         "id" => *member_id
                     )) {
