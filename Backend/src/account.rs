@@ -345,7 +345,7 @@ impl Account for Backend {
             {
                 let member = self.data_acc.member.read().unwrap();
                 let entry = member.get(&params.id).unwrap();
-                if !Util::send_mail(self, &entry.mail, "TODO: Username", "Forgot password utility", &vec!["TODO: FANCY TEXT\nhttps://jaylapp.dev/API/account/forgot/", &forgot_id].concat()){
+                if !Util::send_mail(self, &entry.mail, "TODO: Username", "Forgot password utility", &vec!["TODO: FANCY TEXT\nhttps://jaylapp.dev/API/account/forgot/confirm/", &forgot_id].concat()){
                     return false;
                 }
             }
@@ -480,7 +480,7 @@ pub fn confirm(me: State<Backend>, id: String) -> content::Json<String>
     content::Json(me.confirm(&id).to_string())
 }
 
-#[get("/forgot/<id>")]
+#[get("/forgot/confirm/<id>")]
 pub fn rcv_forgot(me: State<Backend>, id: String) -> content::Json<String>
 {
     content::Json(me.recv_forgot_password(&id).to_string())
@@ -497,7 +497,7 @@ pub fn create(me: State<Backend>, params: Json<PostCreateMember>) -> content::Js
     content::Json(me.create(&params).to_string())
 }
 
-#[post("/newpassword", data = "<params>")]
+#[post("/forgot/send", data = "<params>")]
 pub fn send_forgot(me: State<Backend>, params: Json<ValidationPair>) -> content::Json<String>
 {
     content::Json(me.send_forgot_password(&params).to_string())
@@ -527,4 +527,19 @@ pub fn login(me: State<Backend>, params: Json<PostLogin>) -> content::Json<Strin
 pub struct PostChangeStr {
     content: String,
     validation: ValidationPair
+}
+#[post("/update/password", data = "<params>")]
+pub fn update_pass(me: State<Backend>, params: Json<PostChangeStr>) -> content::Json<String>
+{
+    content::Json(me.change_password(&params).to_string())
+}
+#[post("/update/nickname", data = "<params>")]
+pub fn update_nickname(me: State<Backend>, params: Json<PostChangeStr>) -> content::Json<String>
+{
+    content::Json(me.change_name(&params).to_string())
+}
+#[post("/update/mail", data = "<params>")]
+pub fn update_mail(me: State<Backend>, params: Json<PostChangeStr>) -> content::Json<String>
+{
+    content::Json(me.change_mail(&params).to_string())
 }
