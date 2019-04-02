@@ -78,6 +78,7 @@ pub trait Account {
 }
 
 impl Account for Backend {
+    // TODO: nickname and xp
     fn init(&self)
     {
         let mut requires_mail_confirmation = self.data_acc.requires_mail_confirmation.write().unwrap();
@@ -122,9 +123,12 @@ impl Account for Backend {
         }
     }
 
-    // TODO: Check for validity of inputs!
     fn create(&self, params: &PostCreateMember) -> bool
     {
+        if !Util::is_valid_mail(self, &params.mail) {
+            return false;
+        }
+
         // Double spending check
         // We dont validate throguh the internal data structure because we may have race conditions
         if self.db_main.exists_wparams("SELECT id FROM member WHERE LOWER(mail) = :mail LIMIT 1", params!("mail" => params.mail.to_owned().to_lowercase())) 
