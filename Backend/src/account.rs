@@ -15,6 +15,7 @@ pub struct Member {
     salt: String,
     xp: u32,
     mail_confirmed: bool,
+    forgot_password: bool,
     hash_prio: Vec<u8>,
     hash_val: Vec<String>
 }
@@ -86,15 +87,16 @@ impl Account for Backend {
         let mut member = self.data_acc.member.write().unwrap();
 
         // We are a little wasteful here because we do not insert it directly but rather create a vector first and then copy it over
-        for entry in self.db_main.select("SELECT id, mail, password, salt, xp, mail_confirmed, val_hash1, val_prio1, val_hash2, val_prio2, val_hash3, val_prio3 FROM member", &|row|{
-            let (id, mail, pass, salt, xp, mail_confirmed, val_hash1, val_prio1, val_hash2, val_prio2, val_hash3, val_prio3) = mysql::from_row(row);
+        for entry in self.db_main.select("SELECT id, mail, password, salt, mail_confirmed, forgot_password, val_hash1, val_prio1, val_hash2, val_prio2, val_hash3, val_prio3 FROM member", &|row|{
+            let (id, mail, pass, salt, mail_confirmed, forgot_password, val_hash1, val_prio1, val_hash2, val_prio2, val_hash3, val_prio3) = mysql::from_row(row);
             Member {
                 id: id,
                 mail: mail,
                 password: pass,
                 salt: salt,
-                xp: xp,
+                xp: 0,
                 mail_confirmed: mail_confirmed,
+                forgot_password: forgot_password,
                 hash_prio: vec![val_prio1, val_prio2, val_prio3],
                 hash_val: vec![val_hash1, val_hash2, val_hash3]
             }
@@ -107,10 +109,14 @@ impl Account for Backend {
             }
 
             // Init remaining confirmation mails
-            requires_mail_confirmation.insert(Util::sha3(self, vec![&entry.id.to_string(), &entry.salt]), entry.id);
+            if !entry.mail_confirmed {
+                requires_mail_confirmation.insert(Util::sha3(self, vec![&entry.id.to_string(), &entry.salt]), entry.id);
+            }
 
             // Init remaining forgot password mails
-            forgot_password.insert(Util::sha3(self, vec![&entry.id.to_string(), "forgot"]), entry.id);
+            if entry.forgot_password {
+                forgot_password.insert(Util::sha3(self, vec![&entry.id.to_string(), "forgot"]), entry.id);
+            }
 
             member.insert(entry.id, entry);
         }
@@ -149,6 +155,7 @@ impl Account for Backend {
                     salt: salt.clone(), 
                     xp: 0,
                     mail_confirmed: false,
+                    forgot_password: false,
                     hash_prio: vec![2,2,2],
                     hash_val: vec!["none".to_string(), "none".to_string(), "none".to_string()]
                 });
@@ -343,10 +350,19 @@ impl Account for Backend {
 
         let forgot_id = Util::sha3(self, vec![&params.id.to_string(), "forgot"]);
         {
-            let member = self.data_acc.member.read().unwrap();
-            let entry = member.get(&params.id).unwrap();
-            if !Util::send_mail(self, &entry.mail, "TODO: Username", "Forgot password utility", &vec!["TODO: FANCY TEXT\n", &forgot_id].concat()) {
+            {
+                let member = self.data_acc.member.read().unwrap();
+                let entry = member.get(&params.id).unwrap();
+                if !Util::send_mail(self, &entry.mail, "TODO: Username", "Forgot password utility", &vec!["TODO: FANCY TEXT\n", &forgot_id].concat()){
+                    return false;
+                }
+            }
+            if !self.db_main.execute_wparams("UPDATE member SET forgot_password=1 WHERE id=:id", params!("id" => params.id)) {
                 return false;
+            } else {
+                let mut member = self.data_acc.member.write().unwrap();
+                let entry = member.get_mut(&params.id).unwrap();
+                entry.forgot_password = true;
             }
         }
 
@@ -358,7 +374,29 @@ impl Account for Backend {
 
     fn recv_forgot_password(&self, id: &str) -> bool
     {
-        true
+        let mut removable = false;
+        {
+            let forgot_password = self.data_acc.forgot_password.read().unwrap();
+            match forgot_password.get(id) {
+                Some(member_id) => {
+                    if self.db_main.execute_wparams("UPDATE member SET forgot_password=0 WHERE id=:id", params!(
+                        "id" => *member_id
+                    )) {
+                        let mut member = self.data_acc.member.write().unwrap();
+                        let entry = member.get_mut(member_id).unwrap();
+                        entry.forgot_password = false;
+                        removable = true;
+                    }
+                },
+                None => return false
+            }
+        }
+        if removable {
+            let mut  forgot_password = self.data_acc.forgot_password.write().unwrap();
+            forgot_password.remove(id);
+            return true;
+        }
+        false
     }
 
     fn change_name(&self, params: &PostChangeStr) -> bool
