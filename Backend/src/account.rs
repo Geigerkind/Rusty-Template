@@ -446,6 +446,12 @@ pub fn confirm(me: State<Backend>, id: String) -> content::Json<String>
     content::Json(me.confirm(&id).to_string())
 }
 
+#[get("/forgot/<id>")]
+pub fn rcv_forgot(me: State<Backend>, id: String) -> content::Json<String>
+{
+    content::Json(me.recv_forgot_password(&id).to_string())
+}
+
 #[derive(Deserialize)]
 pub struct PostCreateMember{
     mail: String,
@@ -455,6 +461,12 @@ pub struct PostCreateMember{
 pub fn create(me: State<Backend>, params: Json<PostCreateMember>) -> content::Json<String>
 {
     content::Json(me.create(&params).to_string())
+}
+
+#[post("/newpassword", data = "<params>")]
+pub fn send_forgot(me: State<Backend>, params: Json<ValidationPair>) -> content::Json<String>
+{
+    content::Json(me.send_forgot_password(&params).to_string())
 }
 
 #[delete("/delete", data = "<params>")]
