@@ -121,12 +121,12 @@ impl Account for Backend {
 
             // Init remaining forgot password mails
             if entry.forgot_password {
-                forgot_password.insert(Util::sha3(self, vec![&entry.id.to_string(), "forgot"]), entry.id);
+                forgot_password.insert(Util::sha3(self, vec![&entry.id.to_string(), "forgot", &entry.salt]), entry.id);
             }
 
             // Init remaining delete mails
             if entry.delete_account {
-                delete_account.insert(Util::sha3(self, vec![&entry.id.to_string(), "delete"]), entry.id);
+                delete_account.insert(Util::sha3(self, vec![&entry.id.to_string(), "delete", &entry.salt]), entry.id);
             }
 
             member.insert(entry.id, entry);
@@ -208,11 +208,12 @@ impl Account for Backend {
             return false; // Rather return errors?
         }
 
-        let delete_id = Util::sha3(self, vec![&params.id.to_string(), "delete"]);
+        let delete_id: String;
         {
             {
                 let member = self.data_acc.member.read().unwrap();
                 let entry = member.get(&params.id).unwrap();
+                delete_id = Util::sha3(self, vec![&params.id.to_string(), "delete", &entry.salt]);
                 if !Util::send_mail(self, &entry.mail, "TODO: Username", "Delete account utility", &vec!["TODO: FANCY TEXT\nhttps://jaylapp.dev/API/account/delete/confirm/", &delete_id].concat()){
                     return false;
                 }
@@ -409,11 +410,12 @@ impl Account for Backend {
             return false; // Rather return errors?
         }
 
-        let forgot_id = Util::sha3(self, vec![&params.id.to_string(), "forgot"]);
+        let forgot_id: String;
         {
             {
                 let member = self.data_acc.member.read().unwrap();
                 let entry = member.get(&params.id).unwrap();
+                forgot_id = Util::sha3(self, vec![&params.id.to_string(), "forgot", &entry.salt]);
                 if !Util::send_mail(self, &entry.mail, "TODO: Username", "Forgot password utility", &vec!["TODO: FANCY TEXT\nhttps://jaylapp.dev/API/account/forgot/confirm/", &forgot_id].concat()){
                     return false;
                 }
