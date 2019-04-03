@@ -80,6 +80,8 @@ pub trait Account {
     fn change_name(&self, params: &PostChangeStr) -> bool;
     fn change_password(&self, params: &PostChangeStr) -> bool;
     fn change_mail(&self, params: &PostChangeStr) -> bool;
+
+    fn helper_clear_validation(&self, member_id: &u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>);
 }
 
 impl Account for Backend {
@@ -245,15 +247,7 @@ impl Account for Backend {
                     )) {
                         let mut hash_to_member = self.data_acc.hash_to_member.write().unwrap();
                         let mut member = self.data_acc.member.write().unwrap();
-                        // Creating this scope to reduce the lifetime of the borrow
-                        {
-                            let entry = member.get(member_id).unwrap();
-                            for i in 0..2 {
-                                if entry.hash_val[i] != "none" {
-                                    hash_to_member.remove(&entry.hash_val[i]);
-                                }
-                            }
-                        }
+                        self.helper_clear_validation(member_id, &mut (*hash_to_member), &mut (*member));
                         member.remove(member_id);
                         removable = true;
                     }
@@ -571,6 +565,17 @@ impl Account for Backend {
     }
 
     // TODO: Resend confirmation mail
+
+    // Helper functions
+    fn helper_clear_validation(&self, member_id: &u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>)
+    {
+        let entry = member.get_mut(member_id).unwrap();
+        for i in 0..2 {
+            if entry.hash_val[i] != "none" {
+                hash_to_member.remove(&entry.hash_val[i]);
+            }
+        }
+    }
     
 }
 
