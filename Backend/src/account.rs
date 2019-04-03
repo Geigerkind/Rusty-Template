@@ -66,6 +66,7 @@ pub trait Account {
     fn get(&self, id: u32) -> Option<AccountInformation>;
 
     fn create(&self, params: &PostCreateMember) -> bool;
+    fn send_confirmation(&self, params: &ValidationPair, bypass: bool) -> bool;
     fn confirm(&self, id: &str) -> bool;
 
     fn issue_delete(&self, params: &ValidationPair) -> bool;
@@ -195,12 +196,7 @@ impl Account for Backend {
                 });
             }
 
-            // Sending a confirmation mail
-            let mail_id = Util::sha3(self, vec![&id.to_string(), &salt]);
-            Util::send_mail(self, &params.mail, "TODO: Nickname", "TODO: Confirm your mail!", &vec!["TODO: Heartwarming welcome text\nhttps://jaylapp.dev/API/account/confirm/", &mail_id].concat());
-
-            let mut requires_mail_confirmation = self.data_acc.requires_mail_confirmation.write().unwrap();
-            requires_mail_confirmation.insert(mail_id, id);
+            self.send_confirmation(&ValidationPair{hash: String::new(), id:id}, true);
         }
         true
     }
@@ -540,7 +536,27 @@ impl Account for Backend {
         None
     }
 
-    // TODO: Resend confirmation mail
+    fn send_confirmation(&self, params: &ValidationPair, bypass: bool) -> bool
+    {
+        if !bypass && !self.validate(params) {
+            return false;
+        }
+
+        let member = self.data_acc.member.read().unwrap();
+        let entry = member.get(&params.id).unwrap();
+        let mail_id = Util::sha3(self, vec![&params.id.to_string(), &entry.salt]);
+        let subject = "TODO: Confirm your mail!";
+        let text = &vec!["TODO: Heartwarming welcome text\nhttps://jaylapp.dev/API/account/confirm/", &mail_id].concat();
+
+        if bypass || !entry.mail_confirmed {
+            let mut requires_mail_confirmation = self.data_acc.requires_mail_confirmation.write().unwrap();
+            if !requires_mail_confirmation.contains_key(&mail_id) {
+                requires_mail_confirmation.insert(mail_id, params.id);
+            }
+            return Util::send_mail(self, &entry.mail, &entry.nickname, subject, text);
+        } 
+        false
+    }
 
     // Helper functions
     fn helper_clear_validation(&self, member_id: &u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>)
@@ -607,7 +623,7 @@ pub fn get(me: State<Backend>, id: u32) -> content::Json<String>
     }
 }
 
-#[get("/confirm/<id>")]
+#[get("/create/confirm/<id>")]
 pub fn confirm(me: State<Backend>, id: String) -> content::Json<String>
 {
     content::Json(me.confirm(&id).to_string())
@@ -631,7 +647,7 @@ pub struct PostCreateMember{
     mail: String,
     password: String
 }
-#[post("/create", data = "<params>")]
+#[post("/create/send", data = "<params>")]
 pub fn create(me: State<Backend>, params: Json<PostCreateMember>) -> content::Json<String>
 {
     content::Json(me.create(&params).to_string())
@@ -647,6 +663,11 @@ pub fn send_forgot(me: State<Backend>, params: Json<ValidationPair>) -> content:
 pub fn issue_delete(me: State<Backend>, params: Json<ValidationPair>) -> content::Json<String>
 {
     content::Json(me.issue_delete(&params).to_string())
+}
+#[delete("/create/resend", data = "<params>")]
+pub fn resend_confirm(me: State<Backend>, params: Json<ValidationPair>) -> content::Json<String>
+{
+    content::Json(me.send_confirmation(&params, false).to_string())
 }
 
 #[derive(Deserialize)]
