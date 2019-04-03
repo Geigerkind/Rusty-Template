@@ -82,6 +82,7 @@ pub trait Account {
     fn change_mail(&self, params: &PostChangeStr) -> bool;
 
     fn helper_clear_validation(&self, member_id: &u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>);
+    fn helper_create_validation(&self, member_id: &u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>) -> String;
 }
 
 impl Account for Backend {
@@ -291,39 +292,8 @@ impl Account for Backend {
             break
         }
         if entry_key == 0 { return None; }
-        let entry = member.get_mut(&entry_key).unwrap();
-            
-        // Generate a 128 bit salt for our validation hash
-        let salt: String = Util::random_str(self, 16);
-        let hash: String = Util::sha3(self, vec![&entry.mail, &params.password, &salt]);
 
-        // Replace by using the Least recently used strategy
-        for i in 0..2 {
-            if entry.hash_prio[i] >= 2 {
-                // Adjusting prios
-                entry.hash_prio[i] = 0;
-                entry.hash_prio[(i+1)%3] += 1;
-                entry.hash_prio[(i+2)%3] += 1;
-
-                // Removing previous entry
-                hash_to_member.remove(&entry.hash_val[i].clone());
-                hash_to_member.insert(hash.clone(), entry_key);
-                entry.hash_val[i] = hash.clone();
-                break;
-            }
-        }
-
-        self.db_main.execute_wparams("UPDATE member SET val_hash1=:vh1, val_prio1=:vp1, val_hash2=:vh2, val_prio2=:vp2, val_hash3=:vh3, val_prio3=:vp3 WHERE id=:id", params!(
-            "vh1" => entry.hash_val[0].clone(),
-            "vp1" => entry.hash_prio[0],
-            "vh2" => entry.hash_val[1].clone(),
-            "vp2" => entry.hash_prio[1],
-            "vh3" => entry.hash_val[2].clone(),
-            "vp3" => entry.hash_prio[2],
-            "id" => entry_key
-        ));
-
-        Some(hash)
+        Some(self.helper_create_validation(&entry_key, &mut(*hash_to_member), &mut(*member)))
     }
 
     fn validate(&self, params: &ValidationPair) -> bool
@@ -499,7 +469,6 @@ impl Account for Backend {
         false
     }
 
-    // TODO: Invalidate logins!
     fn change_password(&self, params: &PostChangeStr) -> bool
     {
         if !self.validate(&params.validation) {
@@ -533,7 +502,6 @@ impl Account for Backend {
         false
     }
 
-    // TODO: Invalidate logins!
     fn change_mail(&self, params: &PostChangeStr) -> bool
     {
         if !self.validate(&params.validation) {
@@ -561,7 +529,7 @@ impl Account for Backend {
             let mut hash_to_member = self.data_acc.hash_to_member.write().unwrap();
             let mut member = self.data_acc.member.write().unwrap();
             self.helper_clear_validation(&params.validation.id, &mut(*hash_to_member), &mut(*member));
-            
+
             let entry = member.get_mut(&params.validation.id).unwrap();
             entry.mail = params.content.to_owned();
             return true;
@@ -580,7 +548,46 @@ impl Account for Backend {
             if entry.hash_val[i] != "none" {
                 hash_to_member.remove(&entry.hash_val[i]);
             }
+            entry.hash_val[i] = "none".to_string();
+            entry.hash_prio[i] = 2;
         }
+    }
+
+    fn helper_create_validation(&self, member_id: &u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>) -> String
+    {
+        let entry = member.get_mut(member_id).unwrap();
+            
+        // Generate a 128 bit salt for our validation hash
+        let salt: String = Util::random_str(self, 16);
+        let hash: String = Util::sha3(self, vec![&entry.mail, &entry.password, &salt]);
+
+        // Replace by using the Least recently used strategy
+        for i in 0..2 {
+            if entry.hash_prio[i] >= 2 {
+                // Adjusting prios
+                entry.hash_prio[i] = 0;
+                entry.hash_prio[(i+1)%3] += 1;
+                entry.hash_prio[(i+2)%3] += 1;
+
+                // Removing previous entry
+                hash_to_member.remove(&entry.hash_val[i].clone());
+                hash_to_member.insert(hash.clone(), *member_id);
+                entry.hash_val[i] = hash.clone();
+                break;
+            }
+        }
+
+        self.db_main.execute_wparams("UPDATE member SET val_hash1=:vh1, val_prio1=:vp1, val_hash2=:vh2, val_prio2=:vp2, val_hash3=:vh3, val_prio3=:vp3 WHERE id=:id", params!(
+            "vh1" => entry.hash_val[0].clone(),
+            "vp1" => entry.hash_prio[0],
+            "vh2" => entry.hash_val[1].clone(),
+            "vp2" => entry.hash_prio[1],
+            "vh3" => entry.hash_val[2].clone(),
+            "vp3" => entry.hash_prio[2],
+            "id" => *member_id
+        ));
+
+        hash
     }
     
 }
