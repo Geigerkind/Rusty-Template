@@ -664,7 +664,7 @@ pub fn issue_delete(me: State<Backend>, params: Json<ValidationPair>) -> content
 {
     content::Json(me.issue_delete(&params).to_string())
 }
-#[delete("/create/resend", data = "<params>")]
+#[post("/create/resend", data = "<params>")]
 pub fn resend_confirm(me: State<Backend>, params: Json<ValidationPair>) -> content::Json<String>
 {
     content::Json(me.send_confirmation(&params, false).to_string())
