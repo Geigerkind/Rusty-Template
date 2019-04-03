@@ -30,6 +30,7 @@ CREATE TABLE `member` (
   `xp` int(11) unsigned NOT NULL DEFAULT 0,
   `mail_confirmed` tinyint(1) unsigned NOT NULL DEFAULT 0,
   `forgot_password` tinyint(1) unsigned NOT NULL DEFAULT 0,
+  `delete_account` tinyint(1) unsigned NOT NULL DEFAULT 0,
   `val_hash1` varchar(512) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'none',
   `val_prio1` tinyint(1) unsigned NOT NULL DEFAULT 2,
   `val_hash2` varchar(512) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'none',

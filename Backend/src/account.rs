@@ -15,6 +15,7 @@ pub struct Member {
     xp: u32,
     mail_confirmed: bool,
     forgot_password: bool,
+    delete_account: bool,
     hash_prio: Vec<u8>,
     hash_val: Vec<String>
 }
@@ -41,6 +42,7 @@ pub struct AccountData {
     hash_to_member: RwLock<HashMap<String, u32>>,
     requires_mail_confirmation: RwLock<HashMap<String, u32>>,
     forgot_password: RwLock<HashMap<String, u32>>,
+    delete_account: RwLock<HashMap<String, u32>>,
 }
 impl AccountData {
     pub fn new() -> Self
@@ -50,6 +52,7 @@ impl AccountData {
             hash_to_member: RwLock::new(HashMap::new()),
             requires_mail_confirmation: RwLock::new(HashMap::new()),
             forgot_password: RwLock::new(HashMap::new()),
+            delete_account: RwLock::new(HashMap::new()),
         }
     }
 }
@@ -64,6 +67,8 @@ pub trait Account {
 
     fn create(&self, params: &PostCreateMember) -> bool;
     fn confirm(&self, id: &str) -> bool;
+
+    fn issue_delete(&self, params: &ValidationPair) -> bool;
     fn delete(&self, params: &ValidationPair) -> bool;
     
     fn login(&self, params: &PostLogin) -> Option<String>;
@@ -82,25 +87,33 @@ impl Account for Backend {
     {
         let mut requires_mail_confirmation = self.data_acc.requires_mail_confirmation.write().unwrap();
         let mut forgot_password = self.data_acc.forgot_password.write().unwrap();
+        let mut delete_account = self.data_acc.delete_account.write().unwrap();
         let mut hash_to_member = self.data_acc.hash_to_member.write().unwrap();
         let mut member = self.data_acc.member.write().unwrap();
 
         // We are a little wasteful here because we do not insert it directly but rather create a vector first and then copy it over
-        for entry in self.db_main.select("SELECT id, mail, password, salt, mail_confirmed, forgot_password, nickname, xp FROM member", &|row|{
-            let (id, mail, pass, salt, mail_confirmed, forgot_password, nickname, xp) = mysql::from_row(row);
+        for entry in self.db_main.select("SELECT id, nickname, mail, password, salt, xp, mail_confirmed, forgot_password, delete_account, val_prio1, val_prio2, val_prio3, val_hash1, val_hash2, val_hash3 FROM member", &|mut row|{
             Member {
-                id: id,
-                nickname: nickname,
-                mail: mail,
-                password: pass,
-                salt: salt,
-                xp: xp,
-                mail_confirmed: mail_confirmed,
-                forgot_password: forgot_password,
-                hash_prio: Vec::new(),
-                hash_val: Vec::new()
+                id: row.take(0).unwrap(),
+                nickname: row.take(1).unwrap(),
+                mail: row.take(2).unwrap(),
+                password: row.take(3).unwrap(),
+                salt: row.take(4).unwrap(),
+                xp: row.take(5).unwrap(),
+                mail_confirmed: row.take(6).unwrap(),
+                forgot_password: row.take(7).unwrap(),
+                delete_account: row.take(8).unwrap(),
+                hash_prio: vec![row.take(9).unwrap(), row.take(10).unwrap(), row.take(11).unwrap()],
+                hash_val: vec![row.take(12).unwrap(), row.take(13).unwrap(), row.take(14).unwrap()]
             }
         }) {
+            // Chance should be fairly low that we a havea duplicate key
+            for i in 0..2 {
+                if entry.hash_val[i] != "none" {
+                    hash_to_member.insert(entry.hash_val[i].clone(), entry.id);
+                }
+            }
+
             // Init remaining confirmation mails
             if !entry.mail_confirmed {
                 requires_mail_confirmation.insert(Util::sha3(self, vec![&entry.id.to_string(), &entry.salt]), entry.id);
@@ -111,24 +124,12 @@ impl Account for Backend {
                 forgot_password.insert(Util::sha3(self, vec![&entry.id.to_string(), "forgot"]), entry.id);
             }
 
-            member.insert(entry.id, entry);
-        }
-
-        // There is currently no other way to do this, because the library we are using only allow to fetch 12 values per row
-        for entry in self.db_main.select("SELECT id, val_hash1, val_prio1, val_hash2, val_prio2, val_hash3, val_prio3 FROM member", &|row|{
-            let (id, val_hash1, val_prio1, val_hash2, val_prio2, val_hash3, val_prio3): (u32, String, u8, String, u8, String, u8) = mysql::from_row(row);
-            (id, vec![val_hash1, val_hash2, val_hash3], vec![val_prio1, val_prio2, val_prio3])
-        }) {
-            let mem_entry = member.get_mut(&entry.0).unwrap();
-            mem_entry.hash_val = entry.1;
-            mem_entry.hash_prio = entry.2;
-
-            // Chance should be fairly low that we a havea duplicate key
-            for i in 0..2 {
-                if mem_entry.hash_val[i] != "none" {
-                    hash_to_member.insert(mem_entry.hash_val[i].clone(), mem_entry.id);
-                }
+            // Init remaining delete mails
+            if entry.delete_account {
+                delete_account.insert(Util::sha3(self, vec![&entry.id.to_string(), "delete"]), entry.id);
             }
+
+            member.insert(entry.id, entry);
         }
     }
 
@@ -185,6 +186,7 @@ impl Account for Backend {
                     xp: 0,
                     mail_confirmed: false,
                     forgot_password: false,
+                    delete_account: false,
                     hash_prio: vec![2,2,2],
                     hash_val: vec!["none".to_string(), "none".to_string(), "none".to_string()]
                 });
@@ -200,10 +202,20 @@ impl Account for Backend {
         true
     }
 
+    fn issue_delete(&self, params: &ValidationPair) -> bool
+    {
+        if !self.validate(params) {
+            return false; // Rather return errors?
+        }
+
+        let delete_id = Util::sha3(self, vec![&params.id.to_string(), "delete"]);
+
+        true
+    }
+
     // TODO: We might consider to send a mail first!
     fn delete(&self, params: &ValidationPair) -> bool
     {
-        // This also makes sure that the user actually exists
         if !self.validate(params) {
             return false; // Rather return errors?
         }
@@ -462,6 +474,7 @@ impl Account for Backend {
         false
     }
 
+    // TODO: Invalidate logins!
     fn change_password(&self, params: &PostChangeStr) -> bool
     {
         if !self.validate(&params.validation) {
@@ -492,7 +505,7 @@ impl Account for Backend {
         false
     }
 
-    // TODO: Maybe send confirmation mail?
+    // TODO: Invalidate logins!
     fn change_mail(&self, params: &PostChangeStr) -> bool
     {
         if !self.validate(&params.validation) {
@@ -525,6 +538,8 @@ impl Account for Backend {
 
         false
     }
+
+    // TODO: Resend confirmation mail
     
 }
 
