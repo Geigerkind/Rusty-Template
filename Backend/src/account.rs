@@ -209,6 +209,25 @@ impl Account for Backend {
         }
 
         let delete_id = Util::sha3(self, vec![&params.id.to_string(), "delete"]);
+        {
+            {
+                let member = self.data_acc.member.read().unwrap();
+                let entry = member.get(&params.id).unwrap();
+                if !Util::send_mail(self, &entry.mail, "TODO: Username", "Delete account utility", &vec!["TODO: FANCY TEXT\nhttps://jaylapp.dev/API/account/delete/confirm/", &delete_id].concat()){
+                    return false;
+                }
+            }
+            if !self.db_main.execute_wparams("UPDATE member SET delete_account=1 WHERE id=:id", params!("id" => params.id)) {
+                return false;
+            } else {
+                let mut member = self.data_acc.member.write().unwrap();
+                let entry = member.get_mut(&params.id).unwrap();
+                entry.delete_account = true;
+            }
+        }
+
+        let mut delete_account = self.data_acc.delete_account.write().unwrap();
+        delete_account.insert(delete_id, params.id);
 
         true
     }
