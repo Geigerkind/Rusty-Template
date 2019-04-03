@@ -78,8 +78,8 @@ pub trait Account {
     fn recv_forgot_password(&self, id: &str) -> bool;
 
     fn change_name(&self, params: &PostChangeStr) -> bool;
-    fn change_password(&self, params: &PostChangeStr) -> bool;
-    fn change_mail(&self, params: &PostChangeStr) -> bool;
+    fn change_password(&self, params: &PostChangeStr) -> Option<String>;
+    fn change_mail(&self, params: &PostChangeStr) -> Option<String>;
 
     fn helper_clear_validation(&self, member_id: &u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>);
     fn helper_create_validation(&self, member_id: &u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>) -> String;
@@ -469,14 +469,14 @@ impl Account for Backend {
         false
     }
 
-    fn change_password(&self, params: &PostChangeStr) -> bool
+    fn change_password(&self, params: &PostChangeStr) -> Option<String>
     {
         if !self.validate(&params.validation) {
-            return false; // Rather return errors?
+            return None; // Rather return errors?
         }
 
         if params.content.is_empty() {
-            return false;
+            return None;
         }
 
         let hash: String;
@@ -493,23 +493,24 @@ impl Account for Backend {
             let mut hash_to_member = self.data_acc.hash_to_member.write().unwrap();
             let mut member = self.data_acc.member.write().unwrap();
             self.helper_clear_validation(&params.validation.id, &mut(*hash_to_member), &mut(*member));
-
-            let entry = member.get_mut(&params.validation.id).unwrap();
-            entry.password = hash.to_owned();
-            return true;
+            {
+                let entry = member.get_mut(&params.validation.id).unwrap();
+                entry.password = hash.to_owned();
+            }
+            return Some(self.helper_create_validation(&params.validation.id, &mut(*hash_to_member), &mut(*member)));
         }
 
-        false
+        None
     }
 
-    fn change_mail(&self, params: &PostChangeStr) -> bool
+    fn change_mail(&self, params: &PostChangeStr) -> Option<String>
     {
         if !self.validate(&params.validation) {
-            return false; // Rather return errors?
+            return None; // Rather return errors?
         }
 
         if !Util::is_valid_mail(self, &params.content) {
-            return false;
+            return None;
         }
 
         // Check if the mail exists already
@@ -518,7 +519,7 @@ impl Account for Backend {
             if entry.mail.to_lowercase() == lower_mail
                 && entry.id != params.validation.id 
             {
-                return false;
+                return None;
             }
         }
 
@@ -529,13 +530,14 @@ impl Account for Backend {
             let mut hash_to_member = self.data_acc.hash_to_member.write().unwrap();
             let mut member = self.data_acc.member.write().unwrap();
             self.helper_clear_validation(&params.validation.id, &mut(*hash_to_member), &mut(*member));
-
-            let entry = member.get_mut(&params.validation.id).unwrap();
-            entry.mail = params.content.to_owned();
-            return true;
+            {
+                let entry = member.get_mut(&params.validation.id).unwrap();
+                entry.mail = params.content.to_owned();
+            }
+            return Some(self.helper_create_validation(&params.validation.id, &mut(*hash_to_member), &mut(*member)));
         }
 
-        false
+        None
     }
 
     // TODO: Resend confirmation mail
@@ -669,7 +671,7 @@ pub struct PostChangeStr {
 #[post("/update/password", data = "<params>")]
 pub fn update_pass(me: State<Backend>, params: Json<PostChangeStr>) -> content::Json<String>
 {
-    content::Json(me.change_password(&params).to_string())
+    content::Json(me.change_password(&params).unwrap())
 }
 #[post("/update/nickname", data = "<params>")]
 pub fn update_nickname(me: State<Backend>, params: Json<PostChangeStr>) -> content::Json<String>
@@ -679,5 +681,5 @@ pub fn update_nickname(me: State<Backend>, params: Json<PostChangeStr>) -> conte
 #[post("/update/mail", data = "<params>")]
 pub fn update_mail(me: State<Backend>, params: Json<PostChangeStr>) -> content::Json<String>
 {
-    content::Json(me.change_mail(&params).to_string())
+    content::Json(me.change_mail(&params).unwrap())
 }
