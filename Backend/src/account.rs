@@ -69,7 +69,7 @@ pub trait Account {
     fn confirm(&self, id: &str) -> bool;
 
     fn issue_delete(&self, params: &ValidationPair) -> bool;
-    fn delete(&self, params: &ValidationPair) -> bool;
+    fn confirm_delete(&self, id: &str) -> bool;
     
     fn login(&self, params: &PostLogin) -> Option<String>;
     fn validate(&self, params: &ValidationPair) -> bool;
@@ -232,30 +232,40 @@ impl Account for Backend {
         true
     }
 
-    // TODO: We might consider to send a mail first!
-    fn delete(&self, params: &ValidationPair) -> bool
+    fn confirm_delete(&self, id: &str) -> bool
     {
-        if !self.validate(params) {
-            return false; // Rather return errors?
-        }
-
-        if self.db_main.execute_wparams("DELETE FROM member WHERE id = :id", params!(
-            "id" => params.id
-        )) {
-            let mut hash_to_member = self.data_acc.hash_to_member.write().unwrap();
-            let mut member = self.data_acc.member.write().unwrap();
-            // Creating this scope to reduce the lifetime of the borrow
-            {
-                let entry = member.get(&params.id).unwrap();
-                for i in 0..2 {
-                    if entry.hash_val[i] != "none" {
-                        hash_to_member.remove(&entry.hash_val[i]);
+        let mut removable = false;
+        {
+            let delete_account = self.data_acc.delete_account.read().unwrap();
+            match delete_account.get(id) {
+                Some(member_id) => {
+                    if self.db_main.execute_wparams("DELETE FROM member WHERE id = :id", params!(
+                        "id" => *member_id
+                    )) {
+                        let mut hash_to_member = self.data_acc.hash_to_member.write().unwrap();
+                        let mut member = self.data_acc.member.write().unwrap();
+                        // Creating this scope to reduce the lifetime of the borrow
+                        {
+                            let entry = member.get(member_id).unwrap();
+                            for i in 0..2 {
+                                if entry.hash_val[i] != "none" {
+                                    hash_to_member.remove(&entry.hash_val[i]);
+                                }
+                            }
+                        }
+                        member.remove(member_id);
+                        removable = true;
                     }
-                }
+                },
+                None => return false
             }
-            member.remove(&params.id);
+        }
+        if removable {
+            let mut delete_account = self.data_acc.delete_account.write().unwrap();
+            delete_account.remove(id);
             return true;
         }
+
         false
     }
 
@@ -587,6 +597,12 @@ pub fn rcv_forgot(me: State<Backend>, id: String) -> content::Json<String>
     content::Json(me.recv_forgot_password(&id).to_string())
 }
 
+#[get("/delete/confirm/<id>")]
+pub fn confirm_delete(me: State<Backend>, id: String) -> content::Json<String>
+{
+    content::Json(me.confirm_delete(&id).to_string())
+}
+
 #[derive(Deserialize)]
 pub struct PostCreateMember{
     nickname: String,
@@ -605,10 +621,10 @@ pub fn send_forgot(me: State<Backend>, params: Json<ValidationPair>) -> content:
     content::Json(me.send_forgot_password(&params).to_string())
 }
 
-#[delete("/delete", data = "<params>")]
-pub fn delete(me: State<Backend>, params: Json<ValidationPair>) -> content::Json<String>
+#[delete("/delete/send", data = "<params>")]
+pub fn issue_delete(me: State<Backend>, params: Json<ValidationPair>) -> content::Json<String>
 {
-    content::Json(me.delete(&params).to_string())
+    content::Json(me.issue_delete(&params).to_string())
 }
 
 #[derive(Deserialize)]

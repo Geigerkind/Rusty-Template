@@ -103,6 +103,6 @@ fn main() {
     Word::init(&backend_obj);
     igniter = igniter.manage(backend_obj);
     igniter = igniter.mount("/API/", routes![index, hi, echo, count, dbtest]);
-    igniter = igniter.mount("/API/account/", routes![account::delete, account::create, account::get, account::confirm, account::rcv_forgot, account::send_forgot, account::update_mail, account::update_pass, account::update_nickname]);
+    igniter = igniter.mount("/API/account/", routes![account::issue_delete, account::confirm_delete, account::create, account::get, account::confirm, account::rcv_forgot, account::send_forgot, account::update_mail, account::update_pass, account::update_nickname]);
     igniter.launch();
 }
