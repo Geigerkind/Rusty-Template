@@ -521,7 +521,10 @@ impl Account for Backend {
             "password" => hash.clone(),
             "id" => params.validation.id
         )) {
+            let mut hash_to_member = self.data_acc.hash_to_member.write().unwrap();
             let mut member = self.data_acc.member.write().unwrap();
+            self.helper_clear_validation(&params.validation.id, &mut(*hash_to_member), &mut(*member));
+
             let entry = member.get_mut(&params.validation.id).unwrap();
             entry.password = hash.to_owned();
             return true;
@@ -555,7 +558,10 @@ impl Account for Backend {
             "mail" => params.content.clone(),
             "id" => params.validation.id
         )) {
+            let mut hash_to_member = self.data_acc.hash_to_member.write().unwrap();
             let mut member = self.data_acc.member.write().unwrap();
+            self.helper_clear_validation(&params.validation.id, &mut(*hash_to_member), &mut(*member));
+            
             let entry = member.get_mut(&params.validation.id).unwrap();
             entry.mail = params.content.to_owned();
             return true;
