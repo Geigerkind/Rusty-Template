@@ -4,6 +4,7 @@ use crate::util::mail::{send_mail};
 
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::tools::account::Account;
+use crate::database::tools::mysql::execute::Execute;
 
 pub trait AccountDelete {
   fn issue_delete(&self, params: &ValidationPair) -> bool;

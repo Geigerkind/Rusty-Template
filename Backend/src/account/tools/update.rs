@@ -4,6 +4,7 @@ use crate::util::validator::{is_valid_mail};
 
 use crate::account::dto::update::PostChangeStr;
 use crate::account::tools::account::Account;
+use crate::database::tools::mysql::execute::Execute;
 
 pub trait AccountUpdate {
   fn change_name(&self, params: &PostChangeStr) -> bool;

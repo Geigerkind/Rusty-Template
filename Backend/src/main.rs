@@ -10,9 +10,10 @@ extern crate lettre_email;
 
 pub mod util;
 pub mod account;
-pub mod mysqlconnection;
+pub mod database;
 
-use mysqlconnection::MySQLConnection;
+use database::material::mysql_connection::MySQLConnection;
+use database::tools::mysql::init::Init;
 use account::tools::account::Account;
 use account::material::account_data::AccountData;
 

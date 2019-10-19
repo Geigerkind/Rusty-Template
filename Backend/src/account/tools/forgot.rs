@@ -5,6 +5,7 @@ use crate::util::random::{rnd_alphanumeric};
 
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::tools::account::Account;
+use crate::database::tools::mysql::execute::Execute;
 
 pub trait AccountForgot {
   fn send_forgot_password(&self, params: &ValidationPair) -> bool;
