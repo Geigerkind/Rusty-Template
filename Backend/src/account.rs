@@ -71,7 +71,7 @@ pub trait Account {
 
     fn issue_delete(&self, params: &ValidationPair) -> bool;
     fn confirm_delete(&self, id: &str) -> bool;
-    
+
     fn login(&self, params: &PostLogin) -> Option<String>;
     fn validate(&self, params: &ValidationPair) -> bool;
 

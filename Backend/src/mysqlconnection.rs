@@ -15,7 +15,7 @@ impl MySQLConnection {
     * Return Vector
     **/
 
-    pub fn select<T>(&self, query_str: &str, process_row: &Fn(mysql::Row) -> T) -> Vec<T>
+    pub fn select<T>(&self, query_str: &str, process_row: &dyn Fn(mysql::Row) -> T) -> Vec<T>
     {
         self.con.prep_exec(query_str, ())
         .map(|result| {
@@ -25,7 +25,7 @@ impl MySQLConnection {
         }).unwrap()
     }
 
-    pub fn select_wparams<T>(&self, query_str: &str, process_row: &Fn(mysql::Row) -> T, params: std::vec::Vec<(std::string::String, mysql::Value)>) -> Vec<T>
+    pub fn select_wparams<T>(&self, query_str: &str, process_row: &dyn Fn(mysql::Row) -> T, params: std::vec::Vec<(std::string::String, mysql::Value)>) -> Vec<T>
     {
         self.con.prep_exec(query_str, params)
         .map(|result| {
@@ -41,7 +41,7 @@ impl MySQLConnection {
     * Find out how it it done properly, for now using this hack
     **/
 
-    pub fn select_value<T>(&self, query_str: &str, process_row: &Fn(mysql::Row) -> T) -> Option<T>
+    pub fn select_value<T>(&self, query_str: &str, process_row: &dyn Fn(mysql::Row) -> T) -> Option<T>
     {
         // Just return first row, see TODO
         for row in self.select(query_str, process_row) {
@@ -50,7 +50,7 @@ impl MySQLConnection {
         None
     }
 
-    pub fn select_wparams_value<T>(&self, query_str: &str, process_row: &Fn(mysql::Row) -> T, params: std::vec::Vec<(std::string::String, mysql::Value)>) -> Option<T>
+    pub fn select_wparams_value<T>(&self, query_str: &str, process_row: &dyn Fn(mysql::Row) -> T, params: std::vec::Vec<(std::string::String, mysql::Value)>) -> Option<T>
     {
         // Just return first row, see TODO
         for row in self.select_wparams(query_str, process_row, params) {
@@ -103,7 +103,7 @@ impl MySQLConnection {
 
     pub fn new(db_name: &str) -> Self
     {
-        let mut dns: String = "mysql://root:vagrant@127.0.0.1/".to_owned();
+        let mut dns: String = "mysql://root@127.0.0.1/".to_owned();
         dns.push_str(db_name);
         MySQLConnection {
             con: mysql::Pool::new(dns).unwrap()
