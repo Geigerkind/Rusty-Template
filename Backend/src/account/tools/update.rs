@@ -1,5 +1,6 @@
 use crate::Backend;
-use crate::util::Util;
+use crate::util::sha3::{hash_sha3};
+use crate::util::validator::{is_valid_mail};
 
 use crate::account::dto::update::PostChangeStr;
 use crate::account::tools::account::Account;
@@ -58,7 +59,7 @@ impl AccountUpdate for Backend {
     {
       let member = self.data_acc.member.read().unwrap();
       let entry = member.get(&params.validation.id).unwrap();
-      hash = Util::sha3(self, vec![&entry.mail, &params.content, &entry.salt]);
+      hash = hash_sha3(vec![&entry.mail, &params.content, &entry.salt]);
     }
 
     if self.db_main.execute_wparams("UPDATE member SET password=:password WHERE id=:id", params!(
@@ -84,7 +85,7 @@ impl AccountUpdate for Backend {
       return None; // Rather return errors?
     }
 
-    if !Util::is_valid_mail(self, &params.content) {
+    if !is_valid_mail(&params.content) {
       return None;
     }
 

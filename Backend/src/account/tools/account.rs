@@ -1,5 +1,6 @@
 use crate::Backend;
-use crate::util::Util;
+use crate::util::sha3::{hash_sha3};
+use crate::util::random::{rnd_alphanumeric};
 
 use crate::account::domainvalue::account_information::AccountInformation;
 use crate::account::domainvalue::validation_pair::ValidationPair;
@@ -51,17 +52,17 @@ impl Account for Backend {
 
       // Init remaining confirmation mails
       if !entry.mail_confirmed {
-        requires_mail_confirmation.insert(Util::sha3(self, vec![&entry.id.to_string(), &entry.salt]), entry.id);
+        requires_mail_confirmation.insert(hash_sha3(vec![&entry.id.to_string(), &entry.salt]), entry.id);
       }
 
       // Init remaining forgot password mails
       if entry.forgot_password {
-        forgot_password.insert(Util::sha3(self, vec![&entry.id.to_string(), "forgot", &entry.salt]), entry.id);
+        forgot_password.insert(hash_sha3(vec![&entry.id.to_string(), "forgot", &entry.salt]), entry.id);
       }
 
       // Init remaining delete mails
       if entry.delete_account {
-        delete_account.insert(Util::sha3(self, vec![&entry.id.to_string(), "delete", &entry.salt]), entry.id);
+        delete_account.insert(hash_sha3(vec![&entry.id.to_string(), "delete", &entry.salt]), entry.id);
       }
 
       member.insert(entry.id, entry);
@@ -143,8 +144,8 @@ impl Account for Backend {
     let entry = member.get_mut(member_id).unwrap();
 
     // Generate a 128 bit salt for our validation hash
-    let salt: String = Util::random_str(self, 16);
-    let hash: String = Util::sha3(self, vec![&entry.mail, &entry.password, &salt]);
+    let salt: String = rnd_alphanumeric(16);
+    let hash: String = hash_sha3(vec![&entry.mail, &entry.password, &salt]);
 
     // Replace by using the Least recently used strategy
     for i in 0..2 {

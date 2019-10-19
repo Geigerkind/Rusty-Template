@@ -1,5 +1,8 @@
 use crate::Backend;
-use crate::util::Util;
+use crate::util::validator::{is_valid_mail};
+use crate::util::sha3::{hash_sha3};
+use crate::util::random::{rnd_alphanumeric};
+use crate::util::mail::{send_mail};
 
 use crate::account::dto::create::PostCreateMember;
 use crate::account::domainvalue::validation_pair::ValidationPair;
@@ -23,7 +26,7 @@ impl AccountCreate for Backend {
       return false;
     }
 
-    if !Util::is_valid_mail(self, &params.mail) {
+    if !is_valid_mail(&params.mail) {
       return false;
     }
 
@@ -40,8 +43,8 @@ impl AccountCreate for Backend {
       return false;
     }
 
-    let salt: String = Util::random_str(self, 16);
-    let pass: String = Util::sha3(self, vec![&params.password, &salt]);
+    let salt: String = rnd_alphanumeric(16);
+    let pass: String = hash_sha3(vec![&params.password, &salt]);
 
     if self.db_main.execute_wparams("INSERT IGNORE INTO member (`mail`, `password`, `nickname`, `joined`) VALUES (:mail, :pass, :nickname, UNIX_TIMESTAMP())", params!(
       "nickname" => params.nickname.clone(),
@@ -85,7 +88,7 @@ impl AccountCreate for Backend {
 
     let member = self.data_acc.member.read().unwrap();
     let entry = member.get(&params.id).unwrap();
-    let mail_id = Util::sha3(self, vec![&params.id.to_string(), &entry.salt]);
+    let mail_id = hash_sha3(vec![&params.id.to_string(), &entry.salt]);
     let subject = "TODO: Confirm your mail!";
     let text = &vec!["TODO: Heartwarming welcome text\nhttps://jaylapp.dev/API/account/confirm/", &mail_id].concat();
 
@@ -94,7 +97,7 @@ impl AccountCreate for Backend {
       if !requires_mail_confirmation.contains_key(&mail_id) {
         requires_mail_confirmation.insert(mail_id, params.id);
       }
-      return Util::send_mail(self, &entry.mail, &entry.nickname, subject, text);
+      return send_mail(&entry.mail, &entry.nickname, subject, text);
     }
     false
   }

@@ -1,5 +1,7 @@
 use crate::Backend;
-use crate::util::Util;
+use crate::util::sha3::{hash_sha3};
+use crate::util::mail::{send_mail};
+use crate::util::random::{rnd_alphanumeric};
 
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::tools::account::Account;
@@ -21,8 +23,8 @@ impl AccountForgot for Backend {
       {
         let member = self.data_acc.member.read().unwrap();
         let entry = member.get(&params.id).unwrap();
-        forgot_id = Util::sha3(self, vec![&params.id.to_string(), "forgot", &entry.salt]);
-        if !Util::send_mail(self, &entry.mail, "TODO: Username", "Forgot password utility", &vec!["TODO: FANCY TEXT\nhttps://jaylapp.dev/API/account/forgot/confirm/", &forgot_id].concat()){
+        forgot_id = hash_sha3(vec![&params.id.to_string(), "forgot", &entry.salt]);
+        if !send_mail(&entry.mail, "TODO: Username", "Forgot password utility", &vec!["TODO: FANCY TEXT\nhttps://jaylapp.dev/API/account/forgot/confirm/", &forgot_id].concat()){
           return false;
         }
       }
@@ -49,11 +51,11 @@ impl AccountForgot for Backend {
       match forgot_password.get(id) {
         Some(member_id) => {
           // Sending random generated password
-          let new_pass = Util::random_str(self, 16);
+          let new_pass = rnd_alphanumeric(16);
           {
             let member = self.data_acc.member.read().unwrap();
             let entry = member.get(member_id).unwrap();
-            if Util::send_mail(self, &entry.mail, "TODO: username", "TODO: Forgot password utility", &vec!["TODO: Text\n New Password: ", &new_pass].concat()) {
+            if send_mail(&entry.mail, "TODO: username", "TODO: Forgot password utility", &vec!["TODO: Text\n New Password: ", &new_pass].concat()) {
                 return false;
             }
           }
@@ -71,7 +73,7 @@ impl AccountForgot for Backend {
       }
     }
     if removable {
-      let mut  forgot_password = self.data_acc.forgot_password.write().unwrap();
+      let mut forgot_password = self.data_acc.forgot_password.write().unwrap();
       forgot_password.remove(id);
       return true;
     }

@@ -1,5 +1,5 @@
 use crate::Backend;
-use crate::util::Util;
+use crate::util::sha3::{hash_sha3};
 
 use crate::account::dto::login::PostLogin;
 use crate::account::tools::account::Account;
@@ -19,7 +19,7 @@ impl AccountLogin for Backend {
     let mut entry_key: u32 = 0;
     for (id, entry) in &(*member) {
       if entry.mail.to_lowercase() != lower_mail { continue; }
-      if entry.password != Util::sha3(self, vec![&params.password, &entry.salt]) { break; } // Password is wrong
+      if entry.password != hash_sha3(vec![&params.password, &entry.salt]) { break; } // Password is wrong
       entry_key = *id;
       break
     }
