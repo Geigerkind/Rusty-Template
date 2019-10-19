@@ -12,7 +12,7 @@ use account::material::account::Account;
 
 #[allow(dead_code)]
 pub struct Backend {
-  data_acc: Account,
+  account: Account,
 }
 
 impl Backend {
@@ -21,7 +21,7 @@ impl Backend {
     let account = Account::new();
     account.init();
     Backend {
-      data_acc: account
+      account: account
     }
   }
 }
