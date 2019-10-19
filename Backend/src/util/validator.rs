@@ -1,3 +1,5 @@
+extern crate regex;
+
 use regex::Regex;
 
 pub fn is_valid_mail(input: &str) -> bool

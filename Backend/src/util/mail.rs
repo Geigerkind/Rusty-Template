@@ -1,5 +1,8 @@
+extern crate lettre;
+extern crate lettre_email;
+
 use lettre_email::EmailBuilder;
-use crate::lettre::Transport;
+use lettre::Transport;
 use lettre::smtp::SmtpClient;
 
 pub fn send_mail(to: &str, username: &str, subject: &str, text: &str) -> bool
