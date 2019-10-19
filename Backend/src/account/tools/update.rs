@@ -1,18 +1,17 @@
-use crate::Backend;
 use crate::util::sha3::{hash_sha3};
 use crate::util::validator::{is_valid_mail};
-
 use crate::account::dto::update::PostChangeStr;
-use crate::account::tools::account::Account;
 use crate::database::tools::mysql::execute::Execute;
+use crate::account::tools::validator::Validator;
+use crate::account::material::account::Account;
 
-pub trait AccountUpdate {
+pub trait Update {
   fn change_name(&self, params: &PostChangeStr) -> bool;
   fn change_password(&self, params: &PostChangeStr) -> Option<String>;
   fn change_mail(&self, params: &PostChangeStr) -> Option<String>;
 }
 
-impl AccountUpdate for Backend {
+impl Update for Account {
   fn change_name(&self, params: &PostChangeStr) -> bool
   {
     if !self.validate(&params.validation) {
@@ -25,7 +24,7 @@ impl AccountUpdate for Backend {
 
     // Check if the name exists already
     let lower_name = params.content.to_lowercase();
-    for (_, entry) in &(*self.data_acc.member.read().unwrap()) {
+    for (_, entry) in &(*self.member.read().unwrap()) {
       if entry.nickname.to_lowercase() == lower_name
         && entry.id != params.validation.id
       {
@@ -37,7 +36,7 @@ impl AccountUpdate for Backend {
       "nickname" => params.content.clone(),
       "id" => params.validation.id
     )) {
-      let mut member = self.data_acc.member.write().unwrap();
+      let mut member = self.member.write().unwrap();
       let entry = member.get_mut(&params.validation.id).unwrap();
       entry.nickname = params.content.to_owned();
       return true;
@@ -58,7 +57,7 @@ impl AccountUpdate for Backend {
 
     let hash: String;
     {
-      let member = self.data_acc.member.read().unwrap();
+      let member = self.member.read().unwrap();
       let entry = member.get(&params.validation.id).unwrap();
       hash = hash_sha3(vec![&entry.mail, &params.content, &entry.salt]);
     }
@@ -67,8 +66,8 @@ impl AccountUpdate for Backend {
       "password" => hash.clone(),
       "id" => params.validation.id
     )) {
-      let mut hash_to_member = self.data_acc.hash_to_member.write().unwrap();
-      let mut member = self.data_acc.member.write().unwrap();
+      let mut hash_to_member = self.hash_to_member.write().unwrap();
+      let mut member = self.member.write().unwrap();
       self.helper_clear_validation(&params.validation.id, &mut(*hash_to_member), &mut(*member));
       {
         let entry = member.get_mut(&params.validation.id).unwrap();
@@ -92,7 +91,7 @@ impl AccountUpdate for Backend {
 
     // Check if the mail exists already
     let lower_mail = params.content.to_lowercase();
-    for (_, entry) in &(*self.data_acc.member.read().unwrap()) {
+    for (_, entry) in &(*self.member.read().unwrap()) {
       if entry.mail.to_lowercase() == lower_mail
         && entry.id != params.validation.id
       {
@@ -104,8 +103,8 @@ impl AccountUpdate for Backend {
       "mail" => params.content.clone(),
       "id" => params.validation.id
     )) {
-      let mut hash_to_member = self.data_acc.hash_to_member.write().unwrap();
-      let mut member = self.data_acc.member.write().unwrap();
+      let mut hash_to_member = self.hash_to_member.write().unwrap();
+      let mut member = self.member.write().unwrap();
       self.helper_clear_validation(&params.validation.id, &mut(*hash_to_member), &mut(*member));
       {
         let entry = member.get_mut(&params.validation.id).unwrap();

@@ -1,24 +1,23 @@
-use crate::Backend;
 use crate::util::validator::{is_valid_mail};
 use crate::util::sha3::{hash_sha3};
 use crate::util::random::{rnd_alphanumeric};
 use crate::util::mail::{send_mail};
-
 use crate::account::dto::create::PostCreateMember;
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::material::member::Member;
-use crate::account::tools::account::Account;
+use crate::account::tools::validator::Validator;
+use crate::account::material::account::Account;
 use crate::database::tools::mysql::select::Select;
 use crate::database::tools::mysql::execute::Execute;
 use crate::database::tools::mysql::exists::Exists;
 
-pub trait AccountCreate {
+pub trait Create {
   fn create(&self, params: &PostCreateMember) -> bool;
   fn send_confirmation(&self, params: &ValidationPair, bypass: bool) -> bool;
   fn confirm(&self, id: &str) -> bool;
 }
 
-impl AccountCreate for Backend {
+impl Create for Account {
   fn create(&self, params: &PostCreateMember) -> bool
   {
     if params.mail.is_empty() {
@@ -56,7 +55,7 @@ impl AccountCreate for Backend {
     ) {
       let id: u32;
       { // Keep write locks as short as possible
-        let mut member = self.data_acc.member.write().unwrap();
+        let mut member = self.member.write().unwrap();
         id = self.db_main.select_wparams_value("SELECT id FROM member WHERE LOWER(mail) = :mail", &|row|{
           let res = mysql::from_row(row);
           res
@@ -89,14 +88,14 @@ impl AccountCreate for Backend {
       return false;
     }
 
-    let member = self.data_acc.member.read().unwrap();
+    let member = self.member.read().unwrap();
     let entry = member.get(&params.id).unwrap();
     let mail_id = hash_sha3(vec![&params.id.to_string(), &entry.salt]);
     let subject = "TODO: Confirm your mail!";
     let text = &vec!["TODO: Heartwarming welcome text\nhttps://jaylapp.dev/API/account/confirm/", &mail_id].concat();
 
     if bypass || !entry.mail_confirmed {
-      let mut requires_mail_confirmation = self.data_acc.requires_mail_confirmation.write().unwrap();
+      let mut requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();
       if !requires_mail_confirmation.contains_key(&mail_id) {
         requires_mail_confirmation.insert(mail_id, params.id);
       }
@@ -109,13 +108,13 @@ impl AccountCreate for Backend {
   {
     let mut removable = false;
     {
-      let requires_mail_confirmation = self.data_acc.requires_mail_confirmation.read().unwrap();
+      let requires_mail_confirmation = self.requires_mail_confirmation.read().unwrap();
       match requires_mail_confirmation.get(id) {
         Some(member_id) => {
           if self.db_main.execute_wparams("UPDATE member SET mail_confirmed=1 WHERE id=:id", params!(
             "id" => *member_id
           )) {
-            let mut member = self.data_acc.member.write().unwrap();
+            let mut member = self.member.write().unwrap();
             let entry = member.get_mut(member_id).unwrap();
             entry.mail_confirmed = true;
             removable = true;
@@ -125,7 +124,7 @@ impl AccountCreate for Backend {
       }
     }
     if removable {
-      let mut  requires_mail_confirmation = self.data_acc.requires_mail_confirmation.write().unwrap();
+      let mut  requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();
       requires_mail_confirmation.remove(id);
       return true;
     }

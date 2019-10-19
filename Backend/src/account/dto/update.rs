@@ -1,5 +1,5 @@
-use crate::Backend;
-use crate::account::tools::update::AccountUpdate;
+use crate::account::material::account::Account;
+use crate::account::tools::update::Update;
 use crate::account::domainvalue::validation_pair::ValidationPair;
 
 use rocket::response::content;
@@ -12,17 +12,17 @@ pub struct PostChangeStr {
   pub validation: ValidationPair
 }
 #[post("/update/password", data = "<params>")]
-pub fn password(me: State<Backend>, params: Json<PostChangeStr>) -> content::Json<String>
+pub fn password(me: State<Account>, params: Json<PostChangeStr>) -> content::Json<String>
 {
   content::Json(me.change_password(&params).unwrap())
 }
 #[post("/update/nickname", data = "<params>")]
-pub fn nickname(me: State<Backend>, params: Json<PostChangeStr>) -> content::Json<String>
+pub fn nickname(me: State<Account>, params: Json<PostChangeStr>) -> content::Json<String>
 {
   content::Json(me.change_name(&params).to_string())
 }
 #[post("/update/mail", data = "<params>")]
-pub fn mail(me: State<Backend>, params: Json<PostChangeStr>) -> content::Json<String>
+pub fn mail(me: State<Account>, params: Json<PostChangeStr>) -> content::Json<String>
 {
   content::Json(me.change_mail(&params).unwrap())
 }

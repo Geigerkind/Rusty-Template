@@ -1,5 +1,5 @@
-use crate::Backend;
-use crate::account::tools::create::AccountCreate;
+use crate::account::material::account::Account;
+use crate::account::tools::create::Create;
 use crate::account::domainvalue::validation_pair::ValidationPair;
 
 use rocket::response::content;
@@ -13,19 +13,19 @@ pub struct PostCreateMember{
   pub password: String
 }
 #[post("/create/send", data = "<params>")]
-pub fn create(me: State<Backend>, params: Json<PostCreateMember>) -> content::Json<String>
+pub fn create(me: State<Account>, params: Json<PostCreateMember>) -> content::Json<String>
 {
   content::Json(me.create(&params).to_string())
 }
 
 #[get("/create/confirm/<id>")]
-pub fn confirm(me: State<Backend>, id: String) -> content::Json<String>
+pub fn confirm(me: State<Account>, id: String) -> content::Json<String>
 {
   content::Json(me.confirm(&id).to_string())
 }
 
 #[post("/create/resend", data = "<params>")]
-pub fn resend_confirm(me: State<Backend>, params: Json<ValidationPair>) -> content::Json<String>
+pub fn resend_confirm(me: State<Account>, params: Json<ValidationPair>) -> content::Json<String>
 {
   content::Json(me.send_confirmation(&params, false).to_string())
 }

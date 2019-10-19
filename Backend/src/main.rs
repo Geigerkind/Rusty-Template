@@ -12,15 +12,11 @@ pub mod util;
 pub mod account;
 pub mod database;
 
-use database::material::mysql_connection::MySQLConnection;
-use database::tools::mysql::init::Init;
-use account::tools::account::Account;
-use account::material::account_data::AccountData;
+use account::material::account::Account;
 
+#[allow(dead_code)]
 pub struct Backend {
-  db_main: MySQLConnection,
-  // WTB: Field values for traits!
-  data_acc: AccountData,
+  data_acc: Account,
 }
 
 impl Backend {
@@ -28,11 +24,11 @@ impl Backend {
 
 fn main() {
   let mut igniter = rocket::ignite();
+  let account = Account::new();
+  account.init();
   let backend_obj = Backend {
-    db_main: MySQLConnection::new("main"),
-    data_acc: AccountData::new()
+    data_acc: account
   };
-  Account::init(&backend_obj);
   igniter = igniter.manage(backend_obj);
   igniter = igniter.mount("/API/account/", routes![
     account::dto::delete::request, account::dto::delete::confirm,

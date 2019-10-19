@@ -1,5 +1,5 @@
-use crate::Backend;
-use crate::account::tools::login::AccountLogin;
+use crate::account::material::account::Account;
+use crate::account::tools::login::Login;
 
 use rocket::response::content;
 use rocket::State;
@@ -12,7 +12,7 @@ pub struct PostLogin{
 }
 
 #[post("/login", data = "<params>")]
-pub fn login(me: State<Backend>, params: Json<PostLogin>) -> content::Json<String>
+pub fn login(me: State<Account>, params: Json<PostLogin>) -> content::Json<String>
 {
   match me.login(&params) {
     Some(hash) => content::Json(hash),
