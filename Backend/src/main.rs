@@ -1,7 +1,6 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
 #[macro_use] extern crate rocket;
-//#[macro_use] extern crate rocket_contrib;
 #[macro_use] extern crate mysql;
 #[macro_use] extern crate serde_derive;
 #[macro_use] extern crate lazy_static;
@@ -11,13 +10,11 @@ extern crate regex;
 
 pub mod util;
 pub mod account;
-pub mod word;
 pub mod mysqlconnection;
 
 use mysqlconnection::MySQLConnection;
 use account::tools::account::Account;
 use account::material::account_data::AccountData;
-use word::Word;
 
 pub struct Backend {
   db_main: MySQLConnection,
@@ -35,7 +32,6 @@ fn main() {
     data_acc: AccountData::new()
   };
   Account::init(&backend_obj);
-  Word::init(&backend_obj);
   igniter = igniter.manage(backend_obj);
   igniter = igniter.mount("/API/account/", routes![
     account::dto::delete::request, account::dto::delete::confirm,
