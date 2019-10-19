@@ -5,24 +5,22 @@
 #[macro_use] extern crate mysql;
 #[macro_use] extern crate serde_derive;
 #[macro_use] extern crate lazy_static;
-extern crate rand;
 extern crate lettre;
 extern crate lettre_email;
 extern crate regex;
-
 
 use rocket::response::content;
 use rocket::State;
 use std::sync::RwLock;
 
+pub mod util;
 pub mod account;
 pub mod word;
 pub mod mysqlconnection;
-pub mod util;
 
 use mysqlconnection::MySQLConnection;
-use account::Account;
-use account::AccountData;
+use account::api::Account;
+use account::api::AccountData;
 use word::Word;
 
 pub struct Backend {
@@ -94,7 +92,7 @@ fn dbtest(me: State<Backend>) -> content::Json<String>
 
 fn main() {
     let mut igniter = rocket::ignite();
-    let backend_obj = Backend { 
+    let backend_obj = Backend {
         count: RwLock::new(0),
         db_main: MySQLConnection::new("main"),
         data_acc: AccountData::new()
@@ -103,6 +101,11 @@ fn main() {
     Word::init(&backend_obj);
     igniter = igniter.manage(backend_obj);
     igniter = igniter.mount("/API/", routes![index, hi, echo, count, dbtest]);
-    igniter = igniter.mount("/API/account/", routes![account::issue_delete, account::confirm_delete, account::create, account::get, account::confirm, account::resend_confirm, account::rcv_forgot, account::send_forgot, account::update_mail, account::update_pass, account::update_nickname]);
+    igniter = igniter.mount("/API/account/", routes![
+      account::dto::delete::request, account::dto::delete::confirm,
+      account::dto::create::create, account::dto::create::confirm, account::dto::create::resend_confirm,
+      account::dto::get::get,
+      account::dto::forgot::receive_confirmation, account::dto::forgot::send_confirmation,
+      account::dto::update::mail, account::dto::update::password, account::dto::update::nickname]);
     igniter.launch();
 }

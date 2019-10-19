@@ -1,10 +1,9 @@
 use crate::Backend;
 use crate::util::Util;
 
-use rocket::response::content;
-use rocket::State;
-use rocket_contrib::json::Json;
-use serde_json::to_string;
+use crate::account::dto::update::PostChangeStr;
+use crate::account::dto::create::PostCreateMember;
+use crate::account::dto::login::PostLogin;
 
 pub struct Member {
     id: u32,
@@ -22,14 +21,14 @@ pub struct Member {
 
 #[derive(Serialize)]
 pub struct AccountInformation {
-    mail: String,
-    xp: u32
+    pub mail: String,
+    pub xp: u32
 }
 
 #[derive(Deserialize)]
 pub struct ValidationPair {
-    hash: String,
-    id: u32
+    pub hash: String,
+    pub id: u32
 }
 
 /**
@@ -608,99 +607,4 @@ impl Account for Backend {
         hash
     }
     
-}
-
-/**
-* Rocket request handling
-**/
-
-#[get("/get/<id>")]
-pub fn get(me: State<Backend>, id: u32) -> content::Json<String>
-{
-    match me.get(id) {
-        Some(acc_info) => content::Json(to_string(&acc_info).unwrap()),
-        None => content::Json("Error?!".to_string()) // 404?
-    }
-}
-
-#[get("/create/confirm/<id>")]
-pub fn confirm(me: State<Backend>, id: String) -> content::Json<String>
-{
-    content::Json(me.confirm(&id).to_string())
-}
-
-#[get("/forgot/confirm/<id>")]
-pub fn rcv_forgot(me: State<Backend>, id: String) -> content::Json<String>
-{
-    content::Json(me.recv_forgot_password(&id).to_string())
-}
-
-#[get("/delete/confirm/<id>")]
-pub fn confirm_delete(me: State<Backend>, id: String) -> content::Json<String>
-{
-    content::Json(me.confirm_delete(&id).to_string())
-}
-
-#[derive(Deserialize)]
-pub struct PostCreateMember{
-    nickname: String,
-    mail: String,
-    password: String
-}
-#[post("/create/send", data = "<params>")]
-pub fn create(me: State<Backend>, params: Json<PostCreateMember>) -> content::Json<String>
-{
-    content::Json(me.create(&params).to_string())
-}
-
-#[post("/forgot/send", data = "<params>")]
-pub fn send_forgot(me: State<Backend>, params: Json<ValidationPair>) -> content::Json<String>
-{
-    content::Json(me.send_forgot_password(&params).to_string())
-}
-
-#[delete("/delete/send", data = "<params>")]
-pub fn issue_delete(me: State<Backend>, params: Json<ValidationPair>) -> content::Json<String>
-{
-    content::Json(me.issue_delete(&params).to_string())
-}
-#[post("/create/resend", data = "<params>")]
-pub fn resend_confirm(me: State<Backend>, params: Json<ValidationPair>) -> content::Json<String>
-{
-    content::Json(me.send_confirmation(&params, false).to_string())
-}
-
-#[derive(Deserialize)]
-pub struct PostLogin{
-    mail: String,
-    password: String
-}
-#[post("/login", data = "<params>")]
-pub fn login(me: State<Backend>, params: Json<PostLogin>) -> content::Json<String>
-{
-    match me.login(&params) {
-        Some(hash) => content::Json(hash),
-        None => content::Json("Error?!".to_string()) // 404 ?
-    }
-}
-
-#[derive(Deserialize)]
-pub struct PostChangeStr {
-    content: String,
-    validation: ValidationPair
-}
-#[post("/update/password", data = "<params>")]
-pub fn update_pass(me: State<Backend>, params: Json<PostChangeStr>) -> content::Json<String>
-{
-    content::Json(me.change_password(&params).unwrap())
-}
-#[post("/update/nickname", data = "<params>")]
-pub fn update_nickname(me: State<Backend>, params: Json<PostChangeStr>) -> content::Json<String>
-{
-    content::Json(me.change_name(&params).to_string())
-}
-#[post("/update/mail", data = "<params>")]
-pub fn update_mail(me: State<Backend>, params: Json<PostChangeStr>) -> content::Json<String>
-{
-    content::Json(me.change_mail(&params).unwrap())
 }

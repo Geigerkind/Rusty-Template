@@ -1,12 +1,15 @@
 use crate::Backend;
+extern crate rand;
+extern crate rand_distr;
 
 use lettre_email::EmailBuilder;
 use crate::lettre::Transport;
 use lettre::smtp::SmtpClient;
 use sha3::{Digest, Sha3_512};
 
-use rand::Rng; 
-use rand::distributions::Alphanumeric;
+use std::iter;
+use rand::{Rng, thread_rng};
+use rand_distr::Alphanumeric;
 use regex::Regex;
 
 pub trait Util {
@@ -43,10 +46,11 @@ impl Util for Backend {
 
     fn random_str(&self, length: usize) -> String
     {
-        rand::thread_rng()
-            .sample_iter(&Alphanumeric)
-            .take(length)
-            .collect::<String>()
+      let mut rng = thread_rng();
+      iter::repeat(())
+        .map(|()| rng.sample(Alphanumeric))
+        .take(length)
+        .collect::<String>()
     }
 
     fn is_valid_mail(&self, input: &str) -> bool

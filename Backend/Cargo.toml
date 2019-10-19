@@ -2,7 +2,7 @@
 name = "backend"
 version = "0.1.1"
 authors = ["Tom Dymel <tom@dymel.dev>"]
-edition = "2019"
+edition = "2018"
 
 [dependencies]
 rocket = "*"
@@ -12,6 +12,7 @@ serde_derive = "*"
 serde_json = "*"
 sha3 = "*"
 rand = "*"
+rand_distr = "*"
 lettre = "*"
 lettre_email = "*"
 regex = "*"
