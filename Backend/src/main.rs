@@ -20,16 +20,19 @@ pub struct Backend {
 }
 
 impl Backend {
+  fn new() -> Self
+  {
+    let account = Account::new();
+    account.init();
+    Backend {
+      data_acc: account
+    }
+  }
 }
 
 fn main() {
   let mut igniter = rocket::ignite();
-  let account = Account::new();
-  account.init();
-  let backend_obj = Backend {
-    data_acc: account
-  };
-  igniter = igniter.manage(backend_obj);
+  igniter = igniter.manage(Backend::new());
   igniter = igniter.mount("/API/account/", routes![
     account::dto::delete::request, account::dto::delete::confirm,
     account::dto::create::create, account::dto::create::confirm, account::dto::create::resend_confirm,
