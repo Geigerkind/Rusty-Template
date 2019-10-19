@@ -5,56 +5,11 @@ use crate::account::dto::update::PostChangeStr;
 use crate::account::dto::create::PostCreateMember;
 use crate::account::dto::login::PostLogin;
 
-pub struct Member {
-    id: u32,
-    nickname: String,
-    mail: String,
-    password: String,
-    salt: String,
-    xp: u32,
-    mail_confirmed: bool,
-    forgot_password: bool,
-    delete_account: bool,
-    hash_prio: Vec<u8>,
-    hash_val: Vec<String>
-}
+use crate::account::domainvalue::account_information::AccountInformation;
+use crate::account::domainvalue::validation_pair::ValidationPair;
+use crate::account::material::member::Member;
 
-#[derive(Serialize)]
-pub struct AccountInformation {
-    pub mail: String,
-    pub xp: u32
-}
-
-#[derive(Deserialize)]
-pub struct ValidationPair {
-    pub hash: String,
-    pub id: u32
-}
-
-/**
- * Dominating data structure supporting this module
- */
-use std::sync::RwLock;
 use std::collections::HashMap;
-pub struct AccountData {
-    member: RwLock<HashMap<u32, Member>>,
-    hash_to_member: RwLock<HashMap<String, u32>>,
-    requires_mail_confirmation: RwLock<HashMap<String, u32>>,
-    forgot_password: RwLock<HashMap<String, u32>>,
-    delete_account: RwLock<HashMap<String, u32>>,
-}
-impl AccountData {
-    pub fn new() -> Self
-    {
-        AccountData {
-            member: RwLock::new(HashMap::new()),
-            hash_to_member: RwLock::new(HashMap::new()),
-            requires_mail_confirmation: RwLock::new(HashMap::new()),
-            forgot_password: RwLock::new(HashMap::new()),
-            delete_account: RwLock::new(HashMap::new()),
-        }
-    }
-}
 
 /**
  * Module implementation

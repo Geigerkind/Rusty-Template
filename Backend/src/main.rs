@@ -20,7 +20,7 @@ pub mod mysqlconnection;
 
 use mysqlconnection::MySQLConnection;
 use account::api::Account;
-use account::api::AccountData;
+use account::material::account_data::AccountData;
 use word::Word;
 
 pub struct Backend {

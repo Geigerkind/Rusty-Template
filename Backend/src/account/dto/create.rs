@@ -1,6 +1,6 @@
 use crate::Backend;
 use crate::account::api::Account;
-use crate::account::api::ValidationPair;
+use crate::account::domainvalue::validation_pair::ValidationPair;
 
 use rocket::response::content;
 use rocket::State;
