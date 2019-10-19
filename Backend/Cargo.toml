@@ -1,8 +1,8 @@
 [package]
 name = "backend"
-version = "0.1.0"
-authors = ["Tom Dymel <tomdymel@web.de>"]
-edition = "2018"
+version = "0.1.1"
+authors = ["Tom Dymel <tom@dymel.dev>"]
+edition = "2019"
 
 [dependencies]
 rocket = "*"
