@@ -19,7 +19,7 @@ pub mod word;
 pub mod mysqlconnection;
 
 use mysqlconnection::MySQLConnection;
-use account::api::Account;
+use account::tools::account::Account;
 use account::material::account_data::AccountData;
 use word::Word;
 
