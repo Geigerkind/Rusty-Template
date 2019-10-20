@@ -37,25 +37,15 @@ impl Select for MySQLConnection {
 
   /**
   * Return value directly
-  * TODO:
-  * Find out how it it done properly, for now using this hack
   **/
 
   fn select_value<T>(&self, query_str: &str, process_row: &dyn Fn(mysql::Row) -> T) -> Option<T>
   {
-    // Just return first row, see TODO
-    for row in self.select(query_str, process_row) {
-      return Some(row);
-    }
-    None
+    self.select(query_str, process_row).pop()
   }
 
   fn select_wparams_value<T>(&self, query_str: &str, process_row: &dyn Fn(mysql::Row) -> T, params: std::vec::Vec<(std::string::String, mysql::Value)>) -> Option<T>
   {
-    // Just return first row, see TODO
-    for row in self.select_wparams(query_str, process_row, params) {
-      return Some(row);
-    }
-    None
+    self.select_wparams(query_str, process_row, params).pop()
   }
 }

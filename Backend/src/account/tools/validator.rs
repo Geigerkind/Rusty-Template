@@ -10,8 +10,8 @@ use std::collections::HashMap;
 pub trait Validator {
   fn validate(&self, params: &ValidationPair) -> bool;
 
-  fn helper_clear_validation(&self, member_id: &u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>);
-  fn helper_create_validation(&self, member_id: &u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>) -> String;
+  fn helper_clear_validation(&self, member_id: u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>);
+  fn helper_create_validation(&self, member_id: u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>) -> String;
 }
 
 impl Validator for Account {
@@ -61,9 +61,9 @@ impl Validator for Account {
   }
 
   // Helper functions
-  fn helper_clear_validation(&self, member_id: &u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>)
+  fn helper_clear_validation(&self, member_id: u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>)
   {
-    let entry = member.get_mut(member_id).unwrap();
+    let entry = member.get_mut(&member_id).unwrap();
     for i in 0..2 {
       if entry.hash_val[i] != "none" {
         hash_to_member.remove(&entry.hash_val[i]);
@@ -73,9 +73,9 @@ impl Validator for Account {
     }
   }
 
-  fn helper_create_validation(&self, member_id: &u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>) -> String
+  fn helper_create_validation(&self, member_id: u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>) -> String
   {
-    let entry = member.get_mut(member_id).unwrap();
+    let entry = member.get_mut(&member_id).unwrap();
 
     // Generate a 128 bit salt for our validation hash
     let salt: String = rnd_alphanumeric(16);
@@ -91,7 +91,7 @@ impl Validator for Account {
 
         // Removing previous entry
         hash_to_member.remove(&entry.hash_val[i].clone());
-        hash_to_member.insert(hash.clone(), *member_id);
+        hash_to_member.insert(hash.clone(), member_id);
         entry.hash_val[i] = hash.clone();
         break;
       }
@@ -104,7 +104,7 @@ impl Validator for Account {
       "vp2" => entry.hash_prio[1],
       "vh3" => entry.hash_val[2].clone(),
       "vp3" => entry.hash_prio[2],
-      "id" => *member_id
+      "id" => member_id
     ));
 
     hash

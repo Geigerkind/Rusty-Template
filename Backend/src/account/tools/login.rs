@@ -24,6 +24,6 @@ impl Login for Account {
     }
     if entry_key == 0 { return None; }
 
-    Some(self.helper_create_validation(&entry_key, &mut(*hash_to_member), &mut(*member)))
+    Some(self.helper_create_validation(entry_key, &mut(*hash_to_member), &mut(*member)))
   }
 }

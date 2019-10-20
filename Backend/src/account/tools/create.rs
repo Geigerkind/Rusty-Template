@@ -57,8 +57,7 @@ impl Create for Account {
       { // Keep write locks as short as possible
         let mut member = self.member.write().unwrap();
         id = self.db_main.select_wparams_value("SELECT id FROM member WHERE LOWER(mail) = :mail", &|row|{
-          let res = mysql::from_row(row);
-          res
+          mysql::from_row(row)
         }, params!(
           "mail" => params.mail.to_owned().to_lowercase()
         )).unwrap();

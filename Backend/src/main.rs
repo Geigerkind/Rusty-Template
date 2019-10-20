@@ -18,10 +18,10 @@ pub struct Backend {
 impl Backend {
   fn new() -> Self
   {
-    let account = Account::new();
+    let account = Account::default();
     account.init();
     Backend {
-      account: account
+      account
     }
   }
 }

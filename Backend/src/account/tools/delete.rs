@@ -54,7 +54,7 @@ impl Delete for Account {
           )) {
             let mut hash_to_member = self.hash_to_member.write().unwrap();
             let mut member = self.member.write().unwrap();
-            self.helper_clear_validation(member_id, &mut (*hash_to_member), &mut (*member));
+            self.helper_clear_validation(*member_id, &mut (*hash_to_member), &mut (*member));
             member.remove(member_id);
             removable = true;
           }

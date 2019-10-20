@@ -15,8 +15,8 @@ pub struct Account {
   pub delete_account: RwLock<HashMap<String, u32>>,
 }
 
-impl Account {
-  pub fn new() -> Self
+impl Default for Account {
+  fn default() -> Self
   {
     Account {
       db_main: MySQLConnection::new("main"),
@@ -27,7 +27,9 @@ impl Account {
       delete_account: RwLock::new(HashMap::new()),
     }
   }
+}
 
+impl Account {
   pub fn init(&self)
   {
     let mut requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();

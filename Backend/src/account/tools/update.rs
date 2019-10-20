@@ -24,7 +24,7 @@ impl Update for Account {
 
     // Check if the name exists already
     let lower_name = params.content.to_lowercase();
-    for (_, entry) in &(*self.member.read().unwrap()) {
+    for entry in self.member.read().unwrap().values() {
       if entry.nickname.to_lowercase() == lower_name
         && entry.id != params.validation.id
       {
@@ -68,12 +68,12 @@ impl Update for Account {
     )) {
       let mut hash_to_member = self.hash_to_member.write().unwrap();
       let mut member = self.member.write().unwrap();
-      self.helper_clear_validation(&params.validation.id, &mut(*hash_to_member), &mut(*member));
+      self.helper_clear_validation(params.validation.id, &mut(*hash_to_member), &mut(*member));
       {
         let entry = member.get_mut(&params.validation.id).unwrap();
-        entry.password = hash.to_owned();
+        entry.password = hash;
       }
-      return Some(self.helper_create_validation(&params.validation.id, &mut(*hash_to_member), &mut(*member)));
+      return Some(self.helper_create_validation(params.validation.id, &mut(*hash_to_member), &mut(*member)));
     }
 
     None
@@ -91,7 +91,7 @@ impl Update for Account {
 
     // Check if the mail exists already
     let lower_mail = params.content.to_lowercase();
-    for (_, entry) in &(*self.member.read().unwrap()) {
+    for entry in self.member.read().unwrap().values() {
       if entry.mail.to_lowercase() == lower_mail
         && entry.id != params.validation.id
       {
@@ -105,12 +105,12 @@ impl Update for Account {
     )) {
       let mut hash_to_member = self.hash_to_member.write().unwrap();
       let mut member = self.member.write().unwrap();
-      self.helper_clear_validation(&params.validation.id, &mut(*hash_to_member), &mut(*member));
+      self.helper_clear_validation(params.validation.id, &mut(*hash_to_member), &mut(*member));
       {
         let entry = member.get_mut(&params.validation.id).unwrap();
         entry.mail = params.content.to_owned();
       }
-      return Some(self.helper_create_validation(&params.validation.id, &mut(*hash_to_member), &mut(*member)));
+      return Some(self.helper_create_validation(params.validation.id, &mut(*hash_to_member), &mut(*member)));
     }
 
     None
