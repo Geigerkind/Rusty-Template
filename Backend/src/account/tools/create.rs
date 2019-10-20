@@ -62,11 +62,11 @@ impl Create for Account {
           "mail" => params.mail.to_owned().to_lowercase()
         )).unwrap();
         member.insert(id, Member {
-          id: id,
+          id,
           nickname: params.nickname.to_owned(),
           mail: params.mail.to_owned(),
           password: pass,
-          salt: salt.clone(),
+          salt,
           xp: 0,
           mail_confirmed: false,
           forgot_password: false,
@@ -76,7 +76,7 @@ impl Create for Account {
         });
       }
 
-      self.send_confirmation(&ValidationPair{hash: String::new(), id:id}, true);
+      self.send_confirmation(&ValidationPair{hash: String::new(), id}, true);
     }
     true
   }
