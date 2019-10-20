@@ -1,5 +1,5 @@
-use crate::util::sha3::{hash_sha3};
-use crate::util::validator::{is_valid_mail};
+use crate::util::sha3;
+use crate::util::validator;
 use crate::account::dto::update::PostChangeStr;
 use crate::database::tools::mysql::execute::Execute;
 use crate::account::tools::validator::Validator;
@@ -59,7 +59,7 @@ impl Update for Account {
     {
       let member = self.member.read().unwrap();
       let entry = member.get(&params.validation.id).unwrap();
-      hash = hash_sha3(vec![&entry.mail, &params.content, &entry.salt]);
+      hash = sha3::hash(vec![&entry.mail, &params.content, &entry.salt]);
     }
 
     if self.db_main.execute_wparams("UPDATE member SET password=:password WHERE id=:id", params!(
@@ -85,7 +85,7 @@ impl Update for Account {
       return None; // Rather return errors?
     }
 
-    if !is_valid_mail(&params.content) {
+    if !validator::mail(&params.content) {
       return None;
     }
 

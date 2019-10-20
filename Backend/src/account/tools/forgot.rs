@@ -1,6 +1,6 @@
-use crate::util::sha3::{hash_sha3};
-use crate::util::mail::{send_mail};
-use crate::util::random::{rnd_alphanumeric};
+use crate::util::sha3;
+use crate::util::mail;
+use crate::util::random;
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::tools::validator::Validator;
 use crate::account::material::account::Account;
@@ -23,8 +23,8 @@ impl Forgot for Account {
       {
         let member = self.member.read().unwrap();
         let entry = member.get(&params.id).unwrap();
-        forgot_id = hash_sha3(vec![&params.id.to_string(), "forgot", &entry.salt]);
-        if !send_mail(&entry.mail, "TODO: Username", "Forgot password utility", &vec!["TODO: FANCY TEXT\nhttps://jaylapp.dev/API/account/forgot/confirm/", &forgot_id].concat()){
+        forgot_id = sha3::hash(vec![&params.id.to_string(), "forgot", &entry.salt]);
+        if !mail::send(&entry.mail, "TODO: Username", "Forgot password utility", &vec!["TODO: FANCY TEXT\nhttps://jaylapp.dev/API/account/forgot/confirm/", &forgot_id].concat()){
           return false;
         }
       }
@@ -51,11 +51,11 @@ impl Forgot for Account {
       match forgot_password.get(id) {
         Some(member_id) => {
           // Sending random generated password
-          let new_pass = rnd_alphanumeric(16);
+          let new_pass = random::alphanumeric(16);
           {
             let member = self.member.read().unwrap();
             let entry = member.get(member_id).unwrap();
-            if send_mail(&entry.mail, "TODO: username", "TODO: Forgot password utility", &vec!["TODO: Text\n New Password: ", &new_pass].concat()) {
+            if mail::send(&entry.mail, "TODO: username", "TODO: Forgot password utility", &vec!["TODO: Text\n New Password: ", &new_pass].concat()) {
                 return false;
             }
           }

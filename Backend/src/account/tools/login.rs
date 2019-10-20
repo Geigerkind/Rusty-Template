@@ -1,4 +1,4 @@
-use crate::util::sha3::{hash_sha3};
+use crate::util::sha3;
 use crate::account::dto::login::PostLogin;
 use crate::account::tools::validator::Validator;
 use crate::account::material::account::Account;
@@ -18,7 +18,7 @@ impl Login for Account {
     let mut entry_key: u32 = 0;
     for (id, entry) in &(*member) {
       if entry.mail.to_lowercase() != lower_mail { continue; }
-      if entry.password != hash_sha3(vec![&params.password, &entry.salt]) { break; } // Password is wrong
+      if entry.password != sha3::hash(vec![&params.password, &entry.salt]) { break; } // Password is wrong
       entry_key = *id;
       break
     }

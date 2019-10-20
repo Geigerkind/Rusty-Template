@@ -5,7 +5,7 @@ use lettre_email::EmailBuilder;
 use lettre::Transport;
 use lettre::smtp::SmtpClient;
 
-pub fn send_mail(to: &str, username: &str, subject: &str, text: &str) -> bool
+pub fn send(to: &str, username: &str, subject: &str, text: &str) -> bool
 {
   let email = EmailBuilder::new()
     .to((to, username))

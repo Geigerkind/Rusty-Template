@@ -1,5 +1,5 @@
-use crate::util::sha3::{hash_sha3};
-use crate::util::random::{rnd_alphanumeric};
+use crate::util::sha3;
+use crate::util::random;
 use crate::account::material::account::Account;
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::material::member::Member;
@@ -78,8 +78,8 @@ impl Validator for Account {
     let entry = member.get_mut(&member_id).unwrap();
 
     // Generate a 128 bit salt for our validation hash
-    let salt: String = rnd_alphanumeric(16);
-    let hash: String = hash_sha3(vec![&entry.mail, &entry.password, &salt]);
+    let salt: String = random::alphanumeric(16);
+    let hash: String = sha3::hash(vec![&entry.mail, &entry.password, &salt]);
 
     // Replace by using the Least recently used strategy
     for i in 0..2 {

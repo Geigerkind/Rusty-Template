@@ -1,6 +1,6 @@
 use crate::database::material::mysql_connection::MySQLConnection;
 use crate::account::material::member::Member;
-use crate::util::sha3::{hash_sha3};
+use crate::util::sha3;
 use crate::database::tools::mysql::select::Select;
 
 use std::collections::HashMap;
@@ -63,17 +63,17 @@ impl Account {
 
       // Init remaining confirmation mails
       if !entry.mail_confirmed {
-        requires_mail_confirmation.insert(hash_sha3(vec![&entry.id.to_string(), &entry.salt]), entry.id);
+        requires_mail_confirmation.insert(sha3::hash(vec![&entry.id.to_string(), &entry.salt]), entry.id);
       }
 
       // Init remaining forgot password mails
       if entry.forgot_password {
-        forgot_password.insert(hash_sha3(vec![&entry.id.to_string(), "forgot", &entry.salt]), entry.id);
+        forgot_password.insert(sha3::hash(vec![&entry.id.to_string(), "forgot", &entry.salt]), entry.id);
       }
 
       // Init remaining delete mails
       if entry.delete_account {
-        delete_account.insert(hash_sha3(vec![&entry.id.to_string(), "delete", &entry.salt]), entry.id);
+        delete_account.insert(sha3::hash(vec![&entry.id.to_string(), "delete", &entry.salt]), entry.id);
       }
 
       member.insert(entry.id, entry);
