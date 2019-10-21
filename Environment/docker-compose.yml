@@ -6,7 +6,7 @@ services:
     ports:
     - '3306:3306'
     environment:
-    - MYSQL_USER=mysql
+    - MYSQL_USER=root
     - MYSQL_PASSWORD=vagrant
     - MYSQL_ROOT_PASSWORD=vagrant
   nginx:
@@ -15,3 +15,13 @@ services:
     ports:
     - '80:80'
     - '443:443'
+  postfix:
+    network_mode: host
+    build: ./postfix
+    ports:
+    - '25:25'
+    environment:
+    - SMTP_SERVER=smtp.gmail.com
+    - SMTP_USERNAME=jaylapp@gmail.com
+    - SMTP_PASSWORD=jaylapp123
+    - SERVER_HOSTNAME=jaylapp.dev
