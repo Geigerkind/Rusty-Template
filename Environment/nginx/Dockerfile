@@ -1,12 +1,11 @@
 FROM archlinux/base
 
-COPY mirrorlist /etc/pacman.d/
+COPY ./mirrorlist /etc/pacman.d/
 
 RUN pacman -Sy && \
     pacman -S --noconfirm nginx nginx-mod-brotli && \
-    mkdir -p /etc/nginx/cert;
+    mkdir -p /etc/nginx/cert
 
-COPY start.sh ~/start.sh
 COPY nginx.conf /etc/nginx/
 copy dhparam.pem /etc/nginx/cert/
 copy jaylapp.crt /etc/nginx/cert/

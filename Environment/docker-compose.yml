@@ -1,5 +1,14 @@
 version: '3'
 services:
+  mariadb:
+    network_mode: host
+    build: ./mariadb
+    ports:
+    - '3306:3306'
+    environment:
+    - MYSQL_USER=mysql
+    - MYSQL_PASSWORD=vagrant
+    - MYSQL_ROOT_PASSWORD=vagrant
   nginx:
     network_mode: host
     build: ./nginx
