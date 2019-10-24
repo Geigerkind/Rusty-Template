@@ -1,0 +1,13 @@
+name: Test Workflow
+on: [push]
+
+jobs:
+  build:
+    name: Build Backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --manifest-path Backend/Cargo.toml --release --all-features
