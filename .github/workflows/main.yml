@@ -7,9 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - run: npm install @angular/cli
-      - run: cd Webclient
-      - run: ng build
+      - run: npm install -g @angular/cli
+      - run: cd Webclient && ng build
   build-backend:
     name: Build Backend
     runs-on: ubuntu-latest
