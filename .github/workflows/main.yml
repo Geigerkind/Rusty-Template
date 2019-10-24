@@ -7,11 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
       - uses: actions-rs/cargo@v1.0.1
         with:
-          toolchain: nightly
+          toolchain: nightly-x86_64-unknown-linux-gnu
           command: build
           args: --manifest-path Backend/Cargo.toml --release --all-features
