@@ -9,7 +9,6 @@ pub mod account;
 pub mod database;
 
 use account::material::account::Account;
-
 #[allow(dead_code)]
 pub struct Backend {
   account: Account,
