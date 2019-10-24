@@ -1,9 +1,17 @@
-name: Test Workflow
+name: CI
 on: [push]
 
 jobs:
-  build:
-    name: Test
+  build-webclient:
+    name: Build Webclient
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - run: npm install @angular/cli
+      - run: cd Webclient
+      - run: ng build
+  build-backend:
+    name: Build Backend
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
