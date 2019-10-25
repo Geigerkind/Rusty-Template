@@ -19,4 +19,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+      - uses: docker
+      - image: 'Dockerfile'
       - run: cd Webclient && apt-get install libqt5webkit5 - y && npm install @angular/cli && npm install && npm run-script ng test
