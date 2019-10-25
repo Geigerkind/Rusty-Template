@@ -19,4 +19,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - uses: actions/testWebclient
+      - uses: ./.github/actions/test-webclient
