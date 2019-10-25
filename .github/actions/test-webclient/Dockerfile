@@ -1,6 +1,6 @@
 FROM archlinux
 
-COPY Webclient /
+COPY ~/Webclient /
 
 RUN pacman -Sy \
     && pacman -S --noconfirm git npm chromium \
