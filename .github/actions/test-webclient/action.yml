@@ -1,4 +1,0 @@
-name: 'Build Angular Webclient'
-runs:
-  using: 'docker'
-  image: 'Dockerfile'
