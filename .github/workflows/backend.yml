@@ -1,15 +1,9 @@
-name: CI
+name: Backend CI
 on: [push]
 
 jobs:
-  build-webclient:
-    name: Build Webclient
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - run: cd Webclient && npm install @angular/cli && npm run-script ng build
-  build-backend:
-    name: Build Backend
+  building:
+    name: Building
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
