@@ -14,11 +14,3 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - run: cd Webclient && npm install @angular/cli && npm run-script ng lint
-  testing:
-    name: Testing
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - run: ls -l
-      - run: pwd
-      - uses: ./.github/actions/test-webclient
