@@ -19,4 +19,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - run: cd Webclient && npm install @angular/cli && npm install && npm run-script ng test --browsers FirefoxHeadless
+      - run: cd Webclient && npm install @angular/cli && npm install && npm run-script ng test
