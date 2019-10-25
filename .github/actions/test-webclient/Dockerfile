@@ -1,6 +1,6 @@
 FROM archlinux
 
-COPY ~/Webclient /
+COPY /home/runner/work/Jaylapp/Jaylapp/Webclient /
 
 RUN pacman -Sy \
     && pacman -S --noconfirm git npm chromium \
