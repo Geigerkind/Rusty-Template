@@ -144,3 +144,5 @@ function deploy {
 
   startServices
 }
+
+deploy
