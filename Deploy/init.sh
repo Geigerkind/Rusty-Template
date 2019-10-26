@@ -95,9 +95,10 @@ function initServer {
   cd /root
   cp /root/Jaylapp/Deploy/conf/backend.service /etc/systemd/system/
   cp /root/Jaylapp/Deploy/conf/deploy.service /etc/systemd/system/
+  systemctl daemon-reload
   systemctl enable backend.service
   systemctl enable deploy.service
-  systemctl daemon-reload
+  systemctl start deploy
 
   initSSH
   initCertificates
