@@ -100,8 +100,8 @@ function deployDatabase {
     systemctl start mysqld
     mysql -uroot -p${DB_PASSWORD} < merge.sql
     systemctl stop mysqld
+    rm merge.sql
   fi
-  rm merge.sql
   cd /root
 }
 
