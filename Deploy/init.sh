@@ -60,7 +60,7 @@ function initPostfix {
 
 function initSSH {
   for filename in /Jaylapp/Deploy/ssh/*.pub; do
-    if [ ! -f "${filename}" ]; do
+    if [ ! -f "${filename}" ]; then
       continue
     fi
     cat ${filename} > ~/.ssh/authorized_keys

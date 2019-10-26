@@ -8,7 +8,7 @@ DB_PASSWORD=$(cat /root/Keys/db_password)
 function cleanAssetCache {
   cd ~/cache/assets/
   for filename in *.png *.jpg *.jpeg; do
-    if [ ! -f "${filename}" ]; do
+    if [ ! -f "${filename}" ]; then
       continue
     fi
 
@@ -27,7 +27,7 @@ function optimizeJpg {
   cd ~/Jaylapp/Webclient/src/assets/
   MEDIA_DIR='~/cache/assets/'
   for filename in *.jpg *.jpeg; do
-    if [ ! -f "${filename}" ]; do
+    if [ ! -f "${filename}" ]; then
       continue
     fi
 
@@ -51,7 +51,7 @@ function optimizePng {
   cd ~/Jaylapp/Webclient/src/assets/
   MEDIA_DIR='~/cache/assets/'
   for filename in *.png; do
-    if [ ! -f "${filename}" ]; do
+    if [ ! -f "${filename}" ]; then
       continue
     fi
 
@@ -73,7 +73,7 @@ function optimizePng {
 }
 function convertToWebp {
   for filename in ~/cache/assets/*.png ~/cache/assets/*.jpg ~/cache/assets/*.jpeg; do
-    if [ ! -f "${filename}" ]; do
+    if [ ! -f "${filename}" ]; then
       continue
     fi
 
