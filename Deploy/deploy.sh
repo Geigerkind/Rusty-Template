@@ -22,7 +22,7 @@ function cleanAssetCache {
 function optimizeJpg {
   cd ~/Jaylapp/Webclient/src/assets/
   MEDIA_DIR='~/cache/assets/'
-  for filename in *.jpg *.jpeg; done
+  for filename in *.jpg *.jpeg; do
     while [ $(pgrep -c -P$$) -gt ${NUM_CORES} ]; do
         sleep 0.5;
     done
@@ -42,7 +42,7 @@ function optimizeJpg {
 function optimizePng {
   cd ~/Jaylapp/Webclient/src/assets/
   MEDIA_DIR='~/cache/assets/'
-  for filename in *.png; done
+  for filename in *.png; do
     while [ $(pgrep -c -P$$) -gt ${NUM_CORES} ]; do
         sleep 0.5;
     done
@@ -60,7 +60,7 @@ function optimizePng {
   cd ~
 }
 function convertToWebp {
-  for filename in ~/cache/assets/*.png ~/cache/assets/*.jpg ~/cache/assets/*.jpeg; done
+  for filename in ~/cache/assets/*.png ~/cache/assets/*.jpg ~/cache/assets/*.jpeg; do
     while [ $(pgrep -c -P$$) -gt ${NUM_CORES} ]; do
         sleep 0.5;
     done
