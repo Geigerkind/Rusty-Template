@@ -1,0 +1,10 @@
+[Unit]
+Description=Yajla Deploy Scheduler
+
+[Service]
+WorkingDirectory=/root
+ExecStart=python /root/Jaylapp/Deploy/scheduler.py
+User=root
+Type=simple
+Restart=on-failure
+RestartSec=10
