@@ -6,11 +6,13 @@ COUNT=$(expr ${COUNT} + 0)
 
 echo "" > merge.sql
 for filename in ./*.sql; do
+  if [ ! -f "${filename}" ]; then
+    continue
+  fi
+
   FILE=${filename:2}
   VERSION=$(expr ${FILE:0:5} + 0)
 
-  echo "VERSION: ${VERSION}"
-  echo "COUNT: ${COUNT}"
   if (( ${VERSION} > ${COUNT} )); then
     cat ${filename} >> merge.sql
     echo "" >> merge.sql

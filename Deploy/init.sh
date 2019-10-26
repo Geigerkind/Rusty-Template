@@ -79,7 +79,7 @@ function initServer {
   useradd -m yajla
 
   pacman -Sy
-  pacman -S --noconfirm git npm guetzli libwebp htop
+  pacman -S --noconfirm git npm guetzli libwebp htop clang
   installRust
   installZopfli
   npm install -g html-minifier
@@ -89,6 +89,11 @@ function initServer {
   git config --global credential.helper
   cp ~/Keys/.git-credentials ~/
   git clone https://github.com/Geigerkind/Jaylapp
+  cd /root/Jaylapp/Webclient
+  # Requires user input
+  npm install
+  cd /root
+  cp /root/Jaylapp/Deploy/conf/backend.service /etc/systemd/system/
 
   initSSH
   initCertificates
