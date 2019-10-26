@@ -96,9 +96,11 @@ function deployDatabase {
   echo "Deploying database"
   cd /root/Jaylapp/Database
   bash merger.sh
-  systemctl start mysqld
-  mysql -uroot -p${DB_PASSWORD} < merge.sql
-  systemctl stop mysqld
+  if [ -f "./merge.sql" ]; then
+    systemctl start mysqld
+    mysql -uroot -p${DB_PASSWORD} < merge.sql
+    systemctl stop mysqld
+  fi
   rm merge.sql
   cd /root
 }

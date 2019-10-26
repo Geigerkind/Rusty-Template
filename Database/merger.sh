@@ -1,10 +1,10 @@
-if [ ! -f "db_patch_count" ]; then
+if [ ! -f "./db_patch_count" ]; then
   echo "-1" > ./db_patch_count
 fi
 COUNT=$(cat ./db_patch_count)
 COUNT=$(expr ${COUNT} + 0)
 
-if [ -f "merge.sql" ]; then
+if [ -f "./merge.sql" ]; then
   rm ./merge.sql
 fi
 for filename in ./*.sql; do
