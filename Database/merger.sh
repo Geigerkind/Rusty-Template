@@ -4,9 +4,8 @@ fi
 COUNT=$(cat ./db_patch_count)
 COUNT=$(expr ${COUNT} + 0)
 
-echo "" > merge.sql
+rm merge.sql &> /dev/null
 for filename in ./*.sql; do
-  echo ${filename}
   if [ ! -f "${filename}" ]; then
     continue
   fi
