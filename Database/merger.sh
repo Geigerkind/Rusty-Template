@@ -9,7 +9,9 @@ for filename in ./*.sql; do
   FILE=${filename:2}
   VERSION=$(expr ${FILE:0:5} + 0)
 
-  if [ "${VERSION}" -gt "${COUNT}" ]; then
+  echo "VERSION: ${VERSION}"
+  echo "COUNT: ${COUNT}"
+  if (( ${VERSION} > ${COUNT} )); then
     cat ${filename} >> merge.sql
     echo "" >> merge.sql
     echo ${VERSION} > ./db_patch_count
