@@ -2,7 +2,7 @@
 Description=Yajla backend application
 
 [Service]
-WorkingDirectoy=/home/yajla/
+WorkingDirectory=/home/yajla/
 ExecStart=backend
 User=yajla
 Type=simple

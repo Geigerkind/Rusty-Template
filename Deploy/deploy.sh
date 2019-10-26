@@ -123,8 +123,8 @@ function deployBackend {
   rustup toolchain install nightly
   cargo update
   cargo build --release --all-features --jobs ${NUM_CORES}
-  cargo install
-  cp /root/.cargo/backend /home/yajla/
+  cargo install --path ./
+  cp /root/.cargo/bin/backend /home/yajla/
   cd /root
 }
 
