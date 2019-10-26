@@ -1,2 +1,2 @@
 # TODO
-cp /Database/fulldb.sql /Database/merge.sql;
+cp ./fulldb.sql ./merge.sql;
