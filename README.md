@@ -6,7 +6,7 @@
 5. Go into the Backend directory and start the server using **cargo run**
 6. Go into the Webclient directory and start the webclient using **ng serve**
 
-## Enabling HTTPS
+## Enabling HTTPS locally
 1. Import **Environment/nginx/ca.pem** as **authority** into your browser
 2. Append the entry **jaylapp.dev 127.0.0.1** to your **hosts file**
 3. Access the website using **jaylapp.dev** in your browser
