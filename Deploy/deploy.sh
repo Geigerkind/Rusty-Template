@@ -6,7 +6,7 @@ NUM_CORES=$(nproc)
 DB_PASSWORD=$(cat /root/Keys/db_password)
 
 function cleanAssetCache {
-  cd ~/cache/assets/
+  cd /root/cache/assets/
   for filename in *.png *.jpg *.jpeg; do
     if [ ! -f "${filename}" ]; then
       continue
@@ -21,11 +21,11 @@ function cleanAssetCache {
       rm -rf ${DIR}
     fi
   done
-  cd ~/
+  cd /root/
 }
 function optimizeJpg {
-  cd ~/Jaylapp/Webclient/src/assets/
-  MEDIA_DIR='~/cache/assets/'
+  cd /root/Jaylapp/Webclient/src/assets/
+  MEDIA_DIR='/root/cache/assets/'
   for filename in *.jpg *.jpeg; do
     if [ ! -f "${filename}" ]; then
       continue
@@ -45,11 +45,11 @@ function optimizeJpg {
 
     guetzli --quality 84 --nomemlimit ${filename} ${TARGETDIR}/${BASEFILENAME} > /dev/null 2> /dev/null &
   done
-  cd ~
+  cd /root
 }
 function optimizePng {
-  cd ~/Jaylapp/Webclient/src/assets/
-  MEDIA_DIR='~/cache/assets/'
+  cd /root/Jaylapp/Webclient/src/assets/
+  MEDIA_DIR='/root/cache/assets/'
   for filename in *.png; do
     if [ ! -f "${filename}" ]; then
       continue
@@ -69,10 +69,10 @@ function optimizePng {
 
     zopflipng --iterations=5 --filters=2me --lossy_8bit --lossy_transparent -y ${filename} ${TARGETDIR}/${BASEFILENAME} > /dev/null 2> /dev/null &
   done
-  cd ~
+  cd /root
 }
 function convertToWebp {
-  for filename in ~/cache/assets/*.png ~/cache/assets/*.jpg ~/cache/assets/*.jpeg; do
+  for filename in /root/cache/assets/*.png /root/cache/assets/*.jpg /root/cache/assets/*.jpeg; do
     if [ ! -f "${filename}" ]; then
       continue
     fi
@@ -85,7 +85,7 @@ function convertToWebp {
 }
 function optimizeAssets {
   echo "Optimizing assets"
-  mkdir -p ~/cache/assets &> /dev/null
+  mkdir -p /root/cache/assets &> /dev/null
   cleanAssetCache
   optimizeJpg
   optimizePng
@@ -94,37 +94,37 @@ function optimizeAssets {
 
 function deployDatabase {
   echo "Deploying database"
-  cd ~/Jaylapp/Database
+  cd /root/Jaylapp/Database
   bash merger.sh
   systemctl start mysqld
   mysql -uroot -p${DB_PASSWORD} < merge.sql
   systemctl stop mysqld
   rm merge.sql
-  cd ~
+  cd /root
 }
 
 function deployWebclient {
   echo "Deploying webclient"
-  cd ~/Jaylapp/Webclient
+  cd /root/Jaylapp/Webclient
   ng build --prod --aot
   html-minifier dist/Webclient/index.html --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --use-short-doctype -o dist/Webclient/index.html
-  cp ~/dist/Webclient/* /var/www/html/
-  cd ~
+  cp /root/dist/Webclient/* /var/www/html/
+  cd /root
 
   # Deploying optimized assets
   rm -rf /var/www/html/assets &> /dev/null
-  cp -r ~/cache/assets /var/www/html/
+  cp -r /root/cache/assets /var/www/html/
 }
 
 function deployBackend {
   echo "Deploying backend"
-  cd ~/Jaylapp/Backend
+  cd /root/Jaylapp/Backend
   rustup toolchain install nightly
   cargo update
   cargo build --release --all-features --jobs ${NUM_CORES}
   cargo install
-  cp ~/.cargo/backend /home/yajla/
-  cd ~
+  cp /root/.cargo/backend /home/yajla/
+  cd /root
 }
 
 function stopServices {
@@ -146,8 +146,9 @@ function startServices {
 function deploy {
   pacman -Syu --noconfirm
 
-  cd Jaylapp
+  cd /root/Jaylapp
   git pull
+  cd /root
 
   optimizeAssets
 
