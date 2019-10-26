@@ -8,6 +8,10 @@ DB_PASSWORD=$(cat /root/Keys/db_password)
 function cleanAssetCache {
   cd ~/cache/assets/
   for filename in *.png *.jpg *.jpeg; do
+    if [ ! -f "${filename}" ]; do
+      continue
+    fi
+
     if [[ ! -f "/root/Jaylapp/Webclient/src/assets/${filename}" ]]; then
       rm ${filename}
       rm ${filename%.*}.webp &> /dev/null # Ignore error if it had been deleted already
@@ -23,6 +27,10 @@ function optimizeJpg {
   cd ~/Jaylapp/Webclient/src/assets/
   MEDIA_DIR='~/cache/assets/'
   for filename in *.jpg *.jpeg; do
+    if [ ! -f "${filename}" ]; do
+      continue
+    fi
+
     while [ $(pgrep -c -P$$) -gt ${NUM_CORES} ]; do
         sleep 0.5;
     done
@@ -43,6 +51,10 @@ function optimizePng {
   cd ~/Jaylapp/Webclient/src/assets/
   MEDIA_DIR='~/cache/assets/'
   for filename in *.png; do
+    if [ ! -f "${filename}" ]; do
+      continue
+    fi
+
     while [ $(pgrep -c -P$$) -gt ${NUM_CORES} ]; do
         sleep 0.5;
     done
@@ -61,6 +73,10 @@ function optimizePng {
 }
 function convertToWebp {
   for filename in ~/cache/assets/*.png ~/cache/assets/*.jpg ~/cache/assets/*.jpeg; do
+    if [ ! -f "${filename}" ]; do
+      continue
+    fi
+
     while [ $(pgrep -c -P$$) -gt ${NUM_CORES} ]; do
         sleep 0.5;
     done
@@ -128,7 +144,7 @@ function startServices {
 }
 
 function deploy {
-  pacman -Syu
+  pacman -Syu --noconfirm
 
   cd Jaylapp
   git pull
