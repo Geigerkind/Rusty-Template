@@ -79,7 +79,7 @@ function initServer {
   useradd -m yajla
 
   pacman -Sy
-  pacman -S --noconfirm git npm guetzli libwebp htop clang
+  pacman -S --noconfirm git npm guetzli libwebp htop clang openssl
   installRust
   installZopfli
   npm install -g html-minifier
@@ -94,6 +94,7 @@ function initServer {
   npm install
   cd /root
   cp /root/Jaylapp/Deploy/conf/backend.service /etc/systemd/system/
+  systemctl daemon-reload
 
   initSSH
   initCertificates

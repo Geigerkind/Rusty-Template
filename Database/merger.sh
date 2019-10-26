@@ -6,6 +6,7 @@ COUNT=$(expr ${COUNT} + 0)
 
 echo "" > merge.sql
 for filename in ./*.sql; do
+  echo ${filename}
   if [ ! -f "${filename}" ]; then
     continue
   fi
