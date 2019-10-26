@@ -1,0 +1,10 @@
+[Unit]
+Description=Yajla backend application
+
+[Service]
+WorkingDirectoy=/home/yajla/
+ExecStart=backend
+User=yajla
+Type=simple
+Restart=on-failure
+RestartSec=10
