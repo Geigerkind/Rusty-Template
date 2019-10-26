@@ -3,7 +3,7 @@ Description=Yajla backend application
 
 [Service]
 WorkingDirectory=/home/yajla/
-ExecStart=backend
+ExecStart=/home/yajla/backend
 User=yajla
 Type=simple
 Restart=on-failure
