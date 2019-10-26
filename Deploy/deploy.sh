@@ -7,7 +7,7 @@ DB_PASSWORD=$(cat /root/Keys/db_password)
 
 function cleanAssetCache {
   cd ~/cache/assets/
-  for filename in *.png *.jpg *.jpeg; done
+  for filename in *.png *.jpg *.jpeg; do
     if [[ ! -f "/root/Jaylapp/Webclient/src/assets/${filename}" ]]; then
       rm ${filename}
       rm ${filename%.*}.webp &> /dev/null # Ignore error if it had been deleted already
