@@ -1,5 +1,3 @@
-# TODO: Setup automatic deploy from github
-
 HOST_USER='root'
 HOST_IP='51.38.114.9'
 NUM_CORES=$(nproc)
