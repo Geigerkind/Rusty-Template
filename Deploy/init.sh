@@ -79,7 +79,7 @@ function initServer {
   useradd -m yajla
 
   pacman -Sy
-  pacman -S --noconfirm git npm guetzli libwebp htop clang openssl
+  pacman -S --noconfirm git npm guetzli libwebp htop clang openssl pkg-config
   installRust
   installZopfli
   npm install -g html-minifier
