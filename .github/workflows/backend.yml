@@ -24,4 +24,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: docker ps
-      - run: docker exec testing /bin/bash -c "echo ${SOMETHING_ELSE} && git clone https://Geigerkind:${GITHUB_TOKEN}@github.com/Geigerkind/Jaylapp && cd Jaylapp/Backend && cargo test"
+      - run: docker exec backend_testing_mariadb_1 /bin/bash -c "echo ${SOMETHING_ELSE} && git clone https://Geigerkind:${GITHUB_TOKEN}@github.com/Geigerkind/Jaylapp && cd Jaylapp/Backend && cargo test"
