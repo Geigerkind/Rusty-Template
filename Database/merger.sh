@@ -7,12 +7,12 @@ COUNT=$(expr ${COUNT} + 0)
 if [ -f "./merge.sql" ]; then
   rm ./merge.sql
 fi
-for filename in ./*.sql; do
+for filename in ./patches/*.sql; do
   if [ ! -f "${filename}" ]; then
     continue
   fi
 
-  FILE=${filename:2}
+  FILE=${filename:10}
   VERSION=$(expr ${FILE:0:5} + 0)
 
   if (( ${VERSION} > ${COUNT} )); then
