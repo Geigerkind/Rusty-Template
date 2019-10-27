@@ -5,3 +5,7 @@ RUN pacman -Sy \
     && rustup toolchain install nightly \
     && rustup default nightly
     #&& git clone https://Geigerkind:${GITHUB_TOKEN}@github.com/Geigerkind/Jaylapp \
+
+COPY start.sh /
+
+ENTRYPOINT ["start.sh"]
