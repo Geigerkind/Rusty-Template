@@ -5,6 +5,8 @@ use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::tools::validator::Validator;
 use crate::account::material::account::Account;
 use crate::database::tools::mysql::execute::Execute;
+use crate::language::tools::get::Get;
+use crate::language::domainvalue::language::Language;
 
 pub trait Forgot {
   fn send_forgot_password(&self, params: &ValidationPair) -> bool;
@@ -24,7 +26,7 @@ impl Forgot for Account {
         let member = self.member.read().unwrap();
         let entry = member.get(&params.id).unwrap();
         forgot_id = sha3::hash(vec![&params.id.to_string(), "forgot", &entry.salt]);
-        if !mail::send(&entry.mail, "TODO: Username", "Forgot password utility", &vec!["TODO: FANCY TEXT\nhttps://jaylapp.dev/API/account/forgot/confirm/", &forgot_id].concat()){
+        if !mail::send(&entry.mail, "TODO: Username", self.dictionary.get("forgot.confirmation.subject", Language::English).as_str(), &vec![self.dictionary.get("forgot.confirmation.text", Language::English).as_str(), &forgot_id].concat()){
           return false;
         }
       }
@@ -55,7 +57,7 @@ impl Forgot for Account {
           {
             let member = self.member.read().unwrap();
             let entry = member.get(member_id).unwrap();
-            if mail::send(&entry.mail, "TODO: username", "TODO: Forgot password utility", &vec!["TODO: Text\n New Password: ", &new_pass].concat()) {
+            if mail::send(&entry.mail, "TODO: username", self.dictionary.get("forgot.information.subject", Language::English).as_str(), &vec![self.dictionary.get("forgot.information.text", Language::English).as_str(), &new_pass].concat()) {
                 return false;
             }
           }

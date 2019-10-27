@@ -5,9 +5,12 @@ use crate::database::tools::mysql::select::Select;
 
 use std::collections::HashMap;
 use std::sync::RwLock;
+use crate::language::material::dictionary::Dictionary;
+use crate::account::language::init::Init;
 
 pub struct Account {
   pub db_main: MySQLConnection,
+  pub dictionary: Dictionary,
   pub member: RwLock<HashMap<u32, Member>>,
   pub hash_to_member: RwLock<HashMap<String, u32>>,
   pub requires_mail_confirmation: RwLock<HashMap<String, u32>>,
@@ -18,8 +21,11 @@ pub struct Account {
 impl Default for Account {
   fn default() -> Self
   {
+    let dictionary = Dictionary::default();
+    Dictionary::init(&dictionary);
     Account {
       db_main: MySQLConnection::new("main"),
+      dictionary,
       member: RwLock::new(HashMap::new()),
       hash_to_member: RwLock::new(HashMap::new()),
       requires_mail_confirmation: RwLock::new(HashMap::new()),

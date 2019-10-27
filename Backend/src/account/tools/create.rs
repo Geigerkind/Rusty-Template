@@ -10,6 +10,8 @@ use crate::account::material::account::Account;
 use crate::database::tools::mysql::select::Select;
 use crate::database::tools::mysql::execute::Execute;
 use crate::database::tools::mysql::exists::Exists;
+use crate::language::tools::get::Get;
+use crate::language::domainvalue::language::Language;
 
 pub trait Create {
   fn create(&self, params: &PostCreateMember) -> bool;
@@ -90,15 +92,14 @@ impl Create for Account {
     let member = self.member.read().unwrap();
     let entry = member.get(&params.id).unwrap();
     let mail_id = sha3::hash(vec![&params.id.to_string(), &entry.salt]);
-    let subject = "TODO: Confirm your mail!";
-    let text = &vec!["TODO: Heartwarming welcome text\nhttps://jaylapp.dev/API/account/confirm/", &mail_id].concat();
+    let text = &vec![self.dictionary.get("create.confirmation.text", Language::English).as_str(), &mail_id].concat();
 
     if bypass || !entry.mail_confirmed {
       let mut requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();
       if !requires_mail_confirmation.contains_key(&mail_id) {
         requires_mail_confirmation.insert(mail_id, params.id);
       }
-      return mail::send(&entry.mail, &entry.nickname, subject, text);
+      return mail::send(&entry.mail, &entry.nickname, self.dictionary.get("create.confirmation.subject", Language::English).as_str(), text);
     }
     false
   }

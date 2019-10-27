@@ -4,6 +4,8 @@ use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::tools::validator::Validator;
 use crate::account::material::account::Account;
 use crate::database::tools::mysql::execute::Execute;
+use crate::language::tools::get::Get;
+use crate::language::domainvalue::language::Language;
 
 pub trait Delete {
   fn issue_delete(&self, params: &ValidationPair) -> bool;
@@ -23,7 +25,7 @@ impl Delete for Account {
         let member = self.member.read().unwrap();
         let entry = member.get(&params.id).unwrap();
         delete_id = sha3::hash(vec![&params.id.to_string(), "delete", &entry.salt]);
-        if !mail::send(&entry.mail, "TODO: Username", "Delete account utility", &vec!["TODO: FANCY TEXT\nhttps://jaylapp.dev/API/account/delete/confirm/", &delete_id].concat()){
+        if !mail::send(&entry.mail, "TODO: Username", self.dictionary.get("create.confirmation.subject", Language::English).as_str(), &vec![self.dictionary.get("create.confirmation.text", Language::English).as_str(), &delete_id].concat()){
           return false;
         }
       }
