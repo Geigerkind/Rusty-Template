@@ -4,7 +4,7 @@ services:
     network_mode: host
     build:
       context: ./../
-      dockerfile: ./mariadb
+      dockerfile: ./Environment/mariadb/Dockerfile
     ports:
     - '3306:3306'
     environment:
