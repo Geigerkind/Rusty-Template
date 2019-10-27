@@ -1,6 +1,7 @@
 use crate::util::sha3;
 use crate::util::mail;
 use crate::util::random;
+use crate::util::strformat;
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::tools::validator::Validator;
 use crate::account::material::account::Account;
@@ -26,8 +27,9 @@ impl Forgot for Account {
         let member = self.member.read().unwrap();
         let entry = member.get(&params.id).unwrap();
         forgot_id = sha3::hash(vec![&params.id.to_string(), "forgot", &entry.salt]);
-        if !mail::send(&entry.mail, "TODO: Username", self.dictionary.get("forgot.confirmation.subject", Language::English), vec![self.dictionary.get("forgot.confirmation.text", Language::English).as_str(), &forgot_id].concat()){
-          return false;
+        if !mail::send(&entry.mail, "TODO: Username", self.dictionary.get("forgot.confirmation.subject", Language::English),
+          strformat::fmt(self.dictionary.get("forgot.confirmation.text", Language::English), &vec![&forgot_id])){
+            return false;
         }
       }
       if !self.db_main.execute_wparams("UPDATE member SET forgot_password=1 WHERE id=:id", params!("id" => params.id)) {
@@ -57,7 +59,8 @@ impl Forgot for Account {
           {
             let member = self.member.read().unwrap();
             let entry = member.get(member_id).unwrap();
-            if mail::send(&entry.mail, "TODO: username", self.dictionary.get("forgot.information.subject", Language::English), vec![self.dictionary.get("forgot.information.text", Language::English).as_str(), &new_pass].concat()) {
+            if mail::send(&entry.mail, "TODO: username", self.dictionary.get("forgot.information.subject", Language::English),
+              strformat::fmt(self.dictionary.get("forgot.information.text", Language::English), &vec![&new_pass])) {
                 return false;
             }
           }

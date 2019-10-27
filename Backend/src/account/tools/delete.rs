@@ -1,5 +1,6 @@
 use crate::util::sha3;
 use crate::util::mail;
+use crate::util::strformat;
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::tools::validator::Validator;
 use crate::account::material::account::Account;
@@ -25,8 +26,9 @@ impl Delete for Account {
         let member = self.member.read().unwrap();
         let entry = member.get(&params.id).unwrap();
         delete_id = sha3::hash(vec![&params.id.to_string(), "delete", &entry.salt]);
-        if !mail::send(&entry.mail, "TODO: Username", self.dictionary.get("create.confirmation.subject", Language::English), vec![self.dictionary.get("create.confirmation.text", Language::English).as_str(), &delete_id].concat()){
-          return false;
+        if !mail::send(&entry.mail, "TODO: Username", self.dictionary.get("create.confirmation.subject", Language::English),
+          strformat::fmt(self.dictionary.get("create.confirmation.text", Language::English), &vec![&delete_id])){
+            return false;
         }
       }
       if !self.db_main.execute_wparams("UPDATE member SET delete_account=1 WHERE id=:id", params!("id" => params.id)) {
