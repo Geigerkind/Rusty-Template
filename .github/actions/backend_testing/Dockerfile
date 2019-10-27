@@ -8,4 +8,4 @@ RUN pacman -Sy \
 
 COPY start.sh /
 
-ENTRYPOINT ["start.sh"]
+ENTRYPOINT ["/start.sh"]
