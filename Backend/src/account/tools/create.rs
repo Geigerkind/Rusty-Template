@@ -13,39 +13,45 @@ use crate::database::tools::mysql::execute::Execute;
 use crate::database::tools::mysql::exists::Exists;
 use crate::language::tools::get::Get;
 use crate::language::domainvalue::language::Language;
+use crate::account::domainvalue::account_information::AccountInformation;
+use crate::account::tools::get::GetAccountInformation;
 
 pub trait Create {
-  fn create(&self, params: &PostCreateMember) -> bool;
+  fn create(&self, params: &PostCreateMember) -> Result<AccountInformation, String>;
   fn send_confirmation(&self, params: &ValidationPair, bypass: bool) -> bool;
   fn confirm(&self, id: &str) -> bool;
 }
 
 impl Create for Account {
-  fn create(&self, params: &PostCreateMember) -> bool
+  fn create(&self, params: &PostCreateMember) -> Result<AccountInformation, String>
   {
+    if params.nickname.is_empty() {
+      return Err("TODO: False".to_string());
+    }
+
     if params.mail.is_empty() {
-      return false;
+      return Err("TODO: False".to_string());
     }
 
     if params.password.is_empty() {
-      return false;
+      return Err("TODO: False".to_string());
     }
 
     if !validator::mail(&params.mail) {
-      return false;
+      return Err("TODO: False".to_string());
     }
 
     // Double spending check
     // We dont validate through the internal data structure because we may have race conditions
-    if self.db_main.exists_wparams("SELECT id FROM member WHERE LOWER(mail) = :mail LIMIT 1", params!("mail" => params.mail.clone().to_lowercase())) 
+    if self.db_main.exists_wparams("SELECT id FROM member WHERE LOWER(mail) = :mail LIMIT 1", params!("mail" => params.mail.clone().to_lowercase()))
     {
-      return false;
+      return Err("TODO: False".to_string());
     }
 
     // Also prevent the same nickname
-    if self.db_main.exists_wparams("SELECT id FROM member WHERE LOWER(nickname) = :nickname LIMIT 1", params!("nickname" => params.nickname.clone().to_lowercase())) 
+    if self.db_main.exists_wparams("SELECT id FROM member WHERE LOWER(nickname) = :nickname LIMIT 1", params!("nickname" => params.nickname.clone().to_lowercase()))
     {
-      return false;
+      return Err("TODO: False".to_string());
     }
 
     let salt: String = random::alphanumeric(16);
@@ -80,8 +86,9 @@ impl Create for Account {
       }
 
       self.send_confirmation(&ValidationPair{hash: String::new(), id}, true);
+      return Ok(self.get(id).unwrap());
     }
-    true
+    return Err("TODO: False".to_string());
   }
 
   fn send_confirmation(&self, params: &ValidationPair, bypass: bool) -> bool

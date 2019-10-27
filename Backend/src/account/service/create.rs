@@ -15,7 +15,10 @@ pub struct PostCreateMember{
 #[post("/create/send", data = "<params>")]
 pub fn create(me: State<Account>, params: Json<PostCreateMember>) -> content::Json<String>
 {
-  content::Json(me.create(&params).to_string())
+  match me.create(&params) {
+    Ok(member) => content::Json(serde_json::to_string(&member).unwrap()),
+    Err(error_str) => content::Json(error_str)
+  }
 }
 
 #[get("/create/confirm/<id>")]

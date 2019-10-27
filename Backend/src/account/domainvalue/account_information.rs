@@ -1,5 +1,7 @@
 #[derive(Serialize)]
 pub struct AccountInformation {
-    pub mail: String,
-    pub xp: u32
+  pub id: u32,
+  pub mail: String,
+  pub mail_confirmed: bool,
+  pub xp: u32
 }

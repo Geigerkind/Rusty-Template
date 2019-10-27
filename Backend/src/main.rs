@@ -3,6 +3,7 @@
 #[macro_use] extern crate mysql;
 #[macro_use] extern crate serde_derive;
 #[macro_use] extern crate lazy_static;
+extern crate serde_json;
 
 pub mod util;
 pub mod account;

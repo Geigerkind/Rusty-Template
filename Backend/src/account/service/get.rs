@@ -1,5 +1,5 @@
 use crate::account::material::account::Account;
-use crate::account::tools::get::Get;
+use crate::account::tools::get::GetAccountInformation;
 
 use rocket::response::content;
 use rocket::State;
