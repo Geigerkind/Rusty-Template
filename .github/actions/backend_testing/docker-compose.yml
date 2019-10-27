@@ -3,7 +3,7 @@ services:
   mariadb:
     image: mariadb:10.4.8
     volumes:
-    - ./../Database/patches:/docker-entrypoint-initdb.d
+    - ./../../../Database/patches:/docker-entrypoint-initdb.d
     ports:
     - '3306:3306'
     environment:
@@ -21,6 +21,7 @@ services:
     - SERVER_HOSTNAME=jaylapp.dev
   testing:
     build:
+      context: './'
       dockerfile: './Dockerfile'
     environment:
     - GITHUB_TOKEN=${GITHUB_TOKEN}
