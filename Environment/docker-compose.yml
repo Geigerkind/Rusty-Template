@@ -1,8 +1,10 @@
-version: '3'
+version: '3.6'
 services:
   mariadb:
     network_mode: host
-    build: ./mariadb
+    build:
+      context: ./../
+      dockerfile: ./mariadb
     ports:
     - '3306:3306'
     environment:
