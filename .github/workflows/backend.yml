@@ -19,13 +19,6 @@ jobs:
     name: Testing
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
-      - run: cd Environment && docker-compose up -d
-      - uses: actions-rs/cargo@v1.0.1
-        with:
-          toolchain: nightly
-          command: test
-          args: --manifest-path Backend/Cargo.toml
+      - run: cd .github/actions/backend_testing && docker-compose up -d
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
