@@ -26,32 +26,32 @@ impl Create for Account {
   fn create(&self, params: &PostCreateMember) -> Result<AccountInformation, String>
   {
     if params.nickname.is_empty() {
-      return Err("TODO: False".to_string());
+      return Err(self.dictionary.get("create.error.empty.nickname", Language::English));
     }
 
     if params.mail.is_empty() {
-      return Err("TODO: False".to_string());
+      return Err(self.dictionary.get("create.error.empty.mail", Language::English));
     }
 
     if params.password.is_empty() {
-      return Err("TODO: False".to_string());
+      return Err(self.dictionary.get("create.error.empty.password", Language::English));
     }
 
     if !validator::mail(&params.mail) {
-      return Err("TODO: False".to_string());
+      return Err(self.dictionary.get("create.error.invalid.mail", Language::English));
     }
 
     // Double spending check
     // We dont validate through the internal data structure because we may have race conditions
     if self.db_main.exists_wparams("SELECT id FROM member WHERE LOWER(mail) = :mail LIMIT 1", params!("mail" => params.mail.clone().to_lowercase()))
     {
-      return Err("TODO: False".to_string());
+      return Err(self.dictionary.get("create.error.taken.mail", Language::English));
     }
 
     // Also prevent the same nickname
     if self.db_main.exists_wparams("SELECT id FROM member WHERE LOWER(nickname) = :nickname LIMIT 1", params!("nickname" => params.nickname.clone().to_lowercase()))
     {
-      return Err("TODO: False".to_string());
+      return Err(self.dictionary.get("create.error.taken.nickname", Language::English));
     }
 
     let salt: String = random::alphanumeric(16);
@@ -88,7 +88,7 @@ impl Create for Account {
       self.send_confirmation(&ValidationPair{hash: String::new(), id}, true);
       return Ok(self.get(id).unwrap());
     }
-    return Err("TODO: False".to_string());
+    return Err(self.dictionary.get("create.error.unknown", Language::English));
   }
 
   fn send_confirmation(&self, params: &ValidationPair, bypass: bool) -> bool
