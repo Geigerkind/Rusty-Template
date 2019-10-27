@@ -20,6 +20,7 @@ services:
     - SMTP_PASSWORD=jaylapp123
     - SERVER_HOSTNAME=jaylapp.dev
   testing:
+    container_name: testing
     build:
       context: './'
       dockerfile: './Dockerfile'
