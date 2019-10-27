@@ -3,6 +3,7 @@ FROM archlinux
 RUN pacman -Sy \
     && pacman -S --noconfirm git rustup \
     && echo ${GITHUB_TOKEN} \
-    && git clone https://Geigerkind:${GITHUB_TOKEN}@github.com/Geigerkind/Jaylapp \
+    && echo ${SOMETHING_ELSE} \
     && rustup toolchain install nightly \
     && rustup default nightly
+    #&& git clone https://Geigerkind:${GITHUB_TOKEN}@github.com/Geigerkind/Jaylapp \
