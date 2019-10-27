@@ -1,6 +1,6 @@
 use crate::util::sha3;
 use crate::util::validator;
-use crate::account::dto::update::PostChangeStr;
+use crate::account::service::update::PostChangeStr;
 use crate::database::tools::mysql::execute::Execute;
 use crate::account::tools::validator::Validator;
 use crate::account::material::account::Account;

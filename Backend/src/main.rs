@@ -30,10 +30,10 @@ fn main() {
   let mut igniter = rocket::ignite();
   igniter = igniter.manage(Backend::new());
   igniter = igniter.mount("/API/account/", routes![
-    account::dto::delete::request, account::dto::delete::confirm,
-    account::dto::create::create, account::dto::create::confirm, account::dto::create::resend_confirm,
-    account::dto::get::get,
-    account::dto::forgot::receive_confirmation, account::dto::forgot::send_confirmation,
-    account::dto::update::mail, account::dto::update::password, account::dto::update::nickname]);
+    account::service::delete::request, account::service::delete::confirm,
+    account::service::create::create, account::service::create::confirm, account::service::create::resend_confirm,
+    account::service::get::get,
+    account::service::forgot::receive_confirmation, account::service::forgot::send_confirmation,
+    account::service::update::mail, account::service::update::password, account::service::update::nickname]);
   igniter.launch();
 }
