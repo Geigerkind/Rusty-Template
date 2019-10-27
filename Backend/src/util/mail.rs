@@ -5,10 +5,10 @@ use lettre_email::EmailBuilder;
 use lettre::Transport;
 use lettre::smtp::SmtpClient;
 
-pub fn send(to: &str, username: &str, subject: &str, text: &str) -> bool
+pub fn send(recipient: &str, username: &str, subject: String, text: String) -> bool
 {
   let email = EmailBuilder::new()
-    .to((to, username))
+    .to((recipient, username))
     .from("mail@jaylapp.dev")
     .subject(subject)
     .text(text)

@@ -92,14 +92,14 @@ impl Create for Account {
     let member = self.member.read().unwrap();
     let entry = member.get(&params.id).unwrap();
     let mail_id = sha3::hash(vec![&params.id.to_string(), &entry.salt]);
-    let text = &vec![self.dictionary.get("create.confirmation.text", Language::English).as_str(), &mail_id].concat();
+    let text = vec![self.dictionary.get("create.confirmation.text", Language::English).as_str(), &mail_id].concat();
 
     if bypass || !entry.mail_confirmed {
       let mut requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();
       if !requires_mail_confirmation.contains_key(&mail_id) {
         requires_mail_confirmation.insert(mail_id, params.id);
       }
-      return mail::send(&entry.mail, &entry.nickname, self.dictionary.get("create.confirmation.subject", Language::English).as_str(), text);
+      return mail::send(&entry.mail, &entry.nickname, self.dictionary.get("create.confirmation.subject", Language::English), text);
     }
     false
   }

@@ -25,7 +25,7 @@ impl Delete for Account {
         let member = self.member.read().unwrap();
         let entry = member.get(&params.id).unwrap();
         delete_id = sha3::hash(vec![&params.id.to_string(), "delete", &entry.salt]);
-        if !mail::send(&entry.mail, "TODO: Username", self.dictionary.get("create.confirmation.subject", Language::English).as_str(), &vec![self.dictionary.get("create.confirmation.text", Language::English).as_str(), &delete_id].concat()){
+        if !mail::send(&entry.mail, "TODO: Username", self.dictionary.get("create.confirmation.subject", Language::English), vec![self.dictionary.get("create.confirmation.text", Language::English).as_str(), &delete_id].concat()){
           return false;
         }
       }

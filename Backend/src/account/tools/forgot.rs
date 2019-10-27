@@ -26,7 +26,7 @@ impl Forgot for Account {
         let member = self.member.read().unwrap();
         let entry = member.get(&params.id).unwrap();
         forgot_id = sha3::hash(vec![&params.id.to_string(), "forgot", &entry.salt]);
-        if !mail::send(&entry.mail, "TODO: Username", self.dictionary.get("forgot.confirmation.subject", Language::English).as_str(), &vec![self.dictionary.get("forgot.confirmation.text", Language::English).as_str(), &forgot_id].concat()){
+        if !mail::send(&entry.mail, "TODO: Username", self.dictionary.get("forgot.confirmation.subject", Language::English), vec![self.dictionary.get("forgot.confirmation.text", Language::English).as_str(), &forgot_id].concat()){
           return false;
         }
       }
@@ -57,7 +57,7 @@ impl Forgot for Account {
           {
             let member = self.member.read().unwrap();
             let entry = member.get(member_id).unwrap();
-            if mail::send(&entry.mail, "TODO: username", self.dictionary.get("forgot.information.subject", Language::English).as_str(), &vec![self.dictionary.get("forgot.information.text", Language::English).as_str(), &new_pass].concat()) {
+            if mail::send(&entry.mail, "TODO: username", self.dictionary.get("forgot.information.subject", Language::English), vec![self.dictionary.get("forgot.information.text", Language::English).as_str(), &new_pass].concat()) {
                 return false;
             }
           }
