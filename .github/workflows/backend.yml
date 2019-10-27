@@ -23,4 +23,5 @@ jobs:
       - run: cd .github/actions/backend_testing && docker-compose up -d
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: docker exec container:testing /bin/bash -c "echo ${SOMETHING_ELSE} && git clone https://Geigerkind:${GITHUB_TOKEN}@github.com/Geigerkind/Jaylapp && cd Jaylapp/Backend && cargo test"
+      - run: docker ps
+      - run: docker exec testing /bin/bash -c "echo ${SOMETHING_ELSE} && git clone https://Geigerkind:${GITHUB_TOKEN}@github.com/Geigerkind/Jaylapp && cd Jaylapp/Backend && cargo test"
