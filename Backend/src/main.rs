@@ -7,6 +7,7 @@
 pub mod util;
 pub mod account;
 pub mod database;
+pub mod language;
 
 use account::material::account::Account;
 
