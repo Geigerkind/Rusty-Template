@@ -21,8 +21,6 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - run: cd .github/actions/backend_testing && docker-compose up -d
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: docker exec container:testing /bin/bash -c "cd Jaylapp/Backend && cargo test"
