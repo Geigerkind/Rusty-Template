@@ -23,6 +23,8 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: nightly
+      - run: ls -l
+      - run: cd Environment && docker-compose up -d
       - uses: actions-rs/cargo@v1.0.1
         with:
           toolchain: nightly
