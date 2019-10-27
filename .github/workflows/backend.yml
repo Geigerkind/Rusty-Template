@@ -24,4 +24,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: docker ps
-      - run: docker exec backend_testing_mariadb_1 /bin/bash -c "cd Jaylapp/Backend && cargo test"
+      - run: docker exec backend_testing_testing_1 /bin/bash -c "cd Jaylapp/Backend && cargo test"

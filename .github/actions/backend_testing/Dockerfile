@@ -8,6 +8,4 @@ RUN pacman -Sy \
 
 COPY start.sh /
 
-ENTRYPOINT ["/start.sh"]
-
-CMD ["/bin/bash"]
+CMD ["/bin/bash", "/start.sh"]
