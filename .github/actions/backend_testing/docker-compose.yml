@@ -15,9 +15,3 @@ services:
     - SMTP_USERNAME=jaylapp@gmail.com
     - SMTP_PASSWORD=jaylapp123
     - SERVER_HOSTNAME=jaylapp.dev
-  testing:
-    build:
-      context: './'
-      dockerfile: './Dockerfile'
-    environment:
-    - GITHUB_TOKEN=${GITHUB_TOKEN}

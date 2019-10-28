@@ -23,7 +23,9 @@ jobs:
       - run: cd .github/actions/backend_testing && docker-compose up -d
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: docker ps
-      - run: docker run backend_testing_testing_1
+      - run: docker build docker_testing .github/actions/backend_testing
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: docker_testing
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
