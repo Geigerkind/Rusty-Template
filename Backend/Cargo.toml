@@ -17,6 +17,7 @@ lettre = "*"
 lettre_email = "*"
 regex = "*"
 lazy_static = "*"
+dotenv = "*"
 
 [dependencies.rocket_contrib]
 version = "*"
