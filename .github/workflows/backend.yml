@@ -26,6 +26,6 @@ jobs:
       - run: docker build -t docker_testing .github/actions/backend_testing
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: docker run docker_testing -e GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+      - run: docker run -e GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}" docker_testing
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
