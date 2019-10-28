@@ -1,10 +1,9 @@
 FROM archlinux
 
 RUN pacman -Sy \
-    && pacman -S --noconfirm git rustup \
+    && pacman -S --noconfirm git rustup clang \
     && rustup toolchain install nightly \
     && rustup default nightly
-    #&& git clone https://Geigerkind:${GITHUB_TOKEN}@github.com/Geigerkind/Jaylapp \
 
 COPY start.sh /
 
