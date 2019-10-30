@@ -31,9 +31,7 @@ impl Delete for Account {
             return false;
         }
       }
-      if !self.db_main.execute_wparams("UPDATE member SET delete_account=1 WHERE id=:id", params!("id" => params.id)) {
-        return false;
-      } else {
+      if self.db_main.execute_wparams("UPDATE member SET delete_account=1 WHERE id=:id", params!("id" => params.id)) {
         let mut member = self.member.write().unwrap();
         let entry = member.get_mut(&params.id).unwrap();
         entry.delete_account = true;
