@@ -125,7 +125,7 @@ function deployBackend {
   cargo build --release --all-features --jobs ${NUM_CORES}
   cargo install --path ./ --force
   cp /root/.cargo/bin/backend /home/yajla/
-  cp .env /home/yajla/.env
+  cp .env_prod /home/yajla/.env
   cd /root
 }
 
