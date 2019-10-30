@@ -17,10 +17,10 @@ mod tests {
       password: "Password123456".to_string()
     };
 
-    //let account_information = account.create(&post_obj).unwrap();
-    //assert_eq!(account_information.mail, acc_mail);
+    let account_information = account.create(&post_obj).unwrap();
+    assert_eq!(account_information.mail, acc_mail);
 
-    //account.db_main.execute("DELETE FROM member WHERE mail='mail@jaylapp.dev'");
+    account.db_main.execute("DELETE FROM member WHERE mail='mail@jaylapp.dev'");
   }
 
   #[test]
