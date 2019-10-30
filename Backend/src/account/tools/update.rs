@@ -4,11 +4,12 @@ use crate::account::service::update::PostChangeStr;
 use crate::database::tools::mysql::execute::Execute;
 use crate::account::tools::validator::Validator;
 use crate::account::material::account::Account;
+use crate::account::domainvalue::validation_pair::ValidationPair;
 
 pub trait Update {
   fn change_name(&self, params: &PostChangeStr) -> bool;
-  fn change_password(&self, params: &PostChangeStr) -> Option<String>;
-  fn change_mail(&self, params: &PostChangeStr) -> Option<String>;
+  fn change_password(&self, params: &PostChangeStr) -> Option<ValidationPair>;
+  fn change_mail(&self, params: &PostChangeStr) -> Option<ValidationPair>;
 }
 
 impl Update for Account {
@@ -45,7 +46,7 @@ impl Update for Account {
     false
   }
 
-  fn change_password(&self, params: &PostChangeStr) -> Option<String>
+  fn change_password(&self, params: &PostChangeStr) -> Option<ValidationPair>
   {
     if !self.validate(&params.validation) {
       return None; // Rather return errors?
@@ -79,7 +80,7 @@ impl Update for Account {
     None
   }
 
-  fn change_mail(&self, params: &PostChangeStr) -> Option<String>
+  fn change_mail(&self, params: &PostChangeStr) -> Option<ValidationPair>
   {
     if !self.validate(&params.validation) {
       return None; // Rather return errors?

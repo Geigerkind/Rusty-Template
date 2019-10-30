@@ -15,7 +15,7 @@ pub struct PostLogin{
 pub fn login(me: State<Account>, params: Json<PostLogin>) -> content::Json<String>
 {
   match me.login(&params) {
-    Some(hash) => content::Json(hash),
-    None => content::Json("Error?!".to_string()) // 404 ?
+    Ok(hash) => content::Json(serde_json::to_string(&hash).unwrap()),
+    Err(error_str) => content::Json(error_str)
   }
 }

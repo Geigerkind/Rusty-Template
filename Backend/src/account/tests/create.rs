@@ -17,8 +17,8 @@ mod tests {
       password: "Password123456".to_string()
     };
 
-    let account_information = account.create(&post_obj).unwrap();
-    assert_eq!(account_information.mail, acc_mail);
+    let login = account.create(&post_obj);
+    assert!(login.is_ok());
 
     account.db_main.execute("DELETE FROM member WHERE mail='mail@jaylapp.dev'");
   }
@@ -117,15 +117,15 @@ mod tests {
       password: "Password123456".to_string()
     };
 
-    let account_information = account.create(&post_obj).unwrap();
+    let login = account.create(&post_obj).unwrap();
     let mail_id;
     {
       let member_guard = account.member.read().unwrap();
-      let member = member_guard.get(&account_information.id).unwrap();
-      mail_id = sha3::hash(vec![&account_information.id.to_string(), &member.salt]);
+      let member = member_guard.get(&login.id).unwrap();
+      mail_id = sha3::hash(vec![&login.id.to_string(), &member.salt]);
     }
     account.confirm(&mail_id);
-    let confirmed_information = account.get(account_information.id).unwrap();
+    let confirmed_information = account.get(login.id).unwrap();
     assert!(confirmed_information.mail_confirmed);
 
     account.db_main.execute("DELETE FROM member WHERE mail='someNameWuuuuh@jaylapp.dev'");

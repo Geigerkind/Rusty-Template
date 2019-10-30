@@ -11,19 +11,19 @@ use crate::account::material::account::Account;
 use crate::database::tools::mysql::select::Select;
 use crate::database::tools::mysql::execute::Execute;
 use crate::database::tools::mysql::exists::Exists;
+use crate::account::service::login::PostLogin;
 use crate::language::tools::get::Get;
 use crate::language::domainvalue::language::Language;
-use crate::account::domainvalue::account_information::AccountInformation;
-use crate::account::tools::get::GetAccountInformation;
+use crate::account::tools::login::Login;
 
 pub trait Create {
-  fn create(&self, params: &PostCreateMember) -> Result<AccountInformation, String>;
+  fn create(&self, params: &PostCreateMember) -> Result<ValidationPair, String>;
   fn send_confirmation(&self, params: &ValidationPair, bypass: bool) -> bool;
   fn confirm(&self, id: &str) -> bool;
 }
 
 impl Create for Account {
-  fn create(&self, params: &PostCreateMember) -> Result<AccountInformation, String>
+  fn create(&self, params: &PostCreateMember) -> Result<ValidationPair, String>
   {
     if params.nickname.is_empty() {
       return Err(self.dictionary.get("create.error.empty.nickname", Language::English));
@@ -73,7 +73,7 @@ impl Create for Account {
         member.insert(id, Member {
           id,
           nickname: params.nickname.to_owned(),
-          mail: params.mail.to_owned(),
+          mail: params.mail.clone(),
           password: pass,
           salt,
           xp: 0,
@@ -86,7 +86,10 @@ impl Create for Account {
       }
 
       self.send_confirmation(&ValidationPair{hash: String::new(), id}, true);
-      return Ok(self.get(id).unwrap());
+      return self.login(&PostLogin {
+        mail: params.mail.to_owned(),
+        password: params.password.clone()
+      });
     }
     return Err(self.dictionary.get("create.error.unknown", Language::English));
   }

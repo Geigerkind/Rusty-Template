@@ -11,7 +11,7 @@ pub trait Validator {
   fn validate(&self, params: &ValidationPair) -> bool;
 
   fn helper_clear_validation(&self, member_id: u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>);
-  fn helper_create_validation(&self, member_id: u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>) -> String;
+  fn helper_create_validation(&self, member_id: u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>) -> ValidationPair;
 }
 
 impl Validator for Account {
@@ -73,7 +73,7 @@ impl Validator for Account {
     }
   }
 
-  fn helper_create_validation(&self, member_id: u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>) -> String
+  fn helper_create_validation(&self, member_id: u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>) -> ValidationPair
   {
     let entry = member.get_mut(&member_id).unwrap();
 
@@ -107,6 +107,9 @@ impl Validator for Account {
       "id" => member_id
     ));
 
-    hash
+    ValidationPair {
+      hash,
+      id: member_id
+    }
   }
 }

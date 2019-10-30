@@ -14,7 +14,7 @@ pub struct PostChangeStr {
 #[post("/update/password", data = "<params>")]
 pub fn password(me: State<Account>, params: Json<PostChangeStr>) -> content::Json<String>
 {
-  content::Json(me.change_password(&params).unwrap())
+  content::Json(serde_json::to_string(&me.change_password(&params).unwrap()).unwrap())
 }
 #[post("/update/nickname", data = "<params>")]
 pub fn nickname(me: State<Account>, params: Json<PostChangeStr>) -> content::Json<String>
@@ -24,5 +24,5 @@ pub fn nickname(me: State<Account>, params: Json<PostChangeStr>) -> content::Jso
 #[post("/update/mail", data = "<params>")]
 pub fn mail(me: State<Account>, params: Json<PostChangeStr>) -> content::Json<String>
 {
-  content::Json(me.change_mail(&params).unwrap())
+  content::Json(serde_json::to_string(&me.change_mail(&params).unwrap()).unwrap())
 }

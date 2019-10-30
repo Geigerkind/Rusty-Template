@@ -2,13 +2,14 @@ use crate::util::sha3;
 use crate::account::service::login::PostLogin;
 use crate::account::tools::validator::Validator;
 use crate::account::material::account::Account;
+use crate::account::domainvalue::validation_pair::ValidationPair;
 
 pub trait Login {
-  fn login(&self, params: &PostLogin) -> Option<String>;
+  fn login(&self, params: &PostLogin) -> Result<ValidationPair, String>;
 }
 
 impl Login for Account {
-  fn login(&self, params: &PostLogin) -> Option<String>
+  fn login(&self, params: &PostLogin) -> Result<ValidationPair, String>
   {
     // Do not change the order else we might end up in a dead lock!
     let mut hash_to_member = self.hash_to_member.write().unwrap();
@@ -22,8 +23,10 @@ impl Login for Account {
       entry_key = *id;
       break
     }
-    if entry_key == 0 { return None; }
+    if entry_key == 0 {
+      return Err("TODO: SOME ERR!".to_string());
+    }
 
-    Some(self.helper_create_validation(entry_key, &mut(*hash_to_member), &mut(*member)))
+    Ok(self.helper_create_validation(entry_key, &mut(*hash_to_member), &mut(*member)))
   }
 }
