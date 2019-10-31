@@ -1,5 +1,7 @@
 use crate::account::domainvalue::account_information::AccountInformation;
 use crate::account::material::account::Account;
+use crate::language::tools::get::Get;
+use crate::language::domainvalue::language::Language;
 
 pub trait GetAccountInformation {
   fn get(&self, id: u32) -> Result<AccountInformation, String>;
@@ -17,7 +19,7 @@ impl GetAccountInformation for Account {
         mail_confirmed: entry.mail_confirmed,
         xp: entry.xp
       }),
-      None => Err("TODO: Some err".to_string())
+      None => Err(self.dictionary.get("get.error.nomember", Language::English))
     }
   }
 }

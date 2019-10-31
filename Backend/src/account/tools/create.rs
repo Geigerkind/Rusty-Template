@@ -38,11 +38,11 @@ impl Create for Account {
     }
 
     if !validator::mail(&params.mail) {
-      return Err(self.dictionary.get("create.error.invalid.mail", Language::English));
+      return Err(self.dictionary.get("general.error.invalid.mail", Language::English));
     }
 
     if !validator::nickname(&params.nickname) {
-      return Err(self.dictionary.get("create.error.invalid.nickname", Language::English));
+      return Err(self.dictionary.get("general.error.invalid.nickname", Language::English));
     }
 
     // Double spending check
@@ -95,7 +95,7 @@ impl Create for Account {
         password: params.password.clone()
       });
     }
-    return Err(self.dictionary.get("create.error.unknown", Language::English));
+    return Err(self.dictionary.get("general.error.unknown", Language::English));
   }
 
   fn send_confirmation(&self, params: &ValidationPair, bypass: bool) -> bool

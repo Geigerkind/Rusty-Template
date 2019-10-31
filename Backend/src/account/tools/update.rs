@@ -7,6 +7,8 @@ use crate::account::material::account::Account;
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::domainvalue::account_information::AccountInformation;
 use crate::account::tools::get::GetAccountInformation;
+use crate::language::tools::get::Get;
+use crate::language::domainvalue::language::Language;
 
 pub trait Update {
   fn change_name(&self, params: &PostChangeStr) -> Result<AccountInformation, String>;
@@ -18,11 +20,11 @@ impl Update for Account {
   fn change_name(&self, params: &PostChangeStr) -> Result<AccountInformation, String>
   {
     if !self.validate(&params.validation) {
-      return Err("Some err".to_string());
+      return Err(self.dictionary.get("general.error.validate", Language::English));
     }
 
     if !validator::nickname(&params.content) {
-      return Err("Some err".to_string());
+      return Err(self.dictionary.get("general.error.invalid.nickname", Language::English));
     }
 
     // Check if the name exists already
@@ -31,7 +33,7 @@ impl Update for Account {
       if entry.nickname.to_lowercase() == lower_name
         && entry.id != params.validation.id
       {
-        return Err("Some err".to_string());
+        return Err(self.dictionary.get("update.error.name_taken", Language::English));
       }
     }
 
@@ -47,17 +49,17 @@ impl Update for Account {
       return Ok(self.get(params.validation.id).unwrap());
     }
 
-    Err("Some err".to_string())
+    Err(self.dictionary.get("general.error.unknown", Language::English))
   }
 
   fn change_password(&self, params: &PostChangeStr) -> Result<ValidationPair, String>
   {
     if !self.validate(&params.validation) {
-      return Err("Some err".to_string());
+      return Err(self.dictionary.get("general.error.validate", Language::English));
     }
 
     if params.content.is_empty() {
-      return Err("Some err".to_string());
+      return Err(self.dictionary.get("general.error.invalid.password", Language::English));
     }
 
     let hash: String;
@@ -81,17 +83,17 @@ impl Update for Account {
       return Ok(self.helper_create_validation(params.validation.id, &mut(*hash_to_member), &mut(*member)));
     }
 
-    Err("Some err".to_string())
+    Err(self.dictionary.get("general.error.unknown", Language::English))
   }
 
   fn change_mail(&self, params: &PostChangeStr) -> Result<ValidationPair, String>
   {
     if !self.validate(&params.validation) {
-      return Err("Some err".to_string());
+      return Err(self.dictionary.get("general.error.validate", Language::English));
     }
 
     if !validator::mail(&params.content) {
-      return Err("Some err".to_string());
+      return Err(self.dictionary.get("general.error.invalid.mail", Language::English));
     }
 
     // Check if the mail exists already
@@ -100,7 +102,7 @@ impl Update for Account {
       if entry.mail.to_lowercase() == lower_mail
         && entry.id != params.validation.id
       {
-        return Err("Some err".to_string());
+        return Err(self.dictionary.get("update.error.mail_taken", Language::English));
       }
     }
 
@@ -118,6 +120,6 @@ impl Update for Account {
       return Ok(self.helper_create_validation(params.validation.id, &mut(*hash_to_member), &mut(*member)));
     }
 
-    Err("Some err".to_string())
+    Err(self.dictionary.get("general.error.unknown", Language::English))
   }
 }

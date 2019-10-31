@@ -3,6 +3,8 @@ use crate::account::service::login::PostLogin;
 use crate::account::tools::validator::Validator;
 use crate::account::material::account::Account;
 use crate::account::domainvalue::validation_pair::ValidationPair;
+use crate::language::tools::get::Get;
+use crate::language::domainvalue::language::Language;
 
 pub trait Login {
   fn login(&self, params: &PostLogin) -> Result<ValidationPair, String>;
@@ -24,7 +26,7 @@ impl Login for Account {
       break
     }
     if entry_key == 0 {
-      return Err("TODO: SOME ERR!".to_string());
+      return Err(self.dictionary.get("login.error.credentials", Language::English));
     }
 
     Ok(self.helper_create_validation(entry_key, &mut(*hash_to_member), &mut(*member)))

@@ -19,7 +19,7 @@ impl Delete for Account {
   fn issue_delete(&self, params: &ValidationPair) -> Result<AccountInformation, String>
   {
     if !self.validate(params) {
-      return Err("TODO: Some err".to_string())
+      return Err(self.dictionary.get("general.error.validate", Language::English))
     }
 
     let delete_id: String;
@@ -30,7 +30,7 @@ impl Delete for Account {
         delete_id = sha3::hash(vec![&params.id.to_string(), "delete", &entry.salt]);
         if !mail::send(&entry.mail, "TODO: Username", self.dictionary.get("create.confirmation.subject", Language::English),
           strformat::fmt(self.dictionary.get("create.confirmation.text", Language::English), &vec![&delete_id])){
-            return Err("TODO: Some Err".to_string());
+            return Err(self.dictionary.get("general.error.mail_send", Language::English));
         }
       }
       if self.db_main.execute_wparams("UPDATE member SET delete_account=1 WHERE id=:id", params!("id" => params.id)) {
@@ -65,7 +65,7 @@ impl Delete for Account {
             removable = true;
           }
         },
-        None => return Err("TODO: Some Err".to_string())
+        None => return Err(self.dictionary.get("delete.error.no_delete_issued", Language::English))
       }
     }
     if removable {
@@ -74,6 +74,6 @@ impl Delete for Account {
       return Ok(());
     }
 
-    Err("TODO: Some Err".to_string())
+    Err(self.dictionary.get("delete.error.user_not_removable", Language::English))
   }
 }
