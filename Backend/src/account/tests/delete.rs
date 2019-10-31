@@ -15,7 +15,7 @@ mod tests {
       id: 42
     };
     let issue_delete = account.issue_delete(&val_pair);
-    assert!(!issue_delete);
+    assert!(issue_delete.is_err());
   }
 
   #[test]
@@ -29,7 +29,7 @@ mod tests {
 
     let val_pair = account.create(&post_obj).unwrap();
     let issue_delete = account.issue_delete(&val_pair);
-    assert!(issue_delete);
+    assert!(issue_delete.is_ok());
 
     account.db_main.execute("DELETE FROM member WHERE mail='hdfgfdgdfd@jaylappTest.dev'");
   }

@@ -15,6 +15,9 @@ pub fn confirm(me: State<Account>, id: String) -> content::Json<String>
 #[delete("/delete/send", data = "<params>")]
 pub fn request(me: State<Account>, params: Json<ValidationPair>) -> content::Json<String>
 {
-  content::Json(me.issue_delete(&params).to_string())
+  match me.issue_delete(&params) {
+    Ok(acc_info) => content::Json(serde_json::to_string(&acc_info).unwrap()),
+    Err(error_str) => content::Json(error_str)
+  }
 }
 

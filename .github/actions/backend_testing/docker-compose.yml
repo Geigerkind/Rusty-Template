@@ -12,6 +12,8 @@ services:
     - MYSQL_ROOT_PASSWORD=vagrant
   postfix:
     image: juanluisbaptiste/postfix
+    ports:
+    - '5556:25'
     environment:
     - SMTP_SERVER=smtp.gmail.com
     - SMTP_USERNAME=jaylapp@gmail.com

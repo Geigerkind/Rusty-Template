@@ -7,17 +7,19 @@ use crate::account::material::account::Account;
 use crate::database::tools::mysql::execute::Execute;
 use crate::language::tools::get::Get;
 use crate::language::domainvalue::language::Language;
+use crate::account::domainvalue::account_information::AccountInformation;
+use crate::account::tools::get::GetAccountInformation;
 
 pub trait Delete {
-  fn issue_delete(&self, params: &ValidationPair) -> bool;
+  fn issue_delete(&self, params: &ValidationPair) -> Result<AccountInformation, String>;
   fn confirm_delete(&self, id: &str) -> bool;
 }
 
 impl Delete for Account {
-  fn issue_delete(&self, params: &ValidationPair) -> bool
+  fn issue_delete(&self, params: &ValidationPair) -> Result<AccountInformation, String>
   {
     if !self.validate(params) {
-      return false; // Rather return errors?
+      return Err("TODO: Some err".to_string())
     }
 
     let delete_id: String;
@@ -28,8 +30,7 @@ impl Delete for Account {
         delete_id = sha3::hash(vec![&params.id.to_string(), "delete", &entry.salt]);
         if !mail::send(&entry.mail, "TODO: Username", self.dictionary.get("create.confirmation.subject", Language::English),
           strformat::fmt(self.dictionary.get("create.confirmation.text", Language::English), &vec![&delete_id])){
-    println!("TEST");
-            return false;
+            return Err("TODO: Some Err".to_string());
         }
       }
       if self.db_main.execute_wparams("UPDATE member SET delete_account=1 WHERE id=:id", params!("id" => params.id)) {
@@ -39,10 +40,12 @@ impl Delete for Account {
       }
     }
 
-    let mut delete_account = self.delete_account.write().unwrap();
-    delete_account.insert(delete_id, params.id);
+    {
+      let mut delete_account = self.delete_account.write().unwrap();
+      delete_account.insert(delete_id, params.id);
+    }
 
-    true
+    Ok(self.get(params.id).unwrap())
   }
 
   fn confirm_delete(&self, id: &str) -> bool
