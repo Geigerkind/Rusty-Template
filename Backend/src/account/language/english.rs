@@ -24,6 +24,7 @@ pub fn init(dictionary: &Dictionary) {
   dictionary.register("forgot.confirmation.text", Language::English, "TODO: FANCY TEXT\nhttps://jaylapp.dev/API/account/forgot/confirm/{0}");
   dictionary.register("forgot.information.subject", Language::English, "TODO");
   dictionary.register("forgot.information.text", Language::English, "TODO: Text\n New Password: ");
+  dictionary.register("forgot.error.no_forgot_issued", Language::English, "TODO");
 
   dictionary.register("get.error.nomember", Language::English, "TODO");
 

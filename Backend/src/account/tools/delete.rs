@@ -19,7 +19,7 @@ impl Delete for Account {
   fn issue_delete(&self, params: &ValidationPair) -> Result<AccountInformation, String>
   {
     if !self.validate(params) {
-      return Err(self.dictionary.get("general.error.validate", Language::English))
+      return Err(self.dictionary.get("general.error.validate", Language::English));
     }
 
     let delete_id: String;
@@ -28,7 +28,7 @@ impl Delete for Account {
         let member = self.member.read().unwrap();
         let entry = member.get(&params.id).unwrap();
         delete_id = sha3::hash(&[&params.id.to_string(), "delete", &entry.salt]);
-        if !mail::send(&entry.mail, "TODO: Username", self.dictionary.get("create.confirmation.subject", Language::English),
+        if !mail::send(&entry.mail, &entry.nickname, self.dictionary.get("create.confirmation.subject", Language::English),
           strformat::fmt(self.dictionary.get("create.confirmation.text", Language::English), &vec![&delete_id])){
             return Err(self.dictionary.get("general.error.mail_send", Language::English));
         }
