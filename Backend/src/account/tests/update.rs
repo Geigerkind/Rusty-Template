@@ -243,7 +243,7 @@ mod tests {
     let val_pair_hash = val_pair.hash.clone();
     let val_pair_id = val_pair.id;
     let changed_mail = account.change_mail(&PostChangeStr {
-      content: "bla@bla.de".to_string(),
+      content: "xdssdfsdfg2@bla.de".to_string(),
       validation: val_pair
     });
     assert!(changed_mail.is_ok());
@@ -251,6 +251,6 @@ mod tests {
     assert_ne!(new_val_pair.hash, val_pair_hash);
     assert_eq!(new_val_pair.id, val_pair_id);
 
-    account.db_main.execute("DELETE FROM member WHERE mail='xdssdfsdfg@jaylappTest.dev'");
+    account.db_main.execute("DELETE FROM member WHERE mail='xdssdfsdfg2@bla.de'");
   }
 }
