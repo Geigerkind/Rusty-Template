@@ -10,10 +10,13 @@ use crate::account::domainvalue::account_information::AccountInformation;
 use crate::account::tools::get::GetAccountInformation;
 use crate::util::language::tools::get::Get;
 use crate::util::language::domainvalue::language::Language;
+use crate::account::tools::login::Login;
+use crate::account::service::login::PostLogin;
 
 pub trait Update {
   fn change_name(&self, params: &PostChangeStr) -> Result<AccountInformation, String>;
   fn change_password(&self, params: &PostChangeStr) -> Result<ValidationPair, String>;
+  fn update_password(&self, member_id: u32, new_password: &str) -> bool;
   fn change_mail(&self, params: &PostChangeStr) -> Result<ValidationPair, String>;
 }
 
@@ -66,28 +69,45 @@ impl Update for Account {
       }
     }
 
-    let hash: String;
+    let user_mail;
     {
       let member = self.member.read().unwrap();
       let entry = member.get(&params.validation.id).unwrap();
-      hash = sha3::hash(&[&entry.mail, &params.content, &entry.salt]);
+      user_mail = entry.mail.clone();
+    }
+    if self.update_password(params.validation.id, &params.content) {
+      return self.login(&PostLogin {
+        mail: user_mail,
+        password: params.content.clone()
+      });
+    }
+
+    Err(self.dictionary.get("general.error.unknown", Language::English))
+  }
+
+  fn update_password(&self, member_id: u32, new_password: &str) -> bool
+  {
+    let hash: String;
+    {
+      let member = self.member.read().unwrap();
+      let entry = member.get(&member_id).unwrap();
+      hash = sha3::hash(&[new_password, &entry.salt]);
     }
 
     if self.db_main.execute_wparams("UPDATE member SET password=:password WHERE id=:id", params!(
       "password" => hash.clone(),
-      "id" => params.validation.id
+      "id" => member_id
     )) {
       let mut hash_to_member = self.hash_to_member.write().unwrap();
       let mut member = self.member.write().unwrap();
-      self.helper_clear_validation(params.validation.id, &mut(*hash_to_member), &mut(*member));
+      self.helper_clear_validation(member_id, &mut(*hash_to_member), &mut(*member));
       {
-        let entry = member.get_mut(&params.validation.id).unwrap();
+        let entry = member.get_mut(&member_id).unwrap();
         entry.password = hash;
       }
-      return Ok(self.helper_create_validation(params.validation.id, &mut(*hash_to_member), &mut(*member)));
+      return true;
     }
-
-    Err(self.dictionary.get("general.error.unknown", Language::English))
+    false
   }
 
   fn change_mail(&self, params: &PostChangeStr) -> Result<ValidationPair, String>

@@ -4,3 +4,4 @@ pub mod get;
 pub mod login;
 pub mod update;
 pub mod validator;
+pub mod forgot;
