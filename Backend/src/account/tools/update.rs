@@ -5,22 +5,24 @@ use crate::database::tools::mysql::execute::Execute;
 use crate::account::tools::validator::Validator;
 use crate::account::material::account::Account;
 use crate::account::domainvalue::validation_pair::ValidationPair;
+use crate::account::domainvalue::account_information::AccountInformation;
+use crate::account::tools::get::GetAccountInformation;
 
 pub trait Update {
-  fn change_name(&self, params: &PostChangeStr) -> bool;
-  fn change_password(&self, params: &PostChangeStr) -> Option<ValidationPair>;
-  fn change_mail(&self, params: &PostChangeStr) -> Option<ValidationPair>;
+  fn change_name(&self, params: &PostChangeStr) -> Result<AccountInformation, String>;
+  fn change_password(&self, params: &PostChangeStr) -> Result<ValidationPair, String>;
+  fn change_mail(&self, params: &PostChangeStr) -> Result<ValidationPair, String>;
 }
 
 impl Update for Account {
-  fn change_name(&self, params: &PostChangeStr) -> bool
+  fn change_name(&self, params: &PostChangeStr) -> Result<AccountInformation, String>
   {
     if !self.validate(&params.validation) {
-      return false; // Rather return errors?
+      return Err("Some err".to_string());
     }
 
     if params.content.is_empty() {
-      return false;
+      return Err("Some err".to_string());
     }
 
     // Check if the name exists already
@@ -29,7 +31,7 @@ impl Update for Account {
       if entry.nickname.to_lowercase() == lower_name
         && entry.id != params.validation.id
       {
-        return false;
+        return Err("Some err".to_string());
       }
     }
 
@@ -37,23 +39,25 @@ impl Update for Account {
       "nickname" => params.content.clone(),
       "id" => params.validation.id
     )) {
-      let mut member = self.member.write().unwrap();
-      let entry = member.get_mut(&params.validation.id).unwrap();
-      entry.nickname = params.content.to_owned();
-      return true;
+      {
+        let mut member = self.member.write().unwrap();
+        let entry = member.get_mut(&params.validation.id).unwrap();
+        entry.nickname = params.content.to_owned();
+      }
+      return Ok(self.get(params.validation.id).unwrap());
     }
 
-    false
+    Err("Some err".to_string())
   }
 
-  fn change_password(&self, params: &PostChangeStr) -> Option<ValidationPair>
+  fn change_password(&self, params: &PostChangeStr) -> Result<ValidationPair, String>
   {
     if !self.validate(&params.validation) {
-      return None; // Rather return errors?
+      return Err("Some err".to_string());
     }
 
     if params.content.is_empty() {
-      return None;
+      return Err("Some err".to_string());
     }
 
     let hash: String;
@@ -74,20 +78,20 @@ impl Update for Account {
         let entry = member.get_mut(&params.validation.id).unwrap();
         entry.password = hash;
       }
-      return Some(self.helper_create_validation(params.validation.id, &mut(*hash_to_member), &mut(*member)));
+      return Ok(self.helper_create_validation(params.validation.id, &mut(*hash_to_member), &mut(*member)));
     }
 
-    None
+    Err("Some err".to_string())
   }
 
-  fn change_mail(&self, params: &PostChangeStr) -> Option<ValidationPair>
+  fn change_mail(&self, params: &PostChangeStr) -> Result<ValidationPair, String>
   {
     if !self.validate(&params.validation) {
-      return None; // Rather return errors?
+      return Err("Some err".to_string());
     }
 
     if !validator::mail(&params.content) {
-      return None;
+      return Err("Some err".to_string());
     }
 
     // Check if the mail exists already
@@ -96,7 +100,7 @@ impl Update for Account {
       if entry.mail.to_lowercase() == lower_mail
         && entry.id != params.validation.id
       {
-        return None;
+        return Err("Some err".to_string());
       }
     }
 
@@ -111,9 +115,9 @@ impl Update for Account {
         let entry = member.get_mut(&params.validation.id).unwrap();
         entry.mail = params.content.to_owned();
       }
-      return Some(self.helper_create_validation(params.validation.id, &mut(*hash_to_member), &mut(*member)));
+      return Ok(self.helper_create_validation(params.validation.id, &mut(*hash_to_member), &mut(*member)));
     }
 
-    None
+    Err("Some err".to_string())
   }
 }

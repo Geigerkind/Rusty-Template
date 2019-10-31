@@ -13,6 +13,7 @@ impl GetAccountInformation for Account {
       Some(entry) => Ok(AccountInformation {
         id: entry.id,
         mail: entry.mail.clone(),
+        nickname: entry.nickname.clone(),
         mail_confirmed: entry.mail_confirmed,
         xp: entry.xp
       }),
