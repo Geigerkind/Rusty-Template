@@ -9,7 +9,7 @@ use serde_json::to_string;
 pub fn get(me: State<Account>, id: u32) -> content::Json<String>
 {
   match me.get(id) {
-    Some(acc_info) => content::Json(to_string(&acc_info).unwrap()),
-    None => content::Json("Error?!".to_string()) // 404?
+    Ok(acc_info) => content::Json(to_string(&acc_info).unwrap()),
+    Err(err_str) => content::Json(err_str)
   }
 }
