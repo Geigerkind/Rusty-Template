@@ -2,7 +2,7 @@ version: '3.6'
 services:
   mariadb:
     network_mode: host
-    image: mariadb:10.4.8
+    build: ./mariadb
     volumes:
     - ./../Database/patches:/docker-entrypoint-initdb.d
     environment:

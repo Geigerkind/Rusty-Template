@@ -10,15 +10,15 @@ use crate::language::tools::get::Get;
 use crate::language::domainvalue::language::Language;
 
 pub trait Forgot {
-  fn send_forgot_password(&self, params: &ValidationPair) -> bool;
-  fn recv_forgot_password(&self, id: &str) -> bool;
+  fn send_forgot_password(&self, params: &ValidationPair) -> Result<(), String>;
+  fn recv_forgot_password(&self, id: &str) -> Result<(), String>;
 }
 
 impl Forgot for Account {
-  fn send_forgot_password(&self, params: &ValidationPair) -> bool
+  fn send_forgot_password(&self, params: &ValidationPair) -> Result<(), String>
   {
     if !self.validate(params) {
-      return false; // Rather return errors?
+      return Err("TODO: Some err".to_string())
     }
 
     let forgot_id: String;
@@ -29,11 +29,11 @@ impl Forgot for Account {
         forgot_id = sha3::hash(vec![&params.id.to_string(), "forgot", &entry.salt]);
         if !mail::send(&entry.mail, "TODO: Username", self.dictionary.get("forgot.confirmation.subject", Language::English),
           strformat::fmt(self.dictionary.get("forgot.confirmation.text", Language::English), &vec![&forgot_id])){
-            return false;
+            return Err("TODO: Some err".to_string());
         }
       }
       if !self.db_main.execute_wparams("UPDATE member SET forgot_password=1 WHERE id=:id", params!("id" => params.id)) {
-        return false;
+        return Err("TODO: Some err".to_string());
       } else {
         let mut member = self.member.write().unwrap();
         let entry = member.get_mut(&params.id).unwrap();
@@ -44,10 +44,10 @@ impl Forgot for Account {
     let mut forgot_password = self.forgot_password.write().unwrap();
     forgot_password.insert(forgot_id, params.id);
 
-    true
+    Ok(())
   }
 
-  fn recv_forgot_password(&self, id: &str) -> bool
+  fn recv_forgot_password(&self, id: &str) -> Result<(), String>
   {
     let mut removable = false;
     {
@@ -61,7 +61,7 @@ impl Forgot for Account {
             let entry = member.get(member_id).unwrap();
             if mail::send(&entry.mail, "TODO: username", self.dictionary.get("forgot.information.subject", Language::English),
               strformat::fmt(self.dictionary.get("forgot.information.text", Language::English), &vec![&new_pass])) {
-                return false;
+                return Err("TODO: Some err".to_string());
             }
           }
           if self.db_main.execute_wparams("UPDATE member SET forgot_password=0, password=:pass WHERE id=:id", params!(
@@ -74,14 +74,14 @@ impl Forgot for Account {
             removable = true;
           }
         },
-        None => return false
+        None => return Err("TODO: Some err".to_string())
       }
     }
     if removable {
       let mut forgot_password = self.forgot_password.write().unwrap();
       forgot_password.remove(id);
-      return true;
+      return Ok(());
     }
-    false
+    Err("TODO: Some err".to_string())
   }
 }
