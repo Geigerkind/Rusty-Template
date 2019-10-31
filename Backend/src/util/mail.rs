@@ -21,10 +21,8 @@ pub fn send(recipient: &str, username: &str, subject: String, text: String) -> b
     .build()
     .unwrap().into();
 
-  // Open a local connection on port 25
   let mut mailer = SmtpClient::new(format!("127.0.0.1:{}", env::var("SMTP_PORT").unwrap()), ClientSecurity::None).unwrap().transport();
   let result = mailer.send(email);
 
-  println!("{:?}", result);
   result.is_ok()
 }

@@ -12,7 +12,7 @@ use crate::account::tools::get::GetAccountInformation;
 
 pub trait Delete {
   fn issue_delete(&self, params: &ValidationPair) -> Result<AccountInformation, String>;
-  fn confirm_delete(&self, id: &str) -> bool;
+  fn confirm_delete(&self, id: &str) -> Result<(), String>;
 }
 
 impl Delete for Account {
@@ -48,7 +48,7 @@ impl Delete for Account {
     Ok(self.get(params.id).unwrap())
   }
 
-  fn confirm_delete(&self, id: &str) -> bool
+  fn confirm_delete(&self, id: &str) -> Result<(), String>
   {
     let mut removable = false;
     {
@@ -65,15 +65,15 @@ impl Delete for Account {
             removable = true;
           }
         },
-        None => return false
+        None => return Err("TODO: Some Err".to_string())
       }
     }
     if removable {
       let mut delete_account = self.delete_account.write().unwrap();
       delete_account.remove(id);
-      return true;
+      return Ok(());
     }
 
-    false
+    Err("TODO: Some Err".to_string())
   }
 }

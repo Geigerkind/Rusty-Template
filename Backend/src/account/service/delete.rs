@@ -9,7 +9,10 @@ use rocket_contrib::json::Json;
 #[get("/delete/confirm/<id>")]
 pub fn confirm(me: State<Account>, id: String) -> content::Json<String>
 {
-  content::Json(me.confirm_delete(&id).to_string())
+  match me.confirm_delete(&id) {
+    Ok(_) => content::Json("TODO: Ok".to_string()),
+    Err(error_str) => content::Json(error_str)
+  }
 }
 
 #[delete("/delete/send", data = "<params>")]

@@ -34,4 +34,20 @@ mod tests {
     account.db_main.execute("DELETE FROM member WHERE mail='hdfgfdgdfd@jaylappTest.dev'");
   }
 
+  #[test]
+  fn confirm_mail() {
+    let account = Account::default();
+    let post_obj = PostCreateMember {
+      nickname: "hfghsdssdgdfg".to_string(),
+      mail: "hfghsdssdgdfg@jaylappTest.dev".to_string(),
+      password: "Password123456".to_string()
+    };
+
+    let val_pair = account.create(&post_obj).unwrap();
+    let issue_delete = account.issue_delete(&val_pair);
+    assert!(issue_delete.is_ok());
+
+    account.db_main.execute("DELETE FROM member WHERE mail='hfghsdssdgdfg@jaylappTest.dev'");
+  }
+
 }
