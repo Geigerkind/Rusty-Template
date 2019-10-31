@@ -10,7 +10,7 @@ mod tests {
   #[test]
   fn create_account() {
     let account = Account::default();
-    let acc_mail = "mail@jaylapp.dev";
+    let acc_mail = "mail@jaylappTest.dev";
     let post_obj = PostCreateMember {
       nickname: "NickName".to_string(),
       mail: acc_mail.to_string(),
@@ -20,7 +20,7 @@ mod tests {
     let login = account.create(&post_obj);
     assert!(login.is_ok());
 
-    account.db_main.execute("DELETE FROM member WHERE mail='mail@jaylapp.dev'");
+    account.db_main.execute("DELETE FROM member WHERE mail='mail@jaylappTest.dev'");
   }
 
   #[test]
@@ -28,14 +28,14 @@ mod tests {
     let account = Account::default();
     let post_obj = PostCreateMember {
       nickname: "BlaNameqqweq".to_string(),
-      mail: "bla@jaylapp.dev".to_string(),
+      mail: "bla@jaylappTest.dev".to_string(),
       password: "Password123456".to_string()
     };
 
     let _ = account.create(&post_obj);
     assert!(account.create(&post_obj).is_err());
 
-    account.db_main.execute("DELETE FROM member WHERE mail='bla@jaylapp.dev'");
+    account.db_main.execute("DELETE FROM member WHERE mail='bla@jaylappTest.dev'");
   }
 
   #[test]
@@ -43,21 +43,21 @@ mod tests {
     let account = Account::default();
     let post_obj = PostCreateMember {
       nickname: "BlaName".to_string(),
-      mail: "bla2@jaylapp.dev".to_string(),
+      mail: "bla2@jaylappTest.dev".to_string(),
       password: "Password123456".to_string()
     };
 
     let post_obj_two = PostCreateMember {
       nickname: "BlaName".to_string(),
-      mail: "bla3@jaylapp.dev".to_string(),
+      mail: "bla3@jaylappTest.dev".to_string(),
       password: "Password123456".to_string()
     };
 
     let _ = account.create(&post_obj);
     assert!(account.create(&post_obj_two).is_err());
 
-    account.db_main.execute("DELETE FROM member WHERE mail='bla2@jaylapp.dev'");
-    account.db_main.execute("DELETE FROM member WHERE mail='bla3@jaylapp.dev'");
+    account.db_main.execute("DELETE FROM member WHERE mail='bla2@jaylappTest.dev'");
+    account.db_main.execute("DELETE FROM member WHERE mail='bla3@jaylappTest.dev'");
   }
 
   #[test]
@@ -113,7 +113,7 @@ mod tests {
     let account = Account::default();
     let post_obj = PostCreateMember {
       nickname: "SomeNameWuuh".to_string(),
-      mail: "someNameWuuuuh@jaylapp.dev".to_string(),
+      mail: "someNameWuuuuh@jaylappTest.dev".to_string(),
       password: "Password123456".to_string()
     };
 
@@ -128,6 +128,6 @@ mod tests {
     let confirmed_information = account.get(login.id).unwrap();
     assert!(confirmed_information.mail_confirmed);
 
-    account.db_main.execute("DELETE FROM member WHERE mail='someNameWuuuuh@jaylapp.dev'");
+    account.db_main.execute("DELETE FROM member WHERE mail='someNameWuuuuh@jaylappTest.dev'");
   }
 }

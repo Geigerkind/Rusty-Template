@@ -9,7 +9,7 @@ pub fn send(recipient: &str, username: &str, subject: String, text: String) -> b
 {
   let email = EmailBuilder::new()
     .to((recipient, username))
-    .from("mail@jaylapp.dev")
+    .from("jaylappdev@gmail.com")
     .subject(subject)
     .text(text)
     .build()
@@ -19,5 +19,6 @@ pub fn send(recipient: &str, username: &str, subject: String, text: String) -> b
   let mut mailer = SmtpClient::new_unencrypted_localhost().unwrap().transport();
   let result = mailer.send(email);
 
+  println!("{:?}", result);
   result.is_ok()
 }

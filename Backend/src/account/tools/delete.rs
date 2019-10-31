@@ -28,6 +28,7 @@ impl Delete for Account {
         delete_id = sha3::hash(vec![&params.id.to_string(), "delete", &entry.salt]);
         if !mail::send(&entry.mail, "TODO: Username", self.dictionary.get("create.confirmation.subject", Language::English),
           strformat::fmt(self.dictionary.get("create.confirmation.text", Language::English), &vec![&delete_id])){
+    println!("TEST");
             return false;
         }
       }
