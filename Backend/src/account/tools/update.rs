@@ -21,7 +21,7 @@ impl Update for Account {
       return Err("Some err".to_string());
     }
 
-    if params.content.is_empty() {
+    if !validator::nickname(&params.content) {
       return Err("Some err".to_string());
     }
 

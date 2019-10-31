@@ -19,11 +19,11 @@ mod tests {
 
     let val_pair = account.create(&post_obj).unwrap();
     let changed_name = account.change_name(&PostChangeStr {
-      content: "Some Username".to_string(),
+      content: "SomeUsername".to_string(),
       validation: val_pair
     });
     assert!(changed_name.is_ok());
-    assert_eq!(changed_name.unwrap().nickname, "Some Username".to_string());
+    assert_eq!(changed_name.unwrap().nickname, "SomeUsername".to_string());
 
     account.db_main.execute("DELETE FROM member WHERE mail='ijofsdiojsdfgiuhig@jaylappTest.dev'");
   }
@@ -61,6 +61,26 @@ mod tests {
     assert!(changed_name.is_err());
 
     account.db_main.execute("DELETE FROM member WHERE mail='siodjfijsiojiospq@jaylappTest.dev'");
+  }
+
+  #[test]
+  fn change_name_invalid_content() {
+    let account = Account::default();
+    let post_obj = PostCreateMember {
+      nickname: "ihsdfoiosdf".to_string(),
+      mail: "ihsdfoiosdf@jaylappTest.dev".to_string(),
+      password: "Password123456".to_string()
+    };
+
+    let val_pair = account.create(&post_obj).unwrap();
+    let changed_name = account.change_name(&PostChangeStr {
+      content: "ihsdfoiosdf ihsdfoiosdf".to_string(),
+      validation: val_pair
+    });
+    println!("{:?}", changed_name);
+    assert!(changed_name.is_err());
+
+    account.db_main.execute("DELETE FROM member WHERE mail='ihsdfoiosdf@jaylappTest.dev'");
   }
 
   #[test]

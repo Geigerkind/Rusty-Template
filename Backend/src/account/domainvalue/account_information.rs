@@ -1,4 +1,4 @@
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 pub struct AccountInformation {
   pub id: u32,
   pub mail: String,

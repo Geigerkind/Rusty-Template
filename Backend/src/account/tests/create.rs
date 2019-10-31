@@ -109,6 +109,18 @@ mod tests {
   }
 
   #[test]
+  fn invalid_nickname() {
+    let account = Account::default();
+    let post_obj = PostCreateMember {
+      nickname: "asdasd asdfsdfs".to_string(),
+      mail: "abc@test.de".to_string(),
+      password: "dgsdfsfd".to_string()
+    };
+
+    assert!(account.create(&post_obj).is_err());
+  }
+
+  #[test]
   fn confirm_mail() {
     let account = Account::default();
     let post_obj = PostCreateMember {

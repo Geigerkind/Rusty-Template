@@ -41,6 +41,10 @@ impl Create for Account {
       return Err(self.dictionary.get("create.error.invalid.mail", Language::English));
     }
 
+    if !validator::nickname(&params.nickname) {
+      return Err(self.dictionary.get("create.error.invalid.nickname", Language::English));
+    }
+
     // Double spending check
     // We dont validate through the internal data structure because we may have race conditions
     if self.db_main.exists_wparams("SELECT id FROM member WHERE LOWER(mail) = :mail LIMIT 1", params!("mail" => params.mail.clone().to_lowercase()))

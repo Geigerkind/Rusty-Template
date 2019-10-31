@@ -11,6 +11,7 @@ pub fn init(dictionary: &Dictionary) {
   dictionary.register("create.error.taken.mail", Language::English, "TODO");
   dictionary.register("create.error.taken.nickname", Language::English, "TODO");
   dictionary.register("create.error.invalid.mail", Language::English, "TODO");
+  dictionary.register("create.error.invalid.nickname", Language::English, "TODO");
   dictionary.register("create.error.unknown", Language::English, "TODO");
 
   dictionary.register("delete.confirmation.subject", Language::English, "TODO");
