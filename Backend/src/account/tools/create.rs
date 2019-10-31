@@ -3,6 +3,7 @@ use crate::util::sha3;
 use crate::util::random;
 use crate::util::mail;
 use crate::util::strformat;
+use crate::util::password::tools::valid;
 use crate::account::service::create::PostCreateMember;
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::material::member::Member;
@@ -12,8 +13,8 @@ use crate::database::tools::mysql::select::Select;
 use crate::database::tools::mysql::execute::Execute;
 use crate::database::tools::mysql::exists::Exists;
 use crate::account::service::login::PostLogin;
-use crate::language::tools::get::Get;
-use crate::language::domainvalue::language::Language;
+use crate::util::language::tools::get::Get;
+use crate::util::language::domainvalue::language::Language;
 use crate::account::tools::login::Login;
 
 pub trait Create {
@@ -25,24 +26,19 @@ pub trait Create {
 impl Create for Account {
   fn create(&self, params: &PostCreateMember) -> Result<ValidationPair, String>
   {
-    if params.nickname.is_empty() {
-      return Err(self.dictionary.get("create.error.empty.nickname", Language::English));
-    }
-
-    if params.mail.is_empty() {
-      return Err(self.dictionary.get("create.error.empty.mail", Language::English));
-    }
-
-    if params.password.is_empty() {
-      return Err(self.dictionary.get("create.error.empty.password", Language::English));
-    }
-
     if !validator::mail(&params.mail) {
       return Err(self.dictionary.get("general.error.invalid.mail", Language::English));
     }
 
     if !validator::nickname(&params.nickname) {
       return Err(self.dictionary.get("general.error.invalid.nickname", Language::English));
+    }
+
+    {
+      let checked_password = valid::password(&params.password);
+      if checked_password.is_err() {
+        return Err(checked_password.unwrap_err());
+      }
     }
 
     // Double spending check

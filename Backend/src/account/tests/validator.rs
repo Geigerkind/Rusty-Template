@@ -15,7 +15,7 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "cvcbmnbjfie".to_string(),
       mail: "cvcbmnbjfie@jaylappTest.dev".to_string(),
-      password: "Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string()
     };
 
     let val_pair = account.create(&post_obj).unwrap();

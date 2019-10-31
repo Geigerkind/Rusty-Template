@@ -24,7 +24,7 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "Nsdsdfsdfsdf".to_string(),
       mail: "hdfgfdgdfd@jaylappTest.dev".to_string(),
-      password: "Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string()
     };
 
     let val_pair = account.create(&post_obj).unwrap();
@@ -40,7 +40,7 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "hfghsdssdgdfg".to_string(),
       mail: "hfghsdssdgdfg@jaylappTest.dev".to_string(),
-      password: "Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string()
     };
 
     let val_pair = account.create(&post_obj).unwrap();

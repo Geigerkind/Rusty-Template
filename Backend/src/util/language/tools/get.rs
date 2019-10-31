@@ -1,5 +1,5 @@
-use crate::language::domainvalue::language::Language;
-use crate::language::material::dictionary::Dictionary;
+use crate::util::language::domainvalue::language::Language;
+use crate::util::language::material::dictionary::Dictionary;
 pub trait Get {
   fn get(&self, key: &str, language: Language) -> String;
 }

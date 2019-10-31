@@ -1,5 +1,6 @@
 use crate::util::sha3;
 use crate::util::validator;
+use crate::util::password::tools::valid;
 use crate::account::service::update::PostChangeStr;
 use crate::database::tools::mysql::execute::Execute;
 use crate::account::tools::validator::Validator;
@@ -7,8 +8,8 @@ use crate::account::material::account::Account;
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::domainvalue::account_information::AccountInformation;
 use crate::account::tools::get::GetAccountInformation;
-use crate::language::tools::get::Get;
-use crate::language::domainvalue::language::Language;
+use crate::util::language::tools::get::Get;
+use crate::util::language::domainvalue::language::Language;
 
 pub trait Update {
   fn change_name(&self, params: &PostChangeStr) -> Result<AccountInformation, String>;
@@ -58,8 +59,11 @@ impl Update for Account {
       return Err(self.dictionary.get("general.error.validate", Language::English));
     }
 
-    if params.content.is_empty() {
-      return Err(self.dictionary.get("general.error.invalid.password", Language::English));
+    {
+      let checked_password = valid::password(&params.content);
+      if checked_password.is_err() {
+        return Err(checked_password.unwrap_err());
+      }
     }
 
     let hash: String;

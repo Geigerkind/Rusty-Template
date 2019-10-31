@@ -19,7 +19,7 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "ijfeuhifsduhisdfuhiuhisdf".to_string(),
       mail: "ijfeuhifsduhisdfuhiuhisdf@jaylappTest.dev".to_string(),
-      password: "Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string()
     };
 
     let login = account.create(&post_obj).unwrap();

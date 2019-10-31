@@ -18,6 +18,7 @@ lettre_email = "*"
 regex = "*"
 lazy_static = "*"
 dotenv = "*"
+pwned = "*"
 
 [dependencies.rocket_contrib]
 version = "*"

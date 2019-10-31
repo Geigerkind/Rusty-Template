@@ -5,7 +5,7 @@ use crate::database::tools::mysql::select::Select;
 
 use std::collections::HashMap;
 use std::sync::RwLock;
-use crate::language::material::dictionary::Dictionary;
+use crate::util::language::material::dictionary::Dictionary;
 use crate::account::language::init::Init;
 
 pub struct Account {

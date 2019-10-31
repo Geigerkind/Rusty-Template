@@ -6,8 +6,8 @@ use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::tools::validator::Validator;
 use crate::account::material::account::Account;
 use crate::database::tools::mysql::execute::Execute;
-use crate::language::tools::get::Get;
-use crate::language::domainvalue::language::Language;
+use crate::util::language::tools::get::Get;
+use crate::util::language::domainvalue::language::Language;
 
 pub trait Forgot {
   fn send_forgot_password(&self, params: &ValidationPair) -> Result<(), String>;

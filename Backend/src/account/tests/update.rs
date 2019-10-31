@@ -14,7 +14,7 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "ijofsdiojsdfgiuhig".to_string(),
       mail: "ijofsdiojsdfgiuhig@jaylappTest.dev".to_string(),
-      password: "Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string()
     };
 
     let val_pair = account.create(&post_obj).unwrap();
@@ -50,7 +50,7 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "siodjfijsiojiospq".to_string(),
       mail: "siodjfijsiojiospq@jaylappTest.dev".to_string(),
-      password: "Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string()
     };
 
     let val_pair = account.create(&post_obj).unwrap();
@@ -69,7 +69,7 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "ihsdfoiosdf".to_string(),
       mail: "ihsdfoiosdf@jaylappTest.dev".to_string(),
-      password: "Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string()
     };
 
     let val_pair = account.create(&post_obj).unwrap();
@@ -89,13 +89,13 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "oasijidhaais".to_string(),
       mail: "oasijidhaais@jaylappTest.dev".to_string(),
-      password: "Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string()
     };
 
     let post_obj_two = PostCreateMember {
       nickname: "guhzasooas".to_string(),
       mail: "guhzasooas@jaylappTest.dev".to_string(),
-      password: "Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string()
     };
 
     let val_pair = account.create(&post_obj).unwrap();
@@ -132,7 +132,7 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "mvfhhbvidsd".to_string(),
       mail: "mvfhhbvidsd@jaylappTest.dev".to_string(),
-      password: "Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string()
     };
 
     let val_pair = account.create(&post_obj).unwrap();
@@ -151,7 +151,7 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "xdsdfgsdgs".to_string(),
       mail: "xdsdfgsdgs@jaylappTest.dev".to_string(),
-      password: "Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string()
     };
 
     let val_pair = account.create(&post_obj).unwrap();
@@ -191,7 +191,7 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "nsigsvbsdsd".to_string(),
       mail: "nsigsvbsdsd@jaylappTest.dev".to_string(),
-      password: "Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string()
     };
 
     let val_pair = account.create(&post_obj).unwrap();
@@ -210,7 +210,7 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "asiudfuhisduifs".to_string(),
       mail: "asiudfuhisduifs@jaylappTest.dev".to_string(),
-      password: "Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string()
     };
 
     let val_pair = account.create(&post_obj).unwrap();
@@ -229,13 +229,13 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "csdazgtsdczas".to_string(),
       mail: "csdazgtsdczas@jaylappTest.dev".to_string(),
-      password: "Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string()
     };
 
     let post_obj_two = PostCreateMember {
       nickname: "bdvshudvbsdv".to_string(),
       mail: "bdvshudvbsdv@jaylappTest.dev".to_string(),
-      password: "Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string()
     };
 
     let val_pair = account.create(&post_obj).unwrap();
@@ -256,7 +256,7 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "xdssdfsdfg".to_string(),
       mail: "xdssdfsdfg@jaylappTest.dev".to_string(),
-      password: "Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string()
     };
 
     let val_pair = account.create(&post_obj).unwrap();

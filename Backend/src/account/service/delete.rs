@@ -1,8 +1,8 @@
 use crate::account::material::account::Account;
 use crate::account::tools::delete::Delete;
 use crate::account::domainvalue::validation_pair::ValidationPair;
-use crate::language::tools::get::Get;
-use crate::language::domainvalue::language::Language;
+use crate::util::language::tools::get::Get;
+use crate::util::language::domainvalue::language::Language;
 
 use rocket::response::content;
 use rocket::State;
