@@ -79,7 +79,7 @@ impl Validator for Account {
 
     // Generate a 128 bit salt for our validation hash
     let salt: String = random::alphanumeric(16);
-    let hash: String = sha3::hash(vec![&entry.mail, &entry.password, &salt]);
+    let hash: String = sha3::hash(&[&entry.mail, &entry.password, &salt]);
 
     // Replace by using the Least recently used strategy
     for i in 0..2 {

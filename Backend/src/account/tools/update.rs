@@ -70,7 +70,7 @@ impl Update for Account {
     {
       let member = self.member.read().unwrap();
       let entry = member.get(&params.validation.id).unwrap();
-      hash = sha3::hash(vec![&entry.mail, &params.content, &entry.salt]);
+      hash = sha3::hash(&[&entry.mail, &params.content, &entry.salt]);
     }
 
     if self.db_main.execute_wparams("UPDATE member SET password=:password WHERE id=:id", params!(

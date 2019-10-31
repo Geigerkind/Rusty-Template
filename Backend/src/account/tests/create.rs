@@ -134,7 +134,7 @@ mod tests {
     {
       let member_guard = account.member.read().unwrap();
       let member = member_guard.get(&login.id).unwrap();
-      mail_id = sha3::hash(vec![&login.id.to_string(), &member.salt]);
+      mail_id = sha3::hash(&[&login.id.to_string(), &member.salt]);
     }
     account.confirm(&mail_id);
     let confirmed_information = account.get(login.id).unwrap();

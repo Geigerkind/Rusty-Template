@@ -55,7 +55,7 @@ impl Create for Account {
     }
 
     let salt: String = random::alphanumeric(16);
-    let pass: String = sha3::hash(vec![&params.password, &salt]);
+    let pass: String = sha3::hash(&[&params.password, &salt]);
 
     if self.db_main.execute_wparams("INSERT IGNORE INTO member (`mail`, `password`, `nickname`, `joined`) VALUES (:mail, :pass, :nickname, UNIX_TIMESTAMP())", params!(
       "nickname" => params.nickname.clone(),
@@ -102,7 +102,7 @@ impl Create for Account {
 
     let member = self.member.read().unwrap();
     let entry = member.get(&params.id).unwrap();
-    let mail_id = sha3::hash(vec![&params.id.to_string(), &entry.salt]);
+    let mail_id = sha3::hash(&[&params.id.to_string(), &entry.salt]);
     let mail_content = strformat::fmt(self.dictionary.get("create.confirmation.text", Language::English), &vec![&mail_id]);
 
     if bypass || !entry.mail_confirmed {

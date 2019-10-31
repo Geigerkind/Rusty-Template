@@ -27,7 +27,7 @@ impl Delete for Account {
       {
         let member = self.member.read().unwrap();
         let entry = member.get(&params.id).unwrap();
-        delete_id = sha3::hash(vec![&params.id.to_string(), "delete", &entry.salt]);
+        delete_id = sha3::hash(&[&params.id.to_string(), "delete", &entry.salt]);
         if !mail::send(&entry.mail, "TODO: Username", self.dictionary.get("create.confirmation.subject", Language::English),
           strformat::fmt(self.dictionary.get("create.confirmation.text", Language::English), &vec![&delete_id])){
             return Err(self.dictionary.get("general.error.mail_send", Language::English));

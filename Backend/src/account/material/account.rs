@@ -69,17 +69,17 @@ impl Account {
 
       // Init remaining confirmation mails
       if !entry.mail_confirmed {
-        requires_mail_confirmation.insert(sha3::hash(vec![&entry.id.to_string(), &entry.salt]), entry.id);
+        requires_mail_confirmation.insert(sha3::hash(&[&entry.id.to_string(), &entry.salt]), entry.id);
       }
 
       // Init remaining forgot password mails
       if entry.forgot_password {
-        forgot_password.insert(sha3::hash(vec![&entry.id.to_string(), "forgot", &entry.salt]), entry.id);
+        forgot_password.insert(sha3::hash(&[&entry.id.to_string(), "forgot", &entry.salt]), entry.id);
       }
 
       // Init remaining delete mails
       if entry.delete_account {
-        delete_account.insert(sha3::hash(vec![&entry.id.to_string(), "delete", &entry.salt]), entry.id);
+        delete_account.insert(sha3::hash(&[&entry.id.to_string(), "delete", &entry.salt]), entry.id);
       }
 
       member.insert(entry.id, entry);

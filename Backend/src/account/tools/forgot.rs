@@ -26,7 +26,7 @@ impl Forgot for Account {
       {
         let member = self.member.read().unwrap();
         let entry = member.get(&params.id).unwrap();
-        forgot_id = sha3::hash(vec![&params.id.to_string(), "forgot", &entry.salt]);
+        forgot_id = sha3::hash(&[&params.id.to_string(), "forgot", &entry.salt]);
         if !mail::send(&entry.mail, "TODO: Username", self.dictionary.get("forgot.confirmation.subject", Language::English),
           strformat::fmt(self.dictionary.get("forgot.confirmation.text", Language::English), &vec![&forgot_id])){
             return Err("TODO: Some err".to_string());

@@ -21,7 +21,7 @@ impl Login for Account {
     let mut entry_key: u32 = 0;
     for (id, entry) in &(*member) {
       if entry.mail.to_lowercase() != lower_mail { continue; }
-      if entry.password != sha3::hash(vec![&params.password, &entry.salt]) { break; } // Password is wrong
+      if entry.password != sha3::hash(&[&params.password, &entry.salt]) { break; } // Password is wrong
       entry_key = *id;
       break
     }
