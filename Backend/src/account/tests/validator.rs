@@ -4,12 +4,12 @@ mod tests {
   use crate::account::tools::validator::Validator;
   use crate::account::domainvalue::validation_pair::ValidationPair;
   use crate::account::tools::create::Create;
-  use crate::account::service::create::PostCreateMember;
+  use crate::account::domainvalue::post_create_member::PostCreateMember;
   use crate::database::tools::mysql::execute::Execute;
   use crate::account::tools::update::Update;
-  use crate::account::service::update::PostChangeStr;
+  use crate::account::material::post_change_str::PostChangeStr;
   use crate::account::tools::login::Login;
-  use crate::account::service::login::PostLogin;
+  use crate::account::domainvalue::post_login::PostLogin;
 
   // Helper functions are tested indirectly through all other functions
 

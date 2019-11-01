@@ -1,7 +1,7 @@
 use crate::util::str_util::tools::{sha3, strformat};
 use crate::util::validator::tools::valid;
 use crate::util::validator::domainvalue::password_failure::PasswordFailure;
-use crate::account::service::update::PostChangeStr;
+use crate::account::material::post_change_str::PostChangeStr;
 use crate::database::tools::mysql::execute::Execute;
 use crate::account::tools::validator::Validator;
 use crate::account::material::account::Account;

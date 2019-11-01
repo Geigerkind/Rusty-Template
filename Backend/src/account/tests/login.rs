@@ -2,7 +2,7 @@
 mod tests {
   use crate::account::material::account::Account;
   use crate::account::tools::login::Login;
-  use crate::account::service::login::PostLogin;
+  use crate::account::domainvalue::post_login::PostLogin;
 
   // User exists login is tested when creating an account
   #[test]

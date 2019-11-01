@@ -1,16 +1,11 @@
 use crate::account::material::account::Account;
 use crate::account::tools::update::Update;
-use crate::account::domainvalue::validation_pair::ValidationPair;
+use crate::account::material::post_change_str::PostChangeStr;
 
 use rocket::response::content;
 use rocket::State;
 use rocket_contrib::json::Json;
 
-#[derive(Deserialize)]
-pub struct PostChangeStr {
-  pub content: String,
-  pub validation: ValidationPair
-}
 #[post("/update/password", data = "<params>")]
 pub fn password(me: State<Account>, params: Json<PostChangeStr>) -> content::Json<String>
 {
@@ -19,6 +14,7 @@ pub fn password(me: State<Account>, params: Json<PostChangeStr>) -> content::Jso
     Err(error_str) => content::Json(error_str)
   }
 }
+
 #[post("/update/nickname", data = "<params>")]
 pub fn nickname(me: State<Account>, params: Json<PostChangeStr>) -> content::Json<String>
 {
@@ -27,6 +23,7 @@ pub fn nickname(me: State<Account>, params: Json<PostChangeStr>) -> content::Jso
     Err(error_str) => content::Json(error_str)
   }
 }
+
 #[post("/update/mail", data = "<params>")]
 pub fn mail(me: State<Account>, params: Json<PostChangeStr>) -> content::Json<String>
 {
