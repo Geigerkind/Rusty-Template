@@ -35,7 +35,11 @@ mod tests {
   #[test]
   fn invalid_nickname() {
     let nickname = "NickName NickName";
+    let nickname2 = ".";
+    let nickname3 = "@";
     assert!(!valid::nickname(nickname));
+    assert!(!valid::nickname(nickname2));
+    assert!(!valid::nickname(nickname3));
   }
 
   #[test]
