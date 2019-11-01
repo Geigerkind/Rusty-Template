@@ -10,7 +10,10 @@
     "module": "esnext",
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2015",
+    "target": "es2016",
+    "alwaysStrict": true,
+    "incremental": true,
+    "removeComments": true,
     "typeRoots": [
       "node_modules/@types"
     ],
