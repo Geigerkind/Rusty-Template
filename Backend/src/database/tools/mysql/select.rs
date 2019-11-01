@@ -1,5 +1,4 @@
 use mysql;
-
 use crate::database::material::mysql_connection::MySQLConnection;
 
 pub trait Select {
