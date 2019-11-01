@@ -15,7 +15,7 @@ pub fn receive_confirmation(me: State<Account>, id: String) -> content::Json<Str
   }
 }
 
-#[post("/forgot/send", data = "<mail>")]
+#[get("/forgot/send/<mail>")]
 pub fn send_confirmation(me: State<Account>, mail: String) -> content::Json<String>
 {
   match me.send_forgot_password(&mail) {
