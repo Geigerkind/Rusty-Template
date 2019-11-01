@@ -4,6 +4,9 @@ use crate::util::random;
 use crate::util::mail;
 use crate::util::strformat;
 use crate::util::password::tools::valid;
+use crate::util::password::domainvalue::password_failure::PasswordFailure;
+use crate::util::language::tools::get::Get;
+use crate::util::language::domainvalue::language::Language;
 use crate::account::service::create::PostCreateMember;
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::material::member::Member;
@@ -12,8 +15,6 @@ use crate::account::material::account::Account;
 use crate::database::tools::mysql::select::Select;
 use crate::database::tools::mysql::execute::Execute;
 use crate::database::tools::mysql::exists::Exists;
-use crate::util::language::tools::get::Get;
-use crate::util::language::domainvalue::language::Language;
 
 pub trait Create {
   fn create(&self, params: &PostCreateMember) -> Result<ValidationPair, String>;
@@ -32,10 +33,11 @@ impl Create for Account {
       return Err(self.dictionary.get("general.error.invalid.nickname", Language::English));
     }
 
-    let checked_password = valid::password(&params.password);
-    if checked_password.is_err() {
-      return Err(checked_password.unwrap_err());
-    }
+    match valid::password(&params.password) {
+      Err(PasswordFailure::TooFewCharacters) => return Err(self.dictionary.get("general.error.password.length", Language::English)),
+      Err(PasswordFailure::Pwned(num_pwned)) => return Err(strformat::fmt(self.dictionary.get("general.error.password.pwned", Language::English), &[&num_pwned.to_string()])),
+      Ok(_) => ()
+    };
 
     // Double spending check
     // We dont validate through the internal data structure because we may have race conditions

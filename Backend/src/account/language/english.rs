@@ -3,6 +3,9 @@ use crate::util::language::tools::register::Register;
 use crate::util::language::domainvalue::language::Language;
 
 pub fn init(dictionary: &Dictionary) {
+  dictionary.register("general.error.password.pwned", Language::English, "This password has been pwned {0} times. Please choose another password!");
+  dictionary.register("general.error.password.length", Language::English, "The minimum length for a password is 12 character.");
+
   dictionary.register("general.service.success", Language::English, "Success!");
 
   dictionary.register("general.error.validate", Language::English, "TODO");

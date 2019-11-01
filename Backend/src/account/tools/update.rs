@@ -1,6 +1,8 @@
 use crate::util::sha3;
 use crate::util::validator;
 use crate::util::password::tools::valid;
+use crate::util::password::domainvalue::password_failure::PasswordFailure;
+use crate::util::strformat;
 use crate::account::service::update::PostChangeStr;
 use crate::database::tools::mysql::execute::Execute;
 use crate::account::tools::validator::Validator;
@@ -60,10 +62,11 @@ impl Update for Account {
       return Err(self.dictionary.get("general.error.validate", Language::English));
     }
 
-    let checked_password = valid::password(&params.content);
-    if checked_password.is_err() {
-      return Err(checked_password.unwrap_err());
-    }
+    match valid::password(&params.content) {
+      Err(PasswordFailure::TooFewCharacters) => return Err(self.dictionary.get("general.error.password.length", Language::English)),
+      Err(PasswordFailure::Pwned(num_pwned)) => return Err(strformat::fmt(self.dictionary.get("general.error.password.pwned", Language::English), &[&num_pwned.to_string()])),
+      Ok(_) => ()
+    };
 
     if self.update_password(params.validation.id, &params.content) {
       return Ok(self.helper_create_validation(params.validation.id));
