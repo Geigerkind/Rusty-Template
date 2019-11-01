@@ -12,14 +12,12 @@ use crate::account::material::account::Account;
 use crate::database::tools::mysql::select::Select;
 use crate::database::tools::mysql::execute::Execute;
 use crate::database::tools::mysql::exists::Exists;
-use crate::account::service::login::PostLogin;
 use crate::util::language::tools::get::Get;
 use crate::util::language::domainvalue::language::Language;
-use crate::account::tools::login::Login;
 
 pub trait Create {
   fn create(&self, params: &PostCreateMember) -> Result<ValidationPair, String>;
-  fn send_confirmation(&self, params: &ValidationPair, bypass: bool) -> bool;
+  fn send_confirmation(&self, params: &ValidationPair) -> bool;
   fn confirm(&self, id: &str) -> bool;
 }
 
@@ -34,11 +32,9 @@ impl Create for Account {
       return Err(self.dictionary.get("general.error.invalid.nickname", Language::English));
     }
 
-    {
-      let checked_password = valid::password(&params.password);
-      if checked_password.is_err() {
-        return Err(checked_password.unwrap_err());
-      }
+    let checked_password = valid::password(&params.password);
+    if checked_password.is_err() {
+      return Err(checked_password.unwrap_err());
     }
 
     // Double spending check
@@ -86,18 +82,16 @@ impl Create for Account {
         });
       }
 
-      self.send_confirmation(&ValidationPair{hash: String::new(), id}, true);
-      return self.login(&PostLogin {
-        mail: lower_mail.to_owned(),
-        password: params.password.to_owned()
-      });
+      let val_pair = self.helper_create_validation(id);
+      self.send_confirmation(&val_pair);
+      return Ok(val_pair);
     }
     return Err(self.dictionary.get("general.error.unknown", Language::English));
   }
 
-  fn send_confirmation(&self, params: &ValidationPair, bypass: bool) -> bool
+  fn send_confirmation(&self, params: &ValidationPair) -> bool
   {
-    if !bypass && !self.validate(params) {
+    if !self.validate(params) {
       return false;
     }
 
@@ -106,7 +100,7 @@ impl Create for Account {
     let mail_id = sha3::hash(&[&params.id.to_string(), &entry.salt]);
     let mail_content = strformat::fmt(self.dictionary.get("create.confirmation.text", Language::English), &vec![&mail_id]);
 
-    if bypass || !entry.mail_confirmed {
+    if !entry.mail_confirmed {
       let mut requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();
       if !requires_mail_confirmation.contains_key(&mail_id) {
         requires_mail_confirmation.insert(mail_id, params.id);

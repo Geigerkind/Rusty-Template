@@ -30,5 +30,5 @@ pub fn confirm(me: State<Account>, id: String) -> content::Json<String>
 #[post("/create/resend", data = "<params>")]
 pub fn resend_confirm(me: State<Account>, params: Json<ValidationPair>) -> content::Json<String>
 {
-  content::Json(me.send_confirmation(&params, false).to_string())
+  content::Json(me.send_confirmation(&params).to_string())
 }
