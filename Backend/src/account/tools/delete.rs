@@ -58,9 +58,8 @@ impl Delete for Account {
           if self.db_main.execute_wparams("DELETE FROM member WHERE id = :id", params!(
             "id" => *member_id
           )) {
-            let mut hash_to_member = self.hash_to_member.write().unwrap();
+            self.helper_clear_validation(*member_id);
             let mut member = self.member.write().unwrap();
-            self.helper_clear_validation(*member_id, &mut (*hash_to_member), &mut (*member));
             member.remove(member_id);
             removable = true;
           }

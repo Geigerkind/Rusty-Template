@@ -10,8 +10,6 @@ use crate::account::domainvalue::account_information::AccountInformation;
 use crate::account::tools::get::GetAccountInformation;
 use crate::util::language::tools::get::Get;
 use crate::util::language::domainvalue::language::Language;
-use crate::account::tools::login::Login;
-use crate::account::service::login::PostLogin;
 
 pub trait Update {
   fn change_name(&self, params: &PostChangeStr) -> Result<AccountInformation, String>;
@@ -62,24 +60,13 @@ impl Update for Account {
       return Err(self.dictionary.get("general.error.validate", Language::English));
     }
 
-    {
-      let checked_password = valid::password(&params.content);
-      if checked_password.is_err() {
-        return Err(checked_password.unwrap_err());
-      }
+    let checked_password = valid::password(&params.content);
+    if checked_password.is_err() {
+      return Err(checked_password.unwrap_err());
     }
 
-    let user_mail;
-    {
-      let member = self.member.read().unwrap();
-      let entry = member.get(&params.validation.id).unwrap();
-      user_mail = entry.mail.clone();
-    }
     if self.update_password(params.validation.id, &params.content) {
-      return self.login(&PostLogin {
-        mail: user_mail,
-        password: params.content.clone()
-      });
+      return Ok(self.helper_create_validation(params.validation.id));
     }
 
     Err(self.dictionary.get("general.error.unknown", Language::English))
@@ -98,10 +85,9 @@ impl Update for Account {
       "password" => hash.clone(),
       "id" => member_id
     )) {
-      let mut hash_to_member = self.hash_to_member.write().unwrap();
-      let mut member = self.member.write().unwrap();
-      self.helper_clear_validation(member_id, &mut(*hash_to_member), &mut(*member));
+      self.helper_clear_validation(member_id);
       {
+        let mut member = self.member.write().unwrap();
         let entry = member.get_mut(&member_id).unwrap();
         entry.password = hash;
       }
@@ -134,14 +120,13 @@ impl Update for Account {
       "mail" => params.content.clone(),
       "id" => params.validation.id
     )) {
-      let mut hash_to_member = self.hash_to_member.write().unwrap();
-      let mut member = self.member.write().unwrap();
-      self.helper_clear_validation(params.validation.id, &mut(*hash_to_member), &mut(*member));
+      self.helper_clear_validation(params.validation.id);
       {
+        let mut member = self.member.write().unwrap();
         let entry = member.get_mut(&params.validation.id).unwrap();
-        entry.mail = params.content.to_owned();
+        entry.mail = params.content.clone();
       }
-      return Ok(self.helper_create_validation(params.validation.id, &mut(*hash_to_member), &mut(*member)));
+      return Ok(self.helper_create_validation(params.validation.id));
     }
 
     Err(self.dictionary.get("general.error.unknown", Language::English))

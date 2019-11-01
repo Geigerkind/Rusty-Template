@@ -2,16 +2,13 @@ use crate::util::sha3;
 use crate::util::random;
 use crate::account::material::account::Account;
 use crate::account::domainvalue::validation_pair::ValidationPair;
-use crate::account::material::member::Member;
 use crate::database::tools::mysql::execute::Execute;
-
-use std::collections::HashMap;
 
 pub trait Validator {
   fn validate(&self, params: &ValidationPair) -> bool;
 
-  fn helper_clear_validation(&self, member_id: u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>);
-  fn helper_create_validation(&self, member_id: u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>) -> ValidationPair;
+  fn helper_clear_validation(&self, member_id: u32);
+  fn helper_create_validation(&self, member_id: u32) -> ValidationPair;
 }
 
 impl Validator for Account {
@@ -61,8 +58,10 @@ impl Validator for Account {
   }
 
   // Helper functions
-  fn helper_clear_validation(&self, member_id: u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>)
+  fn helper_clear_validation(&self, member_id: u32)
   {
+    let mut hash_to_member = self.hash_to_member.write().unwrap();
+    let mut member = self.member.write().unwrap();
     let entry = member.get_mut(&member_id).unwrap();
     for i in 0..2 {
       if entry.hash_val[i] != "none" {
@@ -73,8 +72,10 @@ impl Validator for Account {
     }
   }
 
-  fn helper_create_validation(&self, member_id: u32, hash_to_member: &mut HashMap<String, u32>, member: &mut HashMap<u32, Member>) -> ValidationPair
+  fn helper_create_validation(&self, member_id: u32) -> ValidationPair
   {
+    let mut hash_to_member = self.hash_to_member.write().unwrap();
+    let mut member = self.member.write().unwrap();
     let entry = member.get_mut(&member_id).unwrap();
 
     // Generate a 128 bit salt for our validation hash
