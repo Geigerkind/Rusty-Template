@@ -1,0 +1,8 @@
+@import "./box.scss";
+@import "./colors.scss";
+
+.floatShadow {
+  @extend .normalBox;
+
+  box-shadow: 0 4px 8px 0 $lesser_black, 0 6px 20px 0 $lesser_black;
+}

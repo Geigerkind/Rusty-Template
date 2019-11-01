@@ -12,7 +12,6 @@
     "importHelpers": true,
     "target": "es2015",
     "alwaysStrict": true,
-    "incremental": true,
     "removeComments": true,
     "typeRoots": [
       "node_modules/@types"

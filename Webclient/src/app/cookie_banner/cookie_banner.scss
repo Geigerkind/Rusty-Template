@@ -1,0 +1,54 @@
+@import "./../../styles/global.scss";
+@import "./../../styles/shadows.scss";
+@import "./../../styles/buttons.scss";
+
+:host {
+  background: rgba(33,41,52,0.85);
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+#cookieContainer {
+  @extend .floatShadow;
+
+  background: #fff;
+  max-width: 640px;
+  min-width: 320px;
+  width: 100%;
+  min-height: 200px;
+  padding: $spacing * 2.5;
+  position: relative;
+  margin: auto;
+}
+
+header {
+  font-weight: bold;
+  font-size: 30px;
+  text-align: center;
+  width: 100%;
+  color: $font_title;
+  padding-bottom: $spacing * 2.5;
+}
+
+section {
+  width: 100%;
+  color: $font_less_important !important;
+  padding-bottom: $spacing;
+}
+
+footer {
+  text-align: center;
+
+  button {
+    width: calc(50% - #{$spacing} * 0.5);
+
+    &:first-child {
+      margin-right: $spacing;
+    }
+  }
+}
