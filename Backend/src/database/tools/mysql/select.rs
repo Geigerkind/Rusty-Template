@@ -10,11 +10,6 @@ pub trait Select {
 }
 
 impl Select for MySQLConnection {
-  /**
-  * Select
-  * Return Vector
-  **/
-
   fn select<T>(&self, query_str: &str, process_row: &dyn Fn(mysql::Row) -> T) -> Vec<T>
   {
     self.con.prep_exec(query_str, ())
@@ -34,10 +29,6 @@ impl Select for MySQLConnection {
       .collect()
     }).unwrap()
   }
-
-  /**
-  * Return value directly
-  **/
 
   fn select_value<T>(&self, query_str: &str, process_row: &dyn Fn(mysql::Row) -> T) -> Option<T>
   {

@@ -8,10 +8,6 @@ pub trait Execute {
 }
 
 impl Execute for MySQLConnection {
-  /**
-  * Normal execution, i.e. update and inserts
-  **/
-
   fn execute(&self, query_str: &str) -> bool
   {
     self.con.prep_exec(query_str, ()).unwrap().affected_rows() > 0
