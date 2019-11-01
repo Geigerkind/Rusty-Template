@@ -1,5 +1,4 @@
-use crate::util::sha3;
-use crate::util::random;
+use crate::util::str_util::tools::{sha3, random};
 use crate::account::material::account::Account;
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::database::tools::mysql::execute::Execute;

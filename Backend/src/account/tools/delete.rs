@@ -1,6 +1,5 @@
-use crate::util::sha3;
 use crate::util::mail;
-use crate::util::strformat;
+use crate::util::str_util::tools::{sha3, strformat};
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::tools::validator::Validator;
 use crate::account::material::account::Account;

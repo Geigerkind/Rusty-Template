@@ -1,7 +1,5 @@
-use crate::util::sha3;
-use crate::util::random;
+use crate::util::str_util::tools::{sha3, random, strformat};
 use crate::util::mail;
-use crate::util::strformat;
 use crate::util::validator::tools::valid;
 use crate::util::validator::domainvalue::password_failure::PasswordFailure;
 use crate::util::language::tools::get::Get;

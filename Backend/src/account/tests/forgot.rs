@@ -5,7 +5,7 @@ mod tests {
   use crate::account::tools::create::Create;
   use crate::account::service::create::PostCreateMember;
   use crate::database::tools::mysql::execute::Execute;
-  use crate::util::sha3;
+  use crate::util::str_util::tools::sha3;
 
   #[test]
   fn send_forget_password_user_does_not_exist() {

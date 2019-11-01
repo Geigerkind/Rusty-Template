@@ -5,7 +5,7 @@ mod tests {
   use crate::account::service::create::PostCreateMember;
   use crate::database::tools::mysql::execute::Execute;
   use crate::account::tools::get::GetAccountInformation;
-  use crate::util::sha3;
+  use crate::util::str_util::tools::sha3;
 
   #[test]
   fn create_account() {
