@@ -43,7 +43,8 @@ impl Create for Account {
 
     // Double spending check
     // We dont validate through the internal data structure because we may have race conditions
-    if self.db_main.exists_wparams("SELECT id FROM member WHERE LOWER(mail) = :mail LIMIT 1", params!("mail" => params.mail.clone().to_lowercase()))
+    let lower_mail = params.mail.clone().to_lowercase();
+    if self.db_main.exists_wparams("SELECT id FROM member WHERE mail = :mail LIMIT 1", params!("mail" => lower_mail.clone()))
     {
       return Err(self.dictionary.get("create.error.taken.mail", Language::English));
     }
@@ -65,15 +66,15 @@ impl Create for Account {
       let id: u32;
       { // Keep write locks as short as possible
         let mut member = self.member.write().unwrap();
-        id = self.db_main.select_wparams_value("SELECT id FROM member WHERE LOWER(mail) = :mail", &|row|{
+        id = self.db_main.select_wparams_value("SELECT id FROM member WHERE mail = :mail", &|row|{
           mysql::from_row(row)
         }, params!(
-          "mail" => params.mail.to_owned().to_lowercase()
+          "mail" => lower_mail.clone()
         )).unwrap();
         member.insert(id, Member {
           id,
           nickname: params.nickname.to_owned(),
-          mail: params.mail.clone(),
+          mail: lower_mail.clone(),
           password: pass,
           salt,
           xp: 0,
@@ -87,8 +88,8 @@ impl Create for Account {
 
       self.send_confirmation(&ValidationPair{hash: String::new(), id}, true);
       return self.login(&PostLogin {
-        mail: params.mail.to_owned(),
-        password: params.password.clone()
+        mail: lower_mail.to_owned(),
+        password: params.password.to_owned()
       });
     }
     return Err(self.dictionary.get("general.error.unknown", Language::English));

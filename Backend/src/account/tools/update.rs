@@ -109,7 +109,7 @@ impl Update for Account {
     // Check if the mail exists already
     let lower_mail = params.content.to_lowercase();
     for entry in self.member.read().unwrap().values() {
-      if entry.mail.to_lowercase() == lower_mail
+      if entry.mail == lower_mail
         && entry.id != params.validation.id
       {
         return Err(self.dictionary.get("update.error.mail_taken", Language::English));
@@ -117,14 +117,14 @@ impl Update for Account {
     }
 
     if self.db_main.execute_wparams("UPDATE member SET mail=:mail WHERE id=:id", params!(
-      "mail" => params.content.clone(),
+      "mail" => lower_mail.clone(),
       "id" => params.validation.id
     )) {
       self.helper_clear_validation(params.validation.id);
       {
         let mut member = self.member.write().unwrap();
         let entry = member.get_mut(&params.validation.id).unwrap();
-        entry.mail = params.content.clone();
+        entry.mail = lower_mail.to_owned();
       }
       return Ok(self.helper_create_validation(params.validation.id));
     }

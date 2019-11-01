@@ -30,7 +30,7 @@ impl Forgot for Account {
       {
         let lower_mail = mail.to_lowercase();
         for member_entry in self.member.read().unwrap().values() {
-          if member_entry.mail.to_lowercase() == lower_mail {
+          if member_entry.mail == lower_mail {
             member_id = member_entry.id;
             break;
           }
