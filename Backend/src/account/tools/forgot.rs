@@ -2,7 +2,7 @@ use crate::util::sha3;
 use crate::util::mail;
 use crate::util::random;
 use crate::util::strformat;
-use crate::util::validator;
+use crate::util::validator::tools::valid;
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::material::account::Account;
 use crate::database::tools::mysql::execute::Execute;
@@ -19,7 +19,7 @@ pub trait Forgot {
 impl Forgot for Account {
   fn send_forgot_password(&self, mail: &str) -> Result<(), String>
   {
-    if !validator::mail(mail) {
+    if !valid::mail(mail) {
       return Err(self.dictionary.get("general.error.invalid.mail", Language::English));
     }
 

@@ -1,10 +1,9 @@
-use crate::util::validator;
 use crate::util::sha3;
 use crate::util::random;
 use crate::util::mail;
 use crate::util::strformat;
-use crate::util::password::tools::valid;
-use crate::util::password::domainvalue::password_failure::PasswordFailure;
+use crate::util::validator::tools::valid;
+use crate::util::validator::domainvalue::password_failure::PasswordFailure;
 use crate::util::language::tools::get::Get;
 use crate::util::language::domainvalue::language::Language;
 use crate::account::service::create::PostCreateMember;
@@ -25,11 +24,11 @@ pub trait Create {
 impl Create for Account {
   fn create(&self, params: &PostCreateMember) -> Result<ValidationPair, String>
   {
-    if !validator::mail(&params.mail) {
+    if !valid::mail(&params.mail) {
       return Err(self.dictionary.get("general.error.invalid.mail", Language::English));
     }
 
-    if !validator::nickname(&params.nickname) {
+    if !valid::nickname(&params.nickname) {
       return Err(self.dictionary.get("general.error.invalid.nickname", Language::English));
     }
 

@@ -1,7 +1,6 @@
 use crate::util::sha3;
-use crate::util::validator;
-use crate::util::password::tools::valid;
-use crate::util::password::domainvalue::password_failure::PasswordFailure;
+use crate::util::validator::tools::valid;
+use crate::util::validator::domainvalue::password_failure::PasswordFailure;
 use crate::util::strformat;
 use crate::account::service::update::PostChangeStr;
 use crate::database::tools::mysql::execute::Execute;
@@ -27,7 +26,7 @@ impl Update for Account {
       return Err(self.dictionary.get("general.error.validate", Language::English));
     }
 
-    if !validator::nickname(&params.content) {
+    if !valid::nickname(&params.content) {
       return Err(self.dictionary.get("general.error.invalid.nickname", Language::English));
     }
 
@@ -105,7 +104,7 @@ impl Update for Account {
       return Err(self.dictionary.get("general.error.validate", Language::English));
     }
 
-    if !validator::mail(&params.content) {
+    if !valid::mail(&params.content) {
       return Err(self.dictionary.get("general.error.invalid.mail", Language::English));
     }
 

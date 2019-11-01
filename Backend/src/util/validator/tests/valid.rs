@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-  use crate::util::password::tools::valid;
+  use crate::util::validator::tools::valid;
 
   #[test]
   fn password_too_short() {
