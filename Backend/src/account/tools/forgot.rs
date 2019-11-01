@@ -45,7 +45,7 @@ impl Forgot for Account {
 
         forgot_id = sha3::hash(&[&member_id.to_string(), "forgot", &entry.salt]);
         if !mail::send(&entry.mail, &entry.nickname, self.dictionary.get("forgot.confirmation.subject", Language::English),
-          strformat::fmt(self.dictionary.get("forgot.confirmation.text", Language::English), &vec![&forgot_id])){
+          strformat::fmt(self.dictionary.get("forgot.confirmation.text", Language::English), &[&forgot_id])){
             return Err(self.dictionary.get("general.error.mail_send", Language::English));
         }
       }
@@ -77,7 +77,7 @@ impl Forgot for Account {
             let member = self.member.read().unwrap();
             let entry = member.get(member_id).unwrap();
             if !mail::send(&entry.mail, &entry.nickname, self.dictionary.get("forgot.information.subject", Language::English),
-              strformat::fmt(self.dictionary.get("forgot.information.text", Language::English), &vec![&user_pass])) {
+              strformat::fmt(self.dictionary.get("forgot.information.text", Language::English), &[&user_pass])) {
                 return Err(self.dictionary.get("general.error.mail_send", Language::English));
             }
           }

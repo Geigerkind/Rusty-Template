@@ -98,7 +98,7 @@ impl Create for Account {
     let member = self.member.read().unwrap();
     let entry = member.get(&params.id).unwrap();
     let mail_id = sha3::hash(&[&params.id.to_string(), &entry.salt]);
-    let mail_content = strformat::fmt(self.dictionary.get("create.confirmation.text", Language::English), &vec![&mail_id]);
+    let mail_content = strformat::fmt(self.dictionary.get("create.confirmation.text", Language::English), &[&mail_id]);
 
     if !entry.mail_confirmed {
       let mut requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();

@@ -28,7 +28,7 @@ pub fn password(input: &str) -> Result<(), String>
       if pwd.count == 0 {
         return Ok(());
       }
-      return Err(strformat::fmt(DICTIONARY.get("error.pwned", Language::English), &vec![&pwd.count.to_string()]));
+      return Err(strformat::fmt(DICTIONARY.get("error.pwned", Language::English), &[&pwd.count.to_string()]));
     },
     // Ignore this case
     Err(_) => Ok(())

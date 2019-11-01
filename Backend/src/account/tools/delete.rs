@@ -29,7 +29,7 @@ impl Delete for Account {
         let entry = member.get(&params.id).unwrap();
         delete_id = sha3::hash(&[&params.id.to_string(), "delete", &entry.salt]);
         if !mail::send(&entry.mail, &entry.nickname, self.dictionary.get("create.confirmation.subject", Language::English),
-          strformat::fmt(self.dictionary.get("create.confirmation.text", Language::English), &vec![&delete_id])){
+          strformat::fmt(self.dictionary.get("create.confirmation.text", Language::English), &[&delete_id])){
             return Err(self.dictionary.get("general.error.mail_send", Language::English));
         }
       }
