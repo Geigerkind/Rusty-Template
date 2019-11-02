@@ -10,6 +10,7 @@
 header {
   font-weight: bold;
   font-size: 30px;
+  line-height: 30px;
   text-align: center;
   width: 100%;
   color: $font_title;
@@ -30,6 +31,16 @@ footer {
 
     &:first-child {
       margin-right: $spacing;
+    }
+  }
+
+  @media (max-width: 500px) {
+    button {
+      width: 100%;
+
+      &:first-child {
+        margin-bottom: $spacing * 0.5;
+      }
     }
   }
 }
