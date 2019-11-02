@@ -3,17 +3,17 @@
   <div class="co-description">You can set your consent preferences and determine how you want your data to be used based on the purposes below. You may set your preferences for us independently from those of third-party partners. Each purpose has a description so that you know how we and partners use your data.</div>
 </header>
 <section class="cookieTables">
-  <div class="cookieRowContainer">
+  <div class="cookieRowContainer" *ngIf="cookies_third_party.length">
     <div class="cr-title">Third Party Vendors</div>
     <CookieOptionRow *ngFor="let cookie of cookies_third_party" [cookie]="cookie"></CookieOptionRow>
   </div>
 
-  <div class="cookieRowContainer">
+  <div class="cookieRowContainer" *ngIf="cookies_other.length">
     <div class="cr-title">Other</div>
     <CookieOptionRow *ngFor="let cookie of cookies_other" [cookie]="cookie"></CookieOptionRow>
   </div>
 
-  <div class="cookieRowContainer">
+  <div class="cookieRowContainer" *ngIf="cookies_necessary.length">
     <div class="cr-title">Necessary</div>
     <CookieOptionRow *ngFor="let cookie of cookies_necessary" [cookie]="cookie"></CookieOptionRow>
   </div>

@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { CookieService } from 'ngx-cookie-service';
+import { CookieService } from "ngx-cookie-service";
 
 @Component({
   selector: "root",
@@ -11,7 +11,7 @@ export class AppComponent {
   show_cookie_banner = true;
 
   constructor(private cookieService: CookieService) {
-    //this.show_cookie_banner = !this.cookieService.check("cookieDecisions");
+    // this.show_cookie_banner = !this.cookieService.check("cookieDecisions");
   }
 
   handle_cookie_banner_close(): void {

@@ -8,22 +8,15 @@ import { CookieService } from "ngx-cookie-service";
   styleUrls: ["./cookie_banner.scss"]
 })
 export class CookieBanner {
-  @Output() close: EventEmitter<boolean> = new EventEmitter();
-  
+  @Output() close_banner: EventEmitter<boolean> = new EventEmitter();
+
   show_options = false;
   cookies_third_party: Array<CookieOption> = [];
   cookies_other: Array<CookieOption> = [];
   cookies_necessary: Array<CookieOption> = [];
 
   constructor(private cookieService: CookieService) {
-    this.cookies_third_party.push(new CookieOption("Lorem ipsum dolor sit", "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren", true, false));
-    this.cookies_third_party.push(new CookieOption("Lorem ipsum dolor sit", "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren", true, false));
-
-    this.cookies_other.push(new CookieOption("Lorem ipsum dolor sit", "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren", true, false));
-    this.cookies_other.push(new CookieOption("Lorem ipsum dolor sit", "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren", true, false));
-
-    this.cookies_necessary.push(new CookieOption("Lorem ipsum dolor sit", "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren", true, true));
-    this.cookies_necessary.push(new CookieOption("Lorem ipsum dolor sit", "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren", true, true));
+    this.cookies_necessary.push(new CookieOption("Cookie decisions", "Saves your decisions that you set here!", true, true));
 
     this.load();
   }
@@ -47,6 +40,6 @@ export class CookieBanner {
     };
 
     this.cookieService.set("cookieDecisions", JSON.stringify(cookieDecisions), 30);
-    this.close.emit(true);
+    this.close_banner.emit(true);
   }
 }
