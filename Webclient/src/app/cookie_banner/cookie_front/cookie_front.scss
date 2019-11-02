@@ -1,0 +1,35 @@
+@import "./../../../styles/global.scss";
+@import "./../../../styles/shadows.scss";
+@import "./../../../styles/buttons.scss";
+
+:host {
+  display: block;
+  padding: $spacing * 2.5;
+}
+
+header {
+  font-weight: bold;
+  font-size: 30px;
+  text-align: center;
+  width: 100%;
+  color: $font_title;
+  padding-bottom: $spacing * 2.5;
+}
+
+section {
+  width: 100%;
+  color: $font_less_important !important;
+  padding-bottom: $spacing;
+}
+
+footer {
+  text-align: center;
+
+  button {
+    width: calc(50% - #{$spacing} * 0.5);
+
+    &:first-child {
+      margin-right: $spacing;
+    }
+  }
+}

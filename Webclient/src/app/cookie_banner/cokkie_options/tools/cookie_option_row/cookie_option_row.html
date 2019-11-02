@@ -1,0 +1,10 @@
+<div class="cor-left">
+  <div class="cor-title">{{ cookie.title }}</div>
+  <div class="cor-description">{{ cookie.description }}</div>
+</div>
+<div class="cor-right">
+    <label class="switch">
+      <input type="checkbox" [checked]="cookie.enabled" [disabled]="cookie.disabled">
+      <span class="slider round"></span>
+    </label>
+</div>

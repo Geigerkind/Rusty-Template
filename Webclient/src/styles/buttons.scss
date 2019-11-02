@@ -8,16 +8,15 @@
   margin: 0;
   font-size: 16px;
   font-weight: bold;
-  -webkit-appearance: none;
-  -moz-appearance: none;
   text-decoration: none;
   border: none;
   transition: none;
-  min-width: 200px;
   min-height: 46px;
   text-transform: uppercase;
   letter-spacing: 2px;
   cursor: pointer;
+  appearance: none;
+  user-select: none;
 }
 
 .btnHighlight {

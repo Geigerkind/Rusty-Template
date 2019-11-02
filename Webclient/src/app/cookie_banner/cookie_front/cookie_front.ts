@@ -1,0 +1,14 @@
+import { Component, Output, EventEmitter } from "@angular/core";
+
+@Component({
+  selector: "CookieFront",
+  templateUrl: "./cookie_front.html",
+  styleUrls: ["./cookie_front.scss"]
+})
+export class CookieFront {
+  @Output() show_options: EventEmitter<boolean> = new EventEmitter();
+
+  emit_show_options(): void {
+    this.show_options.emit(true);
+  }
+}
