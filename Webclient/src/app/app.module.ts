@@ -9,7 +9,7 @@ import { CookieBannerModule } from "./cookie_banner/cookie_banner.module";
 import {HttpClientModule, HttpClient} from "@angular/common/http";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
-import { FooterBarModule } from './footer_bar/footer_bar.module';
+import { FooterBarModule } from "./footer_bar/footer_bar.module";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
