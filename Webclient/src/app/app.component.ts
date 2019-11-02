@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { CookieService } from "ngx-cookie-service";
-import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
+import { TranslateService } from "@ngx-translate/core";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "root",
