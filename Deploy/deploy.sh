@@ -109,12 +109,12 @@ function deployWebclient {
   npm install
   ng build --prod --aot
   html-minifier dist/Webclient/index.html --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --use-short-doctype -o dist/Webclient/index.html
+  rm -rf /var/www/html/*
   cp /root/Jaylapp/Webclient/dist/Webclient/* /var/www/html/
   cd /root
 
   # Deploying optimized assets
-  rm -rf /var/www/html/assets &> /dev/null
-  cp -r /root/cache/assets /var/www/html/
+  cp -r /root/cache/assets/* /var/www/html/assets/
 }
 
 function deployBackend {
