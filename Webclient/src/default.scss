@@ -1,0 +1,14 @@
+@import "./styles/global.scss";
+
+body {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    color: $highlight;
+  }
+}

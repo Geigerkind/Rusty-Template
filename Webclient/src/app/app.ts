@@ -5,7 +5,7 @@ import { Observable } from "rxjs";
 
 @Component({
   selector: "root",
-  templateUrl: "./app.component.html",
+  templateUrl: "./app.html",
   styleUrls: []
 })
 export class AppComponent {
@@ -15,11 +15,11 @@ export class AppComponent {
   constructor(private cookieService: CookieService,
               private translateService: TranslateService) {
     this.init_translate_service();
-    // this.show_cookie_banner = !this.cookieService.check("cookieDecisions");
+    this.show_cookie_banner = !this.cookieService.check("cookieDecisions");
   }
 
-  handle_cookie_banner_close(): void {
-    this.show_cookie_banner = false;
+  set_cookie_banner(state: boolean): void {
+    this.show_cookie_banner = state;
   }
 
   async init_translate_service() {

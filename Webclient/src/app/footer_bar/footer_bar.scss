@@ -1,0 +1,67 @@
+@import "./../../styles/global.scss";
+
+:host {
+  display: block;
+  width: 100%;
+  background: $theme_dominant_color;
+  padding: $spacing 0;
+
+  #listContainer {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-items: center;
+  }
+
+  #copyright {
+    text-align: center;
+    width: 100%;
+    height: 30px;
+    margin-top: $spacing;
+  }
+}
+
+.fb_infoList {
+  padding: 0 $spacing;
+  float: left;
+  min-width: 150px;
+
+  .fb_il_title {
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: lighten($theme_dominant_color, 60%);
+  }
+
+  ul {
+    padding: 0;
+    margin-top: $spacing * 0.5;
+    list-style: none;
+
+    li {
+      line-height: 20px;
+    }
+
+    li::before {
+      content: "• ";
+      color: lighten($theme_dominant_color, 60%);
+      font-size: 20px;
+      line-height: 20px;
+    }
+  }
+}
+
+@media (max-width: 550px) {
+  :host {
+    #listContainer {
+      display: block;
+    }
+  }
+
+  .fb_infoList {
+    float: none;
+  }
+}

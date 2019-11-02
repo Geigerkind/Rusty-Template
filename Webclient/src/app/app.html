@@ -1,0 +1,5 @@
+<CookieBanner *ngIf="show_cookie_banner"
+              (close_banner)="set_cookie_banner(false)">
+</CookieBanner>
+
+<FooterBar (consent)="set_cookie_banner(true)"></FooterBar>

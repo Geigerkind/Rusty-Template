@@ -26,5 +26,22 @@
     "title": "Cookie decisions",
     "description": "Saves your decisions that you set here!"
   }
+},
+"FooterBar": {
+  "niceToKnow": {
+    "title": "Nice to know",
+    "restApi": "Rest API"
+  },
+  "needHelp": {
+    "title": "Need help?",
+    "changeConsent": "Change consent",
+    "privacy": "Privacy policy",
+    "imprint": "Imprint"
+  },
+  "connect": {
+    "title": "Connect",
+    "discord": "Discord"
+  },
+  "copyright": "©{{year}} {{company}}. All rights reserved."
 }
 }

@@ -1,8 +1,6 @@
 import { Component, Output, EventEmitter } from "@angular/core";
 import { CookieOption } from "./material/cookie_option";
 import { CookieService } from "ngx-cookie-service";
-import { TranslateService } from "@ngx-translate/core";
-import { Subscription } from "rxjs";
 
 @Component({
   selector: "CookieBanner",
