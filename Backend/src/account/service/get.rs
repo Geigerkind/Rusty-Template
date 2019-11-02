@@ -4,6 +4,13 @@ use crate::account::domainvalue::account_information::AccountInformation;
 
 use rocket::State;
 use rocket_contrib::json::Json;
+use rocket::response::Redirect;
+
+#[openapi(skip)]
+#[get("/")]
+pub fn api() -> Redirect {
+  Redirect::to("/API/account/openapi.json")
+}
 
 #[openapi]
 #[get("/get/<id>")]
