@@ -6,6 +6,14 @@ import { AppComponent } from "./app.component";
 import { CookieService } from "ngx-cookie-service";
 import { CookieBannerModule } from './cookie_banner/cookie_banner.module';
 
+import {HttpClientModule, HttpClient} from '@angular/common/http';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
 @NgModule({
   declarations: [
     AppComponent
@@ -13,7 +21,15 @@ import { CookieBannerModule } from './cookie_banner/cookie_banner.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    CookieBannerModule
+    CookieBannerModule,
+    HttpClientModule,
+    TranslateModule.forRoot({
+        loader: {
+            provide: TranslateLoader,
+            useFactory: (createTranslateLoader),
+            deps: [HttpClient]
+        }
+    })
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

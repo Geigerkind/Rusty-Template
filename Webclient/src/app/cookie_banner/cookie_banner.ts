@@ -1,6 +1,8 @@
 import { Component, Output, EventEmitter } from "@angular/core";
 import { CookieOption } from "./material/cookie_option";
 import { CookieService } from "ngx-cookie-service";
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: "CookieBanner",
@@ -15,8 +17,9 @@ export class CookieBanner {
   cookies_other: Array<CookieOption> = [];
   cookies_necessary: Array<CookieOption> = [];
 
+
   constructor(private cookieService: CookieService) {
-    this.cookies_necessary.push(new CookieOption("Cookie decisions", "Saves your decisions that you set here!", true, true));
+    this.cookies_necessary.push(new CookieOption("CookieBanner.cookieDecisions.title", "CookieBanner.cookieDecisions.description", true, true));
 
     this.load();
   }

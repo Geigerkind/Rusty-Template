@@ -1,25 +1,25 @@
 <header>
-  <div class="co-title">We value your privacy</div>
-  <div class="co-description">You can set your consent preferences and determine how you want your data to be used based on the purposes below. You may set your preferences for us independently from those of third-party partners. Each purpose has a description so that you know how we and partners use your data.</div>
+  <div class="co-title">{{ "CookieBanner.options.title" | translate }}</div>
+  <div class="co-description">{{ "CookieBanner.options.description" | translate }}</div>
 </header>
 <section class="cookieTables">
   <div class="cookieRowContainer" *ngIf="cookies_third_party.length">
-    <div class="cr-title">Third Party Vendors</div>
+    <div class="cr-title">{{ "CookieBanner.options.vendor.thirdparty" | translate }}</div>
     <CookieOptionRow *ngFor="let cookie of cookies_third_party" [cookie]="cookie"></CookieOptionRow>
   </div>
 
   <div class="cookieRowContainer" *ngIf="cookies_other.length">
-    <div class="cr-title">Other</div>
+    <div class="cr-title">{{ "CookieBanner.options.vendor.other" | translate }}</div>
     <CookieOptionRow *ngFor="let cookie of cookies_other" [cookie]="cookie"></CookieOptionRow>
   </div>
 
   <div class="cookieRowContainer" *ngIf="cookies_necessary.length">
-    <div class="cr-title">Necessary</div>
+    <div class="cr-title">{{ "CookieBanner.options.vendor.necessary" | translate }}</div>
     <CookieOptionRow *ngFor="let cookie of cookies_necessary" [cookie]="cookie"></CookieOptionRow>
   </div>
 </section>
 <footer>
-  <button class="btnNonHighlight" (click)="emit_show_front()">Back</button>
-  <button class="btnNonHighlight" (click)="reject_all()">Reject all</button>
-  <button class="btnHighlight" (click)="emit_save()">Save</button>
+  <button class="btnNonHighlight" (click)="emit_show_front()">{{ "CookieBanner.options.button.back" | translate }}</button>
+  <button class="btnNonHighlight" (click)="reject_all()">{{ "CookieBanner.options.button.rejectAll" | translate }}</button>
+  <button class="btnHighlight" (click)="emit_save()">{{ "CookieBanner.options.button.save" | translate }}</button>
 </footer>

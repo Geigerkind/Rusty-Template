@@ -1,0 +1,30 @@
+{
+"CookieBanner": {
+  "front": {
+    "title": "We value your privacy",
+    "description": "We and our partners use technologies, such as cookies, and process personal data, such as IP addresses and cookie identifiers, to personalise ads and content based on your interests, measure the performance of ads and content, and derive insights about the audiences who saw ads and content. Click below to consent to the use of this technology and the processing of your personal data for these purposes. You can change your mind and change your consent choices at any time by returning to this site.",
+    "button": {
+      "options": "More options",
+      "agree": "I agree"
+    }
+  },
+  "options": {
+    "title": "We value your privacy",
+    "description": "You can set your consent preferences and determine how you want your data to be used based on the purposes below. You may set your preferences for us independently from those of third-party partners. Each purpose has a description so that you know how we and partners use your data.",
+    "button": {
+      "back": "Back",
+      "rejectAll": "Reject all",
+      "save": "Save"
+    },
+    "vendor": {
+      "thirdparty": "Third party vendors",
+      "other": "Other",
+      "necessary": "Necessary"
+    }
+  },
+  "cookieDecisions": {
+    "title": "Cookie decisions",
+    "description": "Saves your decisions that you set here!"
+  }
+}
+}
