@@ -3,6 +3,7 @@
 #[macro_use] extern crate mysql;
 #[macro_use] extern crate serde_derive;
 #[macro_use] extern crate lazy_static;
+#[macro_use] extern crate rocket_okapi;
 extern crate serde_json;
 extern crate dotenv;
 
@@ -30,8 +31,9 @@ impl Backend {
 
 fn main() {
   let mut igniter = rocket::ignite();
-  igniter = igniter.manage(Backend::new());
-  igniter = igniter.mount("/API/account/", routes![
+  let backend = Backend::new();
+  igniter = igniter.manage(backend.account);
+  igniter = igniter.mount("/API/account/", routes_with_openapi![
     account::service::delete::request, account::service::delete::confirm,
     account::service::create::create, account::service::create::confirm, account::service::create::resend_confirm,
     account::service::get::get,

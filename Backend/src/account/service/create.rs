@@ -3,27 +3,29 @@ use crate::account::tools::create::Create;
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::domainvalue::post_create_member::PostCreateMember;
 
-use rocket::response::content;
 use rocket::State;
 use rocket_contrib::json::Json;
 
+#[openapi]
 #[post("/create/send", data = "<params>")]
-pub fn create(me: State<Account>, params: Json<PostCreateMember>) -> content::Json<String>
+pub fn create(me: State<Account>, params: Json<PostCreateMember>) -> Result<Json<ValidationPair>, String>
 {
   match me.create(&params) {
-    Ok(member) => content::Json(serde_json::to_string(&member).unwrap()),
-    Err(error_str) => content::Json(error_str)
+    Ok(val_pair) => Ok(Json(val_pair)),
+    Err(error_str) => Err(error_str)
   }
 }
 
+#[openapi]
 #[get("/create/confirm/<id>")]
-pub fn confirm(me: State<Account>, id: String) -> content::Json<String>
+pub fn confirm(me: State<Account>, id: String) -> Json<bool>
 {
-  content::Json(me.confirm(&id).to_string())
+  Json(me.confirm(&id))
 }
 
+#[openapi]
 #[post("/create/resend", data = "<params>")]
-pub fn resend_confirm(me: State<Account>, params: Json<ValidationPair>) -> content::Json<String>
+pub fn resend_confirm(me: State<Account>, params: Json<ValidationPair>) -> Json<bool>
 {
-  content::Json(me.send_confirmation(&params).to_string())
+  Json(me.send_confirmation(&params))
 }

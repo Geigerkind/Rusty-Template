@@ -3,26 +3,29 @@ use crate::account::tools::delete::Delete;
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::util::language::tools::get::Get;
 use crate::util::language::domainvalue::language::Language;
+use crate::account::domainvalue::account_information::AccountInformation;
 
-use rocket::response::content;
 use rocket::State;
 use rocket_contrib::json::Json;
 
+
+#[openapi]
 #[get("/delete/confirm/<id>")]
-pub fn confirm(me: State<Account>, id: String) -> content::Json<String>
+pub fn confirm(me: State<Account>, id: String) -> String
 {
   match me.confirm_delete(&id) {
-    Ok(_) => content::Json(me.dictionary.get("general.service.success", Language::English)),
-    Err(error_str) => content::Json(error_str)
+    Ok(_) => me.dictionary.get("general.service.success", Language::English),
+    Err(error_str) => error_str
   }
 }
 
+#[openapi]
 #[delete("/delete/send", data = "<params>")]
-pub fn request(me: State<Account>, params: Json<ValidationPair>) -> content::Json<String>
+pub fn request(me: State<Account>, params: Json<ValidationPair>) -> Result<Json<AccountInformation>, String>
 {
   match me.issue_delete(&params) {
-    Ok(acc_info) => content::Json(serde_json::to_string(&acc_info).unwrap()),
-    Err(error_str) => content::Json(error_str)
+    Ok(acc_info) => Ok(Json(acc_info)),
+    Err(error_str) => Err(error_str)
   }
 }
 

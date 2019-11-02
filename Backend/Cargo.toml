@@ -6,6 +6,10 @@ edition = "2018"
 
 [dependencies]
 rocket = "*"
+schemars = "*"
+okapi = "*"
+rocket_okapi = "*"
+rocket_okapi_codegen = "*"
 mysql = "*"
 serde = "*"
 serde_derive = "*"

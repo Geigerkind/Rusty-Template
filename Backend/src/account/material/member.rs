@@ -1,3 +1,5 @@
+use schemars::JsonSchema;
+#[derive(Deserialize, Serialize, Debug, JsonSchema)]
 pub struct Member {
   pub id: u32,
   pub nickname: String,

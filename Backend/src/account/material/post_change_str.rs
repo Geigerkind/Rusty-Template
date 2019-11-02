@@ -1,6 +1,6 @@
 use crate::account::domainvalue::validation_pair::ValidationPair;
-
-#[derive(Deserialize)]
+use schemars::JsonSchema;
+#[derive(Deserialize, Serialize, Debug, JsonSchema)]
 pub struct PostChangeStr {
   pub content: String,
   pub validation: ValidationPair

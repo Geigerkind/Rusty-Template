@@ -1,15 +1,16 @@
 use crate::account::material::account::Account;
 use crate::account::tools::get::GetAccountInformation;
+use crate::account::domainvalue::account_information::AccountInformation;
 
-use rocket::response::content;
 use rocket::State;
-use serde_json::to_string;
+use rocket_contrib::json::Json;
 
+#[openapi]
 #[get("/get/<id>")]
-pub fn get(me: State<Account>, id: u32) -> content::Json<String>
+pub fn get(me: State<Account>, id: u32) -> Result<Json<AccountInformation>, String>
 {
   match me.get(id) {
-    Ok(acc_info) => content::Json(to_string(&acc_info).unwrap()),
-    Err(err_str) => content::Json(err_str)
+    Ok(acc_info) => Ok(Json(acc_info)),
+    Err(err_str) => Err(err_str)
   }
 }
