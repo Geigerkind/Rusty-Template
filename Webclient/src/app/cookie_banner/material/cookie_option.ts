@@ -12,8 +12,9 @@ export class CookieOption {
   }
 
   public toggle() {
-    if (this.disabled)
+    if (this.disabled) {
       return;
+    }
     this._enabled = !this._enabled;
   }
 }

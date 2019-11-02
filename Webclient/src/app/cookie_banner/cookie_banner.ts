@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { CookieOption } from './material/cookie_option';
+import { CookieOption } from "./material/cookie_option";
 
 @Component({
   selector: "CookieBanner",
