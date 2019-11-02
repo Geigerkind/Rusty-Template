@@ -10,10 +10,8 @@ impl MySQLConnection {
   pub fn new(db_name: &str) -> Self
   {
     dotenv().ok();
-    let mut dns: String = env::var("MYSQL_DNS").unwrap();
-    dns.push_str(db_name);
     MySQLConnection {
-      con: mysql::Pool::new(dns).unwrap()
+      con: mysql::Pool::new([&env::var("MYSQL_DNS").unwrap(), db_name].concat()).unwrap()
     }
   }
 }
