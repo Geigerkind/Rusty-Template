@@ -1,11 +1,13 @@
 <div id="cookieContainer">
   <CookieFront *ngIf="!show_options"
-              (show_options)="set_show_options(true)">
+              (show_options)="set_show_options(true)"
+              (agree)="save()">
   </CookieFront>
   <CookieOptions *ngIf="show_options"
               [cookies_third_party]="cookies_third_party"
               [cookies_other]="cookies_other"
               [cookies_necessary]="cookies_necessary"
-              (show_front)="set_show_options(false)">
+              (show_front)="set_show_options(false)"
+              (save)="save()">
   </CookieOptions>
 </div>

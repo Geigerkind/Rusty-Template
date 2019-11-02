@@ -4,7 +4,7 @@
 </div>
 <div class="cor-right">
     <label class="switch">
-      <input type="checkbox" [checked]="cookie.enabled" [disabled]="cookie.disabled">
+      <input type="checkbox" [checked]="cookie.enabled" (change)="cookie.toggle()" [disabled]="cookie.disabled">
       <span class="slider round"></span>
     </label>
 </div>

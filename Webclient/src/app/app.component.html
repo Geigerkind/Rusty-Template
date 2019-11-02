@@ -1,2 +1,4 @@
 Hello World!
-<CookieBanner></CookieBanner>
+<CookieBanner *ngIf="show_cookie_banner"
+              (close)="handle_cookie_banner_close()">
+</CookieBanner>

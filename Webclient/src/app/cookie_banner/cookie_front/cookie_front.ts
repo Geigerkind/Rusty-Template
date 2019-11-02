@@ -7,8 +7,13 @@ import { Component, Output, EventEmitter } from "@angular/core";
 })
 export class CookieFront {
   @Output() show_options: EventEmitter<boolean> = new EventEmitter();
+  @Output() agree: EventEmitter<boolean> = new EventEmitter();
 
   emit_show_options(): void {
     this.show_options.emit(true);
+  }
+
+  emit_agree(): void {
+    this.agree.emit(true);
   }
 }

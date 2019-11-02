@@ -8,6 +8,7 @@ import { CookieOption } from "../material/cookie_option";
 })
 export class CookieOptions {
   @Output() show_front: EventEmitter<boolean> = new EventEmitter();
+  @Output() save: EventEmitter<boolean> = new EventEmitter();
 
   @Input() cookies_third_party: Array<CookieOption>;
   @Input() cookies_other: Array<CookieOption>;
@@ -17,8 +18,12 @@ export class CookieOptions {
     this.show_front.emit(true);
   }
 
+  emit_save(): void {
+    this.save.emit(true);
+  }
+
   reject_all(): void {
-    this.cookies_other.forEach(cookie => { if (cookie.enabled) { cookie.toggle(); } } );
-    this.cookies_third_party.forEach(cookie => { if (cookie.enabled) { cookie.toggle(); } } );
+    this.cookies_other.forEach(cookie => cookie.setEnabled(false) );
+    this.cookies_third_party.forEach(cookie => cookie.setEnabled(false) );
   }
 }

@@ -7,6 +7,7 @@ import { CookieBanner } from "./cookie_banner/cookie_banner";
 import { CookieFront } from "./cookie_banner/cookie_front/cookie_front";
 import { CookieOptions } from "./cookie_banner/cokkie_options/cookie_options";
 import { CookieOptionRow } from "./cookie_banner/cokkie_options/tools/cookie_option_row/cookie_option_row";
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,7 @@ import { CookieOptionRow } from "./cookie_banner/cokkie_options/tools/cookie_opt
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
