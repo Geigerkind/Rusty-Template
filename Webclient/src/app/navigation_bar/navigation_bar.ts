@@ -13,7 +13,7 @@ export class NavigationBar {
   ];
 
   accountItems: Array<Array<string>> = [
-    ["/profile/", "NavigationBar.account.title"],
+    ["/account/", "NavigationBar.account.title"],
     ["/logout/", "NavigationBar.account.logout"]
   ];
 

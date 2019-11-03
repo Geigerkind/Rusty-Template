@@ -1,4 +1,4 @@
-<div class="mainItem"><a [href]="items[0][0]">{{ items[0][1] | translate }}</a></div>
+<div class="mainItem"><a [routerLink]="items[0][0]">{{ items[0][1] | translate }}</a></div>
 <ul *ngIf="items.length > 1">
-  <li *ngFor="let item of items.slice(1)"><a [href]="item[0]">{{ item[1] | translate }}</a></li>
+  <li *ngFor="let item of items.slice(1)"><a [routerLink]="item[0]">{{ item[1] | translate }}</a></li>
 </ul>

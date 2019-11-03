@@ -2,22 +2,20 @@ import { NgModule } from "@angular/core";
 import { CookieService } from "ngx-cookie-service";
 import { BrowserModule } from "@angular/platform-browser";
 import { TranslateModule } from "@ngx-translate/core";
-import { NavigationBar } from "./navigation_bar";
-import { ItemList } from "./item_list/item_list";
 import { RouterModule } from '@angular/router';
+import { Account } from './account';
 
 @NgModule({
   declarations: [
-    NavigationBar,
-    ItemList
+    Account
   ],
   imports: [
     BrowserModule,
     TranslateModule,
     RouterModule
   ],
-  exports: [NavigationBar],
+  exports: [Account],
   providers: [CookieService],
-  bootstrap: [NavigationBar]
+  bootstrap: [Account]
 })
-export class NavigationBarModule { }
+export class AccountModule { }

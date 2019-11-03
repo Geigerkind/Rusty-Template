@@ -2,4 +2,7 @@
               (close_banner)="set_cookie_banner(false)">
 </CookieBanner>
 <NavigationBar></NavigationBar>
+<main>
+  <router-outlet></router-outlet>
+</main>
 <FooterBar (consent)="set_cookie_banner(true)"></FooterBar>
