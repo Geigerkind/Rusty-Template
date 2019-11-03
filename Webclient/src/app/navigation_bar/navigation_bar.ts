@@ -1,5 +1,4 @@
 import { Component } from "@angular/core";
-import { environment } from "src/environments/environment";
 
 @Component({
   selector: "NavigationBar",
@@ -7,7 +6,6 @@ import { environment } from "src/environments/environment";
   styleUrls: ["./navigation_bar.scss"]
 })
 export class NavigationBar {
-  websiteName = environment.name;
   sampleItems = [
     ["url", "Entry 1"],
     ["url", "Entry 2"],
