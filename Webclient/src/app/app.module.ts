@@ -11,7 +11,6 @@ import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { FooterBarModule } from "./footer_bar/footer_bar.module";
 import { NavigationBarModule } from "./navigation_bar/navigation_bar.module";
-import { AccountModule } from './account/account.module';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -26,7 +25,6 @@ export function createTranslateLoader(http: HttpClient) {
     AppRoutingModule,
     CookieBannerModule,
     NavigationBarModule,
-    AccountModule,
     FooterBarModule,
     HttpClientModule,
     TranslateModule.forRoot({

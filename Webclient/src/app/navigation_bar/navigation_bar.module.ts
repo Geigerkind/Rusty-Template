@@ -4,7 +4,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import { TranslateModule } from "@ngx-translate/core";
 import { NavigationBar } from "./navigation_bar";
 import { ItemList } from "./item_list/item_list";
-import { RouterModule } from '@angular/router';
+import { RouterModule } from "@angular/router";
 
 @NgModule({
   declarations: [

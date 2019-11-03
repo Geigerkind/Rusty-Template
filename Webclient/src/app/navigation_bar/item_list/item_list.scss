@@ -1,62 +1,125 @@
 @import "./../../../styles/global.scss";
-@import "./../../../styles/shadows.scss";
 
-:host {
-  display: inline-block;
-  height: 100%;
-  margin: 0 $spacing * 0.25;
-}
-
-$minWidth: 100px;
-
-.mainItem {
-  min-width: $minWidth;
-  height: 100%;
-
-  a {
-    display: flex;
-    align-items: center;
-    padding-left: $spacing * 0.5;
-    width: 100%;
+@media (min-width: 761px) {
+  @import "./../../../styles/shadows.scss";
+  :host {
+    display: inline-block;
     height: 100%;
-    font-size: 20px;
+    margin: 0 $spacing * 0.25;
   }
 
-  &:hover + ul {
-    display: block;
-  }
-}
+  $minWidth: 100px;
 
-ul {
-  @extend .floatShadow;
+  .mainItem {
+    min-width: $minWidth;
+    height: 100%;
 
-  display: none;
-  background: lighten($theme_dominant_color, 20%);
-  border: 1px solid lighten($theme_dominant_color, 25%);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  position: absolute;
-  min-width: $minWidth;
-
-  &:hover {
-    display: block;
-  }
-
-  li {
-    width: calc(100% - #{$spacing} * 0.5);
-    padding: $spacing * 0.5 0 $spacing * 0.5 $spacing * 0.5;
-    border-top: 1px solid lighten($theme_dominant_color, 25%);
-
-    &:first-child {
-      border: none;
+    svg {
+      display: none;
     }
 
     a {
-      display: block;
+      display: flex;
+      align-items: center;
+      padding-left: $spacing * 0.5;
       width: 100%;
       height: 100%;
       font-size: 20px;
+    }
+
+    &:hover + ul {
+      display: block !important;
+    }
+  }
+
+  ul {
+    @extend .floatShadow;
+
+    display: none;
+    background: lighten($theme_dominant_color, 20%);
+    border: 1px solid lighten($theme_dominant_color, 25%);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    position: absolute;
+    min-width: $minWidth;
+
+    &:hover {
+      display: block !important;
+    }
+
+    li {
+      width: calc(100% - #{$spacing} * 0.5);
+      padding: $spacing * 0.5 0 $spacing * 0.5 $spacing * 0.5;
+      border-top: 1px solid lighten($theme_dominant_color, 25%);
+
+      &:first-child {
+        border: none;
+      }
+
+      a {
+        display: block;
+        width: 100%;
+        height: 100%;
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+@media (max-width: 760px) {
+  $columnHeight: 50px;
+
+  :host {
+    display: block;
+    width: 100%;
+    min-height: $columnHeight;
+    margin: 0;
+    background: lighten($theme_dominant_color, 15%);
+    border-bottom: 1px solid lighten($theme_dominant_color, 20%);
+
+    .mainItem {
+      width: 100%;
+      height: $columnHeight;
+      display: flex;
+      flex-direction: row;
+
+      svg {
+        fill: $font_default;
+        justify-self: flex-end;
+        padding-right: $spacing;
+        cursor: pointer;
+      }
+
+      a {
+        flex: 1;
+        float: left;
+        display: flex;
+        align-items: center;
+        height: 100%;
+        font-size: 20px;
+        padding-left: $spacing;
+      }
+    }
+
+    ul {
+      display: none;
+      width: calc(100% - #{$spacing} * 4);
+      margin: 0;
+      padding: 0 $spacing * 2 0 $spacing * 2;
+      list-style: none;
+
+      li {
+        height: $columnHeight * 0.65;
+        border-top: 1px solid lighten($theme_dominant_color, 20%);
+
+        a {
+          display: inline-block;
+          height: 100%;
+          line-height: $columnHeight * 0.65;
+          font-size: 16px;
+        }
+      }
     }
   }
 }
