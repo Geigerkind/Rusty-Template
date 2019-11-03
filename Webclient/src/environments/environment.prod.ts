@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  company: "Jaylapp"
+  company: "Jaylapp",
+  name: "Jaylapp"
 };

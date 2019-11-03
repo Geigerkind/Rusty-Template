@@ -30,7 +30,8 @@
 "FooterBar": {
   "niceToKnow": {
     "title": "Nice to know",
-    "restApi": "Rest API"
+    "restApi": "Rest API",
+    "github": "Github"
   },
   "needHelp": {
     "title": "Need help?",
@@ -43,5 +44,12 @@
     "discord": "Discord"
   },
   "copyright": "©{{year}} {{company}}. All rights reserved."
+},
+"NavigationBar": {
+  "searchPlaceHolder": "Type to search",
+  "account": {
+    "title": "Account",
+    "logout": "Sign out"
+  }
 }
 }

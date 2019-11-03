@@ -10,6 +10,7 @@ import {HttpClientModule, HttpClient} from "@angular/common/http";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { FooterBarModule } from "./footer_bar/footer_bar.module";
+import { NavigationBarModule } from "./navigation_bar/navigation_bar.module";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -23,6 +24,7 @@ export function createTranslateLoader(http: HttpClient) {
     BrowserModule,
     AppRoutingModule,
     CookieBannerModule,
+    NavigationBarModule,
     FooterBarModule,
     HttpClientModule,
     TranslateModule.forRoot({
