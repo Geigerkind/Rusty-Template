@@ -7,6 +7,7 @@
 }
 
 #accountContent {
+  width: 320px;
   margin-left: $spacing;
 
   header {
@@ -16,5 +17,21 @@
 
     font-size: 24px;
     line-height: 41px;
+  }
+}
+
+@media (max-width: 640px) {
+  :host {
+    flex-direction: column;
+    align-items: center;
+
+    NavigationBar {
+      width: 90%;
+      margin-bottom: $spacing;
+    }
+
+    #accountContent {
+      width: 90%;
+    }
   }
 }

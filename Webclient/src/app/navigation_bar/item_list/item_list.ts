@@ -9,10 +9,7 @@ export class ItemList {
   @Input() items: Array<Array<string>>;
   @Input() screenWidth: number;
 
-  show_sub_menu = false;
-  toggle(): void {
-    this.show_sub_menu = !this.show_sub_menu;
-  }
+  show_sub_menu: Boolean = false;
 
   getSubListVisibility(): string {
     if (this.screenWidth > 760 || !this.show_sub_menu)

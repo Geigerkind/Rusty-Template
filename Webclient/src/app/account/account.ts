@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, HostListener } from "@angular/core";
 
 @Component({
   selector: "Account",
@@ -12,4 +12,14 @@ export class Account {
     ["test3", "Entry"]
   ];
 
+  screenWidth = 0;
+
+  constructor() {
+    this.getScreenSize();
+  }
+
+  @HostListener("window:resize", ["$event"])
+  getScreenSize(event?): void {
+    this.screenWidth = window.innerWidth;
+  }
 }

@@ -4,14 +4,11 @@ import { CommonModule } from "@angular/common";
 import { GeneralInput } from "./general_input";
 
 @NgModule({
-  declarations: [
-    GeneralInput
-  ],
+  declarations: [GeneralInput],
   imports: [
     CommonModule,
     TranslateModule
   ],
-  exports: [GeneralInput],
-  bootstrap: [GeneralInput]
+  exports: [GeneralInput]
 })
 export class GeneralInputModule { }

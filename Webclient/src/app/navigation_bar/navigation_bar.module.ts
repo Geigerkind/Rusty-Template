@@ -5,6 +5,7 @@ import { NavigationBar } from "./navigation_bar";
 import { ItemList } from "./item_list/item_list";
 import { RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
+import { CaretButtonModule } from '../template/caret_button/caret_button.module';
 
 @NgModule({
   declarations: [
@@ -14,10 +15,10 @@ import { CommonModule } from "@angular/common";
   imports: [
     CommonModule,
     TranslateModule,
-    RouterModule
+    RouterModule,
+    CaretButtonModule
   ],
   exports: [NavigationBar],
-  providers: [CookieService],
   bootstrap: [NavigationBar]
 })
 export class NavigationBarModule { }

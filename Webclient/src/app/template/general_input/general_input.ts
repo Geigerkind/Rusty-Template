@@ -9,7 +9,5 @@ export class GeneralInput {
   @Input() type: string;
   @Input() placeholder: string;
   @Input() initialValue: string;
-
-  constructor() {}
-
+  @Input() labelKey: string;
 }

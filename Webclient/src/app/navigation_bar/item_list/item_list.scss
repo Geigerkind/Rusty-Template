@@ -14,7 +14,7 @@
     min-width: $minWidth;
     height: 100%;
 
-    svg {
+    CaretButton {
       display: none;
     }
 
@@ -85,13 +85,11 @@
       display: flex;
       flex-direction: row;
 
-      svg {
+      CaretButton {
         height: 30px;
         width: 30px;
-        fill: $font_default;
         padding-top: 10px;
         padding-left: $spacing;
-        cursor: pointer;
       }
 
       a {
