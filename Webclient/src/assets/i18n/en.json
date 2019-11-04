@@ -51,5 +51,10 @@
     "title": "Account",
     "logout": "Sign out"
   }
+},
+"Account": {
+  "navBar": {
+    "title": "Account settings"
+  }
 }
 }

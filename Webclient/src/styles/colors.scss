@@ -8,4 +8,6 @@ $font_default: #e1f2f5;
 $highlight: #368bd6;
 $non_highlight: #eee;
 
-$theme_dominant_color: rgba(0,0,0,.81);
+$theme_dominant_color: #303030;
+$tdc_darker: darken($theme_dominant_color, 3%);
+$tdc_accent: lighten($theme_dominant_color, 10%);

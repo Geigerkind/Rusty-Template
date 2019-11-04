@@ -4,8 +4,8 @@
 $navBarHeight: 50px;
 
 :host {
-  background: lighten($theme_dominant_color, 15%);
-  border-bottom: 1px solid lighten($theme_dominant_color, 20%);
+  background: $tdc_darker;
+  border-bottom: 1px solid $tdc_accent;
   height: $navBarHeight;
   display: flex;
   flex-direction: row;

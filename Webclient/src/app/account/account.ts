@@ -6,4 +6,10 @@ import { Component } from "@angular/core";
   styleUrls: ["./account.scss"]
 })
 export class Account {
+  settings: Array<Array<string>> = [
+    ["test1", "Entry"],
+    ["test2", "Entry"],
+    ["test3", "Entry"]
+  ];
+
 }

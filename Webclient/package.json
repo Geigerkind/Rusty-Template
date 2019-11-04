@@ -21,6 +21,7 @@
     "@angular/router": "~8.2.11",
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
+    "@wishtack/reactive-component-loader": "^1.1.0",
     "ngx-cookie-service": "^2.2.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",

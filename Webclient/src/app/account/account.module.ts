@@ -1,21 +1,21 @@
 import { NgModule } from "@angular/core";
-import { CookieService } from "ngx-cookie-service";
-import { BrowserModule } from "@angular/platform-browser";
 import { TranslateModule } from "@ngx-translate/core";
-import { RouterModule } from "@angular/router";
 import { Account } from "./account";
+import { NavigationBar } from './navigation_bar/navigation_bar';
+import { AccountRoutingModule } from './routing.module';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
-    Account
+    Account,
+    NavigationBar
   ],
   imports: [
-    BrowserModule,
+    CommonModule,
     TranslateModule,
-    RouterModule
+    AccountRoutingModule
   ],
   exports: [Account],
-  providers: [CookieService],
   bootstrap: [Account]
 })
 export class AccountModule { }

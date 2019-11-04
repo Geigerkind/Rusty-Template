@@ -41,6 +41,6 @@ export class CookieBanner {
     };
 
     this.cookieService.set("cookieDecisions", JSON.stringify(cookieDecisions), 30);
-    this.close_banner.emit(true);
+    this.close_banner.emit(false);
   }
 }

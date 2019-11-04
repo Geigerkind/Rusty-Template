@@ -1,9 +1,12 @@
 <div class="mainItem">
-  <a [routerLink]="items[0][0]">{{ items[0][1] | translate }}</a>
-  <svg height="48" width="36" viewBox="0 0 12 16" version="1.1" aria-hidden="true" *ngIf="items.length > 1" (click)="toggle()">
-    <path fill-rule="evenodd" d="M11.41 9H.59C0 9 0 8.59 0 8c0-.59 0-1 .59-1H11.4c.59 0 .59.41.59 1 0 .59 0 1-.59 1h.01zm0-4H.59C0 5 0 4.59 0 4c0-.59 0-1 .59-1H11.4c.59 0 .59.41.59 1 0 .59 0 1-.59 1h.01zM.59 11H11.4c.59 0 .59.41.59 1 0 .59 0 1-.59 1H.59C0 13 0 12.59 0 12c0-.59 0-1 .59-1z"></path>
+  <svg aria-hidden="true" focusable="false" viewBox="0 0 320 512" (click)="toggle()" *ngIf="show_sub_menu">
+    <path fill="currentColor" d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"></path>
   </svg>
+  <svg aria-hidden="true" focusable="false" viewBox="0 0 192 512" (click)="toggle()" *ngIf="!show_sub_menu">
+    <path fill="currentColor" d="M0 384.662V127.338c0-17.818 21.543-26.741 34.142-14.142l128.662 128.662c7.81 7.81 7.81 20.474 0 28.284L34.142 398.804C21.543 411.404 0 402.48 0 384.662z"></path>
+  </svg>
+  <a [routerLink]="items[0][0]" routerLinkActive="active">{{ items[0][1] | translate }}</a>
 </div>
 <ul *ngIf="items.length > 1" [style.display]="getSubListVisibility()">
-  <li *ngFor="let item of items.slice(1)"><a [routerLink]="item[0]">{{ item[1] | translate }}</a></li>
+  <li *ngFor="let item of items.slice(1)"><a [routerLink]="item[0]" routerLinkActive="active">{{ item[1] | translate }}</a></li>
 </ul>

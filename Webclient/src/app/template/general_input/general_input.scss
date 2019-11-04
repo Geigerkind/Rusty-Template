@@ -1,0 +1,17 @@
+@import "./../../../styles/global.scss";
+
+:host {
+  display: block;
+  width: 100%;
+  height: 50px;
+}
+
+span {
+  font-weight: bold;
+}
+
+input {
+  margin-top: $spacing * 0.25;
+  width: calc(100% - 2 * #{$spacing});
+  color: #000;
+}

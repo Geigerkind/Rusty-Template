@@ -3,7 +3,7 @@
 :host {
   display: block;
   width: 100%;
-  background: lighten($theme_dominant_color, 15%);
+  background: $tdc_darker;
   padding: $spacing 0;
 
   #listContainer {

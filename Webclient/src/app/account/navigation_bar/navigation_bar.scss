@@ -1,0 +1,31 @@
+@import "./../../../styles/global.scss";
+
+:host {
+  display: block;
+  width: 250px;
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: $tdc_darker;
+    border: 1px solid $tdc_accent;
+    border-radius: 3px;
+
+    li {
+      border-top: 1px solid $tdc_accent;
+      padding-left: $spacing;
+
+      &, a {
+        height: 40px;
+        line-height: 40px;
+        font-size: 20px;
+      }
+    }
+
+    li:first-child {
+      background: $tdc_accent;
+      border: none;
+    }
+  }
+}
