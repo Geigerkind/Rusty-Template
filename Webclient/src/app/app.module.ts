@@ -11,8 +11,8 @@ import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { FooterBarModule } from "./footer_bar/footer_bar.module";
 import { NavigationBarModule } from "./navigation_bar/navigation_bar.module";
-import { CookieBanner } from './cookie_banner/cookie_banner';
-import { ReactiveComponentLoaderModule } from '@wishtack/reactive-component-loader';
+import { CookieBanner } from "./cookie_banner/cookie_banner";
+import { ReactiveComponentLoaderModule } from "@wishtack/reactive-component-loader";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -38,8 +38,8 @@ export function createTranslateLoader(http: HttpClient) {
     }),
     ReactiveComponentLoaderModule.forRoot(),
     ReactiveComponentLoaderModule.withModule({
-      moduleId: 'cookie_banner',
-      loadChildren: './cookie_banner/cookie_banner.module#CookieBannerModule'
+      moduleId: "cookie_banner",
+      loadChildren: "./cookie_banner/cookie_banner.module#CookieBannerModule"
     })
   ],
   providers: [CookieService],

@@ -4,7 +4,7 @@ import { TranslateModule } from "@ngx-translate/core";
 import { NavigationBar } from "./navigation_bar";
 import { ItemList } from "./item_list/item_list";
 import { RouterModule } from "@angular/router";
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 @NgModule({
   declarations: [

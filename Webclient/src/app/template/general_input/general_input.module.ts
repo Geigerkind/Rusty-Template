@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { TranslateModule } from "@ngx-translate/core";
-import { CommonModule } from '@angular/common';
-import { GeneralInput } from './general_input';
+import { CommonModule } from "@angular/common";
+import { GeneralInput } from "./general_input";
 
 @NgModule({
   declarations: [
