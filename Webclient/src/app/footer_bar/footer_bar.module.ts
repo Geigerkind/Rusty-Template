@@ -4,14 +4,11 @@ import { FooterBar } from "./footer_bar";
 import { CommonModule } from "@angular/common";
 
 @NgModule({
-  declarations: [
-    FooterBar
-  ],
+  declarations: [FooterBar],
   imports: [
     CommonModule,
     TranslateModule
   ],
-  exports: [FooterBar],
-  bootstrap: [FooterBar]
+  exports: [FooterBar]
 })
 export class FooterBarModule { }
