@@ -129,6 +129,19 @@ function deployBackend {
   cd /root
 }
 
+function updateConfigs {
+  # Postfix
+  cp /root/Jaylapp/Deploy/conf/virtual /etc/postfix/
+  cp /root/Jaylapp/Deploy/conf/main.cf /etc/postfix/
+  postmap /etc/postfix/virtual
+
+  # Mariadb
+  cp /root/Jaylapp/Deploy/conf/my.conf /etc/
+
+  # Nginx
+  cp /root/Jaylapp/Deploy/conf/nginx.conf /etc/nginx/
+}
+
 function stopServices {
   echo "Stopping services"
   systemctl stop nginx
@@ -160,6 +173,7 @@ function deploy {
   deployDatabase
   deployWebclient
   deployBackend
+  updateConfigs
 
   startServices
 }

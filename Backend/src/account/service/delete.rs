@@ -8,8 +8,6 @@ use crate::account::domainvalue::account_information::AccountInformation;
 use rocket::State;
 use rocket_contrib::json::Json;
 
-
-#[openapi]
 #[get("/delete/confirm/<id>")]
 pub fn confirm(me: State<Account>, id: String) -> String
 {
@@ -19,7 +17,6 @@ pub fn confirm(me: State<Account>, id: String) -> String
   }
 }
 
-#[openapi]
 #[delete("/delete/send", data = "<params>")]
 pub fn request(me: State<Account>, params: Json<ValidationPair>) -> Result<Json<AccountInformation>, String>
 {

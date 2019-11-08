@@ -7,7 +7,6 @@ use crate::account::domainvalue::account_information::AccountInformation;
 use rocket::State;
 use rocket_contrib::json::Json;
 
-#[openapi]
 #[post("/update/password", data = "<params>")]
 pub fn password(me: State<Account>, params: Json<PostChangeStr>) -> Result<Json<ValidationPair>, String>
 {
@@ -17,7 +16,6 @@ pub fn password(me: State<Account>, params: Json<PostChangeStr>) -> Result<Json<
   }
 }
 
-#[openapi]
 #[post("/update/nickname", data = "<params>")]
 pub fn nickname(me: State<Account>, params: Json<PostChangeStr>) -> Result<Json<AccountInformation>, String>
 {
@@ -27,7 +25,6 @@ pub fn nickname(me: State<Account>, params: Json<PostChangeStr>) -> Result<Json<
   }
 }
 
-#[openapi]
 #[post("/update/mail", data = "<params>")]
 pub fn mail(me: State<Account>, params: Json<PostChangeStr>) -> Result<Json<ValidationPair>, String>
 {

@@ -7,11 +7,11 @@
 -->
 
 <div id="itemListContainer" [style.display]="getItemListVisibility()">
-  <ItemList [items]="sampleItems" [screenWidth]="screenWidth"></ItemList>
-  <ItemList [items]="sampleItems" [screenWidth]="screenWidth"></ItemList>
-  <ItemList [items]="sampleItems" [screenWidth]="screenWidth"></ItemList>
-  <ItemList [items]="sampleItems" [screenWidth]="screenWidth"></ItemList>
-  <ItemList [items]="sampleItems" [screenWidth]="screenWidth"></ItemList>
+  <ItemList [items]="sampleItems" [screenWidth]="screenWidth" (closeMenu)="handleClose()"></ItemList>
+  <ItemList [items]="sampleItems" [screenWidth]="screenWidth" (closeMenu)="handleClose()"></ItemList>
+  <ItemList [items]="sampleItems" [screenWidth]="screenWidth" (closeMenu)="handleClose()"></ItemList>
+  <ItemList [items]="sampleItems" [screenWidth]="screenWidth" (closeMenu)="handleClose()"></ItemList>
+  <ItemList [items]="sampleItems" [screenWidth]="screenWidth" (closeMenu)="handleClose()"></ItemList>
 
-  <ItemList id="accountModule" [items]="accountItems" [screenWidth]="screenWidth"></ItemList>
+  <ItemList id="accountModule" [items]="accountItems" [screenWidth]="screenWidth" (closeMenu)="handleClose()"></ItemList>
 </div>

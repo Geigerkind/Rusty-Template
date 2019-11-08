@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, Output, EventEmitter } from "@angular/core";
 
 @Component({
   selector: "ItemList",
@@ -8,6 +8,7 @@ import { Component, Input } from "@angular/core";
 export class ItemList {
   @Input() items: Array<Array<string>>;
   @Input() screenWidth: number;
+  @Output() closeMenu: EventEmitter<boolean> = new EventEmitter();
 
   show_sub_menu: Boolean = false;
 
@@ -15,5 +16,10 @@ export class ItemList {
     if (this.screenWidth > 760 || !this.show_sub_menu)
       return "none";
     return "block";
+  }
+
+  closeNavBar(): void {
+    this.show_sub_menu = false;
+    this.closeMenu.emit(true);
   }
 }

@@ -7,7 +7,6 @@ use crate::account::domainvalue::validation_pair::ValidationPair;
 use rocket::State;
 use rocket_contrib::json::Json;
 
-#[openapi]
 #[get("/forgot/confirm/<id>")]
 pub fn receive_confirmation(me: State<Account>, id: String) -> Result<Json<ValidationPair>, String>
 {
@@ -17,7 +16,6 @@ pub fn receive_confirmation(me: State<Account>, id: String) -> Result<Json<Valid
   }
 }
 
-#[openapi]
 #[get("/forgot/send/<mail>")]
 pub fn send_confirmation(me: State<Account>, mail: String) -> String
 {

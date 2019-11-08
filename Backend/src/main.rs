@@ -3,7 +3,6 @@
 #[macro_use] extern crate mysql;
 #[macro_use] extern crate serde_derive;
 #[macro_use] extern crate lazy_static;
-#[macro_use] extern crate rocket_okapi;
 extern crate serde_json;
 extern crate dotenv;
 
@@ -31,7 +30,6 @@ impl Backend {
   }
 }
 
-#[openapi(skip)]
 #[get("/")]
 fn api_overview() -> Json<Vec<String>> {
   Json(vec!["/API/account/".to_string()])
@@ -42,10 +40,10 @@ fn main() {
   let backend = Backend::new();
   igniter = igniter.manage(backend.account);
   igniter = igniter.mount("/API/", routes![api_overview]);
-  igniter = igniter.mount("/API/account/", routes_with_openapi![
+  igniter = igniter.mount("/API/account/", routes![
     account::service::delete::request, account::service::delete::confirm,
     account::service::create::create, account::service::create::confirm, account::service::create::resend_confirm,
-    account::service::get::get, account::service::get::api,
+    account::service::get::get, /*account::service::get::api,*/
     account::service::forgot::receive_confirmation, account::service::forgot::send_confirmation,
     account::service::update::mail, account::service::update::password, account::service::update::nickname]);
   igniter.launch();

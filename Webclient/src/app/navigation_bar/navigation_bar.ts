@@ -42,4 +42,8 @@ export class NavigationBar {
     return "none";
   }
 
+  handleClose(): void {
+    this.show_item_list = false;
+  }
+
 }

@@ -6,7 +6,6 @@ use crate::account::domainvalue::validation_pair::ValidationPair;
 use rocket::State;
 use rocket_contrib::json::Json;
 
-#[openapi]
 #[post("/login", data = "<params>")]
 pub fn login(me: State<Account>, params: Json<PostLogin>) -> Result<Json<ValidationPair>, String>
 {
