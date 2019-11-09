@@ -106,9 +106,10 @@ function deployDatabase {
 function deployWebclient {
   echo "Deploying webclient"
   cd /root/Jaylapp/Webclient
+  rm -rf /root/Jaylapp/Webclient/node_modules
+  rm /root/Jaylapp/Webclient/package-lock.json
   npm install
-  ng build --prod --aot
-  html-minifier dist/Webclient/index.html --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --use-short-doctype -o dist/Webclient/index.html
+  npm run-script build
   rm -rf /var/www/html/*
   cp -r /root/Jaylapp/Webclient/dist/Webclient/* /var/www/html/
   cd /root

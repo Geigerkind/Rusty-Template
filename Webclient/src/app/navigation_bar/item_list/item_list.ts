@@ -10,7 +10,7 @@ export class ItemList {
   @Input() screenWidth: number;
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter();
 
-  show_sub_menu: Boolean = false;
+  show_sub_menu: boolean = false;
 
   getSubListVisibility(): string {
     if (this.screenWidth > 760 || !this.show_sub_menu)
