@@ -40,7 +40,6 @@
     "jasmine-spec-reporter": "~4.2.1",
     "jest": "^24.9.0",
     "jest-preset-angular": "^8.0.0",
-    "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
     "typescript": "~3.5.3"
