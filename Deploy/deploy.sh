@@ -163,6 +163,7 @@ function deploy {
   pacman -Syu --noconfirm
 
   cd /root/Jaylapp
+  rm /root/Jaylapp/Webclient/package-lock.json
   git pull
   cd /root
 
