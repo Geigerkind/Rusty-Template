@@ -5,7 +5,7 @@ import { AccountInformationModule } from "./account_information/account_informat
 import { Account } from "./account";
 
 const routes: Routes = [
-  { path: "account", component: Account, pathMatch: "full", children: [
+  { path: "", component: Account, pathMatch: "full", children: [
     { path: "", component: AccountInformation},
     { path: "test2", component: AccountInformation},
     { path: "test3", component: AccountInformation}
