@@ -25,7 +25,10 @@
             "aot": true,
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/robots.txt",
+              "src/manifest.json",
+              "src/serviceworker.js"
             ],
             "styles": ["src/default.scss"],
             "scripts": []
@@ -88,7 +91,10 @@
             "karmaConfig": "karma.conf.js",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/robots.txt",
+              "src/manifest.json",
+              "src/serviceworker.js"
             ],
             "styles": ["src/default.scss"],
             "scripts": []
