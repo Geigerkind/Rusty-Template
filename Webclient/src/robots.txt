@@ -1,2 +1,3 @@
-/assets
-/i18n
+User-agent: *
+Disallow: /assets/
+Disallow: /i18n/

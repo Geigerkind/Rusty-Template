@@ -6,9 +6,21 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Some generic content description">
+  <meta name="theme-color" content="#303030">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="manifest" href="/manifest.json">
+  <script type="text/javascript">
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/serviceworker.js');
+      });
+    }
+  </script>
 </head>
 <body>
+  <noscript>
+    This website requires JavaScript to be enabled!
+  </noscript>
   <root></root>
 </body>
 </html>

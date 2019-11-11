@@ -1,4 +1,4 @@
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.1.1/workbox-sw.js');
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js');
 
 // Resending google analytics stuff when connectivity is on again
 try {
@@ -6,7 +6,6 @@ try {
 } catch (e) {
     // fail silently due to adblocker etc.
 }
-
 
 // Caching cachable API calls
 workbox.routing.registerRoute(
@@ -53,6 +52,3 @@ workbox.routing.registerRoute(
         cacheName: 'static-resources',
     })
 );
-
-  
-  
