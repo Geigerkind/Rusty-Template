@@ -4,7 +4,7 @@ import { Account } from "./account";
 import { NavigationBar } from "./navigation_bar/navigation_bar";
 import { AccountRoutingModule } from "./routing.module";
 import { CommonModule } from "@angular/common";
-import { CaretButtonModule } from '../template/caret_button/caret_button.module';
+import { CaretButtonModule } from "../template/caret_button/caret_button.module";
 
 @NgModule({
   declarations: [
