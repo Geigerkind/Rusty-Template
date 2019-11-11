@@ -7,12 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Linting
       - run: cd Webclient && npm install @angular/cli --next && npm install
       - run: cd Webclient && npm run-script lint
-      - name: Building
       - run: cd Webclient && npm run-script build
-      - name: Testing
       - run: cd Webclient && npm run-script test
   backend:
     name: Backend
