@@ -11,7 +11,6 @@ pub mod account;
 pub mod database;
 
 use account::material::account::Account;
-
 use rocket_contrib::json::Json;
 
 #[allow(dead_code)]

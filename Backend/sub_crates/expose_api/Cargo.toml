@@ -1,0 +1,12 @@
+[package]
+name = "expose_api"
+version = "0.1.0"
+authors = ["Tom Dymel <tom@dymel.dev>"]
+
+[dependencies]
+syn = "*"
+quote = "*"
+lazy_static = "*"
+
+[lib]
+crate_type = ["proc-macro"]

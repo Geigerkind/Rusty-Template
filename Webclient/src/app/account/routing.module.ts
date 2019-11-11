@@ -6,9 +6,9 @@ import { Account } from "./account";
 
 const routes: Routes = [
   { path: "", component: Account, pathMatch: "full", children: [
-    { path: "", component: AccountInformation},
-    { path: "test2", component: AccountInformation},
-    { path: "test3", component: AccountInformation}
+    { path: "", component: AccountInformation, pathMatch: "full"},
+    { path: "test2", component: AccountInformation, pathMatch: "full"},
+    { path: "test3", component: AccountInformation, pathMatch: "full"}
   ]}
 ];
 

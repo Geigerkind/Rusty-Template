@@ -1,10 +1,9 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
-import { AccountModule } from "./account/account.module";
-
 
 const routes: Routes = [
-  { path: "account", loadChildren: () => import("./account/account.module").then(m => m.AccountModule) }
+  { path: "", loadChildren: () => import("./home/home.module").then(m => m.HomeModule), pathMatch: "full" },
+  { path: "account", loadChildren: () => import("./account/account.module").then(m => m.AccountModule), pathMatch: "full" }
 ];
 
 @NgModule({
