@@ -11,15 +11,11 @@ mysql = "*"
 serde = "*"
 serde_derive = "*"
 serde_json = "*"
-sha3 = "*"
-rand = "*"
-rand_distr = "*"
-lettre = "*"
-lettre_email = "*"
-regex = "*"
-lazy_static = "*"
 dotenv = "*"
-pwned = "*"
+mail = { path = "sub_crates/mail" }
+validator = { path = "sub_crates/validator" }
+str_util = { path = "sub_crates/str_util" }
+language = { path = "sub_crates/language" }
 
 [dependencies.rocket_contrib]
 version = "*"

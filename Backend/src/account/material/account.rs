@@ -1,11 +1,11 @@
 use crate::database::material::mysql_connection::MySQLConnection;
 use crate::account::material::member::Member;
-use crate::util::str_util::tools::sha3;
+use str_util::sha3;
 use crate::database::tools::mysql::select::Select;
 
 use std::collections::HashMap;
 use std::sync::RwLock;
-use crate::util::language::material::dictionary::Dictionary;
+use language::material::dictionary::Dictionary;
 use crate::account::language::init::Init;
 
 pub struct Account {

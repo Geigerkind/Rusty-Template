@@ -1,13 +1,13 @@
-use crate::util::mail;
-use crate::util::str_util::tools::{sha3, random, strformat};
-use crate::util::validator::tools::valid;
+use str_util::{sha3, random, strformat};
+use validator;
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::material::account::Account;
 use crate::database::tools::mysql::execute::Execute;
-use crate::util::language::tools::get::Get;
-use crate::util::language::domainvalue::language::Language;
+use language::get::Get;
+use language::domainvalue::language::Language;
 use crate::account::tools::update::Update;
 use crate::account::tools::validator::Validator;
+use mail;
 
 pub trait Forgot {
   fn send_forgot_password(&self, mail: &str) -> Result<(), String>;
@@ -17,7 +17,7 @@ pub trait Forgot {
 impl Forgot for Account {
   fn send_forgot_password(&self, mail: &str) -> Result<(), String>
   {
-    if !valid::mail(mail) {
+    if !validator::mail(mail) {
       return Err(self.dictionary.get("general.error.invalid.mail", Language::English));
     }
 

@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-  use crate::util::str_util::tools::sha3;
+  use crate::sha3;
 
   #[test]
   fn hash() {

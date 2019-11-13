@@ -1,9 +1,8 @@
-use crate::util::str_util::tools::{sha3, random, strformat};
-use crate::util::mail;
-use crate::util::validator::tools::valid;
-use crate::util::validator::domainvalue::password_failure::PasswordFailure;
-use crate::util::language::tools::get::Get;
-use crate::util::language::domainvalue::language::Language;
+use str_util::{sha3, random, strformat};
+use validator;
+use validator::domainvalue::password_failure::PasswordFailure;
+use language::get::Get;
+use language::domainvalue::language::Language;
 use crate::account::domainvalue::post_create_member::PostCreateMember;
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::material::member::Member;
@@ -12,6 +11,7 @@ use crate::account::material::account::Account;
 use crate::database::tools::mysql::select::Select;
 use crate::database::tools::mysql::execute::Execute;
 use crate::database::tools::mysql::exists::Exists;
+use mail;
 
 pub trait Create {
   fn create(&self, params: &PostCreateMember) -> Result<ValidationPair, String>;
@@ -22,15 +22,15 @@ pub trait Create {
 impl Create for Account {
   fn create(&self, params: &PostCreateMember) -> Result<ValidationPair, String>
   {
-    if !valid::mail(&params.mail) {
+    if !validator::mail(&params.mail) {
       return Err(self.dictionary.get("general.error.invalid.mail", Language::English));
     }
 
-    if !valid::nickname(&params.nickname) {
+    if !validator::nickname(&params.nickname) {
       return Err(self.dictionary.get("general.error.invalid.nickname", Language::English));
     }
 
-    match valid::password(&params.password) {
+    match validator::password(&params.password) {
       Err(PasswordFailure::TooFewCharacters) => return Err(self.dictionary.get("general.error.password.length", Language::English)),
       Err(PasswordFailure::Pwned(num_pwned)) => return Err(strformat::fmt(self.dictionary.get("general.error.password.pwned", Language::English), &[&num_pwned.to_string()])),
       Ok(_) => ()

@@ -1,4 +1,4 @@
-use sha3::{Digest, Sha3_512};
+use sha::{Digest, Sha3_512};
 
 pub fn hash(input: &[&str]) -> String
 {

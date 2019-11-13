@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-  use crate::util::str_util::tools::random;
+  use crate::random;
 
   #[test]
   fn alphanumeric() {

@@ -1,13 +1,13 @@
-use crate::util::mail;
-use crate::util::str_util::tools::{sha3, strformat};
+use str_util::{sha3, strformat};
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::tools::validator::Validator;
 use crate::account::material::account::Account;
 use crate::database::tools::mysql::execute::Execute;
-use crate::util::language::tools::get::Get;
-use crate::util::language::domainvalue::language::Language;
+use language::get::Get;
+use language::domainvalue::language::Language;
 use crate::account::domainvalue::account_information::AccountInformation;
 use crate::account::tools::get::GetAccountInformation;
+use mail;
 
 pub trait Delete {
   fn issue_delete(&self, params: &ValidationPair) -> Result<AccountInformation, String>;

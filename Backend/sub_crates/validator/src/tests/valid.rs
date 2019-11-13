@@ -1,35 +1,35 @@
 #[cfg(test)]
 mod tests {
-  use crate::util::validator::tools::valid;
+  use validator;
 
   #[test]
   fn password_too_short() {
     let pass = "tooshort";
-    assert!(valid::password(pass).is_err());
+    assert!(validator::password(pass).is_err());
   }
 
   #[test]
   fn password_has_been_pwned() {
     let pass = "Password123456";
-    assert!(valid::password(pass).is_err());
+    assert!(validator::password(pass).is_err());
   }
 
   #[test]
   fn password_is_secure_enough() {
     let pass = "Password123456Password123456Password123456";
-    assert!(valid::password(pass).is_ok());
+    assert!(validator::password(pass).is_ok());
   }
 
   #[test]
   fn invalid_mail() {
     let mail = "Test@bla";
-    assert!(!valid::mail(mail));
+    assert!(!validator::mail(mail));
   }
 
   #[test]
   fn valid_mail() {
     let mail = "Test.Test@bla.de";
-    assert!(valid::mail(mail));
+    assert!(validator::mail(mail));
   }
 
   #[test]
@@ -37,14 +37,14 @@ mod tests {
     let nickname = "NickName NickName";
     let nickname2 = ".";
     let nickname3 = "@";
-    assert!(!valid::nickname(nickname));
-    assert!(!valid::nickname(nickname2));
-    assert!(!valid::nickname(nickname3));
+    assert!(!validator::nickname(nickname));
+    assert!(!validator::nickname(nickname2));
+    assert!(!validator::nickname(nickname3));
   }
 
   #[test]
   fn valid_nickname() {
     let nickname = "NickName";
-    assert!(valid::nickname(nickname));
+    assert!(validator::nickname(nickname));
   }
 }

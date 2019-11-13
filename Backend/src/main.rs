@@ -2,11 +2,13 @@
 #[macro_use] extern crate rocket;
 #[macro_use] extern crate mysql;
 #[macro_use] extern crate serde_derive;
-#[macro_use] extern crate lazy_static;
 extern crate serde_json;
 extern crate dotenv;
+extern crate mail;
+extern crate validator;
+extern crate str_util;
+extern crate language;
 
-pub mod util;
 pub mod account;
 pub mod database;
 

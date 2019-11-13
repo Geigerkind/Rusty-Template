@@ -1,6 +1,3 @@
-extern crate rand;
-extern crate rand_distr;
-
 use std::iter;
 use rand::{Rng, thread_rng};
 use rand_distr::Alphanumeric;

@@ -1,4 +1,4 @@
-use crate::util::language::material::dictionary::Dictionary;
+use language::material::dictionary::Dictionary;
 use crate::account::language::english;
 
 pub trait Init {

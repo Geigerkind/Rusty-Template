@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-  use crate::util::str_util::tools::strformat;
+  use crate::strformat;
 
   #[test]
   fn fmt() {

@@ -1,9 +1,12 @@
+#[macro_use] extern crate lazy_static;
 extern crate pwned;
 extern crate regex;
 
 use regex::Regex;
 use pwned::api::*;
-use crate::util::validator::domainvalue::password_failure::PasswordFailure;
+
+pub mod domainvalue;
+use crate::domainvalue::password_failure::PasswordFailure;
 
 pub fn password(input: &str) -> Result<(), PasswordFailure>
 {

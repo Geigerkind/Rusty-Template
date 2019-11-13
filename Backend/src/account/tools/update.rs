@@ -1,6 +1,6 @@
-use crate::util::str_util::tools::{sha3, strformat};
-use crate::util::validator::tools::valid;
-use crate::util::validator::domainvalue::password_failure::PasswordFailure;
+use str_util::{sha3, strformat};
+use validator;
+use validator::domainvalue::password_failure::PasswordFailure;
 use crate::account::material::post_change_str::PostChangeStr;
 use crate::database::tools::mysql::execute::Execute;
 use crate::account::tools::validator::Validator;
@@ -8,8 +8,8 @@ use crate::account::material::account::Account;
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::domainvalue::account_information::AccountInformation;
 use crate::account::tools::get::GetAccountInformation;
-use crate::util::language::tools::get::Get;
-use crate::util::language::domainvalue::language::Language;
+use language::get::Get;
+use language::domainvalue::language::Language;
 
 pub trait Update {
   fn change_name(&self, params: &PostChangeStr) -> Result<AccountInformation, String>;
@@ -25,7 +25,7 @@ impl Update for Account {
       return Err(self.dictionary.get("general.error.validate", Language::English));
     }
 
-    if !valid::nickname(&params.content) {
+    if !validator::nickname(&params.content) {
       return Err(self.dictionary.get("general.error.invalid.nickname", Language::English));
     }
 
@@ -60,7 +60,7 @@ impl Update for Account {
       return Err(self.dictionary.get("general.error.validate", Language::English));
     }
 
-    match valid::password(&params.content) {
+    match validator::password(&params.content) {
       Err(PasswordFailure::TooFewCharacters) => return Err(self.dictionary.get("general.error.password.length", Language::English)),
       Err(PasswordFailure::Pwned(num_pwned)) => return Err(strformat::fmt(self.dictionary.get("general.error.password.pwned", Language::English), &[&num_pwned.to_string()])),
       Ok(_) => ()
@@ -103,7 +103,7 @@ impl Update for Account {
       return Err(self.dictionary.get("general.error.validate", Language::English));
     }
 
-    if !valid::mail(&params.content) {
+    if !validator::mail(&params.content) {
       return Err(self.dictionary.get("general.error.invalid.mail", Language::English));
     }
 
