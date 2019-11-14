@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter } from "@angular/core";
 import { CookieOption } from "./material/cookie_option";
-import { CookieService } from "ngx-cookie-service";
+import { SettingsService } from "../service/settings.service";
 
 @Component({
   selector: "CookieBanner",
@@ -16,8 +16,9 @@ export class CookieBanner {
   cookies_necessary: Array<CookieOption> = [];
 
 
-  constructor(private cookieService: CookieService) {
+  constructor(private settingsService: SettingsService) {
     this.cookies_necessary.push(new CookieOption("CookieBanner.cookieDecisions.title", "CookieBanner.cookieDecisions.description", true, true));
+    this.cookies_other.push(new CookieOption("CookieBanner.googleAnalytics.title", "CookieBanner.googleAnalytics.description", true, false));
 
     this.load();
   }
@@ -27,9 +28,9 @@ export class CookieBanner {
   }
 
   load(): void {
-    if (!this.cookieService.check("cookieDecisions"))
+    if (!this.settingsService.check("cookieDecisions"))
       return;
-    const cookieDecisions = JSON.parse(this.cookieService.get("cookieDecisions"));
+    const cookieDecisions = this.settingsService.get("cookieDecisions");
     cookieDecisions.other.forEach((decison, i) => this.cookies_other[i].setEnabled(decison));
     cookieDecisions.third_party.forEach((decison, i) => this.cookies_third_party[i].setEnabled(decison));
   }
@@ -40,7 +41,7 @@ export class CookieBanner {
       third_party: this.cookies_third_party.map(cookie => cookie.enabled)
     };
 
-    this.cookieService.set("cookieDecisions", JSON.stringify(cookieDecisions), 30);
+    this.settingsService.set("cookieDecisions", cookieDecisions, 30);
     this.close_banner.emit(false);
   }
 }
