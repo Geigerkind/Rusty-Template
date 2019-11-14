@@ -45,7 +45,7 @@ export class CookieBanner {
     };
 
     this.settingsService.set("cookieDecisions", cookieDecisions, 30);
-    this.notificationService.notify(Severity.Success, "CookieBanner.saved");
+    this.notificationService.notify(Severity.Success, "CookieBanner.notification.saved");
     this.close_banner.emit(false);
   }
 }
