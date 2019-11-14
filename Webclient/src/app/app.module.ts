@@ -15,6 +15,8 @@ import { CookieBanner } from "./cookie_banner/cookie_banner";
 import { ReactiveComponentLoaderModule } from "@wishtack/reactive-component-loader";
 import { AccountModule } from "./account/account.module";
 import { SettingsService } from "./service/settings.service";
+import { NotificationListModule } from "./notification_list/notification_list.module";
+import { NotificationService } from "./service/notification.service";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -29,6 +31,7 @@ export function createTranslateLoader(http: HttpClient) {
     AppRoutingModule,
     CookieBannerModule,
     AccountModule,
+    NotificationListModule,
     NavigationBarModule,
     FooterBarModule,
     HttpClientModule,
@@ -45,7 +48,11 @@ export function createTranslateLoader(http: HttpClient) {
       loadChildren: "./cookie_banner/cookie_banner.module#CookieBannerModule"
     })
   ],
-  providers: [CookieService, SettingsService],
+  providers: [
+    CookieService,
+    SettingsService,
+    NotificationService
+  ],
   bootstrap: [AppComponent],
   entryComponents: [CookieBanner]
 })

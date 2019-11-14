@@ -1,6 +1,8 @@
 import { Component, Output, EventEmitter } from "@angular/core";
 import { CookieOption } from "./material/cookie_option";
 import { SettingsService } from "../service/settings.service";
+import { NotificationService } from "../service/notification.service";
+import { Severity } from "../domainvalue/severity";
 
 @Component({
   selector: "CookieBanner",
@@ -16,7 +18,8 @@ export class CookieBanner {
   cookies_necessary: Array<CookieOption> = [];
 
 
-  constructor(private settingsService: SettingsService) {
+  constructor(private settingsService: SettingsService,
+              private notificationService: NotificationService) {
     this.cookies_necessary.push(new CookieOption("CookieBanner.cookieDecisions.title", "CookieBanner.cookieDecisions.description", true, true));
     this.cookies_other.push(new CookieOption("CookieBanner.googleAnalytics.title", "CookieBanner.googleAnalytics.description", true, false));
 
@@ -42,6 +45,7 @@ export class CookieBanner {
     };
 
     this.settingsService.set("cookieDecisions", cookieDecisions, 30);
+    this.notificationService.notify(Severity.Success, "CookieBanner.saved");
     this.close_banner.emit(false);
   }
 }

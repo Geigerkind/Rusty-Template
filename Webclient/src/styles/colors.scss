@@ -11,3 +11,8 @@ $non_highlight: #eee;
 $theme_dominant_color: #303030;
 $tdc_darker: darken($theme_dominant_color, 3%);
 $tdc_accent: lighten($theme_dominant_color, 10%);
+
+$success: darken(#DFF2BF, 20%);
+$warning: darken(#FEEFB3, 20%);
+$error: darken(#FFD2D2, 20%);
+$information: darken(#BDE5F8, 20%);
