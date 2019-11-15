@@ -10,3 +10,10 @@
 1. Import **Environment/nginx/ca.pem** as **authority** into your browser
 2. Append the entry **jaylapp.dev 127.0.0.1** to your **hosts file**
 3. Access the website using **jaylapp.dev** in your browser
+
+## Deploying for the first time
+1. Adjust shell variables in the Deploy folder
+2. Adjust configuration files
+3. Adjust scheduler.py
+4. Execute bootstrap.sh
+5. Add WebHook to github for the scheduler url

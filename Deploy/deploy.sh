@@ -1,4 +1,6 @@
+REPOSITORY_NAME='Jaylapp'
 HOST_USER='root'
+BACKEND_USER='yajla'
 HOST_IP='51.38.114.9'
 NUM_CORES=$(nproc)
 DB_PASSWORD=$(cat /root/Keys/db_password)
@@ -12,7 +14,7 @@ function cleanAssetCache {
 
     FILENAME_WITHOUT_PREFIX=${filename:2}
 
-    if [[ ! -f "/root/Jaylapp/Webclient/src/assets/${FILENAME_WITHOUT_PREFIX}" ]]; then
+    if [[ ! -f "/root/${REPOSITORY_NAME}/Webclient/src/assets/${FILENAME_WITHOUT_PREFIX}" ]]; then
       rm ${FILENAME_WITHOUT_PREFIX}
       rm ${FILENAME_WITHOUT_PREFIX%.*}.webp &> /dev/null # Ignore error if it had been deleted already
     fi
@@ -24,7 +26,7 @@ function cleanAssetCache {
   cd /root/
 }
 function optimizeJpg {
-  cd /root/Jaylapp/Webclient/src/assets/
+  cd /root/${REPOSITORY_NAME}/Webclient/src/assets/
   MEDIA_DIR='/root/cache/assets/'
   for filename in $(find . -name "*.jpg") $(find . -name "*.jpeg"); do
     if [ ! -f "${filename}" ]; then
@@ -48,7 +50,7 @@ function optimizeJpg {
   cd /root
 }
 function optimizePng {
-  cd /root/Jaylapp/Webclient/src/assets/
+  cd /root/${REPOSITORY_NAME}/Webclient/src/assets/
   MEDIA_DIR='/root/cache/assets/'
   for filename in $(find . -name "*.png"); do
     if [ ! -f "${filename}" ]; then
@@ -94,7 +96,7 @@ function optimizeAssets {
 
 function deployDatabase {
   echo "Deploying database"
-  cd /root/Jaylapp/Database
+  cd /root/${REPOSITORY_NAME}/Database
   bash merger.sh
   if [ -f "./merge.sql" ]; then
     systemctl start mysqld
@@ -107,13 +109,13 @@ function deployDatabase {
 
 function deployWebclient {
   echo "Deploying webclient"
-  cd /root/Jaylapp/Webclient
-  rm -rf /root/Jaylapp/Webclient/node_modules
-  rm /root/Jaylapp/Webclient/package-lock.json
+  cd /root/${REPOSITORY_NAME}/Webclient
+  rm -rf /root/${REPOSITORY_NAME}/Webclient/node_modules
+  rm /root/${REPOSITORY_NAME}/Webclient/package-lock.json
   npm install
   npm run-script build
   rm -rf /var/www/html/*
-  cp -r /root/Jaylapp/Webclient/dist/Webclient/* /var/www/html/
+  cp -r /root/${REPOSITORY_NAME}/Webclient/dist/Webclient/* /var/www/html/
   cd /root
 
   # Deploying optimized assets
@@ -122,27 +124,27 @@ function deployWebclient {
 
 function deployBackend {
   echo "Deploying backend"
-  cd /root/Jaylapp/Backend
+  cd /root/${REPOSITORY_NAME}/Backend
   rustup toolchain install nightly
   cargo update
   cargo build --release --all-features --jobs ${NUM_CORES}
   cargo install --path ./ --force
-  cp /root/.cargo/bin/backend /home/yajla/
-  cp .env_prod /home/yajla/.env
+  cp /root/.cargo/bin/backend /home/${BACKEND_USER}/
+  cp .env_prod /home/${BACKEND_USER}/.env
   cd /root
 }
 
 function updateConfigs {
   # Postfix
-  cp /root/Jaylapp/Deploy/conf/virtual /etc/postfix/
-  cp /root/Jaylapp/Deploy/conf/main.cf /etc/postfix/
+  cp /root/${REPOSITORY_NAME}/Deploy/conf/virtual /etc/postfix/
+  cp /root/${REPOSITORY_NAME}/Deploy/conf/main.cf /etc/postfix/
   postmap /etc/postfix/virtual
 
   # Mariadb
-  cp /root/Jaylapp/Deploy/conf/my.conf /etc/
+  cp /root/${REPOSITORY_NAME}/Deploy/conf/my.conf /etc/
 
   # Nginx
-  cp /root/Jaylapp/Deploy/conf/nginx.conf /etc/nginx/
+  cp /root/${REPOSITORY_NAME}/Deploy/conf/nginx.conf /etc/nginx/
 }
 
 function stopServices {
@@ -164,7 +166,7 @@ function startServices {
 function deploy {
   pacman -Syu --noconfirm
 
-  cd /root/Jaylapp
+  cd /root/${REPOSITORY_NAME}
   git stash
   git pull
   cd /root

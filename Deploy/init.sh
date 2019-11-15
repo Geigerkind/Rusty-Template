@@ -1,5 +1,8 @@
+REPOSITORY_NAME='Jaylapp'
+REPOSITORY='https://github.com/Geigerkind/Jaylapp'
 DOMAIN='yajla.com'
 HOST_USER='root'
+BACKEND_USER='yajla'
 HOST_IP='51.38.114.9'
 DB_PASSWORD=$(cat /root/Keys/db_password)
 
@@ -28,7 +31,7 @@ function installZopfli {
 
 function initNginx {
   pacman -S --noconfirm nginx nginx-mod-brotli
-  cp ~/Jaylapp/Deploy/conf/nginx.conf /etc/nginx/
+  cp ~/${REPOSITORY_NAME}/Deploy/conf/nginx.conf /etc/nginx/
   systemctl enable nginx
   systemctl start nginx
 }
@@ -36,12 +39,12 @@ function initNginx {
 function initMariaDb {
   pacman -S --noconfirm mariadb
   mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
-  cp ~/Jaylapp/Deploy/conf/my.conf /etc/
+  cp ~/${REPOSITORY_NAME}/Deploy/conf/my.conf /etc/
   systemctl enable mysqld
   systemctl start mysqld
   mysql -u root mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_PASSWORD}'"
   systemctl restart mysqld
-  cd ~/Jaylapp/Database
+  cd ~/${REPOSITORY_NAME}/Database
   bash merger.sh
   mysql -uroot -p${DB_PASSWORD} < merge.sql
   rm merge.sql
@@ -51,15 +54,15 @@ function initMariaDb {
 
 function initPostfix {
   pacman -S --noconfirm postfix
-  cp ~/Jaylapp/Deploy/conf/virtual /etc/postfix/
-  cp ~/Jaylapp/Deploy/conf/main.cf /etc/postfix/
+  cp ~/${REPOSITORY_NAME}/Deploy/conf/virtual /etc/postfix/
+  cp ~/${REPOSITORY_NAME}/Deploy/conf/main.cf /etc/postfix/
   postmap /etc/postfix/virtual
   systemctl enable postfix
   systemctl start postfix
 }
 
 function initSSH {
-  for filename in /Jaylapp/Deploy/ssh/*.pub; do
+  for filename in /${REPOSITORY_NAME}/Deploy/ssh/*.pub; do
     if [ ! -f "${filename}" ]; then
       continue
     fi
@@ -76,7 +79,7 @@ function installRust {
 function initServer {
   # Requires user input
   passwd root
-  useradd -m yajla
+  useradd -m ${BACKEND_USER}
 
   pacman -Sy
   pacman -S --noconfirm git npm guetzli zopfli libwebp htop clang openssl pkg-config python python-werkzeug
@@ -88,13 +91,13 @@ function initServer {
   # See: https://git-scm.com/book/de/v2/Git-Tools-Credential-Storage
   git config --global credential.helper
   cp ~/Keys/.git-credentials ~/
-  git clone https://github.com/Geigerkind/Jaylapp
-  cd /root/Jaylapp/Webclient
+  git clone ${REPOSITORY}
+  cd /root/${REPOSITORY_NAME}/Webclient
   # Requires user input
   npm install
   cd /root
-  cp /root/Jaylapp/Deploy/conf/backend.service /etc/systemd/system/
-  cp /root/Jaylapp/Deploy/conf/deploy.service /etc/systemd/system/
+  cp /root/${REPOSITORY_NAME}/Deploy/conf/backend.service /etc/systemd/system/
+  cp /root/${REPOSITORY_NAME}/Deploy/conf/deploy.service /etc/systemd/system/
   systemctl daemon-reload
   systemctl enable backend.service
   systemctl enable deploy.service
