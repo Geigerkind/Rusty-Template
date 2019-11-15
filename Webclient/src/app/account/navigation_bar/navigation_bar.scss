@@ -46,6 +46,13 @@ $columnHeight: 40px;
     border: 1px solid $tdc_accent;
     border-radius: 0 0 3px 3px;
 
+    @media (max-width: 640px) {
+      display: none;
+      &.open {
+        display: block;
+      }
+    }
+
     li {
       border-top: 1px solid $tdc_accent;
       padding-left: $spacing;

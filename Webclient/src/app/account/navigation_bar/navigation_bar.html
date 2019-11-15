@@ -3,6 +3,6 @@
   <CaretButton [isToggled]="show_sub_menu" (toggled)="show_sub_menu = $event"></CaretButton>
   <div>{{ "Account.navBar.title" | translate }}</div>
 </header>
-<ul [style.display]="getSubListVisibility()">
+<ul [class.open]="show_sub_menu">
   <li *ngFor="let item of itemList"><a [routerLink]="'/account/'+item[0]" routerLinkActive="active">{{ item[1] | translate }}</a></li>
 </ul>

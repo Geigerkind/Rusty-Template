@@ -6,12 +6,12 @@
 <input type="search" id="search" [placeholder]="'NavigationBar.searchPlaceHolder' | translate" />
 -->
 
-<div id="itemListContainer" [style.display]="getItemListVisibility()">
-  <ItemList [items]="sampleItems" [screenWidth]="screenWidth" (closeMenu)="handleClose()"></ItemList>
-  <ItemList [items]="sampleItems" [screenWidth]="screenWidth" (closeMenu)="handleClose()"></ItemList>
-  <ItemList [items]="sampleItems" [screenWidth]="screenWidth" (closeMenu)="handleClose()"></ItemList>
-  <ItemList [items]="sampleItems" [screenWidth]="screenWidth" (closeMenu)="handleClose()"></ItemList>
-  <ItemList [items]="sampleItems" [screenWidth]="screenWidth" (closeMenu)="handleClose()"></ItemList>
+<div id="itemListContainer" [class.open]="show_item_list">
+  <ItemList [items]="sampleItems" (closeMenu)="handleClose()"></ItemList>
+  <ItemList [items]="sampleItems" (closeMenu)="handleClose()"></ItemList>
+  <ItemList [items]="sampleItems" (closeMenu)="handleClose()"></ItemList>
+  <ItemList [items]="sampleItems" (closeMenu)="handleClose()"></ItemList>
+  <ItemList [items]="sampleItems" (closeMenu)="handleClose()"></ItemList>
 
-  <ItemList id="accountModule" [items]="accountItems" [screenWidth]="screenWidth" (closeMenu)="handleClose()"></ItemList>
+  <ItemList id="accountModule" [items]="accountItems" (closeMenu)="handleClose()"></ItemList>
 </div>

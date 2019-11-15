@@ -1,6 +1,6 @@
 @import "./../../../styles/global.scss";
 
-@media (min-width: 761px) {
+@media (min-width: 1281px) {
   @import "./../../../styles/shadows.scss";
   :host {
     display: inline-block;
@@ -68,7 +68,7 @@
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 1280px) {
   $columnHeight: 50px;
 
   :host {
@@ -109,6 +109,10 @@
       margin: 0;
       padding: 0 $spacing * 2 0 $spacing * 2;
       list-style: none;
+
+      &.open {
+        display: block;
+      }
 
       li {
         height: $columnHeight * 0.65;

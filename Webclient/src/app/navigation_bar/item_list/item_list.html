@@ -2,6 +2,6 @@
   <CaretButton [isToggled]="show_sub_menu" (toggled)="show_sub_menu = $event"></CaretButton>
   <a [routerLink]="items[0][0]" routerLinkActive="active" (click)="closeNavBar()">{{ items[0][1] | translate }}</a>
 </div>
-<ul *ngIf="items.length > 1" [style.display]="getSubListVisibility()">
+<ul *ngIf="items.length > 1" [class.open]="show_sub_menu">
   <li *ngFor="let item of items.slice(1)"><a [routerLink]="item[0]" routerLinkActive="active" (click)="closeNavBar()">{{ item[1] | translate }}</a></li>
 </ul>

@@ -19,10 +19,11 @@ $navBarHeight: 50px;
     background-size: 75% 75%;
     height: 100%;
     width: $navBarHeight;
+    cursor: pointer;
   }
 }
 
-@media (min-width: 761px) {
+@media (min-width: 1281px) {
   :host {
     svg {
       display: none;
@@ -45,7 +46,7 @@ $navBarHeight: 50px;
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 1280px) {
   :host {
     svg {
       display: block;
@@ -62,10 +63,14 @@ $navBarHeight: 50px;
 
     #itemListContainer {
       height: initial;
-      display: block;
+      display: none;
       width: 100%;
       position: absolute;
       top: $navBarHeight;
+
+      &.open {
+        display: block;
+      }
     }
 
     #accountModule {

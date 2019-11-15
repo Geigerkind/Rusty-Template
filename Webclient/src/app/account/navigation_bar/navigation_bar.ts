@@ -8,12 +8,5 @@ import { HostListener } from "@angular/core";
 })
 export class NavigationBar {
   @Input() itemList: Array<Array<string>>;
-  @Input() screenWidth: number;
   show_sub_menu = false;
-
-  getSubListVisibility(): string {
-    if (this.screenWidth <= 640 && !this.show_sub_menu)
-      return "none";
-    return "block";
-  }
 }
