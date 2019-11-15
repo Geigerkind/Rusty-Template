@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
               private router: Router) {
     this.init_translate_service();
     this.settingsService.subscribe("cookieDecisions", item => this.configure_google_analytics(item));
-    (window as any).addEventListener("beforeinstallprompt", (e) => setTimeout((e) => this.prompt_for_pwa(e), AppComponent.PWA_PROMPT_TIME, e));
+    (window as any).addEventListener("beforeinstallprompt", (e) => setTimeout((evnt) => this.prompt_for_pwa(evnt), AppComponent.PWA_PROMPT_TIME, e));
   }
 
   get isCookieBannerVisible(): boolean {
