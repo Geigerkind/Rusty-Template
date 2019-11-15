@@ -23,6 +23,36 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
   </script>
+  <script type='application/ld+json'>
+    [{
+      "@context": "http://www.schema.org",
+      "@type": "WebSite",
+      "name": "Jaylapp",
+      "url": "https://yajla.com",
+      "keywords": "Some key words",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://yajla.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },{
+      "@context": "http://www.schema.org",
+      "@type": "Organization",
+      "name": "Jaylapp",
+      "url": "https://yajla.com",
+      "logo": "https://yajla.com/assets/icon/logo.png",
+      "description": "Some descriptive content"
+    },{
+      "@context":"http://schema.org",
+      "@type":"BreadcrumbList",
+      "itemListElement":[
+        {"@type":"ListItem","position":1,"name":"Account","item":"https://yajla.com/account"},
+        {"@type":"ListItem","position":2,"name":"Rest API","item":"https://yajla.com/API/"},
+        {"@type":"ListItem","position":3,"name":"Privacy","item":"https://yajla.com/privacy/"},
+        {"@type":"ListItem","position":4,"name":"Imprint","item":"https://yajla.com/imprint/"}
+      ]
+    }]
+  </script>
 </head>
 <body>
   <noscript>
