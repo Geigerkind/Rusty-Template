@@ -29,6 +29,10 @@
     "title": "Cookie decisions",
     "description": "Saves your decisions that you set here!"
   },
+  "pwa_prompt": {
+    "title": "PWA prompt",
+    "description": "This cookie saves whether or not you have been prompted to install this website as PWA."
+  },
   "googleAnalytics": {
     "title": "Google Analytics",
     "description": "We use Google Analytics to count, track and analyze visits. This helps us to understand how people use the site."

@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { CookieService } from "ngx-cookie-service";
 import { TranslateService } from "@ngx-translate/core";
 import { ComponentLocation } from "@wishtack/reactive-component-loader";
 import { Router, NavigationEnd } from "@angular/router";
@@ -14,12 +13,14 @@ declare var gtag;
   styleUrls: ["./app.scss"]
 })
 export class AppComponent implements OnInit {
-  constructor(private cookieService: CookieService,
-              private settingsService: SettingsService,
+  static PWA_PROMPT_TIME = 30000;
+
+  constructor(private settingsService: SettingsService,
               private translateService: TranslateService,
               private router: Router) {
     this.init_translate_service();
     this.settingsService.subscribe("cookieDecisions", item => this.configure_google_analytics(item));
+    (window as any).addEventListener("beforeinstallprompt", (e) => setTimeout(() => this.prompt_for_pwa(e), AppComponent.PWA_PROMPT_TIME));
   }
 
   get isCookieBannerVisible(): boolean {
@@ -69,5 +70,12 @@ export class AppComponent implements OnInit {
         (window as any).ga("send", "pageview");
       }
     });
+  }
+
+  prompt_for_pwa(e: any): void {
+    if (this.settingsService.check("PWA_PROMPT"))
+      return;
+    e.prompt();
+    this.settingsService.set("PWA_PROMPT", true, 30);
   }
 }

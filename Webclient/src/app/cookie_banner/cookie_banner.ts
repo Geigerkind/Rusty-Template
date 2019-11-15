@@ -21,6 +21,7 @@ export class CookieBanner {
   constructor(private settingsService: SettingsService,
               private notificationService: NotificationService) {
     this.cookies_necessary.push(new CookieOption("CookieBanner.cookieDecisions.title", "CookieBanner.cookieDecisions.description", true, true));
+    this.cookies_necessary.push(new CookieOption("CookieBanner.pwa_prompt.title", "CookieBanner.pwa_prompt.description", true, true));
     this.cookies_other.push(new CookieOption("CookieBanner.googleAnalytics.title", "CookieBanner.googleAnalytics.description", true, false));
 
     this.load();

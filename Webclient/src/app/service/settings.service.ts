@@ -6,7 +6,8 @@ import { Injectable } from "@angular/core";
  })
 export class SettingsService {
   settings: Array<string> = [
-    "cookieDecisions"
+    "cookieDecisions",
+    "PWA_PROMPT"
   ];
 
   observers: any = {};
