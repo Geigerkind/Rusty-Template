@@ -16,7 +16,7 @@ function cleanAssetCache {
 
     if [[ ! -f "/root/${REPOSITORY_NAME}/Webclient/src/assets/${FILENAME_WITHOUT_PREFIX}" ]]; then
       rm ${FILENAME_WITHOUT_PREFIX}
-      rm ${FILENAME_WITHOUT_PREFIX%.*}.webp &> /dev/null # Ignore error if it had been deleted already
+      rm ${FILENAME_WITHOUT_PREFIX}.webp &> /dev/null # Ignore error if it had been deleted already
     fi
     DIR=$(dirname "${FILENAME_WITHOUT_PREFIX}")
     if [ -z "$(ls -A ${DIR})" ]; then
@@ -82,7 +82,7 @@ function convertToWebp {
     while [ $(pgrep -c -P$$) -gt ${NUM_CORES} ]; do
         sleep 0.5;
     done
-    cwebp -q 30 ${filename} -o ${filename%.*}.webp > /dev/null 2> /dev/null &
+    cwebp -q 30 ${filename} -o ${filename}.webp > /dev/null 2> /dev/null &
   done
 }
 function optimizeAssets {
