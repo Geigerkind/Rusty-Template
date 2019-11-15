@@ -5,16 +5,18 @@ DB_PASSWORD=$(cat /root/Keys/db_password)
 
 function cleanAssetCache {
   cd /root/cache/assets/
-  for filename in *.png *.jpg *.jpeg; do
+  for filename in $(find . -name "*.png") $(find . -name "*.jpg") $(find . -name "*.jpeg"); do
     if [ ! -f "${filename}" ]; then
       continue
     fi
 
-    if [[ ! -f "/root/Jaylapp/Webclient/src/assets/${filename}" ]]; then
-      rm ${filename}
-      rm ${filename%.*}.webp &> /dev/null # Ignore error if it had been deleted already
+    FILENAME_WITHOUT_PREFIX=${filename:2}
+
+    if [[ ! -f "/root/Jaylapp/Webclient/src/assets/${FILENAME_WITHOUT_PREFIX}" ]]; then
+      rm ${FILENAME_WITHOUT_PREFIX}
+      rm ${FILENAME_WITHOUT_PREFIX%.*}.webp &> /dev/null # Ignore error if it had been deleted already
     fi
-    DIR=$(dirname "${filename}")
+    DIR=$(dirname "${FILENAME_WITHOUT_PREFIX}")
     if [ -z "$(ls -A ${DIR})" ]; then
       rm -rf ${DIR}
     fi
@@ -24,7 +26,7 @@ function cleanAssetCache {
 function optimizeJpg {
   cd /root/Jaylapp/Webclient/src/assets/
   MEDIA_DIR='/root/cache/assets/'
-  for filename in *.jpg *.jpeg; do
+  for filename in $(find . -name "*.jpg") $(find . -name "*.jpeg"); do
     if [ ! -f "${filename}" ]; then
       continue
     fi
@@ -34,7 +36,7 @@ function optimizeJpg {
     done
 
     BASEFILENAME=$(basename "${filename}");
-    PATHTOFILE=$(dirname "${filename}");
+    PATHTOFILE=$(dirname "${filename:2}");
     TARGETDIR="${MEDIA_DIR}${PATHTOFILE}";
 
     if [ ! -d "${TARGETDIR}" ]; then
@@ -48,7 +50,7 @@ function optimizeJpg {
 function optimizePng {
   cd /root/Jaylapp/Webclient/src/assets/
   MEDIA_DIR='/root/cache/assets/'
-  for filename in *.png; do
+  for filename in $(find . -name "*.png"); do
     if [ ! -f "${filename}" ]; then
       continue
     fi
@@ -58,7 +60,7 @@ function optimizePng {
     done
 
     BASEFILENAME=$(basename "${filename}");
-    PATHTOFILE=$(dirname "${filename}");
+    PATHTOFILE=$(dirname "${filename:2}");
     TARGETDIR="${MEDIA_DIR}${PATHTOFILE}";
 
     if [ ! -d "${TARGETDIR}" ]; then
