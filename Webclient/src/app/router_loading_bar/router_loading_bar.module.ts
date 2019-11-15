@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { RouterLoadingBar } from './router_loading_bar';
+import { RouterLoadingBar } from "./router_loading_bar";
 
 @NgModule({
   declarations: [RouterLoadingBar],

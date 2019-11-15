@@ -17,7 +17,7 @@ import { AccountModule } from "./account/account.module";
 import { SettingsService } from "./service/settings.service";
 import { NotificationListModule } from "./notification_list/notification_list.module";
 import { NotificationService } from "./service/notification.service";
-import { RouterLoadingBarModule } from './router_loading_bar/router_loading_bar.module';
+import { RouterLoadingBarModule } from "./router_loading_bar/router_loading_bar.module";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
