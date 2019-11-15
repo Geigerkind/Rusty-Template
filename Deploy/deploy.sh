@@ -72,7 +72,7 @@ function optimizePng {
   cd /root
 }
 function convertToWebp {
-  for filename in /root/cache/assets/*.png /root/cache/assets/*.jpg /root/cache/assets/*.jpeg; do
+  for filename in $(find /root/cache/assets/ -name "*.png") $(find /root/cache/assets/ -name "*.jpg") $(find /root/cache/assets/ -name "*.jpeg"); do
     if [ ! -f "${filename}" ]; then
       continue
     fi
@@ -80,7 +80,7 @@ function convertToWebp {
     while [ $(pgrep -c -P$$) -gt ${NUM_CORES} ]; do
         sleep 0.5;
     done
-    webpc -q=30 ${filename} ${filename%.*}.webp > /dev/null 2> /dev/null &
+    cwebp -q 30 ${filename} -o ${filename%.*}.webp > /dev/null 2> /dev/null &
   done
 }
 function optimizeAssets {
