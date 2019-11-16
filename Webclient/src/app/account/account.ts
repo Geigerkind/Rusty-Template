@@ -7,7 +7,7 @@ import { Component } from "@angular/core";
 })
 export class Account {
   settings: Array<Array<string>> = [
-    ["", "Account.navBar.entries.overview"],
+    ["./", "Account.navBar.entries.overview"],
     ["nickname", "Account.navBar.entries.nickname"],
     ["password", "Account.navBar.entries.password"],
     ["mail", "Account.navBar.entries.mail"],

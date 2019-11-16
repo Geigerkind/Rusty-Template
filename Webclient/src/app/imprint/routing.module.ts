@@ -3,7 +3,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { Imprint } from "./imprint";
 
 const routes: Routes = [
-  { path: "", component: Imprint, pathMatch: "full" }
+  { path: "", component: Imprint }
 ];
 
 @NgModule({

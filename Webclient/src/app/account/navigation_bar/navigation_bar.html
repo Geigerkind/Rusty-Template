@@ -4,5 +4,5 @@
   <div>{{ "Account.navBar.title" | translate }}</div>
 </header>
 <ul [class.open]="show_sub_menu">
-  <li *ngFor="let item of itemList"><a [routerLink]="'/account/'+item[0]" routerLinkActive="active">{{ item[1] | translate }}</a></li>
+  <li *ngFor="let item of itemList"><a [routerLink]="item[0]" routerLinkActive="active">{{ item[1] | translate }}</a></li>
 </ul>

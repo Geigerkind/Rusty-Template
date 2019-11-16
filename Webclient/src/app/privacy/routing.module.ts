@@ -3,7 +3,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { Privacy } from "./privacy";
 
 const routes: Routes = [
-  { path: "", component: Privacy, pathMatch: "full" }
+  { path: "", component: Privacy }
 ];
 
 @NgModule({
