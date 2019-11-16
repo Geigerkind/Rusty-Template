@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { TranslateService } from "@ngx-translate/core";
 import { ComponentLocation } from "@wishtack/reactive-component-loader";
 import { Router, NavigationEnd } from "@angular/router";
 import { Subscription } from "rxjs";
 import { SettingsService } from "./service/settings.service";
+import { TranslationService } from "./service/translation.service";
 
 declare var gtag;
 
@@ -15,10 +15,9 @@ declare var gtag;
 export class AppComponent implements OnInit {
   static PWA_PROMPT_TIME = 30000;
 
-  constructor(private settingsService: SettingsService,
-              private translateService: TranslateService,
+  constructor(private translationService: TranslationService,
+              private settingsService: SettingsService,
               private router: Router) {
-    this.init_translate_service();
     this.settingsService.subscribe("cookieDecisions", item => this.configure_google_analytics(item));
     (window as any).addEventListener("beforeinstallprompt", (e) => setTimeout((evnt) => this.prompt_for_pwa(evnt), AppComponent.PWA_PROMPT_TIME, e));
   }
@@ -45,11 +44,6 @@ export class AppComponent implements OnInit {
     AppComponent.show_cookie_banner = state;
     if (state && this.location === null)
       this.location = this.cookie_banner;
-  }
-
-  async init_translate_service() {
-    this.translateService.setDefaultLang("en");
-    this.translateService.use("en");
   }
 
   configure_google_analytics(cookieDecisions: any): void {

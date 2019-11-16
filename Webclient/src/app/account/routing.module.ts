@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { AccountInformation } from "./account_information/account_information";
-import { AccountInformationModule } from "./account_information/account_information.module";
 import { Account } from "./account";
 
 const routes: Routes = [
@@ -13,10 +12,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(routes),
-    AccountInformationModule
-  ],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 export class AccountRoutingModule { }
