@@ -163,6 +163,12 @@ function startServices {
   systemctl start backend
 }
 
+function waitForJobs {
+  while [ $(jobs | grep Running | wc -l) -gt 0 ]; do
+    sleep 0.5s
+  done
+}
+
 function deploy {
   pacman -Syu --noconfirm
 
@@ -180,6 +186,7 @@ function deploy {
   deployWebclient
   deployBackend
   updateConfigs
+  waitForJobs
 
   startServices
 }
