@@ -16,6 +16,7 @@ mail = { path = "sub_crates/mail" }
 validator = { path = "sub_crates/validator" }
 str_util = { path = "sub_crates/str_util" }
 language = { path = "sub_crates/language" }
+expose_api = { path = "sub_crates/expose_api" }
 
 [dependencies.rocket_contrib]
 version = "*"

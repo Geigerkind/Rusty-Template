@@ -4,9 +4,7 @@ version = "0.1.0"
 authors = ["Tom Dymel <tom@dymel.dev>"]
 
 [dependencies]
-syn = "*"
-quote = "*"
-lazy_static = "*"
-
-[lib]
-crate_type = ["proc-macro"]
+schemars = "*"
+serde = "*"
+serde_json = "*"
+str_util = { path = "../str_util" }
