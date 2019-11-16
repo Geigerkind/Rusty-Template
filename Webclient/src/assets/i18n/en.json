@@ -65,7 +65,19 @@
 },
 "Account": {
   "navBar": {
-    "title": "Account settings"
+    "title": "Account settings",
+    "entries": {
+      "overview": "Overview",
+      "nickname": "Update nickname",
+      "password": "Update password",
+      "mail": "Update mail",
+      "api": "API tokens",
+      "delete": "Delete account"
+    }
+  },
+  "accountInformation": {
+    "nickname": "Nickname",
+    "mail": "Email"
   }
 }
 }

@@ -1,9 +1,11 @@
 import { Component } from "@angular/core";
+import { AccountInformation } from "../domainvalue/account_information";
 
 @Component({
   selector: "AccountInformation",
   templateUrl: "./account_information.html",
   styleUrls: ["./account_information.scss"]
 })
-export class AccountInformation {
+export class AccountInformationComponent {
+  accountInformation: AccountInformation = new AccountInformation(1, "somemail@provider.com", false, "Peter Lusting");
 }

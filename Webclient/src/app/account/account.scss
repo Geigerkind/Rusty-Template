@@ -10,7 +10,7 @@
   width: 320px;
   margin-left: $spacing;
 
-  header {
+  ::ng-deep header {
     height: 41px;
     border-bottom: 1px solid lighten($theme_dominant_color, 10%);
     margin-bottom: $spacing * 0.5;

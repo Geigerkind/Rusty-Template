@@ -1,5 +1,4 @@
 import { Component, Input } from "@angular/core";
-import { HostListener } from "@angular/core";
 
 @Component({
   selector: "NavigationBar",
