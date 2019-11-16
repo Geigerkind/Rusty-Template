@@ -11,7 +11,8 @@ const routes: Routes = [
     { path: "password", component: AccountInformationComponent},
     { path: "mail", component: AccountInformationComponent},
     { path: "api", component: AccountInformationComponent},
-    { path: "tokens", component: AccountInformationComponent}
+    { path: "tokens", component: AccountInformationComponent},
+    { path: "delete", component: AccountInformationComponent}
   ]}
 ];
 
