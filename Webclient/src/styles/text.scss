@@ -4,31 +4,43 @@
   display: flex;
   justify-content: center;
 
-.textContainer {
-  display: block;
-  max-width: 1280px;
-
-  ul {
-    list-style: none;
-    li {
-      h4 {
-        font-size: 20px;
-      }
-    }
-  }
-
-  h4 {
-    font-weight: 400;
-    font-size: 24px;
-    margin: 0;
-    margin-top: $spacing * 2.5;
-    color: $highlight;
-    line-height: 24px;
-  }
-
-  p {
+  .textContainer {
+    display: block;
+    max-width: 1280px;
     font-size: 16px;
     line-height: 20px;
+
+    ul {
+      list-style: none;
+      li {
+        h4 {
+          font-size: 20px;
+        }
+      }
+    }
+
+    h4, h1, h2, h3 {
+      font-weight: 400;
+      font-size: 24px;
+      margin: 0;
+      margin-top: $spacing * 2.5;
+      color: $highlight;
+      line-height: 24px;
+    }
+
+    h2 {
+      font-size: 20px;
+    }
+
+    h3 {
+      font-size: 18px;
+      margin-top: 0;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 20px;
+      margin-top: $spacing * 0.25;
+    }
   }
-}
 }

@@ -1,18 +1,18 @@
 import { NgModule } from "@angular/core";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { CommonModule } from "@angular/common";
-import { Privacy } from "./privacy";
-import { PrivacyRoutingModule } from "./routing.module";
 import { HttpClient } from "@angular/common/http";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { TranslationService } from "../service/translation.service";
+import { ImprintRoutingModule } from "./routing.module";
+import { Imprint } from "./imprint";
 
 export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, "/assets/i18n/privacy/", ".json");
+  return new TranslateHttpLoader(http, "/assets/i18n/imprint/", ".json");
 }
 
 @NgModule({
-  declarations: [Privacy],
+  declarations: [Imprint],
   imports: [
     CommonModule,
     TranslateModule.forRoot({
@@ -22,11 +22,11 @@ export function createTranslateLoader(http: HttpClient) {
           deps: [HttpClient]
       }
     }),
-    PrivacyRoutingModule
+    ImprintRoutingModule
   ],
-  exports: [Privacy],
+  exports: [Imprint],
   providers: [
     TranslationService
   ]
 })
-export class PrivacyModule { }
+export class ImprintModule { }
