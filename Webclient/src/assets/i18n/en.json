@@ -113,5 +113,14 @@
     "delete": "Delete account",
     "deleteNote": "Note: This action is not revertable!"
   }
+},
+"Login": {
+  "mail": "Email address",
+  "typeMail": "Your email address",
+  "password": "Password",
+  "typePassword": "Your password",
+  "signIn": "Sign in",
+  "forgotPassword": "Forgot password?",
+  "signUp": "Sign Up"
 }
 }

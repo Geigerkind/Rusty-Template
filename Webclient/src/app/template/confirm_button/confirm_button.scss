@@ -1,6 +1,10 @@
 @import "./../../../styles/global.scss";
 @import "./../../../styles/buttons.scss";
 
+:host {
+  display: block;
+}
+
 button {
   width: 100%;
   background: $highlight;

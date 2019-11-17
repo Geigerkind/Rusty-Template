@@ -1,0 +1,8 @@
+<div class="loginContainer">
+  <form>
+    <GeneralInput type="email" [required]="true" labelKey="Login.mail" placeholderKey="Login.typeMail" name="mail"></GeneralInput>
+    <PasswordInput placeholderKey="Login.typePassword" labelKey="Login.password" name="password"></PasswordInput>
+    <ConfirmButton labelKey="Login.signIn"></ConfirmButton>
+  </form>
+  <ConfirmButton class="lessImportant" labelKey="Login.forgotPassword" routerLink="/reset_password"></ConfirmButton>
+</div>
