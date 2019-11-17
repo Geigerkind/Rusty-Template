@@ -130,5 +130,10 @@
   "password": "Password",
   "typePassword": "Your password",
   "signUp": "Sign Up"
+},
+"ResetPassword": {
+  "reset": "Reset password",
+  "mail": "Email address",
+  "typeMail": "Your email address"
 }
 }
