@@ -1,0 +1,12 @@
+@import "./../../../styles/global.scss";
+@import "./../../../styles/buttons.scss";
+
+button {
+  width: 100%;
+  background: $highlight;
+  color: $font_default;
+
+  &:hover {
+    background: darken($highlight, 20%);
+  }
+}

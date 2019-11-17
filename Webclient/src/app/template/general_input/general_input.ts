@@ -7,7 +7,7 @@ import { Component, Input } from "@angular/core";
 })
 export class GeneralInput {
   @Input() type: string;
-  @Input() placeholder: string;
+  @Input() placeholderKey: string;
   @Input() initialValue: string;
   @Input() labelKey: string;
   @Input() required: boolean;

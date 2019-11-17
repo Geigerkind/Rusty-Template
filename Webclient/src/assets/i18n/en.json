@@ -81,7 +81,9 @@
   },
   "updatePassword": {
     "newPassword": "New password",
-    "confirmNewPassword": "Confirm new password"
+    "confirmNewPassword": "Confirm new password",
+    "typePassword": "Type your new password",
+    "update": "Update password"
   }
 }
 }
