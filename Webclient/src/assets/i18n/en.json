@@ -89,6 +89,13 @@
     "newNickname": "New nickname",
     "typeNewNickname": "Type your new nickname",
     "update": "Update nickname"
+  },
+  "updateMail": {
+    "password": "Password",
+    "typePassword": "Your current password",
+    "newMail": "New email",
+    "typeNewMail": "Type your new email",
+    "update": "Update email"
   }
 }
 }
