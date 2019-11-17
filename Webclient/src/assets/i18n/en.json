@@ -120,7 +120,15 @@
   "password": "Password",
   "typePassword": "Your password",
   "signIn": "Sign in",
-  "forgotPassword": "Forgot password?",
+  "forgotPassword": "Forgot password?"
+},
+"SignUp": {
+  "nickname": "Nickname",
+  "typeNickname": "Publicly displayed nickname",
+  "mail": "Email address",
+  "typeMail": "Your email address",
+  "password": "Password",
+  "typePassword": "Your password",
   "signUp": "Sign Up"
 }
 }
