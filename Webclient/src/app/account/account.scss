@@ -7,7 +7,7 @@
 }
 
 #accountContent {
-  width: 320px;
+  width: 480px;
   margin-left: $spacing;
 
   ::ng-deep header {
@@ -32,6 +32,7 @@
 
     #accountContent {
       width: 90%;
+      margin-left: 0;
     }
   }
 }

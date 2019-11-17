@@ -11,7 +11,7 @@ export class Account {
     ["nickname", "Account.navBar.entries.nickname"],
     ["password", "Account.navBar.entries.password"],
     ["mail", "Account.navBar.entries.mail"],
-    ["tokens", "Account.navBar.entries.api"],
+    ["api", "Account.navBar.entries.api"],
     ["delete", "Account.navBar.entries.delete"],
   ];
 }

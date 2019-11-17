@@ -5,6 +5,7 @@ import { Account } from "./account";
 import { UpdateNicknameComponent } from "./update_nickname/update_nickname";
 import { UpdatePasswordComponent } from "./update_password/update_password";
 import { UpdateMailComponent } from "./update_mail/update_mail";
+import { APITokensComponent } from "./api_tokens/api_tokens";
 
 const routes: Routes = [
   { path: "", component: Account, children: [
@@ -12,8 +13,7 @@ const routes: Routes = [
     { path: "nickname", component: UpdateNicknameComponent},
     { path: "password", component: UpdatePasswordComponent},
     { path: "mail", component: UpdateMailComponent},
-    { path: "api", component: AccountInformationComponent},
-    { path: "tokens", component: AccountInformationComponent},
+    { path: "api", component: APITokensComponent},
     { path: "delete", component: AccountInformationComponent}
   ]}
 ];

@@ -12,5 +12,6 @@ export class GeneralInput {
   @Input() labelKey: string;
   @Input() required: boolean;
   @Input() minimum_length = 0;
+  @Input() maximum_length = 1024;
   @Input() name: string;
 }

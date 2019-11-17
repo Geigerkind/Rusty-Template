@@ -96,6 +96,14 @@
     "newMail": "New email",
     "typeNewMail": "Type your new email",
     "update": "Update email"
+  },
+  "api": {
+    "purpose": "Purpose",
+    "typePurpose": "Purpose of the token",
+    "generate": "Generate",
+    "token": "Token",
+    "action": "Action",
+    "remove": "Remove"
   }
 }
 }
