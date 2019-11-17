@@ -1,0 +1,12 @@
+@import "./../../../styles/colors.scss";
+
+:host {
+  display: block;
+  height: 30px;
+  line-height: 30px;
+  font-size: 16px;
+
+  span {
+    color: $warning;
+  }
+}

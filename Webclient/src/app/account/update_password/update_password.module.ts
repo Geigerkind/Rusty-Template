@@ -4,6 +4,7 @@ import { CommonModule } from "@angular/common";
 import { UpdatePasswordComponent } from "./update_password";
 import { PasswordInputModule } from "src/app/template/password_input/password_input.module";
 import { ConfirmButtonModule } from "src/app/template/confirm_button/confirm_button.module";
+import { BriefNoteModule } from "src/app/template/brief_note/brief_note.module";
 
 @NgModule({
   declarations: [UpdatePasswordComponent],
@@ -11,7 +12,8 @@ import { ConfirmButtonModule } from "src/app/template/confirm_button/confirm_but
     CommonModule,
     TranslateModule,
     PasswordInputModule,
-    ConfirmButtonModule
+    ConfirmButtonModule,
+    BriefNoteModule
   ],
   exports: [UpdatePasswordComponent],
   bootstrap: [UpdatePasswordComponent]

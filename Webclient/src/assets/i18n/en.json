@@ -83,7 +83,8 @@
     "newPassword": "New password",
     "confirmNewPassword": "Confirm new password",
     "typePassword": "Type your new password",
-    "update": "Update password"
+    "update": "Update password",
+    "updateNote": "Note: All API tokens will be reset."
   },
   "updateNickname": {
     "newNickname": "New nickname",
@@ -95,7 +96,8 @@
     "typePassword": "Your current password",
     "newMail": "New email",
     "typeNewMail": "Type your new email",
-    "update": "Update email"
+    "update": "Update email",
+    "updateNote": "Note: All API tokens will be reset."
   },
   "api": {
     "purpose": "Purpose",
