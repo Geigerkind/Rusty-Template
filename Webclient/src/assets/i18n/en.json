@@ -111,7 +111,7 @@
     "password": "Password",
     "typePassword": "Confirm by typing your password",
     "delete": "Delete account",
-    "deleteNote": "Note: This action is note revertable!"
+    "deleteNote": "Note: This action is not revertable!"
   }
 }
 }
