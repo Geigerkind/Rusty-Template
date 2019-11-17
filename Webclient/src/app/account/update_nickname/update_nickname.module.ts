@@ -2,12 +2,16 @@ import { NgModule } from "@angular/core";
 import { TranslateModule } from "@ngx-translate/core";
 import { CommonModule } from "@angular/common";
 import { UpdateNicknameComponent } from "./update_nickname";
+import { GeneralInputModule } from "src/app/template/general_input/general_input.module";
+import { ConfirmButtonModule } from "src/app/template/confirm_button/confirm_button.module";
 
 @NgModule({
   declarations: [UpdateNicknameComponent],
   imports: [
     CommonModule,
-    TranslateModule
+    TranslateModule,
+    GeneralInputModule,
+    ConfirmButtonModule
   ],
   exports: [UpdateNicknameComponent],
   bootstrap: [UpdateNicknameComponent]

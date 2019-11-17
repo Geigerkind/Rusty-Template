@@ -84,6 +84,11 @@
     "confirmNewPassword": "Confirm new password",
     "typePassword": "Type your new password",
     "update": "Update password"
+  },
+  "updateNickname": {
+    "newNickname": "New nickname",
+    "typeNewNickname": "Type your new nickname",
+    "update": "Update nickname"
   }
 }
 }

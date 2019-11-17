@@ -8,9 +8,9 @@ import { Component, Input } from "@angular/core";
 export class GeneralInput {
   @Input() type: string;
   @Input() placeholderKey: string;
-  @Input() initialValue: string;
+  @Input() initialValue = "";
   @Input() labelKey: string;
   @Input() required: boolean;
-  @Input() minimum_length: number;
+  @Input() minimum_length = 0;
   @Input() name: string;
 }
