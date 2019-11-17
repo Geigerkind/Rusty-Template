@@ -10,4 +10,7 @@ export class GeneralInput {
   @Input() placeholder: string;
   @Input() initialValue: string;
   @Input() labelKey: string;
+  @Input() required: boolean;
+  @Input() minimum_length: number;
+  @Input() name: string;
 }

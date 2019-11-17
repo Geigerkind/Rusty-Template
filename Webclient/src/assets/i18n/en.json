@@ -78,6 +78,10 @@
   "accountInformation": {
     "nickname": "Nickname",
     "mail": "Email"
+  },
+  "updatePassword": {
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm new password"
   }
 }
 }

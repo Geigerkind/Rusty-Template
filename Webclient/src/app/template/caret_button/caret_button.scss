@@ -8,7 +8,9 @@
   svg {
     width: 100%;
     height: 100%;
-    fill: $font_default;
     cursor: pointer;
+    path {
+      fill: $font_default;
+    }
   }
 }
