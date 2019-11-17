@@ -106,6 +106,13 @@
     "token": "Token",
     "action": "Action",
     "remove": "Remove"
+  },
+  "delete": {
+    "password": "Password",
+    "typePassword": "Confirm by typing your password",
+    "delete": "Delete account",
+    "deleteNote": "Note: All your uploaded raid logs will be removed!",
+    "deleteNote2": "This action is note revertable!"
   }
 }
 }
