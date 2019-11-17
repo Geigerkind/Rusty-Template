@@ -58,6 +58,7 @@ $columnHeight: 40px;
       padding-left: $spacing;
 
       &, a {
+        display: block;
         height: $columnHeight;
         line-height: $columnHeight;
         font-size: 20px;
