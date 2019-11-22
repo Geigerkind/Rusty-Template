@@ -16,8 +16,7 @@ impl GetAccountInformation for Account {
         id: entry.id,
         mail: entry.mail.clone(),
         nickname: entry.nickname.clone(),
-        mail_confirmed: entry.mail_confirmed,
-        xp: entry.xp
+        mail_confirmed: entry.mail_confirmed
       }),
       None => Err(self.dictionary.get("get.error.nomember", Language::English))
     }
