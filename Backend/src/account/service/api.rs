@@ -5,6 +5,7 @@ use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::domainvalue::post_create_member::PostCreateMember;
 use crate::account::domainvalue::post_login::PostLogin;
 use crate::account::material::post_change_str::PostChangeStr;
+use crate::account::material::post_change_str_login::PostChangeStrLogin;
 
 use expose_api::expose_api_fn;
 use schemars::schema_for;
@@ -35,6 +36,6 @@ pub fn api() -> Json<Vec<serde_json::Value>> {
     // Update
     expose_api_fn("/update/password/<params>", "post", "application/json", schema_for!(Result<ValidationPair, String>), schema_for!(PostChangeStr)),
     expose_api_fn("/update/nickname/<params>", "post", "application/json", schema_for!(Result<AccountInformation, String>), schema_for!(PostChangeStr)),
-    expose_api_fn("/update/mail/<params>", "post", "application/json", schema_for!(Result<ValidationPair, String>), schema_for!(PostChangeStr)),
+    expose_api_fn("/update/mail/<params>", "post", "application/json", schema_for!(Result<ValidationPair, String>), schema_for!(PostChangeStrLogin)),
   ])
 }

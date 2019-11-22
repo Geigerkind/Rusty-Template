@@ -5,6 +5,8 @@ mod tests {
   use crate::account::domainvalue::post_create_member::PostCreateMember;
   use crate::database::tools::mysql::execute::Execute;
   use crate::account::material::post_change_str::PostChangeStr;
+  use crate::account::material::post_change_str_login::PostChangeStrLogin;
+  use crate::account::domainvalue::post_login::PostLogin;
   use crate::account::tools::update::Update;
   use crate::account::domainvalue::validation_pair::ValidationPair;
 
@@ -172,14 +174,14 @@ mod tests {
   #[test]
   fn change_mail_invalid_validation() {
     let account = Account::default();
-    let val_pair = ValidationPair {
-      hash: "someHash".to_string(),
-      id: 42
+    let credentials = PostLogin {
+      mail: "bla@bla.de".to_string(),
+      password: "somepassword".to_string()
     };
 
-    let changed_mail = account.change_mail(&PostChangeStr {
+    let changed_mail = account.change_mail(&PostChangeStrLogin {
       content: "Some Username".to_string(),
-      validation: val_pair
+      credentials
     });
 
     assert!(changed_mail.is_err());
@@ -193,11 +195,15 @@ mod tests {
       mail: "nsigsvbsdsd@jaylappTest.dev".to_string(),
       password: "Password123456Password123456Password123456".to_string()
     };
+    let credentials = PostLogin {
+      mail: "nsigsvbsdsd@jaylappTest.dev".to_string(),
+      password: "Password123456Password123456Password123456".to_string()
+    };
 
-    let val_pair = account.create(&post_obj).unwrap();
-    let changed_mail = account.change_mail(&PostChangeStr {
+    let _ = account.create(&post_obj).unwrap();
+    let changed_mail = account.change_mail(&PostChangeStrLogin {
       content: "".to_string(),
-      validation: val_pair
+      credentials
     });
     assert!(changed_mail.is_err());
 
@@ -212,11 +218,15 @@ mod tests {
       mail: "asiudfuhisduifs@jaylappTest.dev".to_string(),
       password: "Password123456Password123456Password123456".to_string()
     };
+    let credentials = PostLogin {
+      mail: "asiudfuhisduifs@jaylappTest.dev".to_string(),
+      password: "Password123456Password123456Password123456".to_string()
+    };
 
-    let val_pair = account.create(&post_obj).unwrap();
-    let changed_mail = account.change_mail(&PostChangeStr {
+    let _ = account.create(&post_obj).unwrap();
+    let changed_mail = account.change_mail(&PostChangeStrLogin {
       content: "asiudfuhisduifs".to_string(),
-      validation: val_pair
+      credentials
     });
     assert!(changed_mail.is_err());
 
@@ -231,6 +241,10 @@ mod tests {
       mail: "csdazgtsdczas@jaylappTest.dev".to_string(),
       password: "Password123456Password123456Password123456".to_string()
     };
+    let credentials = PostLogin {
+      mail: "csdazgtsdczas@jaylappTest.dev".to_string(),
+      password: "Password123456Password123456Password123456".to_string()
+    };
 
     let post_obj_two = PostCreateMember {
       nickname: "bdvshudvbsdv".to_string(),
@@ -238,11 +252,11 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string()
     };
 
-    let val_pair = account.create(&post_obj).unwrap();
+    let _ = account.create(&post_obj).unwrap();
     let _ = account.create(&post_obj_two).unwrap();
-    let changed_mail = account.change_mail(&PostChangeStr {
+    let changed_mail = account.change_mail(&PostChangeStrLogin {
       content: post_obj_two.mail,
-      validation: val_pair
+      credentials
     });
     assert!(changed_mail.is_err());
 
@@ -258,13 +272,17 @@ mod tests {
       mail: "xdssdfsdfg@jaylappTest.dev".to_string(),
       password: "Password123456Password123456Password123456".to_string()
     };
+    let credentials = PostLogin {
+      mail: "xdssdfsdfg@jaylappTest.dev".to_string(),
+      password: "Password123456Password123456Password123456".to_string()
+    };
 
     let val_pair = account.create(&post_obj).unwrap();
     let val_pair_hash = val_pair.hash.clone();
     let val_pair_id = val_pair.id;
-    let changed_mail = account.change_mail(&PostChangeStr {
+    let changed_mail = account.change_mail(&PostChangeStrLogin {
       content: "xdssdfsdfg2@bla.de".to_string(),
-      validation: val_pair
+      credentials
     });
     assert!(changed_mail.is_ok());
     let new_val_pair = changed_mail.unwrap();

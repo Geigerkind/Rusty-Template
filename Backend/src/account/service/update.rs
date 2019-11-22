@@ -1,6 +1,7 @@
 use crate::account::material::account::Account;
 use crate::account::tools::update::Update;
 use crate::account::material::post_change_str::PostChangeStr;
+use crate::account::material::post_change_str_login::PostChangeStrLogin;
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::domainvalue::account_information::AccountInformation;
 
@@ -26,7 +27,7 @@ pub fn nickname(me: State<Account>, params: Json<PostChangeStr>) -> Result<Json<
 }
 
 #[post("/update/mail", data = "<params>")]
-pub fn mail(me: State<Account>, params: Json<PostChangeStr>) -> Result<Json<ValidationPair>, String>
+pub fn mail(me: State<Account>, params: Json<PostChangeStrLogin>) -> Result<Json<ValidationPair>, String>
 {
   match me.change_mail(&params) {
     Ok(val_pair) => Ok(Json(val_pair)),
