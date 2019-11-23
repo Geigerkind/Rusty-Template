@@ -8,6 +8,7 @@ extern crate mail;
 extern crate validator;
 extern crate str_util;
 extern crate language;
+extern crate time_util;
 
 pub mod account;
 pub mod database;
@@ -43,6 +44,7 @@ fn main() {
   igniter = igniter.mount("/API/", routes![api_overview]);
   igniter = igniter.mount("/API/account/", routes![
     account::service::api::api,
+    account::service::token::create_token, account::service::token::get_tokens, account::service::token::delete_token,
     account::service::delete::request, account::service::delete::confirm,
     account::service::create::create, account::service::create::confirm, account::service::create::resend_confirm,
     account::service::get::get,

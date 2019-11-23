@@ -1,13 +1,14 @@
-use str_util::{sha3, strformat};
-use crate::account::domainvalue::validation_pair::ValidationPair;
-use crate::account::tools::validator::Validator;
-use crate::account::material::account::Account;
-use crate::database::tools::mysql::execute::Execute;
-use language::get::Get;
 use language::domainvalue::language::Language;
-use crate::account::domainvalue::account_information::AccountInformation;
-use crate::account::tools::get::GetAccountInformation;
+use language::get::Get;
 use mail;
+use str_util::{sha3, strformat};
+
+use crate::account::domainvalue::account_information::AccountInformation;
+use crate::account::domainvalue::validation_pair::ValidationPair;
+use crate::account::material::account::Account;
+use crate::account::tools::get::GetAccountInformation;
+use crate::account::tools::token::Token;
+use crate::database::tools::mysql::execute::Execute;
 
 pub trait Delete {
   fn issue_delete(&self, params: &ValidationPair) -> Result<AccountInformation, String>;
@@ -25,26 +26,26 @@ impl Delete for Account {
     {
       {
         let member = self.member.read().unwrap();
-        let entry = member.get(&params.id).unwrap();
-        delete_id = sha3::hash(&[&params.id.to_string(), "delete", &entry.salt]);
+        let entry = member.get(&params.member_id).unwrap();
+        delete_id = sha3::hash(&[&params.member_id.to_string(), "delete", &entry.salt]);
         if !mail::send(&entry.mail, &entry.nickname, self.dictionary.get("create.confirmation.subject", Language::English),
-          strformat::fmt(self.dictionary.get("create.confirmation.text", Language::English), &[&delete_id])){
-            return Err(self.dictionary.get("general.error.mail_send", Language::English));
+                       strformat::fmt(self.dictionary.get("create.confirmation.text", Language::English), &[&delete_id])) {
+          return Err(self.dictionary.get("general.error.mail_send", Language::English));
         }
       }
-      if self.db_main.execute_wparams("UPDATE member SET delete_account=1 WHERE id=:id", params!("id" => params.id)) {
+      if self.db_main.execute_wparams("UPDATE member SET delete_account=1 WHERE id=:id", params!("id" => params.member_id)) {
         let mut member = self.member.write().unwrap();
-        let entry = member.get_mut(&params.id).unwrap();
+        let entry = member.get_mut(&params.member_id).unwrap();
         entry.delete_account = true;
       }
     }
 
     {
       let mut delete_account = self.delete_account.write().unwrap();
-      delete_account.insert(delete_id, params.id);
+      delete_account.insert(delete_id, params.member_id);
     }
 
-    Ok(self.get(params.id).unwrap())
+    Ok(self.get(params.member_id).unwrap())
   }
 
   fn confirm_delete(&self, id: &str) -> Result<(), String>
@@ -57,12 +58,16 @@ impl Delete for Account {
           if self.db_main.execute_wparams("DELETE FROM member WHERE id = :id", params!(
             "id" => *member_id
           )) {
-            self.helper_clear_validation(*member_id);
-            let mut member = self.member.write().unwrap();
-            member.remove(member_id);
-            removable = true;
+            match self.clear_tokens(*member_id) {
+              Ok(_) => {
+                let mut member = self.member.write().unwrap();
+                member.remove(member_id);
+                removable = true;
+              }
+              Err(err_str) => return Err(err_str)
+            }
           }
-        },
+        }
         None => return Err(self.dictionary.get("delete.error.no_delete_issued", Language::English))
       }
     }

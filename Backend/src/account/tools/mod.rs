@@ -1,7 +1,7 @@
-pub mod validator;
 pub mod create;
 pub mod delete;
 pub mod forgot;
 pub mod login;
 pub mod update;
 pub mod get;
+pub mod token;

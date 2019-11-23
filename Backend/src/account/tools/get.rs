@@ -1,7 +1,8 @@
+use language::domainvalue::language::Language;
+use language::get::Get;
+
 use crate::account::domainvalue::account_information::AccountInformation;
 use crate::account::material::account::Account;
-use language::get::Get;
-use language::domainvalue::language::Language;
 
 pub trait GetAccountInformation {
   fn get(&self, id: u32) -> Result<AccountInformation, String>;
@@ -16,7 +17,7 @@ impl GetAccountInformation for Account {
         id: entry.id,
         mail: entry.mail.clone(),
         nickname: entry.nickname.clone(),
-        mail_confirmed: entry.mail_confirmed
+        mail_confirmed: entry.mail_confirmed,
       }),
       None => Err(self.dictionary.get("get.error.nomember", Language::English))
     }

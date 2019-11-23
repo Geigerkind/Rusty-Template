@@ -11,8 +11,8 @@ mod tests {
   fn issue_delete_invalid_token() {
     let account = Account::default();
     let val_pair = ValidationPair {
-      hash: "someHash".to_string(),
-      id: 42
+      api_token: "someHash".to_string(),
+      member_id: 42
     };
     let issue_delete = account.issue_delete(&val_pair);
     assert!(issue_delete.is_err());

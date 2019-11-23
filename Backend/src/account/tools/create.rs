@@ -1,17 +1,18 @@
-use str_util::{sha3, random, strformat};
+use language::domainvalue::language::Language;
+use language::get::Get;
+use mail;
+use str_util::{random, sha3, strformat};
 use validator;
 use validator::domainvalue::password_failure::PasswordFailure;
-use language::get::Get;
-use language::domainvalue::language::Language;
+
 use crate::account::domainvalue::post_create_member::PostCreateMember;
 use crate::account::domainvalue::validation_pair::ValidationPair;
-use crate::account::material::member::Member;
-use crate::account::tools::validator::Validator;
 use crate::account::material::account::Account;
-use crate::database::tools::mysql::select::Select;
+use crate::account::material::member::Member;
+use crate::account::tools::token::Token;
 use crate::database::tools::mysql::execute::Execute;
 use crate::database::tools::mysql::exists::Exists;
-use mail;
+use crate::database::tools::mysql::select::Select;
 
 pub trait Create {
   fn create(&self, params: &PostCreateMember) -> Result<ValidationPair, String>;
@@ -56,12 +57,12 @@ impl Create for Account {
     if self.db_main.execute_wparams("INSERT IGNORE INTO member (`mail`, `password`, `nickname`, `joined`) VALUES (:mail, :pass, :nickname, UNIX_TIMESTAMP())", params!(
       "nickname" => params.nickname.clone(),
       "mail" => params.mail.clone(),
-      "pass" => pass.clone())
+      "pass" => pass.clone()),
     ) {
       let id: u32;
       { // Keep write locks as short as possible
         let mut member = self.member.write().unwrap();
-        id = self.db_main.select_wparams_value("SELECT id FROM member WHERE mail = :mail", &|row|{
+        id = self.db_main.select_wparams_value("SELECT id FROM member WHERE mail = :mail", &|row| {
           mysql::from_row(row)
         }, params!(
           "mail" => lower_mail.clone()
@@ -72,18 +73,21 @@ impl Create for Account {
           mail: lower_mail.clone(),
           password: pass,
           salt,
-          xp: 0,
           mail_confirmed: false,
           forgot_password: false,
           delete_account: false,
-          hash_prio: vec![2,2,2],
-          hash_val: vec!["none".to_string(), "none".to_string(), "none".to_string()]
         });
       }
 
-      let val_pair = self.helper_create_validation(id);
-      self.send_confirmation(&val_pair);
-      return Ok(val_pair);
+      return match self.create_validation_unsafe(
+        &self.dictionary.get("general.login", Language::English),
+        id, time_util::get_ts_from_now_in_secs(30)) {
+        Ok(val_pair) => {
+          self.send_confirmation(&val_pair);
+          Ok(val_pair)
+        }
+        Err(err_str) => Err(err_str)
+      };
     }
     return Err(self.dictionary.get("general.error.unknown", Language::English));
   }
@@ -95,17 +99,17 @@ impl Create for Account {
     }
 
     let member = self.member.read().unwrap();
-    let entry = member.get(&params.id).unwrap();
-    let mail_id = sha3::hash(&[&params.id.to_string(), &entry.salt]);
+    let entry = member.get(&params.member_id).unwrap();
+    let mail_id = sha3::hash(&[&params.member_id.to_string(), &entry.salt]);
     let mail_content = strformat::fmt(self.dictionary.get("create.confirmation.text", Language::English), &[&mail_id]);
 
     if !entry.mail_confirmed {
       let mut requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();
       if !requires_mail_confirmation.contains_key(&mail_id) {
-        requires_mail_confirmation.insert(mail_id, params.id);
+        requires_mail_confirmation.insert(mail_id, params.member_id);
       }
       return mail::send(&entry.mail, &entry.nickname,
-        self.dictionary.get("create.confirmation.subject", Language::English), mail_content);
+                        self.dictionary.get("create.confirmation.subject", Language::English), mail_content);
     }
     false
   }
@@ -125,12 +129,12 @@ impl Create for Account {
             entry.mail_confirmed = true;
             removable = true;
           }
-        },
+        }
         None => return false
       }
     }
     if removable {
-      let mut  requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();
+      let mut requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();
       requires_mail_confirmation.remove(id);
       return true;
     }

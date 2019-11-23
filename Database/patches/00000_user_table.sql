@@ -31,12 +31,6 @@ CREATE TABLE `member` (
   `mail_confirmed` tinyint(1) unsigned NOT NULL DEFAULT 0,
   `forgot_password` tinyint(1) unsigned NOT NULL DEFAULT 0,
   `delete_account` tinyint(1) unsigned NOT NULL DEFAULT 0,
-  `val_hash1` varchar(512) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'none',
-  `val_prio1` tinyint(1) unsigned NOT NULL DEFAULT 2,
-  `val_hash2` varchar(512) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'none',
-  `val_prio2` tinyint(1) unsigned NOT NULL DEFAULT 2,
-  `val_hash3` varchar(512) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'none',
-  `val_prio3` tinyint(1) unsigned NOT NULL DEFAULT 2,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

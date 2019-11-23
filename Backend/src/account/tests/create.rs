@@ -133,11 +133,11 @@ mod tests {
     let mail_id;
     {
       let member_guard = account.member.read().unwrap();
-      let member = member_guard.get(&login.id).unwrap();
-      mail_id = sha3::hash(&[&login.id.to_string(), &member.salt]);
+      let member = member_guard.get(&login.member_id).unwrap();
+      mail_id = sha3::hash(&[&login.member_id.to_string(), &member.salt]);
     }
     account.confirm(&mail_id);
-    let confirmed_information = account.get(login.id).unwrap();
+    let confirmed_information = account.get(login.member_id).unwrap();
     assert!(confirmed_information.mail_confirmed);
 
     account.db_main.execute("DELETE FROM member WHERE mail='someNameWuuuuh@jaylappTest.dev'");

@@ -1,7 +1,6 @@
 #[cfg(test)]
 mod tests {
   use crate::account::material::account::Account;
-  use crate::account::tools::validator::Validator;
   use crate::account::domainvalue::validation_pair::ValidationPair;
   use crate::account::tools::create::Create;
   use crate::account::domainvalue::post_create_member::PostCreateMember;
@@ -10,6 +9,9 @@ mod tests {
   use crate::account::material::post_change_str::PostChangeStr;
   use crate::account::tools::login::Login;
   use crate::account::domainvalue::post_login::PostLogin;
+  use crate::account::tools::token::Token;
+  use crate::account::domainvalue::post_delete_token::PostDeleteToken;
+  use crate::account::domainvalue::post_token::PostToken;
 
   // Helper functions are tested indirectly through all other functions
 
@@ -32,8 +34,8 @@ mod tests {
   fn validate_invalid() {
     let account = Account::default();
     let val_pair = ValidationPair {
-      hash: "someHash".to_string(),
-      id: 42
+      api_token: "someHash".to_string(),
+      member_id: 42
     };
 
     assert!(!account.validate(&val_pair));
@@ -67,5 +69,52 @@ mod tests {
     assert!(account.validate(&val_pair3));
 
     account.db_main.execute("DELETE FROM member WHERE mail='klsdkfsowerf@jaylappTest.dev'");
+  }
+
+  #[test]
+  fn get_all_tokens() {
+    let account = Account::default();
+    let post_obj = PostCreateMember {
+      nickname: "fhfgjhfgjfghfjg".to_string(),
+      mail: "fhfgjhfgjfghfjg@jaylappTest.dev".to_string(),
+      password: "Password123456Password123456Password123456".to_string()
+    };
+    let val_pair = account.create(&post_obj).unwrap();
+    let token_res = account.get_all_token(&val_pair);
+    assert!(token_res.is_ok());
+    let tokens = token_res.unwrap();
+    assert_eq!(tokens.len(), 1);
+    assert_eq!(tokens[0].token, val_pair.api_token);
+
+    account.db_main.execute("DELETE FROM member WHERE mail='fhfgjhfgjfghfjg@jaylappTest.dev'");
+  }
+
+  #[test]
+  fn delete_token() {
+    let account = Account::default();
+    let post_obj = PostCreateMember {
+      nickname: "sadgsdfgsddfgsdg".to_string(),
+      mail: "sadgsdfgsddfgsdg@jaylappTest.dev".to_string(),
+      password: "Password123456Password123456Password123456".to_string()
+    };
+    let val_pair = account.create(&post_obj).unwrap();
+    assert!(account.validate(&val_pair));
+
+    let new_token_res = account.create_token(&PostToken{
+      purpose: "Login".to_string(),
+      exp_date: 42,
+      val_pair: val_pair.clone()
+    });
+    assert!(new_token_res.is_ok());
+    let new_token = new_token_res.unwrap();
+    assert!(account.validate(&new_token.to_validation_pair()));
+
+    assert!(account.delete_token(&PostDeleteToken{
+      token_id: new_token.id,
+      val_pair: val_pair.clone()
+    }).is_ok());
+    assert!(!account.validate(&new_token.to_validation_pair()));
+
+    account.db_main.execute("DELETE FROM member WHERE mail='sadgsdfgsddfgsdg@jaylappTest.dev'");
   }
 }

@@ -34,9 +34,9 @@ mod tests {
     let salt;
     {
       let member = account.member.read().unwrap();
-      salt = member.get(&val_pair.id).unwrap().salt.clone();
+      salt = member.get(&val_pair.member_id).unwrap().salt.clone();
     }
-    let forgot_id = sha3::hash(&[&val_pair.id.to_string(), "forgot", &salt]);
+    let forgot_id = sha3::hash(&[&val_pair.member_id.to_string(), "forgot", &salt]);
     let receive_forgot = account.recv_forgot_password(&forgot_id);
     println!("{:?}", receive_forgot);
     assert!(receive_forgot.is_ok());

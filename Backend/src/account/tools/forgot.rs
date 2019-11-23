@@ -1,13 +1,14 @@
-use str_util::{sha3, random, strformat};
+use language::domainvalue::language::Language;
+use language::get::Get;
+use mail;
+use str_util::{random, sha3, strformat};
 use validator;
+
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::material::account::Account;
-use crate::database::tools::mysql::execute::Execute;
-use language::get::Get;
-use language::domainvalue::language::Language;
+use crate::account::tools::token::Token;
 use crate::account::tools::update::Update;
-use crate::account::tools::validator::Validator;
-use mail;
+use crate::database::tools::mysql::execute::Execute;
 
 pub trait Forgot {
   fn send_forgot_password(&self, mail: &str) -> Result<(), String>;
@@ -43,8 +44,8 @@ impl Forgot for Account {
 
         forgot_id = sha3::hash(&[&member_id.to_string(), "forgot", &entry.salt]);
         if !mail::send(&entry.mail, &entry.nickname, self.dictionary.get("forgot.confirmation.subject", Language::English),
-          strformat::fmt(self.dictionary.get("forgot.confirmation.text", Language::English), &[&forgot_id])){
-            return Err(self.dictionary.get("general.error.mail_send", Language::English));
+                       strformat::fmt(self.dictionary.get("forgot.confirmation.text", Language::English), &[&forgot_id])) {
+          return Err(self.dictionary.get("general.error.mail_send", Language::English));
         }
       }
       if self.db_main.execute_wparams("UPDATE member SET forgot_password=1 WHERE id=:id", params!("id" => member_id)) {
@@ -75,8 +76,8 @@ impl Forgot for Account {
             let member = self.member.read().unwrap();
             let entry = member.get(member_id).unwrap();
             if !mail::send(&entry.mail, &entry.nickname, self.dictionary.get("forgot.information.subject", Language::English),
-              strformat::fmt(self.dictionary.get("forgot.information.text", Language::English), &[&user_pass])) {
-                return Err(self.dictionary.get("general.error.mail_send", Language::English));
+                           strformat::fmt(self.dictionary.get("forgot.information.text", Language::English), &[&user_pass])) {
+              return Err(self.dictionary.get("general.error.mail_send", Language::English));
             }
           }
           if self.db_main.execute_wparams("UPDATE member SET forgot_password=0 WHERE id=:id", params!(
@@ -90,14 +91,16 @@ impl Forgot for Account {
             removable = true;
             self.update_password(user_id, &user_pass);
           }
-        },
+        }
         None => return Err(self.dictionary.get("forgot.error.no_forgot_issued", Language::English))
       }
     }
     if removable {
       let mut forgot_password = self.forgot_password.write().unwrap();
       forgot_password.remove(id);
-      return Ok(self.helper_create_validation(user_id));
+      return self.create_validation_unsafe(
+        &self.dictionary.get("general.login", Language::English),
+        user_id, time_util::get_ts_from_now_in_secs(30));
     }
     Err(self.dictionary.get("general.unknown", Language::English))
   }

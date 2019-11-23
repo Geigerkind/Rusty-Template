@@ -34,8 +34,8 @@ mod tests {
   fn change_name_invalid_validation() {
     let account = Account::default();
     let val_pair = ValidationPair {
-      hash: "someHash".to_string(),
-      id: 42
+      api_token: "someHash".to_string(),
+      member_id: 42
     };
 
     let changed_name = account.change_name(&PostChangeStr {
@@ -116,8 +116,8 @@ mod tests {
   fn change_password_invalid_validation() {
     let account = Account::default();
     let val_pair = ValidationPair {
-      hash: "someHash".to_string(),
-      id: 42
+      api_token: "someHash".to_string(),
+      member_id: 42
     };
 
     let changed_password = account.change_password(&PostChangeStr {
@@ -157,16 +157,16 @@ mod tests {
     };
 
     let val_pair = account.create(&post_obj).unwrap();
-    let val_pair_hash = val_pair.hash.clone();
-    let val_pair_id = val_pair.id;
+    let val_pair_hash = val_pair.api_token.clone();
+    let val_pair_id = val_pair.member_id;
     let changed_password = account.change_password(&PostChangeStr {
       content: "SomeWeirdPassword".to_string(),
       validation: val_pair
     });
     assert!(changed_password.is_ok());
     let new_val_pair = changed_password.unwrap();
-    assert_ne!(new_val_pair.hash, val_pair_hash);
-    assert_eq!(new_val_pair.id, val_pair_id);
+    assert_ne!(new_val_pair.api_token, val_pair_hash);
+    assert_eq!(new_val_pair.member_id, val_pair_id);
 
     account.db_main.execute("DELETE FROM member WHERE mail='xdsdfgsdgs@jaylappTest.dev'");
   }
@@ -278,16 +278,16 @@ mod tests {
     };
 
     let val_pair = account.create(&post_obj).unwrap();
-    let val_pair_hash = val_pair.hash.clone();
-    let val_pair_id = val_pair.id;
+    let val_pair_hash = val_pair.api_token.clone();
+    let val_pair_id = val_pair.member_id;
     let changed_mail = account.change_mail(&PostChangeStrLogin {
       content: "xdssdfsdfg2@bla.de".to_string(),
       credentials
     });
     assert!(changed_mail.is_ok());
     let new_val_pair = changed_mail.unwrap();
-    assert_ne!(new_val_pair.hash, val_pair_hash);
-    assert_eq!(new_val_pair.id, val_pair_id);
+    assert_ne!(new_val_pair.api_token, val_pair_hash);
+    assert_eq!(new_val_pair.member_id, val_pair_id);
 
     account.db_main.execute("DELETE FROM member WHERE mail='xdssdfsdfg2@bla.de'");
   }

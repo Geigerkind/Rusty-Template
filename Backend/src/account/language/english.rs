@@ -7,6 +7,7 @@ pub fn init(dictionary: &Dictionary) {
   dictionary.register("general.error.password.length", Language::English, "The minimum length for a password is 12 character.");
 
   dictionary.register("general.service.success", Language::English, "Success!");
+  dictionary.register("general.login", Language::English, "LogIn");
 
   dictionary.register("general.error.validate", Language::English, "Invalid credentials!");
   dictionary.register("general.error.invalid.mail", Language::English, "Invalid mail!");

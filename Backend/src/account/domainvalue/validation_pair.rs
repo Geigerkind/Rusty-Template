@@ -1,6 +1,6 @@
 use schemars::JsonSchema;
-#[derive(Deserialize, Serialize, Debug, JsonSchema)]
+#[derive(Deserialize, Serialize, Debug, JsonSchema, Clone)]
 pub struct ValidationPair {
-    pub hash: String,
-    pub id: u32
+    pub api_token: String,
+    pub member_id: u32
 }

@@ -17,6 +17,7 @@ validator = { path = "sub_crates/validator" }
 str_util = { path = "sub_crates/str_util" }
 language = { path = "sub_crates/language" }
 expose_api = { path = "sub_crates/expose_api" }
+time_util = { path = "sub_crates/time_util" }
 
 [dependencies.rocket_contrib]
 version = "*"

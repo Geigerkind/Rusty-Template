@@ -23,7 +23,7 @@ mod tests {
     };
 
     let login = account.create(&post_obj).unwrap();
-    let acc_info = account.get(login.id);
+    let acc_info = account.get(login.member_id);
     assert!(acc_info.is_ok());
 
     account.db_main.execute("DELETE FROM member WHERE mail='ijfeuhifsduhisdfuhiuhisdf@jaylappTest.dev'");
