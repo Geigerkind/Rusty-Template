@@ -30,23 +30,17 @@ impl Token for Account {
   }
 
   fn validate(&self, params: &ValidationPair) -> bool {
-    let api_token_to_member_id = self.api_token_to_member_id.read().unwrap();
-    match api_token_to_member_id.get(&params.api_token) {
-      Some(member_id) => {
-        let api_tokens = self.api_token.read().unwrap();
-        match api_tokens.get(&member_id) {
-          Some(token_vec) => {
-            for token in token_vec {
-              if token.token == params.api_token {
-                return true;
-              }
-            }
-            false
+    let api_tokens = self.api_token.read().unwrap();
+    match api_tokens.get(&params.member_id) {
+      Some(token_vec) => {
+        for token in token_vec {
+          if token.token == params.api_token {
+            return true;
           }
-          None => return false
         }
-      }
-      None => return false
+        false
+      },
+      None => false
     }
   }
 
