@@ -23,7 +23,7 @@ impl Login for Account {
 
   fn validate_credentials(&self, params: &Credentials) -> Result<u32, String> {
     let lower_mail = params.mail.to_lowercase();
-    for entry in self.member.write().unwrap().values() {
+    for entry in self.member.read().unwrap().values() {
       if entry.mail != lower_mail { continue; }
       if entry.password != sha3::hash(&[&params.password, &entry.salt]) { break; } // Password is wrong
       return Ok(entry.id);
