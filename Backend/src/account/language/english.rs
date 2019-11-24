@@ -30,7 +30,6 @@ pub fn init(dictionary: &Dictionary) {
   dictionary.register("login.error.credentials", Language::English, "Invalid credentials!");
 
   dictionary.register("delete.error.no_delete_issued", Language::English, "A deletion has not been requested for this token!");
-  dictionary.register("delete.error.user_not_removable", Language::English, "Unable to delete user!");
   dictionary.register("delete.confirmation.subject", Language::English, "Confirm the deletion of your account!");
   dictionary.register("delete.confirmation.text", Language::English, "Greetings!\n\nPlease confirm the deletion of your account by clicking on the provided url.\n\nhttps://jaylapp.dev/API/account/delete/confirm/{0}\n\nCheers!");
 
