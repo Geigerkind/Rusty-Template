@@ -5,7 +5,7 @@ import { Component, Input, Output, EventEmitter } from "@angular/core";
   templateUrl: "./caret_button.html",
   styleUrls: ["./caret_button.scss"]
 })
-export class CaretButton {
+export class CaretButtonComponent {
   @Input() isToggled: boolean;
   @Output() toggled: EventEmitter<boolean> = new EventEmitter();
 

@@ -5,7 +5,7 @@ import { Component, Input } from "@angular/core";
   templateUrl: "./general_input.html",
   styleUrls: ["./general_input.scss"]
 })
-export class GeneralInput {
+export class GeneralInputComponent {
   @Input() type: string;
   @Input() placeholderKey: string;
   @Input() initialValue = "";

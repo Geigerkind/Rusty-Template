@@ -1,10 +1,10 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { CaretButton } from "./caret_button";
+import { CaretButtonComponent } from "./caret_button";
 
 @NgModule({
-  declarations: [CaretButton],
+  declarations: [CaretButtonComponent],
   imports: [CommonModule],
-  exports: [CaretButton]
+  exports: [CaretButtonComponent]
 })
 export class CaretButtonModule { }

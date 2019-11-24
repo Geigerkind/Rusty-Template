@@ -1,7 +1,0 @@
-@import "./../../styles/global.scss";
-
-:host {
-  position: absolute;
-  top: calc(50px + #{$spacing});
-  right: $spacing;
-}

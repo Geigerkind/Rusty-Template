@@ -1,14 +1,14 @@
 import { NgModule } from "@angular/core";
 import { TranslateModule } from "@ngx-translate/core";
 import { CommonModule } from "@angular/common";
-import { BriefNote } from "./brief_note";
+import { BriefNoteComponent } from "./brief_note";
 
 @NgModule({
-  declarations: [BriefNote],
+  declarations: [BriefNoteComponent],
   imports: [
     CommonModule,
     TranslateModule
   ],
-  exports: [BriefNote]
+  exports: [BriefNoteComponent]
 })
 export class BriefNoteModule { }

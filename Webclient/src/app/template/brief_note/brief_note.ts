@@ -5,6 +5,6 @@ import { Component, Input } from "@angular/core";
   templateUrl: "./brief_note.html",
   styleUrls: ["./brief_note.scss"]
 })
-export class BriefNote {
+export class BriefNoteComponent {
   @Input() noteKey: string;
 }

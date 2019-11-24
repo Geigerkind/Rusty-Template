@@ -5,6 +5,6 @@ import { Component, Input } from "@angular/core";
   templateUrl: "./confirm_button.html",
   styleUrls: ["./confirm_button.scss"]
 })
-export class ConfirmButton {
+export class ConfirmButtonComponent {
   @Input() labelKey: string;
 }

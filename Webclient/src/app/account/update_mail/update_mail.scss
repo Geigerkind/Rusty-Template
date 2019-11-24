@@ -1,9 +1,0 @@
-@import "./../../../styles/global.scss";
-
-:host {
-  display: block;
-
-  GeneralInput, PasswordInput {
-    margin-bottom: $spacing;
-  }
-}

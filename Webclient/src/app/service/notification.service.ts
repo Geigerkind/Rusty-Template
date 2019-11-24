@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Severity } from "../domainvalue/severity";
+import { Severity } from "../domain_value/severity";
 import { NotificationInformation } from "../material/notification_information";
 
 @Injectable({

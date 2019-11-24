@@ -5,7 +5,7 @@ import { Component, Input } from "@angular/core";
   templateUrl: "./password_input.html",
   styleUrls: ["./password_input.scss"]
 })
-export class PasswordInput {
+export class PasswordInputComponent {
   @Input() placeholderKey: string;
   @Input() initialValue: string;
   @Input() labelKey: string;
