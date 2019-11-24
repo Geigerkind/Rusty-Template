@@ -6,28 +6,28 @@ use str_util::{random, sha3, strformat};
 use validator::tools::{valid_password, valid_nickname, valid_mail};
 use validator::domain_value::PasswordFailure;
 
-use crate::account::domain_value::{CreateMember, ValidationPair};
+use crate::account::domain_value::ValidationPair;
 use crate::account::material::{Account, Member};
 use crate::account::tools::Token;
 
 pub trait Create {
-  fn create(&self, params: &CreateMember) -> Result<ValidationPair, String>;
+  fn create(&self, mail: &str, nickname: &str, password: &str) -> Result<ValidationPair, String>;
   fn send_confirmation(&self, member_id: u32) -> bool;
   fn confirm(&self, id: &str) -> bool;
 }
 
 impl Create for Account {
-  fn create(&self, params: &CreateMember) -> Result<ValidationPair, String>
+  fn create(&self, mail: &str, nickname: &str, password: &str) -> Result<ValidationPair, String>
   {
-    if !valid_mail(&params.mail) {
+    if !valid_mail(mail) {
       return Err(self.dictionary.get("general.error.invalid.mail", Language::English));
     }
 
-    if !valid_nickname(&params.nickname) {
+    if !valid_nickname(nickname) {
       return Err(self.dictionary.get("general.error.invalid.nickname", Language::English));
     }
 
-    match valid_password(&params.password) {
+    match valid_password(password) {
       Err(PasswordFailure::TooFewCharacters) => return Err(self.dictionary.get("general.error.password.length", Language::English)),
       Err(PasswordFailure::Pwned(num_pwned)) => return Err(strformat::fmt(self.dictionary.get("general.error.password.pwned", Language::English), &[&num_pwned.to_string()])),
       Ok(_) => ()
@@ -35,37 +35,37 @@ impl Create for Account {
 
     // Double spending check
     // We dont validate through the internal data structure because we may have race conditions
-    let lower_mail = params.mail.clone().to_lowercase();
+    let lower_mail = mail.clone().to_lowercase();
     if self.db_main.exists_wparams("SELECT id FROM member WHERE mail = :mail LIMIT 1", params!("mail" => lower_mail.clone()))
     {
       return Err(self.dictionary.get("create.error.taken.mail", Language::English));
     }
 
     // Also prevent the same nickname
-    if self.db_main.exists_wparams("SELECT id FROM member WHERE LOWER(nickname) = :nickname LIMIT 1", params!("nickname" => params.nickname.clone().to_lowercase()))
+    if self.db_main.exists_wparams("SELECT id FROM member WHERE LOWER(nickname) = :nickname LIMIT 1", params!("nickname" => nickname.clone().to_lowercase()))
     {
       return Err(self.dictionary.get("create.error.taken.nickname", Language::English));
     }
 
     let salt: String = random::alphanumeric(16);
-    let pass: String = sha3::hash(&[&params.password, &salt]);
+    let pass: String = sha3::hash(&[password, &salt]);
 
     if self.db_main.execute_wparams("INSERT IGNORE INTO member (`mail`, `password`, `nickname`, `joined`) VALUES (:mail, :pass, :nickname, UNIX_TIMESTAMP())", params!(
-      "nickname" => params.nickname.clone(),
-      "mail" => params.mail.clone(),
+      "nickname" => nickname.clone(),
+      "mail" => mail.clone(),
       "pass" => pass.clone()),
     ) {
-      let id: u32;
+      let member_id: u32;
       { // Keep write locks as short as possible
         let mut member = self.member.write().unwrap();
-        id = self.db_main.select_wparams_value("SELECT id FROM member WHERE mail = :mail", &|mut row| {
+        member_id = self.db_main.select_wparams_value("SELECT id FROM member WHERE mail = :mail", &|mut row| {
           row.take(0).unwrap()
         }, params!(
           "mail" => lower_mail.clone()
         )).unwrap();
-        member.insert(id, Member {
-          id,
-          nickname: params.nickname.to_owned(),
+        member.insert(member_id, Member {
+          id: member_id,
+          nickname: nickname.to_owned(),
           mail: lower_mail.clone(),
           password: pass,
           salt,
@@ -75,10 +75,10 @@ impl Create for Account {
         });
       }
 
-      self.send_confirmation(id);
+      self.send_confirmation(member_id);
       return self.create_validation(
         &self.dictionary.get("general.login", Language::English),
-        id, time_util::get_ts_from_now_in_secs(30));
+        member_id, time_util::get_ts_from_now_in_secs(30));
     }
     return Err(self.dictionary.get("general.error.unknown", Language::English));
   }

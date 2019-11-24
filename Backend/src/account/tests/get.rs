@@ -2,7 +2,7 @@
 mod tests {
   use mysql_connection::tools::Execute;
 
-  use crate::account::domain_value::CreateMember;
+  use crate::account::dto::CreateMember;
   use crate::account::material::Account;
   use crate::account::tools::{Create, GetAccountInformation};
 
@@ -22,7 +22,7 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
 
-    let login = account.create(&post_obj).unwrap();
+    let login = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
     let acc_info = account.get(login.member_id);
     assert!(acc_info.is_ok());
 

@@ -3,7 +3,7 @@ mod tests {
   use mysql_connection::tools::Execute;
   use str_util::sha3;
 
-  use crate::account::domain_value::CreateMember;
+  use crate::account::dto::CreateMember;
   use crate::account::material::Account;
   use crate::account::tools::{Create, Forgot};
 
@@ -28,7 +28,7 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
 
-    let val_pair = account.create(&post_obj).unwrap();
+    let val_pair = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
     assert!(account.send_forgot_password("fscngsuzfdcsv@jaylappTest.dev").is_ok());
 
     let salt;

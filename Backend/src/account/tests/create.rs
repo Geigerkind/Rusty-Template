@@ -3,7 +3,7 @@ mod tests {
   use mysql_connection::tools::Execute;
   use str_util::sha3;
 
-  use crate::account::domain_value::CreateMember;
+  use crate::account::dto::CreateMember;
   use crate::account::material::Account;
   use crate::account::tools::{Create, GetAccountInformation};
 
@@ -17,7 +17,7 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
 
-    let login = account.create(&post_obj);
+    let login = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password);
     assert!(login.is_ok());
 
     account.db_main.execute("DELETE FROM member WHERE mail='mail@jaylappTest.dev'");
@@ -32,8 +32,8 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
 
-    let _ = account.create(&post_obj);
-    assert!(account.create(&post_obj).is_err());
+    let _ = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password);
+    assert!(account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).is_err());
 
     account.db_main.execute("DELETE FROM member WHERE mail='bla@jaylappTest.dev'");
   }
@@ -53,8 +53,8 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
 
-    let _ = account.create(&post_obj);
-    assert!(account.create(&post_obj_two).is_err());
+    let _ = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password);
+    assert!(account.create(&post_obj_two.mail, &post_obj_two.nickname, &post_obj_two.password).is_err());
 
     account.db_main.execute("DELETE FROM member WHERE mail='bla2@jaylappTest.dev'");
     account.db_main.execute("DELETE FROM member WHERE mail='bla3@jaylappTest.dev'");
@@ -69,7 +69,7 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
 
-    assert!(account.create(&post_obj).is_err());
+    assert!(account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).is_err());
   }
 
   #[test]
@@ -81,7 +81,7 @@ mod tests {
       password: "".to_string(),
     };
 
-    assert!(account.create(&post_obj).is_err());
+    assert!(account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).is_err());
   }
 
   #[test]
@@ -93,7 +93,7 @@ mod tests {
       password: "dgsdfsfd".to_string(),
     };
 
-    assert!(account.create(&post_obj).is_err());
+    assert!(account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).is_err());
   }
 
   #[test]
@@ -105,7 +105,7 @@ mod tests {
       password: "dgsdfsfd".to_string(),
     };
 
-    assert!(account.create(&post_obj).is_err());
+    assert!(account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).is_err());
   }
 
   #[test]
@@ -117,7 +117,7 @@ mod tests {
       password: "dgsdfsfd".to_string(),
     };
 
-    assert!(account.create(&post_obj).is_err());
+    assert!(account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).is_err());
   }
 
   #[test]
@@ -129,7 +129,7 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
 
-    let login = account.create(&post_obj).unwrap();
+    let login = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
     let mail_id;
     {
       let member_guard = account.member.read().unwrap();

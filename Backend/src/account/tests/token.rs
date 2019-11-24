@@ -2,7 +2,8 @@
 mod tests {
   use mysql_connection::tools::Execute;
 
-  use crate::account::domain_value::{CreateMember, Credentials, ValidationPair};
+  use crate::account::dto::CreateMember;
+  use crate::account::domain_value::{Credentials, ValidationPair};
   use crate::account::material::Account;
   use crate::account::tools::{Create, Login, Token, Update};
 
@@ -15,7 +16,7 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
 
-    let val_pair = account.create(&post_obj).unwrap();
+    let val_pair = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
     assert!(account.validate_token(&val_pair));
 
     account.db_main.execute("DELETE FROM member WHERE mail='cvcbmnbjfie@jaylappTest.dev'");
@@ -42,7 +43,7 @@ mod tests {
     };
 
     // First login
-    let val_pair = account.create(&post_obj).unwrap();
+    let val_pair = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
     let val_pair2 = account.login(&Credentials {
       mail: post_obj.mail,
       password: post_obj.password,
@@ -65,7 +66,7 @@ mod tests {
       mail: "fhfgjhfgjfghfjg@jaylappTest.dev".to_string(),
       password: "Password123456Password123456Password123456".to_string(),
     };
-    let val_pair = account.create(&post_obj).unwrap();
+    let val_pair = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
     let tokens = account.get_all_token(val_pair.member_id);
     assert_eq!(tokens.len(), 1);
     assert_eq!(tokens[0].token, val_pair.api_token);
@@ -81,7 +82,7 @@ mod tests {
       mail: "sadgsdfgsddfgsdg@jaylappTest.dev".to_string(),
       password: "Password123456Password123456Password123456".to_string(),
     };
-    let val_pair = account.create(&post_obj).unwrap();
+    let val_pair = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
     assert!(account.validate_token(&val_pair));
 
     let new_token_res = account.create_token("Login", val_pair.member_id, 42);

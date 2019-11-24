@@ -1,7 +1,8 @@
 use rocket::State;
 use rocket_contrib::json::Json;
 
-use crate::account::domain_value::{DeleteToken, CreateToken, ValidationPair};
+use crate::account::dto::{CreateToken, UpdateContent};
+use crate::account::domain_value::ValidationPair;
 use crate::account::material::{Account, APIToken};
 use crate::account::tools::Token;
 use language::domain_value::Language;
@@ -30,10 +31,10 @@ pub fn get_tokens(me: State<Account>, params: Json<ValidationPair>) -> Result<Js
 }
 
 #[post("/token/delete", data = "<params>")]
-pub fn delete_token(me: State<Account>, params: Json<DeleteToken>) -> Result<(), String>
+pub fn delete_token(me: State<Account>, params: Json<UpdateContent<u32, ValidationPair>>) -> Result<(), String>
 {
-  if !me.validate_token(&params.val_pair) {
+  if !me.validate_token(&params.validation) {
     return Err(me.dictionary.get("general.error.validate", Language::English));
   }
-  me.delete_token(params.token_id, params.val_pair.member_id)
+  me.delete_token(params.content, params.validation.member_id)
 }

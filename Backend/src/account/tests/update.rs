@@ -2,7 +2,7 @@
 mod tests {
   use mysql_connection::tools::Execute;
 
-  use crate::account::domain_value::CreateMember;
+  use crate::account::dto::CreateMember;
   use crate::account::material::Account;
   use crate::account::tools::{Create, Update};
 
@@ -15,7 +15,7 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
 
-    let val_pair = account.create(&post_obj).unwrap();
+    let val_pair = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
     let changed_name = account.change_name("SomeUsername", val_pair.member_id);
     assert!(changed_name.is_ok());
     assert_eq!(changed_name.unwrap().nickname, "SomeUsername".to_string());
@@ -32,7 +32,7 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
 
-    let val_pair = account.create(&post_obj).unwrap();
+    let val_pair = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
     let changed_name = account.change_name("", val_pair.member_id);
     assert!(changed_name.is_err());
 
@@ -48,7 +48,7 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
 
-    let val_pair = account.create(&post_obj).unwrap();
+    let val_pair = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
     let changed_name = account.change_name("ihsdfoiosdf ihsdfoiosdf", val_pair.member_id);
     println!("{:?}", changed_name);
     assert!(changed_name.is_err());
@@ -71,8 +71,8 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
 
-    let val_pair = account.create(&post_obj).unwrap();
-    let _ = account.create(&post_obj_two).unwrap();
+    let val_pair = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
+    let _ = account.create(&post_obj_two.mail, &post_obj_two.nickname, &post_obj_two.password).unwrap();
     let changed_name = account.change_name(&post_obj_two.nickname, val_pair.member_id);
     assert!(changed_name.is_err());
 
@@ -89,7 +89,7 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
 
-    let val_pair = account.create(&post_obj).unwrap();
+    let val_pair = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
     let changed_password = account.change_password("", val_pair.member_id);
     assert!(changed_password.is_err());
 
@@ -105,7 +105,7 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
 
-    let val_pair = account.create(&post_obj).unwrap();
+    let val_pair = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
     let val_pair_hash = val_pair.api_token.clone();
     let val_pair_id = val_pair.member_id;
     let changed_password = account.change_password("SomeWeirdPassword", val_pair.member_id);
@@ -126,7 +126,7 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
 
-    let val_pair = account.create(&post_obj).unwrap();
+    let val_pair = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
     let changed_mail = account.change_mail("", val_pair.member_id);
     assert!(changed_mail.is_err());
 
@@ -142,7 +142,7 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
 
-    let val_pair = account.create(&post_obj).unwrap();
+    let val_pair = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
     let changed_mail = account.change_mail("asiudfuhisduifs", val_pair.member_id);
     assert!(changed_mail.is_err());
 
@@ -164,8 +164,8 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
 
-    let val_pair = account.create(&post_obj).unwrap();
-    let _ = account.create(&post_obj_two).unwrap();
+    let val_pair = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
+    let _ = account.create(&post_obj_two.mail, &post_obj_two.nickname, &post_obj_two.password).unwrap();
     let changed_mail = account.change_mail(&post_obj_two.mail, val_pair.member_id);
     assert!(changed_mail.is_err());
 
@@ -182,7 +182,7 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
 
-    let val_pair = account.create(&post_obj).unwrap();
+    let val_pair = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
     let val_pair_hash = val_pair.api_token.clone();
     let val_pair_id = val_pair.member_id;
     let changed_mail = account.change_mail("xdssdfsdfg2@bla.de", val_pair_id);

@@ -41,7 +41,7 @@ impl Token for Account {
 
   fn clear_tokens(&self, member_id: u32) -> Result<(), String> {
     {
-      // Checking for existance
+      // Checking for existence
       let member = self.member.read().unwrap();
       if member.get(&member_id).is_none() {
         return Err(self.dictionary.get("validator.error.member_exist", Language::English));

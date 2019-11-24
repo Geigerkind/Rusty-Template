@@ -2,7 +2,7 @@
 mod tests {
   use mysql_connection::tools::Execute;
 
-  use crate::account::domain_value::CreateMember;
+  use crate::account::dto::CreateMember;
   use crate::account::material::Account;
   use crate::account::tools::{Create, Delete};
 
@@ -15,7 +15,7 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
 
-    let val_pair = account.create(&post_obj).unwrap();
+    let val_pair = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
     let issue_delete = account.issue_delete(val_pair.member_id);
     assert!(issue_delete.is_ok());
 
@@ -31,7 +31,7 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
 
-    let val_pair = account.create(&post_obj).unwrap();
+    let val_pair = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
     let issue_delete = account.issue_delete(val_pair.member_id);
     assert!(issue_delete.is_ok());
 
