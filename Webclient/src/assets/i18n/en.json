@@ -105,7 +105,8 @@
     "generate": "Generate",
     "token": "Token",
     "action": "Action",
-    "remove": "Remove"
+    "remove": "Remove",
+    "expiration": "Expiration date"
   },
   "delete": {
     "password": "Password",

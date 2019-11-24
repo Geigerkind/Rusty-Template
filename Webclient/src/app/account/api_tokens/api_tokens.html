@@ -2,6 +2,7 @@
 
 <form class="purposeForm">
   <GeneralInput type="text" [required]="true" [maximum_length]="24" labelKey="Account.api.purpose" placeholderKey="Account.api.typePurpose" name="purpose"></GeneralInput>
+  <GeneralInput type="date" [required]="true" labelKey="Account.api.expiration" name="exp_date"></GeneralInput>
   <ConfirmButton labelKey="Account.api.generate"></ConfirmButton>
 </form>
 

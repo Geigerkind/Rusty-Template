@@ -11,6 +11,10 @@
 
     GeneralInput {
       flex: 1;
+
+      &:first-child {
+        margin-right: $spacing * 0.5;
+      }
     }
 
     ConfirmButton {
@@ -23,12 +27,30 @@
         font-size: 14px;
       }
     }
+
+    @media (max-width: 445px) {
+      flex-direction: column;
+
+      GeneralInput {
+        margin: 0 0 $spacing;
+      }
+
+      ConfirmButton {
+        margin: 0;
+      }
+    }
   }
 
   .tableContainer {
     margin-top: $spacing;
 
+    @media (max-width: 445px) {
+      overflow-x: scroll;
+    }
+
     .tableRow {
+      min-width: 400px;
+
       div {
         &:first-child {
           flex: 1;
