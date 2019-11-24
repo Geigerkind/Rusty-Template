@@ -11,7 +11,7 @@ use crate::account::material::APIToken;
 pub fn api() -> Json<Vec<serde_json::Value>> {
   Json(vec![
     // Get
-    expose_api_fn("/get/<id>", "get", "application/json", schema_for!(Result<AccountInformation, String>), schema_for!(u32)),
+    expose_api_fn("/get/<params>", "post", "application/json", schema_for!(Result<AccountInformation, String>), schema_for!(ValidationPair)),
 
     // Create
     expose_api_fn("/create/<params>", "post", "application/json", schema_for!(Result<ValidationPair, String>), schema_for!(CreateMember)),

@@ -49,7 +49,7 @@ fn main() {
     account::transfer::token::create_token, account::transfer::token::get_tokens, account::transfer::token::delete_token,
     account::transfer::delete::request, account::transfer::delete::confirm,
     account::transfer::create::create, account::transfer::create::confirm, account::transfer::create::resend_confirm,
-    account::transfer::get::get,
+    account::transfer::get::get_account_information,
     account::transfer::forgot::receive_confirmation, account::transfer::forgot::send_confirmation,
     account::transfer::update::mail, account::transfer::update::password, account::transfer::update::nickname]);
   igniter.launch();
