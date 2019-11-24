@@ -14,7 +14,7 @@ pub fn api() -> Json<Vec<serde_json::Value>> {
     expose_api_fn("/get/<id>", "get", "application/json", schema_for!(Result<AccountInformation, String>), schema_for!(u32)),
 
     // Create
-    expose_api_fn("/create/send/<params>", "post", "application/json", schema_for!(Result<ValidationPair, String>), schema_for!(CreateMember)),
+    expose_api_fn("/create/<params>", "post", "application/json", schema_for!(Result<ValidationPair, String>), schema_for!(CreateMember)),
     expose_api_fn("/create/confirm/<id>", "get", "application/json", schema_for!(bool), schema_for!(String)),
     expose_api_fn("/create/resend/<params>", "post", "application/json", schema_for!(bool), schema_for!(ValidationPair)),
 

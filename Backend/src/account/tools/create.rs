@@ -12,7 +12,7 @@ use crate::account::tools::Token;
 
 pub trait Create {
   fn create(&self, params: &CreateMember) -> Result<ValidationPair, String>;
-  fn send_confirmation(&self, params: &ValidationPair) -> bool;
+  fn send_confirmation(&self, member_id: u32) -> bool;
   fn confirm(&self, id: &str) -> bool;
 }
 
@@ -75,34 +75,25 @@ impl Create for Account {
         });
       }
 
-      return match self.create_validation_unsafe(
+      self.send_confirmation(id);
+      return self.create_validation_unsafe(
         &self.dictionary.get("general.login", Language::English),
-        id, time_util::get_ts_from_now_in_secs(30)) {
-        Ok(val_pair) => {
-          self.send_confirmation(&val_pair);
-          Ok(val_pair)
-        }
-        Err(err_str) => Err(err_str)
-      };
+        id, time_util::get_ts_from_now_in_secs(30));
     }
     return Err(self.dictionary.get("general.error.unknown", Language::English));
   }
 
-  fn send_confirmation(&self, params: &ValidationPair) -> bool
+  fn send_confirmation(&self, member_id: u32) -> bool
   {
-    if !self.validate(params) {
-      return false;
-    }
-
     let member = self.member.read().unwrap();
-    let entry = member.get(&params.member_id).unwrap();
-    let mail_id = sha3::hash(&[&params.member_id.to_string(), &entry.salt]);
+    let entry = member.get(&member_id).unwrap();
+    let mail_id = sha3::hash(&[&member_id.to_string(), &entry.salt]);
     let mail_content = strformat::fmt(self.dictionary.get("create.confirmation.text", Language::English), &[&mail_id]);
 
     if !entry.mail_confirmed {
       let mut requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();
       if !requires_mail_confirmation.contains_key(&mail_id) {
-        requires_mail_confirmation.insert(mail_id, params.member_id);
+        requires_mail_confirmation.insert(mail_id, member_id);
       }
       return mail::send(&entry.mail, &entry.nickname,
                         self.dictionary.get("create.confirmation.subject", Language::English), mail_content);
