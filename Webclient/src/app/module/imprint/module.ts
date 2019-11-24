@@ -1,11 +1,11 @@
-import { NgModule } from "@angular/core";
-import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
-import { CommonModule } from "@angular/common";
-import { HttpClient } from "@angular/common/http";
-import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { TranslationService } from "../../service/translation";
-import { ImprintRoutingModule } from "./routing";
-import { ImprintComponent } from "./component/imprint/imprint";
+import {NgModule} from "@angular/core";
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+import {CommonModule} from "@angular/common";
+import {HttpClient} from "@angular/common/http";
+import {TranslateHttpLoader} from "@ngx-translate/http-loader";
+import {TranslationService} from "../../service/translation";
+import {ImprintRoutingModule} from "./routing";
+import {ImprintComponent} from "./component/imprint/imprint";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, "/assets/i18n/imprint/", ".json");
@@ -17,9 +17,9 @@ export function createTranslateLoader(http: HttpClient) {
     CommonModule,
     TranslateModule.forRoot({
       loader: {
-          provide: TranslateLoader,
-          useFactory: (createTranslateLoader),
-          deps: [HttpClient]
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
       }
     }),
     ImprintRoutingModule
@@ -29,4 +29,5 @@ export function createTranslateLoader(http: HttpClient) {
     TranslationService
   ]
 })
-export class ImprintModule { }
+export class ImprintModule {
+}

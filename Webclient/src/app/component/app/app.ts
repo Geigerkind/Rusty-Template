@@ -1,9 +1,9 @@
-import { Component, OnInit } from "@angular/core";
-import { ComponentLocation } from "@wishtack/reactive-component-loader";
-import { Router, NavigationEnd } from "@angular/router";
-import { Subscription } from "rxjs";
-import { SettingsService } from "../../service/settings";
-import { TranslationService } from "../../service/translation";
+import {Component, OnInit} from "@angular/core";
+import {ComponentLocation} from "@wishtack/reactive-component-loader";
+import {NavigationEnd, Router} from "@angular/router";
+import {Subscription} from "rxjs";
+import {SettingsService} from "../../service/settings";
+import {TranslationService} from "../../service/translation";
 
 declare var gtag;
 
@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
   get isCookieBannerVisible(): boolean {
     return AppComponent.show_cookie_banner;
   }
+
   static show_cookie_banner = false;
 
   googleAnalyticsSubscription: Subscription;

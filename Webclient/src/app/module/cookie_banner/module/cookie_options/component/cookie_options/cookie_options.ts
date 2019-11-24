@@ -1,5 +1,5 @@
-import { Component, Output, EventEmitter, Input } from "@angular/core";
-import { CookieOption } from "../../../../material/cookie_option";
+import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {CookieOption} from "../../../../material/cookie_option";
 
 @Component({
   selector: "CookieOptions",
@@ -23,7 +23,7 @@ export class CookieOptionsComponent {
   }
 
   reject_all(): void {
-    this.cookies_other.forEach(cookie => cookie.setEnabled(false) );
-    this.cookies_third_party.forEach(cookie => cookie.setEnabled(false) );
+    this.cookies_other.forEach(cookie => cookie.setEnabled(false));
+    this.cookies_third_party.forEach(cookie => cookie.setEnabled(false));
   }
 }

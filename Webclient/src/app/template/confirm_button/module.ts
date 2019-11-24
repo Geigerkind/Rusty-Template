@@ -1,7 +1,7 @@
-import { NgModule } from "@angular/core";
-import { TranslateModule } from "@ngx-translate/core";
-import { CommonModule } from "@angular/common";
-import { ConfirmButtonComponent } from "./component/confirm_button/confirm_button";
+import {NgModule} from "@angular/core";
+import {TranslateModule} from "@ngx-translate/core";
+import {CommonModule} from "@angular/common";
+import {ConfirmButtonComponent} from "./component/confirm_button/confirm_button";
 
 @NgModule({
   declarations: [ConfirmButtonComponent],
@@ -11,4 +11,5 @@ import { ConfirmButtonComponent } from "./component/confirm_button/confirm_butto
   ],
   exports: [ConfirmButtonComponent]
 })
-export class ConfirmButtonModule { }
+export class ConfirmButtonModule {
+}

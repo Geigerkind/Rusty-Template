@@ -1,10 +1,10 @@
-import { NgModule } from "@angular/core";
-import { TranslateModule } from "@ngx-translate/core";
-import { AccountComponent } from "./component/account/account";
-import { NavigationBarComponent } from "./component/navigation_bar/navigation_bar";
-import { AccountRouting } from "./routing";
-import { CommonModule } from "@angular/common";
-import { CaretButtonModule } from "../../template/caret_button/module";
+import {NgModule} from "@angular/core";
+import {TranslateModule} from "@ngx-translate/core";
+import {AccountComponent} from "./component/account/account";
+import {NavigationBarComponent} from "./component/navigation_bar/navigation_bar";
+import {AccountRouting} from "./routing";
+import {CommonModule} from "@angular/common";
+import {CaretButtonModule} from "../../template/caret_button/module";
 
 @NgModule({
   declarations: [
@@ -19,4 +19,5 @@ import { CaretButtonModule } from "../../template/caret_button/module";
   ],
   exports: [AccountComponent]
 })
-export class AccountModule { }
+export class AccountModule {
+}

@@ -1,5 +1,5 @@
-import { Component } from "@angular/core";
-import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from "@angular/router";
+import {Component} from "@angular/core";
+import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from "@angular/router";
 
 @Component({
   selector: "RouterLoadingBar",
@@ -21,7 +21,9 @@ export class RouterLoadingBarComponent {
           for (let i = 0; i < max_iterations; ++i) {
             const scaleFactor = (0.8 / max_iterations) * i;
             const afterTime = (1000 / max_iterations) * i;
-            setTimeout(() => { if (this.scaleX < scaleFactor) this.scaleX = scaleFactor; }, afterTime);
+            setTimeout(() => {
+              if (this.scaleX < scaleFactor) this.scaleX = scaleFactor;
+            }, afterTime);
           }
           break;
         }

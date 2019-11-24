@@ -1,5 +1,5 @@
-import { Component } from "@angular/core";
-import { AccountInformation } from "../../../../domain_value/account_information";
+import {Component} from "@angular/core";
+import {AccountInformation} from "../../../../domain_value/account_information";
 
 @Component({
   selector: "AccountInformation",

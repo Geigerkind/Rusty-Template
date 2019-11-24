@@ -1,8 +1,8 @@
-import { NgModule } from "@angular/core";
-import { TranslateModule } from "@ngx-translate/core";
-import { CommonModule } from "@angular/common";
-import { PasswordInputComponent } from "./component/password_input/password_input";
-import { GeneralInputModule } from "../general_input/module";
+import {NgModule} from "@angular/core";
+import {TranslateModule} from "@ngx-translate/core";
+import {CommonModule} from "@angular/common";
+import {PasswordInputComponent} from "./component/password_input/password_input";
+import {GeneralInputModule} from "../general_input/module";
 
 @NgModule({
   declarations: [PasswordInputComponent],
@@ -13,4 +13,5 @@ import { GeneralInputModule } from "../general_input/module";
   ],
   exports: [PasswordInputComponent]
 })
-export class PasswordInputModule { }
+export class PasswordInputModule {
+}

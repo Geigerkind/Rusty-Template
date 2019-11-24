@@ -1,8 +1,8 @@
-import { NgModule } from "@angular/core";
+import {NgModule} from "@angular/core";
 
-import { TranslateModule } from "@ngx-translate/core";
-import { CommonModule } from "@angular/common";
-import { CookieFrontComponent } from "./component/cookie_front/cookie_front";
+import {TranslateModule} from "@ngx-translate/core";
+import {CommonModule} from "@angular/common";
+import {CookieFrontComponent} from "./component/cookie_front/cookie_front";
 
 @NgModule({
   declarations: [CookieFrontComponent],
@@ -12,4 +12,5 @@ import { CookieFrontComponent } from "./component/cookie_front/cookie_front";
   ],
   exports: [CookieFrontComponent]
 })
-export class CookieFrontModule { }
+export class CookieFrontModule {
+}

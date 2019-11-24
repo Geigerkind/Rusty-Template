@@ -1,9 +1,9 @@
-import { CookieService } from "ngx-cookie-service";
-import { Injectable } from "@angular/core";
+import {CookieService} from "ngx-cookie-service";
+import {Injectable} from "@angular/core";
 
 @Injectable({
   providedIn: "root",
- })
+})
 export class SettingsService {
   settings: Array<string> = [
     "cookieDecisions",

@@ -1,6 +1,6 @@
-import { Component } from "@angular/core";
-import { TranslationService } from "../../../../service/translation";
-import { environment } from "src/environments/environment";
+import {Component} from "@angular/core";
+import {TranslationService} from "../../../../service/translation";
+import {environment} from "src/environments/environment";
 
 @Component({
   selector: "Imprint",

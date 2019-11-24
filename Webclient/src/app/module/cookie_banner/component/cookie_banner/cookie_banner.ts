@@ -1,8 +1,8 @@
-import { Component, Output, EventEmitter } from "@angular/core";
-import { CookieOption } from "../../material/cookie_option";
-import { SettingsService } from "../../../../service/settings";
-import { NotificationService } from "../../../../service/notification";
-import { Severity } from "../../../../domain_value/severity";
+import {Component, EventEmitter, Output} from "@angular/core";
+import {CookieOption} from "../../material/cookie_option";
+import {SettingsService} from "../../../../service/settings";
+import {NotificationService} from "../../../../service/notification";
+import {Severity} from "../../../../domain_value/severity";
 
 @Component({
   selector: "CookieBanner",

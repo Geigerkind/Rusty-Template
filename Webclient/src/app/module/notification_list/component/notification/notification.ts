@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
-import { Notification } from "src/app/material/notification";
+import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {Notification} from "src/app/material/notification";
 
 @Component({
   selector: "Notification",

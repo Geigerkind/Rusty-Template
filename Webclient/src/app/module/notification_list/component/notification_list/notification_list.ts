@@ -1,6 +1,6 @@
-import { Component } from "@angular/core";
-import { Notification } from "../../../../material/notification";
-import { NotificationService } from "../../../../service/notification";
+import {Component} from "@angular/core";
+import {Notification} from "../../../../material/notification";
+import {NotificationService} from "../../../../service/notification";
 
 @Component({
   selector: "NotificationList",
@@ -15,7 +15,7 @@ export class NotificationList {
     this.notificationService.subscribe(notification => this.addNotification(notification));
   }
 
-  addNotification(notification: Notification): void  {
+  addNotification(notification: Notification): void {
     this.notifications.push(notification);
     setTimeout(item => {
       const index = this.notifications.indexOf(item);

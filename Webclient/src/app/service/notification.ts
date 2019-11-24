@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
-import { Severity } from "../domain_value/severity";
-import { Notification } from "../material/notification";
+import {Injectable} from "@angular/core";
+import {Severity} from "../domain_value/severity";
+import {Notification} from "../material/notification";
 
 @Injectable({
   providedIn: "root",
- })
+})
 export class NotificationService {
   observers: any = [];
 

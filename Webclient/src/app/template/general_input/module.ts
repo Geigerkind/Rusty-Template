@@ -1,7 +1,7 @@
-import { NgModule } from "@angular/core";
-import { TranslateModule } from "@ngx-translate/core";
-import { CommonModule } from "@angular/common";
-import { GeneralInputComponent } from "./component/general_input/general_input";
+import {NgModule} from "@angular/core";
+import {TranslateModule} from "@ngx-translate/core";
+import {CommonModule} from "@angular/common";
+import {GeneralInputComponent} from "./component/general_input/general_input";
 
 @NgModule({
   declarations: [GeneralInputComponent],
@@ -11,4 +11,5 @@ import { GeneralInputComponent } from "./component/general_input/general_input";
   ],
   exports: [GeneralInputComponent]
 })
-export class GeneralInputModule { }
+export class GeneralInputModule {
+}

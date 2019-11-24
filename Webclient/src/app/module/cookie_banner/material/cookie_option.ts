@@ -1,11 +1,11 @@
-
 export class CookieOption {
   constructor(
     public readonly title: string,
     public readonly description: string,
     private hEnabled: boolean,
     public readonly disabled: boolean
-  ) {}
+  ) {
+  }
 
   public get enabled(): boolean {
     return this.hEnabled;
