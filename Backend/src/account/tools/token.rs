@@ -11,7 +11,6 @@ pub trait Token {
   fn validate_token(&self, params: &ValidationPair) -> bool;
   fn clear_tokens(&self, member_id: u32) -> Result<(), String>;
   fn create_token(&self, purpose: &str, member_id: u32, exp_date: u64) -> Result<APIToken, String>;
-  fn create_validation(&self, purpose: &str, member_id: u32, exp_date: u64) -> Result<ValidationPair, String>;
   fn delete_token(&self, token_id: u32, member_id: u32) -> Result<(), String>;
 }
 
@@ -20,35 +19,22 @@ impl Token for Account {
     let api_tokens = self.api_tokens.read().unwrap();
     match api_tokens.get(&member_id) {
       Some(token_vec) => token_vec.to_vec(),
-      None => vec![]
+      None => Vec::new()
     }
   }
 
   fn validate_token(&self, params: &ValidationPair) -> bool {
     let api_tokens = self.api_tokens.read().unwrap();
     match api_tokens.get(&params.member_id) {
-      Some(token_vec) => {
-        for token in token_vec {
-          if token.token == params.api_token {
-            return true;
-          }
-        }
-        false
-      },
+      Some(token_vec) => token_vec
+        .iter()
+        .position(|api_token| api_token.token == params.api_token)
+        .is_some(),
       None => false
     }
   }
 
   fn clear_tokens(&self, member_id: u32) -> Result<(), String> {
-    {
-      // Checking for existence
-      let member = self.member.read().unwrap();
-      if member.get(&member_id).is_none() {
-        return Err(self.dictionary.get("validator.error.member_exist", Language::English));
-      }
-    }
-
-    // First attempting to remove entries from the DB
     if !self.db_main.execute_wparams("DELETE FROM api_token WHERE member_id=:member_id", params!(
       "member_id" => member_id
     )) {
@@ -111,13 +97,6 @@ impl Token for Account {
     }
   }
 
-  fn create_validation(&self, purpose: &str, member_id: u32, exp_date: u64) -> Result<ValidationPair, String> {
-    match self.create_token(purpose, member_id, exp_date) {
-      Ok(api_token) => Ok(api_token.to_validation_pair()),
-      Err(err_str) => Err(err_str)
-    }
-  }
-
   fn delete_token(&self, token_id: u32, member_id: u32) -> Result<(), String> {
     if !self.db_main.execute_wparams(
       "DELETE FROM api_token WHERE id=:id AND member_id=:member_id",
@@ -130,23 +109,12 @@ impl Token for Account {
     }
 
     let mut api_tokens = self.api_tokens.write().unwrap();
-
-    let mut token: String = String::from("");
-    let mut token_index: usize = 0;
-    for api_token in api_tokens.get(&member_id).unwrap() {
-      if api_token.id == token_id {
-        token = api_token.token.clone();
-        break;
-      }
-      token_index = token_index + 1;
+    match api_tokens.get(&member_id).unwrap().iter().position(|api_token| api_token.id == token_id) {
+      Some(token_index) => {
+        api_tokens.get_mut(&member_id).unwrap().remove(token_index);
+        Ok(())
+      },
+      None => Err(self.dictionary.get("general.error.unknown", Language::English))
     }
-
-    if token.is_empty() {
-      return Err(self.dictionary.get("general.error.unknown", Language::English));
-    }
-
-    api_tokens.get_mut(&member_id).unwrap().remove(token_index);
-
-    Ok(())
   }
 }

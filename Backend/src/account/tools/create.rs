@@ -76,9 +76,9 @@ impl Create for Account {
       }
 
       self.send_confirmation(member_id);
-      return self.create_validation(
+      return self.create_token(
         &self.dictionary.get("general.login", Language::English),
-        member_id, time_util::get_ts_from_now_in_secs(30));
+        member_id, time_util::get_ts_from_now_in_secs(30)).and_then(|api_token| Ok(api_token.to_validation_pair()));
     }
     return Err(self.dictionary.get("general.error.unknown", Language::English));
   }

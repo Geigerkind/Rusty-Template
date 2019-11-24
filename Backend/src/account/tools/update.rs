@@ -57,7 +57,10 @@ impl Update for Account {
     };
 
     self.update_password(new_password, member_id)
-        .and_then(|()| self.create_validation(&self.dictionary.get("general.login", Language::English), member_id, time_util::get_ts_from_now_in_secs(30)))
+        .and_then(|()| self.create_token(
+          &self.dictionary
+                      .get("general.login", Language::English), member_id, time_util::get_ts_from_now_in_secs(30))
+                      .and_then(|api_token| Ok(api_token.to_validation_pair())))
   }
 
   fn update_password(&self, new_password: &str, member_id: u32) -> Result<(), String> {
@@ -109,8 +112,8 @@ impl Update for Account {
             let entry = member.get_mut(&member_id).unwrap();
             entry.mail = lower_mail.to_owned();
           }
-          self.create_validation(&self.dictionary.get("general.login", Language::English),
-            member_id, time_util::get_ts_from_now_in_secs(30))
+          self.create_token(&self.dictionary.get("general.login", Language::English),
+            member_id, time_util::get_ts_from_now_in_secs(30)).and_then(|api_token| Ok(api_token.to_validation_pair()))
         });
     }
     Err(self.dictionary.get("general.error.unknown", Language::English))
