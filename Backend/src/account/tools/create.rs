@@ -56,7 +56,7 @@ impl Create for Account {
       "pass" => pass.clone()),
     ) {
       let member_id: u32;
-      { // Keep write locks as short as possible
+      { // Needs a scope because send_confirmation and create token require member lock
         let mut member = self.member.write().unwrap();
         member_id = self.db_main.select_wparams_value("SELECT id FROM member WHERE mail = :mail", &|mut row| {
           row.take(0).unwrap()
@@ -103,7 +103,6 @@ impl Create for Account {
 
   fn confirm(&self, id: &str) -> bool
   {
-    let mut removable = false;
     {
       let requires_mail_confirmation = self.requires_mail_confirmation.read().unwrap();
       match requires_mail_confirmation.get(id) {
@@ -114,17 +113,15 @@ impl Create for Account {
             let mut member = self.member.write().unwrap();
             let entry = member.get_mut(member_id).unwrap();
             entry.mail_confirmed = true;
-            removable = true;
+          } else {
+            return false;
           }
         }
         None => return false
       }
     }
-    if removable {
-      let mut requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();
-      requires_mail_confirmation.remove(id);
-      return true;
-    }
-    false
+    let mut requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();
+    requires_mail_confirmation.remove(id);
+    return true;
   }
 }
