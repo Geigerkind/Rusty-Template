@@ -102,19 +102,17 @@ impl Update for Account {
       "mail" => lower_mail.clone(),
       "id" => member_id
     )) {
-      match self.clear_tokens(member_id) {
-        Ok(_) => {
-          let mut member = self.member.write().unwrap();
-          let entry = member.get_mut(&member_id).unwrap();
-          entry.mail = lower_mail.to_owned();
-        }
-        Err(err_str) => return Err(err_str)
-      }
-      return self.create_validation(
-        &self.dictionary.get("general.login", Language::English),
-        member_id, time_util::get_ts_from_now_in_secs(30));
+      return self.clear_tokens(member_id).and_then(
+        |()| {
+          {
+            let mut member = self.member.write().unwrap();
+            let entry = member.get_mut(&member_id).unwrap();
+            entry.mail = lower_mail.to_owned();
+          }
+          self.create_validation(&self.dictionary.get("general.login", Language::English),
+            member_id, time_util::get_ts_from_now_in_secs(30))
+        });
     }
-
     Err(self.dictionary.get("general.error.unknown", Language::English))
   }
 }
