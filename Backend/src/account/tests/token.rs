@@ -2,7 +2,7 @@
 mod tests {
   use mysql_connection::tools::Execute;
 
-  use crate::account::domain_value::{CreateMember, DeleteToken, Credentials, CreateToken, ValidationPair, UpdateContent};
+  use crate::account::domain_value::{CreateMember, Credentials, ValidationPair, UpdateContent};
   use crate::account::material::Account;
   use crate::account::tools::{Create, Login, Token, Update};
 
@@ -71,9 +71,7 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
     let val_pair = account.create(&post_obj).unwrap();
-    let token_res = account.get_all_token(&val_pair);
-    assert!(token_res.is_ok());
-    let tokens = token_res.unwrap();
+    let tokens = account.get_all_token(val_pair.member_id);
     assert_eq!(tokens.len(), 1);
     assert_eq!(tokens[0].token, val_pair.api_token);
 
@@ -91,19 +89,12 @@ mod tests {
     let val_pair = account.create(&post_obj).unwrap();
     assert!(account.validate(&val_pair));
 
-    let new_token_res = account.create_token(&CreateToken {
-      purpose: "Login".to_string(),
-      exp_date: 42,
-      val_pair: val_pair.clone(),
-    });
+    let new_token_res = account.create_token("Login", val_pair.member_id, 42);
     assert!(new_token_res.is_ok());
     let new_token = new_token_res.unwrap();
     assert!(account.validate(&new_token.to_validation_pair()));
 
-    assert!(account.delete_token(&DeleteToken {
-      token_id: new_token.id,
-      val_pair: val_pair.clone(),
-    }).is_ok());
+    assert!(account.delete_token(new_token.id, val_pair.member_id).is_ok());
     assert!(!account.validate(&new_token.to_validation_pair()));
 
     account.db_main.execute("DELETE FROM member WHERE mail='sadgsdfgsddfgsdg@jaylappTest.dev'");

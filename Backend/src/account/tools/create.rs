@@ -76,7 +76,7 @@ impl Create for Account {
       }
 
       self.send_confirmation(id);
-      return self.create_validation_unsafe(
+      return self.create_validation(
         &self.dictionary.get("general.login", Language::English),
         id, time_util::get_ts_from_now_in_secs(30));
     }

@@ -65,7 +65,7 @@ impl Update for Account {
     };
 
     if self.update_password(params.validation.member_id, &params.content) {
-      return self.create_validation_unsafe(&self.dictionary.get("general.login", Language::English), params.validation.member_id, time_util::get_ts_from_now_in_secs(30));
+      return self.create_validation(&self.dictionary.get("general.login", Language::English), params.validation.member_id, time_util::get_ts_from_now_in_secs(30));
     }
 
     Err(self.dictionary.get("general.error.unknown", Language::English))
@@ -131,7 +131,7 @@ impl Update for Account {
         }
         Err(err_str) => return Err(err_str)
       }
-      return self.create_validation_unsafe(
+      return self.create_validation(
         &self.dictionary.get("general.login", Language::English),
         validation_pair.member_id, time_util::get_ts_from_now_in_secs(30));
     }

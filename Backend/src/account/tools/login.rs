@@ -24,7 +24,7 @@ impl Login for Account {
       return Err(self.dictionary.get("login.error.credentials", Language::English));
     }
 
-    self.create_validation_unsafe(
+    self.create_validation(
       &self.dictionary.get("general.login", Language::English),
       entry_key, time_util::get_ts_from_now_in_secs(30))
   }

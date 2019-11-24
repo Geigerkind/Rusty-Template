@@ -97,7 +97,7 @@ impl Forgot for Account {
     if removable {
       let mut forgot_password = self.forgot_password.write().unwrap();
       forgot_password.remove(id);
-      return self.create_validation_unsafe(
+      return self.create_validation(
         &self.dictionary.get("general.login", Language::English),
         user_id, time_util::get_ts_from_now_in_secs(30));
     }

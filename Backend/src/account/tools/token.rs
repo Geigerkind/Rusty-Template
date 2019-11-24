@@ -3,29 +3,24 @@ use language::tools::Get;
 use mysql_connection::tools::{Execute, Select};
 use str_util::{random, sha3};
 
-use crate::account::domain_value::{DeleteToken, CreateToken, ValidationPair};
+use crate::account::domain_value::ValidationPair;
 use crate::account::material::{Account, APIToken};
 
 pub trait Token {
-  fn get_all_token(&self, params: &ValidationPair) -> Result<Vec<APIToken>, String>;
+  fn get_all_token(&self, member_id: u32) -> Vec<APIToken>;
   fn validate(&self, params: &ValidationPair) -> bool;
   fn clear_tokens(&self, member_id: u32) -> Result<(), String>;
-  fn create_token(&self, params: &CreateToken) -> Result<APIToken, String>;
-  fn create_token_unsafe(&self, purpose: &str, member_id: u32, exp_date: u64) -> Result<APIToken, String>;
-  fn create_validation_unsafe(&self, purpose: &str, member_id: u32, exp_date: u64) -> Result<ValidationPair, String>;
-  fn delete_token(&self, params: &DeleteToken) -> Result<(), String>;
+  fn create_token(&self, purpose: &str, member_id: u32, exp_date: u64) -> Result<APIToken, String>;
+  fn create_validation(&self, purpose: &str, member_id: u32, exp_date: u64) -> Result<ValidationPair, String>;
+  fn delete_token(&self, token_id: u32, member_id: u32) -> Result<(), String>;
 }
 
 impl Token for Account {
-  fn get_all_token(&self, params: &ValidationPair) -> Result<Vec<APIToken>, String> {
-    if !self.validate(&params) {
-      return Err(self.dictionary.get("general.error.validate", Language::English));
-    }
-
+  fn get_all_token(&self, member_id: u32) -> Vec<APIToken> {
     let api_tokens = self.api_token.read().unwrap();
-    match api_tokens.get(&params.member_id) {
-      Some(token_vec) => Ok(token_vec.to_vec()),
-      None => Ok(vec![])
+    match api_tokens.get(&member_id) {
+      Some(token_vec) => token_vec.to_vec(),
+      None => vec![]
     }
   }
 
@@ -73,15 +68,7 @@ impl Token for Account {
     Ok(())
   }
 
-  fn create_token(&self, params: &CreateToken) -> Result<APIToken, String> {
-    if !self.validate(&params.val_pair) {
-      return Err(self.dictionary.get("general.error.validate", Language::English));
-    }
-
-    self.create_token_unsafe(&params.purpose, params.val_pair.member_id, params.exp_date)
-  }
-
-  fn create_token_unsafe(&self, purpose: &str, member_id: u32, exp_date: u64) -> Result<APIToken, String> {
+  fn create_token(&self, purpose: &str, member_id: u32, exp_date: u64) -> Result<APIToken, String> {
     let token: String;
     {
       let member = self.member.read().unwrap();
@@ -133,23 +120,19 @@ impl Token for Account {
     }
   }
 
-  fn create_validation_unsafe(&self, purpose: &str, member_id: u32, exp_date: u64) -> Result<ValidationPair, String> {
-    match self.create_token_unsafe(purpose, member_id, exp_date) {
+  fn create_validation(&self, purpose: &str, member_id: u32, exp_date: u64) -> Result<ValidationPair, String> {
+    match self.create_token(purpose, member_id, exp_date) {
       Ok(api_token) => Ok(api_token.to_validation_pair()),
       Err(err_str) => Err(err_str)
     }
   }
 
-  fn delete_token(&self, params: &DeleteToken) -> Result<(), String> {
-    if !self.validate(&params.val_pair) {
-      return Err(self.dictionary.get("general.error.validate", Language::English));
-    }
-
+  fn delete_token(&self, token_id: u32, member_id: u32) -> Result<(), String> {
     if !self.db_main.execute_wparams(
       "DELETE FROM api_token WHERE id=:id AND member_id=:member_id",
       params!(
-        "id" => params.token_id,
-        "member_id" => params.val_pair.member_id
+        "id" => token_id,
+        "member_id" => member_id
       ),
     ) {
       return Err(self.dictionary.get("general.error.unknown", Language::English));
@@ -160,8 +143,8 @@ impl Token for Account {
 
     let mut token: String = String::from("");
     let mut token_index: usize = 0;
-    for api_token in api_tokens.get(&params.val_pair.member_id).unwrap() {
-      if api_token.id == params.token_id {
+    for api_token in api_tokens.get(&member_id).unwrap() {
+      if api_token.id == token_id {
         token = api_token.token.clone();
         break;
       }
@@ -173,7 +156,7 @@ impl Token for Account {
     }
 
     api_token_to_member_id.remove(&token);
-    api_tokens.get_mut(&params.val_pair.member_id).unwrap().remove(token_index);
+    api_tokens.get_mut(&member_id).unwrap().remove(token_index);
 
     Ok(())
   }
