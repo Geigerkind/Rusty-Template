@@ -1,7 +1,7 @@
 use crate::account::material::account::Account;
 use crate::account::tools::forgot::Forgot;
-use language::get::Get;
-use language::domainvalue::language::Language;
+use language::tools::Get;
+use language::domainvalue::Language;
 use crate::account::domainvalue::validation_pair::ValidationPair;
 
 use rocket::State;

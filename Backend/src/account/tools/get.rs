@@ -1,5 +1,5 @@
-use language::domainvalue::language::Language;
-use language::get::Get;
+use language::domainvalue::Language;
+use language::tools::Get;
 
 use crate::account::domainvalue::account_information::AccountInformation;
 use crate::account::material::account::Account;

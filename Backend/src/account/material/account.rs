@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::sync::RwLock;
 
-use language::material::dictionary::Dictionary;
+use language::material::Dictionary;
 use str_util::sha3;
 
 use crate::account::language::init::Init;

@@ -1,9 +1,9 @@
 #[cfg(test)]
 mod tests {
-  use crate::register::Register;
-  use crate::get::Get;
-  use crate::material::dictionary::Dictionary;
-  use crate::domainvalue::language::Language;
+  use crate::tools::Register;
+  use crate::tools::Get;
+  use crate::material::Dictionary;
+  use crate::domainvalue::Language;
 
   #[test]
   #[should_panic]

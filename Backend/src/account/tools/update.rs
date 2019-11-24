@@ -1,5 +1,5 @@
-use language::domainvalue::language::Language;
-use language::get::Get;
+use language::domainvalue::Language;
+use language::tools::Get;
 use mysql_connection::tools::Execute;
 use str_util::{sha3, strformat};
 use validator;

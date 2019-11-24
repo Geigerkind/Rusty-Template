@@ -1,5 +1,5 @@
-use crate::domainvalue::language::Language;
-use crate::material::dictionary::Dictionary;
+use crate::domainvalue::Language;
+use crate::material::Dictionary;
 
 pub trait Register {
   fn register(&self, key: &str, language: Language, value: &str);
