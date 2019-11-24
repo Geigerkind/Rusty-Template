@@ -1,18 +1,22 @@
 #![feature(proc_macro_hygiene, decl_macro)]
-#[macro_use] extern crate rocket;
-#[macro_use] extern crate serde_derive;
-#[macro_use] extern crate mysql_connection;
-extern crate serde_json;
-extern crate mail;
-extern crate validator;
-extern crate str_util;
 extern crate language;
+extern crate mail;
+#[macro_use]
+extern crate mysql_connection;
+#[macro_use]
+extern crate rocket;
+#[macro_use]
+extern crate serde_derive;
+extern crate serde_json;
+extern crate str_util;
 extern crate time_util;
+extern crate validator;
 
-pub mod account;
+use rocket_contrib::json::Json;
 
 use account::material::account::Account;
-use rocket_contrib::json::Json;
+
+pub mod account;
 
 #[allow(dead_code)]
 pub struct Backend {

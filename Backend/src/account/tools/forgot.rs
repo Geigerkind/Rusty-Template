@@ -18,7 +18,7 @@ pub trait Forgot {
 impl Forgot for Account {
   fn send_forgot_password(&self, mail: &str) -> Result<(), String>
   {
-    if !validator::mail(mail) {
+    if !validator::tools::valid_mail(mail) {
       return Err(self.dictionary.get("general.error.invalid.mail", Language::English));
     }
 

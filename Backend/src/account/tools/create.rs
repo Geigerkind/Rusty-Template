@@ -4,7 +4,7 @@ use mail;
 use mysql_connection::tools::{ Execute, Exists, Select };
 use str_util::{random, sha3, strformat};
 use validator;
-use validator::domainvalue::password_failure::PasswordFailure;
+use validator::domainvalue::PasswordFailure;
 
 use crate::account::domainvalue::post_create_member::PostCreateMember;
 use crate::account::domainvalue::validation_pair::ValidationPair;
@@ -21,15 +21,15 @@ pub trait Create {
 impl Create for Account {
   fn create(&self, params: &PostCreateMember) -> Result<ValidationPair, String>
   {
-    if !validator::mail(&params.mail) {
+    if !validator::tools::valid_mail(&params.mail) {
       return Err(self.dictionary.get("general.error.invalid.mail", Language::English));
     }
 
-    if !validator::nickname(&params.nickname) {
+    if !validator::tools::valid_nickname(&params.nickname) {
       return Err(self.dictionary.get("general.error.invalid.nickname", Language::English));
     }
 
-    match validator::password(&params.password) {
+    match validator::tools::valid_password(&params.password) {
       Err(PasswordFailure::TooFewCharacters) => return Err(self.dictionary.get("general.error.password.length", Language::English)),
       Err(PasswordFailure::Pwned(num_pwned)) => return Err(strformat::fmt(self.dictionary.get("general.error.password.pwned", Language::English), &[&num_pwned.to_string()])),
       Ok(_) => ()

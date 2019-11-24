@@ -3,7 +3,7 @@ use language::tools::Get;
 use mysql_connection::tools::Execute;
 use str_util::{sha3, strformat};
 use validator;
-use validator::domainvalue::password_failure::PasswordFailure;
+use validator::domainvalue::PasswordFailure;
 
 use crate::account::domainvalue::account_information::AccountInformation;
 use crate::account::domainvalue::validation_pair::ValidationPair;
@@ -28,7 +28,7 @@ impl Update for Account {
       return Err(self.dictionary.get("general.error.validate", Language::English));
     }
 
-    if !validator::nickname(&params.content) {
+    if !validator::tools::valid_nickname(&params.content) {
       return Err(self.dictionary.get("general.error.invalid.nickname", Language::English));
     }
 
@@ -63,7 +63,7 @@ impl Update for Account {
       return Err(self.dictionary.get("general.error.validate", Language::English));
     }
 
-    match validator::password(&params.content) {
+    match validator::tools::valid_password(&params.content) {
       Err(PasswordFailure::TooFewCharacters) => return Err(self.dictionary.get("general.error.password.length", Language::English)),
       Err(PasswordFailure::Pwned(num_pwned)) => return Err(strformat::fmt(self.dictionary.get("general.error.password.pwned", Language::English), &[&num_pwned.to_string()])),
       Ok(_) => ()
@@ -110,7 +110,7 @@ impl Update for Account {
     }
     let validation_pair = validation.unwrap();
 
-    if !validator::mail(&params.content) {
+    if !validator::tools::valid_mail(&params.content) {
       return Err(self.dictionary.get("general.error.invalid.mail", Language::English));
     }
 
