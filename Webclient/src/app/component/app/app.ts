@@ -2,8 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { ComponentLocation } from "@wishtack/reactive-component-loader";
 import { Router, NavigationEnd } from "@angular/router";
 import { Subscription } from "rxjs";
-import { SettingsService } from "../../service/settings.service";
-import { TranslationService } from "../../service/translation.service";
+import { SettingsService } from "../../service/settings";
+import { TranslationService } from "../../service/translation";
 
 declare var gtag;
 

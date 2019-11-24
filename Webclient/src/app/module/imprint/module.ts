@@ -3,7 +3,7 @@ import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { CommonModule } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { TranslationService } from "../../service/translation.service";
+import { TranslationService } from "../../service/translation";
 import { ImprintRoutingModule } from "./routing";
 import { ImprintComponent } from "./component/imprint/imprint";
 
