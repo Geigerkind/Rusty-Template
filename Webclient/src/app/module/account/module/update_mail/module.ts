@@ -6,6 +6,7 @@ import {PasswordInputModule} from "src/app/template/password_input/module";
 import {ConfirmButtonModule} from "src/app/template/confirm_button/module";
 import {GeneralInputModule} from "src/app/template/general_input/module";
 import {BriefNoteModule} from "src/app/template/brief_note/module";
+import {UpdateMailRouting} from "./routing";
 
 @NgModule({
   declarations: [UpdateMailComponent],
@@ -15,7 +16,8 @@ import {BriefNoteModule} from "src/app/template/brief_note/module";
     GeneralInputModule,
     PasswordInputModule,
     ConfirmButtonModule,
-    BriefNoteModule
+    BriefNoteModule,
+    UpdateMailRouting
   ],
   exports: [UpdateMailComponent],
   bootstrap: [UpdateMailComponent]

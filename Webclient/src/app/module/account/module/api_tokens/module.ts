@@ -4,6 +4,7 @@ import {CommonModule} from "@angular/common";
 import {ConfirmButtonModule} from "src/app/template/confirm_button/module";
 import {GeneralInputModule} from "src/app/template/general_input/module";
 import {APITokensComponent} from "./component/api_tokens/api_tokens";
+import {APITokensRouting} from "./routing";
 
 @NgModule({
   declarations: [APITokensComponent],
@@ -11,7 +12,8 @@ import {APITokensComponent} from "./component/api_tokens/api_tokens";
     CommonModule,
     TranslateModule,
     GeneralInputModule,
-    ConfirmButtonModule
+    ConfirmButtonModule,
+    APITokensRouting
   ],
   exports: [APITokensComponent],
   bootstrap: [APITokensComponent]
