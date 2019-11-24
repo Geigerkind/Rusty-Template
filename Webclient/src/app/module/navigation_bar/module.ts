@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { TranslateModule } from "@ngx-translate/core";
-import { NavigationBar } from "./component/navigation_bar/navigation_bar";
+import { NavigationBarComponent } from "./component/navigation_bar/navigation_bar";
 import { ItemList } from "./component/item_list/item_list";
 import { RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
@@ -8,7 +8,7 @@ import { CaretButtonModule } from "../../template/caret_button/module";
 
 @NgModule({
   declarations: [
-    NavigationBar,
+    NavigationBarComponent,
     ItemList
   ],
   imports: [
@@ -17,7 +17,6 @@ import { CaretButtonModule } from "../../template/caret_button/module";
     RouterModule,
     CaretButtonModule
   ],
-  exports: [NavigationBar],
-  bootstrap: [NavigationBar]
+  exports: [NavigationBarComponent]
 })
 export class NavigationBarModule { }

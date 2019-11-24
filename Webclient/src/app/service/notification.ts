@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Severity } from "../domain_value/severity";
-import { NotificationInformation } from "../material/notification_information";
+import { Notification } from "../material/notification";
 
 @Injectable({
   providedIn: "root",
@@ -9,7 +9,7 @@ export class NotificationService {
   observers: any = [];
 
   notify(severity: Severity, message: string): void {
-    this.observers.forEach(callback => callback.call(callback, new NotificationInformation(severity, message)));
+    this.observers.forEach(callback => callback.call(callback, new Notification(severity, message)));
   }
 
   subscribe(callback: any): void {

@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { NotificationInformation } from "../../../../material/notification_information";
+import { Notification } from "../../../../material/notification";
 import { NotificationService } from "../../../../service/notification";
 
 @Component({
@@ -9,13 +9,13 @@ import { NotificationService } from "../../../../service/notification";
 })
 export class NotificationList {
   static TIMEOUT = 3000;
-  notifications: Array<NotificationInformation> = [];
+  notifications: Array<Notification> = [];
 
   constructor(private notificationService: NotificationService) {
     this.notificationService.subscribe(notification => this.addNotification(notification));
   }
 
-  addNotification(notification: NotificationInformation): void  {
+  addNotification(notification: Notification): void  {
     this.notifications.push(notification);
     setTimeout(item => {
       const index = this.notifications.indexOf(item);

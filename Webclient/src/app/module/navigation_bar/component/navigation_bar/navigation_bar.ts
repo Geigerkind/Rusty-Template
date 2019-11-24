@@ -5,7 +5,7 @@ import { Component } from "@angular/core";
   templateUrl: "./navigation_bar.html",
   styleUrls: ["./navigation_bar.scss"]
 })
-export class NavigationBar {
+export class NavigationBarComponent {
   sampleItems = [
     ["url", "Entry 1"],
     ["url", "Entry 2"],

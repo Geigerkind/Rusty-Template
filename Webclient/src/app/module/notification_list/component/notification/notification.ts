@@ -1,14 +1,14 @@
 import { Component, Input, Output, EventEmitter } from "@angular/core";
-import { NotificationInformation } from "src/app/material/notification_information";
+import { Notification } from "src/app/material/notification";
 
 @Component({
   selector: "Notification",
   templateUrl: "./notification.html",
   styleUrls: ["./notification.scss"]
 })
-export class Notification {
+export class NotificationComponent {
   @Input() index: number;
-  @Input() context: NotificationInformation;
+  @Input() context: Notification;
   @Output() closed: EventEmitter<number> = new EventEmitter();
 
   close(): void {

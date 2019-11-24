@@ -6,7 +6,7 @@ import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationErr
   templateUrl: "./router_loading_bar.html",
   styleUrls: ["./router_loading_bar.scss"]
 })
-export class RouterLoadingBar {
+export class RouterLoadingBarComponent {
   scaleX = 0;
   displayBar = false;
 

@@ -6,7 +6,7 @@ import { environment } from "src/environments/environment";
   templateUrl: "./footer_bar.html",
   styleUrls: ["./footer_bar.scss"]
 })
-export class FooterBar {
+export class FooterBarComponent {
   @Output() consent: EventEmitter<boolean> = new EventEmitter();
 
   copyRightArguments: any = {company: environment.company, year: (new Date()).getFullYear().toString() };

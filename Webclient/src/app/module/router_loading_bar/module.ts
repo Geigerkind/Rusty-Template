@@ -1,10 +1,10 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { RouterLoadingBar } from "./component/router_loading_bar/router_loading_bar";
+import { RouterLoadingBarComponent } from "./component/router_loading_bar/router_loading_bar";
 
 @NgModule({
-  declarations: [RouterLoadingBar],
+  declarations: [RouterLoadingBarComponent],
   imports: [CommonModule],
-  exports: [RouterLoadingBar]
+  exports: [RouterLoadingBarComponent]
 })
 export class RouterLoadingBarModule {}
