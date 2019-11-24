@@ -4,7 +4,7 @@ import {CommonModule} from "@angular/common";
 import {HttpClient} from "@angular/common/http";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {TranslationService} from "../../service/translation";
-import {ImprintRoutingModule} from "./routing";
+import {ImprintRouting} from "./routing";
 import {ImprintComponent} from "./component/imprint/imprint";
 
 export function createTranslateLoader(http: HttpClient) {
@@ -22,7 +22,7 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    ImprintRoutingModule
+    ImprintRouting
   ],
   exports: [ImprintComponent],
   providers: [

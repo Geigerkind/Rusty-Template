@@ -1,7 +1,7 @@
 import {BrowserModule} from "@angular/platform-browser";
 import {NgModule} from "@angular/core";
 
-import {AppRoutingModule} from "./routing";
+import {AppRouting} from "./routing";
 import {AppComponent} from "./component/app/app";
 import {CookieService} from "ngx-cookie-service";
 import {CookieBannerModule} from "./module/cookie_banner/module";
@@ -30,7 +30,7 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    AppRouting,
     CookieBannerModule,
     AccountModule,
     NotificationListModule,

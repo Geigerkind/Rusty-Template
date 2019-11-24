@@ -2,14 +2,14 @@ import {NgModule} from "@angular/core";
 import {TranslateModule} from "@ngx-translate/core";
 import {CommonModule} from "@angular/common";
 import {HomeComponent} from "./component/home/home";
-import {HomeRoutingModule} from "./routing";
+import {HomeRouting} from "./routing";
 
 @NgModule({
   declarations: [HomeComponent],
   imports: [
     CommonModule,
     TranslateModule,
-    HomeRoutingModule
+    HomeRouting
   ],
   exports: [HomeComponent]
 })
