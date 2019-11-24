@@ -8,12 +8,10 @@ use crate::account::material::Account;
 use crate::account::tools::{Delete, Token};
 
 #[get("/delete/confirm/<id>")]
-pub fn confirm(me: State<Account>, id: String) -> String
+pub fn confirm(me: State<Account>, id: String) -> Result<String, String>
 {
-  match me.confirm_delete(&id) {
-    Ok(_) => me.dictionary.get("general.service.success", Language::English),
-    Err(error_str) => error_str
-  }
+  me.confirm_delete(&id)
+    .and_then(|()| Ok(me.dictionary.get("general.service.success", Language::English)))
 }
 
 #[delete("/delete/send", data = "<params>")]
@@ -23,9 +21,7 @@ pub fn request(me: State<Account>, params: Json<ValidationPair>) -> Result<Json<
     return Err(me.dictionary.get("general.error.validate", Language::English));
   }
 
-  match me.issue_delete(params.member_id) {
-    Ok(acc_info) => Ok(Json(acc_info)),
-    Err(error_str) => Err(error_str)
-  }
+  me.issue_delete(params.member_id)
+    .and_then(|acc_info| Ok(Json(acc_info)))
 }
 

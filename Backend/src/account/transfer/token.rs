@@ -15,10 +15,8 @@ pub fn create_token(me: State<Account>, params: Json<CreateToken>) -> Result<Jso
     return Err(me.dictionary.get("general.error.validate", Language::English));
   }
 
-  match me.create_token(&params.purpose, params.val_pair.member_id, params.exp_date) {
-    Ok(token) => Ok(Json(token)),
-    Err(err_str) => Err(err_str)
-  }
+  me.create_token(&params.purpose, params.val_pair.member_id, params.exp_date)
+    .and_then(|api_token| Ok(Json(api_token)))
 }
 
 #[post("/token/get", data = "<params>")]

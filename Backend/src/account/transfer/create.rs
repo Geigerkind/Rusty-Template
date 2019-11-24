@@ -9,7 +9,8 @@ use crate::account::tools::{Create, Token};
 #[post("/create", data = "<params>")]
 pub fn create(me: State<Account>, params: Json<CreateMember>) -> Result<Json<ValidationPair>, String>
 {
-  me.create(&params.mail, &params.nickname, &params.password).and_then(|val_pair| Ok(Json(val_pair)))
+  me.create(&params.mail, &params.nickname, &params.password)
+    .and_then(|val_pair| Ok(Json(val_pair)))
 }
 
 #[get("/create/confirm/<id>")]

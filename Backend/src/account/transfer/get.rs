@@ -14,8 +14,6 @@ pub fn get_account_information(me: State<Account>, params: Json<ValidationPair>)
     return Err(me.dictionary.get("general.error.validate", Language::English));
   }
 
-  match me.get(params.member_id) {
-    Ok(acc_info) => Ok(Json(acc_info)),
-    Err(err_str) => Err(err_str)
-  }
+  me.get(params.member_id)
+    .and_then(|acc_info| Ok(Json(acc_info)))
 }

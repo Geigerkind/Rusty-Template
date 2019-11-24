@@ -20,12 +20,12 @@ pub fn api() -> Json<Vec<serde_json::Value>> {
     expose_api_fn("/create/resend/<params>", "post", "application/json", schema_for!(bool), schema_for!(ValidationPair)),
 
     // Delete
-    expose_api_fn("/delete/confirm/<id>", "get", "text/html", schema_for!(String), schema_for!(String)),
+    expose_api_fn("/delete/confirm/<id>", "get", "text/html", schema_for!(Result<String, String>), schema_for!(String)),
     expose_api_fn("/delete/send/<params>", "post", "application/json", schema_for!(Result<AccountInformation, String>), schema_for!(ValidationPair)),
 
     // Forgot
     expose_api_fn("/forgot/confirm/<id>", "get", "application/json", schema_for!(Result<ValidationPair, String>), schema_for!(String)),
-    expose_api_fn("/forgot/send/<mail>", "get", "text/html", schema_for!(String), schema_for!(String)),
+    expose_api_fn("/forgot/send/<mail>", "get", "text/html", schema_for!(Result<String, String>), schema_for!(String)),
 
     // Login
     expose_api_fn("/login/<params>", "post", "application/json", schema_for!(Result<ValidationPair, String>), schema_for!(Credentials)),

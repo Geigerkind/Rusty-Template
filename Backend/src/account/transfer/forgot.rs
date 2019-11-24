@@ -10,17 +10,13 @@ use crate::account::tools::Forgot;
 #[get("/forgot/confirm/<id>")]
 pub fn receive_confirmation(me: State<Account>, id: String) -> Result<Json<ValidationPair>, String>
 {
-  match me.recv_forgot_password(&id) {
-    Ok(val_pair) => Ok(Json(val_pair)),
-    Err(error_str) => Err(error_str)
-  }
+  me.recv_forgot_password(&id)
+    .and_then(|val_pair| Ok(Json(val_pair)))
 }
 
 #[get("/forgot/send/<mail>")]
-pub fn send_confirmation(me: State<Account>, mail: String) -> String
+pub fn send_confirmation(me: State<Account>, mail: String) -> Result<String, String>
 {
-  match me.send_forgot_password(&mail) {
-    Ok(_) => me.dictionary.get("general.service.success", Language::English),
-    Err(error_str) => error_str
-  }
+  me.send_forgot_password(&mail)
+    .and_then(|()| Ok(me.dictionary.get("general.service.success", Language::English)))
 }

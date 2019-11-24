@@ -15,10 +15,8 @@ pub fn password(me: State<Account>, params: Json<RestrictedContent<String, Valid
     return Err(me.dictionary.get("general.error.validate", Language::English));
   }
 
-  match me.change_password(&params.content, params.validation.member_id) {
-    Ok(val_pair) => Ok(Json(val_pair)),
-    Err(error_str) => Err(error_str)
-  }
+  me.change_password(&params.content, params.validation.member_id)
+    .and_then(|val_pair| Ok(Json(val_pair)))
 }
 
 #[post("/update/nickname", data = "<params>")]
@@ -28,10 +26,8 @@ pub fn nickname(me: State<Account>, params: Json<RestrictedContent<String, Valid
     return Err(me.dictionary.get("general.error.validate", Language::English));
   }
 
-  match me.change_name(&params.content, params.validation.member_id) {
-    Ok(acc_info) => Ok(Json(acc_info)),
-    Err(error_str) => Err(error_str)
-  }
+  me.change_name(&params.content, params.validation.member_id)
+    .and_then(|acc_info| Ok(Json(acc_info)))
 }
 
 #[post("/update/mail", data = "<params>")]
