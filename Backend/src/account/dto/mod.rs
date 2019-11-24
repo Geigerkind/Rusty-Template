@@ -1,7 +1,7 @@
 pub use self::create_member::CreateMember;
 pub use self::create_token::CreateToken;
-pub use self::update_content::UpdateContent;
+pub use self::restricted_content::RestrictedContent;
 
 mod create_member;
 mod create_token;
-mod update_content;
+mod restricted_content;
