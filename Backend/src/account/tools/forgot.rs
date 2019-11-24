@@ -1,6 +1,7 @@
 use language::domainvalue::language::Language;
 use language::get::Get;
 use mail;
+use mysql_connection::tools::Execute;
 use str_util::{random, sha3, strformat};
 use validator;
 
@@ -8,7 +9,6 @@ use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::material::account::Account;
 use crate::account::tools::token::Token;
 use crate::account::tools::update::Update;
-use crate::database::tools::mysql::execute::Execute;
 
 pub trait Forgot {
   fn send_forgot_password(&self, mail: &str) -> Result<(), String>;

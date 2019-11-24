@@ -4,7 +4,7 @@ mod tests {
   use crate::account::domainvalue::validation_pair::ValidationPair;
   use crate::account::tools::create::Create;
   use crate::account::domainvalue::post_create_member::PostCreateMember;
-  use crate::database::tools::mysql::execute::Execute;
+  use mysql_connection::tools::Execute;
   use crate::account::tools::update::Update;
   use crate::account::material::post_change_str::PostChangeStr;
   use crate::account::tools::login::Login;
@@ -12,8 +12,6 @@ mod tests {
   use crate::account::tools::token::Token;
   use crate::account::domainvalue::post_delete_token::PostDeleteToken;
   use crate::account::domainvalue::post_token::PostToken;
-
-  // Helper functions are tested indirectly through all other functions
 
   #[test]
   fn validate_valid() {

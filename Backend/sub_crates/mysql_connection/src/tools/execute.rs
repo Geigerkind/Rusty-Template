@@ -1,5 +1,5 @@
 use mysql;
-use crate::database::material::mysql_connection::MySQLConnection;
+use crate::material::MySQLConnection;
 
 pub trait Execute {
   fn execute(&self, query_str: &str) -> bool;

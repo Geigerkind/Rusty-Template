@@ -7,8 +7,8 @@ use str_util::sha3;
 use crate::account::language::init::Init;
 use crate::account::material::api_token::APIToken;
 use crate::account::material::member::Member;
-use crate::database::material::mysql_connection::MySQLConnection;
-use crate::database::tools::mysql::select::Select;
+use mysql_connection::material::MySQLConnection;
+use mysql_connection::tools::Select;
 
 pub struct Account {
   pub db_main: MySQLConnection,

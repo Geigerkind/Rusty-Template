@@ -1,9 +1,8 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 #[macro_use] extern crate rocket;
-#[macro_use] extern crate mysql;
 #[macro_use] extern crate serde_derive;
+#[macro_use] extern crate mysql_connection;
 extern crate serde_json;
-extern crate dotenv;
 extern crate mail;
 extern crate validator;
 extern crate str_util;
@@ -11,7 +10,6 @@ extern crate language;
 extern crate time_util;
 
 pub mod account;
-pub mod database;
 
 use account::material::account::Account;
 use rocket_contrib::json::Json;

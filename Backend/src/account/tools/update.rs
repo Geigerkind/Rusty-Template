@@ -1,5 +1,6 @@
 use language::domainvalue::language::Language;
 use language::get::Get;
+use mysql_connection::tools::Execute;
 use str_util::{sha3, strformat};
 use validator;
 use validator::domainvalue::password_failure::PasswordFailure;
@@ -12,7 +13,6 @@ use crate::account::material::post_change_str_login::PostChangeStrLogin;
 use crate::account::tools::get::GetAccountInformation;
 use crate::account::tools::login::Login;
 use crate::account::tools::token::Token;
-use crate::database::tools::mysql::execute::Execute;
 
 pub trait Update {
   fn change_name(&self, params: &PostChangeStr) -> Result<AccountInformation, String>;

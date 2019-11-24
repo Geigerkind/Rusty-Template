@@ -1,6 +1,6 @@
 use mysql;
-use crate::database::material::mysql_connection::MySQLConnection;
-use crate::database::tools::mysql::select::Select;
+use crate::material::MySQLConnection;
+use crate::tools::Select;
 
 pub trait Exists {
   fn exists(&self, query_str: &str) -> bool;

@@ -1,6 +1,7 @@
 use language::domainvalue::language::Language;
 use language::get::Get;
 use mail;
+use mysql_connection::tools::Execute;
 use str_util::{sha3, strformat};
 
 use crate::account::domainvalue::account_information::AccountInformation;
@@ -8,7 +9,6 @@ use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::material::account::Account;
 use crate::account::tools::get::GetAccountInformation;
 use crate::account::tools::token::Token;
-use crate::database::tools::mysql::execute::Execute;
 
 pub trait Delete {
   fn issue_delete(&self, params: &ValidationPair) -> Result<AccountInformation, String>;

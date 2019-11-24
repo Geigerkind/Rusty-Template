@@ -1,5 +1,5 @@
 use mysql;
-use crate::database::material::mysql_connection::MySQLConnection;
+use crate::material::MySQLConnection;
 
 pub trait Select {
   fn select<T>(&self, query_str: &str, process_row: &dyn Fn(mysql::Row) -> T) -> Vec<T>;

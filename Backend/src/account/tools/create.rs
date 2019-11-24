@@ -1,6 +1,7 @@
 use language::domainvalue::language::Language;
 use language::get::Get;
 use mail;
+use mysql_connection::tools::{ Execute, Exists, Select };
 use str_util::{random, sha3, strformat};
 use validator;
 use validator::domainvalue::password_failure::PasswordFailure;
@@ -10,9 +11,6 @@ use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::material::account::Account;
 use crate::account::material::member::Member;
 use crate::account::tools::token::Token;
-use crate::database::tools::mysql::execute::Execute;
-use crate::database::tools::mysql::exists::Exists;
-use crate::database::tools::mysql::select::Select;
 
 pub trait Create {
   fn create(&self, params: &PostCreateMember) -> Result<ValidationPair, String>;
@@ -62,8 +60,8 @@ impl Create for Account {
       let id: u32;
       { // Keep write locks as short as possible
         let mut member = self.member.write().unwrap();
-        id = self.db_main.select_wparams_value("SELECT id FROM member WHERE mail = :mail", &|row| {
-          mysql::from_row(row)
+        id = self.db_main.select_wparams_value("SELECT id FROM member WHERE mail = :mail", &|mut row| {
+          row.take(0).unwrap()
         }, params!(
           "mail" => lower_mail.clone()
         )).unwrap();

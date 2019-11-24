@@ -1,5 +1,6 @@
 use language::domainvalue::language::Language;
 use language::get::Get;
+use mysql_connection::tools::{ Execute, Select };
 use str_util::{random, sha3};
 
 use crate::account::domainvalue::post_delete_token::PostDeleteToken;
@@ -7,8 +8,6 @@ use crate::account::domainvalue::post_token::PostToken;
 use crate::account::domainvalue::validation_pair::ValidationPair;
 use crate::account::material::account::Account;
 use crate::account::material::api_token::APIToken;
-use crate::database::tools::mysql::execute::Execute;
-use crate::database::tools::mysql::select::Select;
 
 pub trait Token {
   fn get_all_token(&self, params: &ValidationPair) -> Result<Vec<APIToken>, String>;
@@ -107,7 +106,7 @@ impl Token for Account {
         "token" => token.clone(),
         "purpose" => purpose,
         "exp_date" => exp_date
-      )
+      ),
     ) {
       return Err(self.dictionary.get("general.error.unknown", Language::English));
     }
@@ -160,7 +159,7 @@ impl Token for Account {
       params!(
         "id" => params.token_id,
         "member_id" => params.val_pair.member_id
-      )
+      ),
     ) {
       return Err(self.dictionary.get("general.error.unknown", Language::English));
     }
