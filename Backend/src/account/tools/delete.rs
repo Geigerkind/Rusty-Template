@@ -10,7 +10,7 @@ use crate::account::tools::{GetAccountInformation, Token};
 
 pub trait Delete {
   fn issue_delete(&self, member_id: u32) -> Result<AccountInformation, String>;
-  fn confirm_delete(&self, id: &str) -> Result<(), String>;
+  fn confirm_delete(&self, delete_id: &str) -> Result<(), String>;
 }
 
 impl Delete for Account {
@@ -42,12 +42,12 @@ impl Delete for Account {
     Ok(self.get(member_id).unwrap())
   }
 
-  fn confirm_delete(&self, id: &str) -> Result<(), String>
+  fn confirm_delete(&self, delete_id: &str) -> Result<(), String>
   {
     let mut removable = false;
     {
       let delete_account = self.delete_account.read().unwrap();
-      match delete_account.get(id) {
+      match delete_account.get(delete_id) {
         Some(member_id) => {
           if self.db_main.execute_wparams("DELETE FROM member WHERE id = :id", params!(
             "id" => *member_id
@@ -67,7 +67,7 @@ impl Delete for Account {
     }
     if removable {
       let mut delete_account = self.delete_account.write().unwrap();
-      delete_account.remove(id);
+      delete_account.remove(delete_id);
       return Ok(());
     }
 
