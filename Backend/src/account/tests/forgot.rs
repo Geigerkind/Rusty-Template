@@ -3,7 +3,7 @@ mod tests {
   use mysql_connection::tools::Execute;
   use str_util::sha3;
 
-  use crate::account::domain_value::PostCreateMember;
+  use crate::account::domain_value::CreateMember;
   use crate::account::material::Account;
   use crate::account::tools::{Create, Forgot};
 
@@ -22,7 +22,7 @@ mod tests {
   #[test]
   fn send_forgot_password_user_exists_and_receive() {
     let account = Account::default();
-    let post_obj = PostCreateMember {
+    let post_obj = CreateMember {
       nickname: "fscngsuzfdcsv".to_string(),
       mail: "fscngsuzfdcsv@jaylappTest.dev".to_string(),
       password: "Password123456Password123456Password123456".to_string(),

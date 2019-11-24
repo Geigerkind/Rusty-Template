@@ -1,12 +1,12 @@
 use rocket::State;
 use rocket_contrib::json::Json;
 
-use crate::account::domain_value::{PostDeleteToken, PostToken, ValidationPair};
+use crate::account::domain_value::{DeleteToken, CreateToken, ValidationPair};
 use crate::account::material::{Account, APIToken};
 use crate::account::tools::Token;
 
 #[post("/token/create", data = "<params>")]
-pub fn create_token(me: State<Account>, params: Json<PostToken>) -> Result<Json<APIToken>, String>
+pub fn create_token(me: State<Account>, params: Json<CreateToken>) -> Result<Json<APIToken>, String>
 {
   match me.create_token(&params) {
     Ok(token) => Ok(Json(token)),
@@ -23,7 +23,7 @@ pub fn get_tokens(me: State<Account>, params: Json<ValidationPair>) -> Result<Js
 }
 
 #[post("/token/delete", data = "<params>")]
-pub fn delete_token(me: State<Account>, params: Json<PostDeleteToken>) -> Result<(), String>
+pub fn delete_token(me: State<Account>, params: Json<DeleteToken>) -> Result<(), String>
 {
   me.delete_token(&params)
 }

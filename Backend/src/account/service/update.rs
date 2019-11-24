@@ -1,12 +1,12 @@
 use rocket::State;
 use rocket_contrib::json::Json;
 
-use crate::account::domain_value::{AccountInformation, ValidationPair};
-use crate::account::material::{Account, PostChangeStr, PostChangeStrLogin};
+use crate::account::domain_value::{AccountInformation, ValidationPair, UpdateContent, UpdateContentCredentials};
+use crate::account::material::Account;
 use crate::account::tools::Update;
 
 #[post("/update/password", data = "<params>")]
-pub fn password(me: State<Account>, params: Json<PostChangeStr>) -> Result<Json<ValidationPair>, String>
+pub fn password(me: State<Account>, params: Json<UpdateContent>) -> Result<Json<ValidationPair>, String>
 {
   match me.change_password(&params) {
     Ok(val_pair) => Ok(Json(val_pair)),
@@ -15,7 +15,7 @@ pub fn password(me: State<Account>, params: Json<PostChangeStr>) -> Result<Json<
 }
 
 #[post("/update/nickname", data = "<params>")]
-pub fn nickname(me: State<Account>, params: Json<PostChangeStr>) -> Result<Json<AccountInformation>, String>
+pub fn nickname(me: State<Account>, params: Json<UpdateContent>) -> Result<Json<AccountInformation>, String>
 {
   match me.change_name(&params) {
     Ok(acc_info) => Ok(Json(acc_info)),
@@ -24,7 +24,7 @@ pub fn nickname(me: State<Account>, params: Json<PostChangeStr>) -> Result<Json<
 }
 
 #[post("/update/mail", data = "<params>")]
-pub fn mail(me: State<Account>, params: Json<PostChangeStrLogin>) -> Result<Json<ValidationPair>, String>
+pub fn mail(me: State<Account>, params: Json<UpdateContentCredentials>) -> Result<Json<ValidationPair>, String>
 {
   match me.change_mail(&params) {
     Ok(val_pair) => Ok(Json(val_pair)),

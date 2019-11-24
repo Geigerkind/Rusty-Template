@@ -3,17 +3,17 @@ use language::tools::Get;
 use mysql_connection::tools::{Execute, Select};
 use str_util::{random, sha3};
 
-use crate::account::domain_value::{PostDeleteToken, PostToken, ValidationPair};
+use crate::account::domain_value::{DeleteToken, CreateToken, ValidationPair};
 use crate::account::material::{Account, APIToken};
 
 pub trait Token {
   fn get_all_token(&self, params: &ValidationPair) -> Result<Vec<APIToken>, String>;
   fn validate(&self, params: &ValidationPair) -> bool;
   fn clear_tokens(&self, member_id: u32) -> Result<(), String>;
-  fn create_token(&self, params: &PostToken) -> Result<APIToken, String>;
+  fn create_token(&self, params: &CreateToken) -> Result<APIToken, String>;
   fn create_token_unsafe(&self, purpose: &str, member_id: u32, exp_date: u64) -> Result<APIToken, String>;
   fn create_validation_unsafe(&self, purpose: &str, member_id: u32, exp_date: u64) -> Result<ValidationPair, String>;
-  fn delete_token(&self, params: &PostDeleteToken) -> Result<(), String>;
+  fn delete_token(&self, params: &DeleteToken) -> Result<(), String>;
 }
 
 impl Token for Account {
@@ -79,7 +79,7 @@ impl Token for Account {
     Ok(())
   }
 
-  fn create_token(&self, params: &PostToken) -> Result<APIToken, String> {
+  fn create_token(&self, params: &CreateToken) -> Result<APIToken, String> {
     if !self.validate(&params.val_pair) {
       return Err(self.dictionary.get("general.error.validate", Language::English));
     }
@@ -146,7 +146,7 @@ impl Token for Account {
     }
   }
 
-  fn delete_token(&self, params: &PostDeleteToken) -> Result<(), String> {
+  fn delete_token(&self, params: &DeleteToken) -> Result<(), String> {
     if !self.validate(&params.val_pair) {
       return Err(self.dictionary.get("general.error.validate", Language::English));
     }

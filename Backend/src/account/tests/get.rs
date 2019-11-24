@@ -2,7 +2,7 @@
 mod tests {
   use mysql_connection::tools::Execute;
 
-  use crate::account::domain_value::PostCreateMember;
+  use crate::account::domain_value::CreateMember;
   use crate::account::material::Account;
   use crate::account::tools::{Create, GetAccountInformation};
 
@@ -16,7 +16,7 @@ mod tests {
   #[test]
   fn get_exists() {
     let account = Account::default();
-    let post_obj = PostCreateMember {
+    let post_obj = CreateMember {
       nickname: "ijfeuhifsduhisdfuhiuhisdf".to_string(),
       mail: "ijfeuhifsduhisdfuhiuhisdf@jaylappTest.dev".to_string(),
       password: "Password123456Password123456Password123456".to_string(),

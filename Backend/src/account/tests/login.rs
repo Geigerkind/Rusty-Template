@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-  use crate::account::domain_value::PostLogin;
+  use crate::account::domain_value::Credentials;
   use crate::account::material::Account;
   use crate::account::tools::Login;
 
@@ -8,7 +8,7 @@ mod tests {
   #[test]
   fn login_user_does_not_exist() {
     let account = Account::default();
-    let credentials = PostLogin {
+    let credentials = Credentials {
       mail: "NothingLol".to_string(),
       password: "NotSecret".to_string(),
     };

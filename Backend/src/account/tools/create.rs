@@ -6,18 +6,18 @@ use str_util::{random, sha3, strformat};
 use validator::tools::{valid_password, valid_nickname, valid_mail};
 use validator::domain_value::PasswordFailure;
 
-use crate::account::domain_value::{PostCreateMember, ValidationPair};
+use crate::account::domain_value::{CreateMember, ValidationPair};
 use crate::account::material::{Account, Member};
 use crate::account::tools::Token;
 
 pub trait Create {
-  fn create(&self, params: &PostCreateMember) -> Result<ValidationPair, String>;
+  fn create(&self, params: &CreateMember) -> Result<ValidationPair, String>;
   fn send_confirmation(&self, params: &ValidationPair) -> bool;
   fn confirm(&self, id: &str) -> bool;
 }
 
 impl Create for Account {
-  fn create(&self, params: &PostCreateMember) -> Result<ValidationPair, String>
+  fn create(&self, params: &CreateMember) -> Result<ValidationPair, String>
   {
     if !valid_mail(&params.mail) {
       return Err(self.dictionary.get("general.error.invalid.mail", Language::English));

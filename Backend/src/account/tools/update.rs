@@ -5,19 +5,19 @@ use str_util::{sha3, strformat};
 use validator::tools::{valid_mail, valid_nickname, valid_password};
 use validator::domain_value::PasswordFailure;
 
-use crate::account::domain_value::{AccountInformation, ValidationPair};
-use crate::account::material::{Account, PostChangeStr, PostChangeStrLogin};
+use crate::account::domain_value::{AccountInformation, ValidationPair, UpdateContent, UpdateContentCredentials};
+use crate::account::material::Account;
 use crate::account::tools::{GetAccountInformation, Login, Token};
 
 pub trait Update {
-  fn change_name(&self, params: &PostChangeStr) -> Result<AccountInformation, String>;
-  fn change_password(&self, params: &PostChangeStr) -> Result<ValidationPair, String>;
+  fn change_name(&self, params: &UpdateContent) -> Result<AccountInformation, String>;
+  fn change_password(&self, params: &UpdateContent) -> Result<ValidationPair, String>;
   fn update_password(&self, member_id: u32, new_password: &str) -> bool;
-  fn change_mail(&self, params: &PostChangeStrLogin) -> Result<ValidationPair, String>;
+  fn change_mail(&self, params: &UpdateContentCredentials) -> Result<ValidationPair, String>;
 }
 
 impl Update for Account {
-  fn change_name(&self, params: &PostChangeStr) -> Result<AccountInformation, String>
+  fn change_name(&self, params: &UpdateContent) -> Result<AccountInformation, String>
   {
     if !self.validate(&params.validation) {
       return Err(self.dictionary.get("general.error.validate", Language::English));
@@ -52,7 +52,7 @@ impl Update for Account {
     Err(self.dictionary.get("general.error.unknown", Language::English))
   }
 
-  fn change_password(&self, params: &PostChangeStr) -> Result<ValidationPair, String>
+  fn change_password(&self, params: &UpdateContent) -> Result<ValidationPair, String>
   {
     if !self.validate(&params.validation) {
       return Err(self.dictionary.get("general.error.validate", Language::English));
@@ -97,7 +97,7 @@ impl Update for Account {
     false
   }
 
-  fn change_mail(&self, params: &PostChangeStrLogin) -> Result<ValidationPair, String>
+  fn change_mail(&self, params: &UpdateContentCredentials) -> Result<ValidationPair, String>
   {
     let validation = self.login(&params.credentials);
     if validation.is_err() {

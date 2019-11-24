@@ -2,7 +2,7 @@
 mod tests {
   use mysql_connection::tools::Execute;
 
-  use crate::account::domain_value::{PostCreateMember, ValidationPair};
+  use crate::account::domain_value::{CreateMember, ValidationPair};
   use crate::account::material::Account;
   use crate::account::tools::{Create, Delete};
 
@@ -20,7 +20,7 @@ mod tests {
   #[test]
   fn issue_delete() {
     let account = Account::default();
-    let post_obj = PostCreateMember {
+    let post_obj = CreateMember {
       nickname: "Nsdsdfsdfsdf".to_string(),
       mail: "hdfgfdgdfd@jaylappTest.dev".to_string(),
       password: "Password123456Password123456Password123456".to_string(),
@@ -36,7 +36,7 @@ mod tests {
   #[test]
   fn confirm_mail() {
     let account = Account::default();
-    let post_obj = PostCreateMember {
+    let post_obj = CreateMember {
       nickname: "hfghsdssdgdfg".to_string(),
       mail: "hfghsdssdgdfg@jaylappTest.dev".to_string(),
       password: "Password123456Password123456Password123456".to_string(),

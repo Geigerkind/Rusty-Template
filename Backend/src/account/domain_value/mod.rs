@@ -1,13 +1,17 @@
 pub use self::account_information::AccountInformation;
 pub use self::validation_pair::ValidationPair;
-pub use self::post_create_member::PostCreateMember;
-pub use self::post_login::PostLogin;
-pub use self::post_token::PostToken;
-pub use self::post_delete_token::PostDeleteToken;
+pub use self::create_member::CreateMember;
+pub use self::credentials::Credentials;
+pub use self::create_token::CreateToken;
+pub use self::delete_token::DeleteToken;
+pub use self::update_content::UpdateContent;
+pub use self::update_content_credentials::UpdateContentCredentials;
 
 mod account_information;
 mod validation_pair;
-mod post_create_member;
-mod post_login;
-mod post_token;
-mod post_delete_token;
+mod create_member;
+mod credentials;
+mod create_token;
+mod delete_token;
+mod update_content;
+mod update_content_credentials;

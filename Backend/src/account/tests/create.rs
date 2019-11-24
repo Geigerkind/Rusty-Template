@@ -3,7 +3,7 @@ mod tests {
   use mysql_connection::tools::Execute;
   use str_util::sha3;
 
-  use crate::account::domain_value::PostCreateMember;
+  use crate::account::domain_value::CreateMember;
   use crate::account::material::Account;
   use crate::account::tools::{Create, GetAccountInformation};
 
@@ -11,7 +11,7 @@ mod tests {
   fn create_account() {
     let account = Account::default();
     let acc_mail = "mail@jaylappTest.dev";
-    let post_obj = PostCreateMember {
+    let post_obj = CreateMember {
       nickname: "NickName".to_string(),
       mail: acc_mail.to_string(),
       password: "Password123456Password123456Password123456".to_string(),
@@ -26,7 +26,7 @@ mod tests {
   #[test]
   fn mail_twice() {
     let account = Account::default();
-    let post_obj = PostCreateMember {
+    let post_obj = CreateMember {
       nickname: "BlaNameqqweq".to_string(),
       mail: "bla@jaylappTest.dev".to_string(),
       password: "Password123456Password123456Password123456".to_string(),
@@ -41,13 +41,13 @@ mod tests {
   #[test]
   fn nickname_twice() {
     let account = Account::default();
-    let post_obj = PostCreateMember {
+    let post_obj = CreateMember {
       nickname: "BlaName".to_string(),
       mail: "bla2@jaylappTest.dev".to_string(),
       password: "Password123456Password123456Password123456".to_string(),
     };
 
-    let post_obj_two = PostCreateMember {
+    let post_obj_two = CreateMember {
       nickname: "BlaName".to_string(),
       mail: "bla3@jaylappTest.dev".to_string(),
       password: "Password123456Password123456Password123456".to_string(),
@@ -63,7 +63,7 @@ mod tests {
   #[test]
   fn mail_empty() {
     let account = Account::default();
-    let post_obj = PostCreateMember {
+    let post_obj = CreateMember {
       nickname: "NickName".to_string(),
       mail: "".to_string(),
       password: "Password123456Password123456Password123456".to_string(),
@@ -75,7 +75,7 @@ mod tests {
   #[test]
   fn password_empty() {
     let account = Account::default();
-    let post_obj = PostCreateMember {
+    let post_obj = CreateMember {
       nickname: "NickName".to_string(),
       mail: "34234234".to_string(),
       password: "".to_string(),
@@ -87,7 +87,7 @@ mod tests {
   #[test]
   fn nickname_empty() {
     let account = Account::default();
-    let post_obj = PostCreateMember {
+    let post_obj = CreateMember {
       nickname: "".to_string(),
       mail: "34234234".to_string(),
       password: "dgsdfsfd".to_string(),
@@ -99,7 +99,7 @@ mod tests {
   #[test]
   fn invalid_mail() {
     let account = Account::default();
-    let post_obj = PostCreateMember {
+    let post_obj = CreateMember {
       nickname: "asdasd".to_string(),
       mail: "34234234".to_string(),
       password: "dgsdfsfd".to_string(),
@@ -111,7 +111,7 @@ mod tests {
   #[test]
   fn invalid_nickname() {
     let account = Account::default();
-    let post_obj = PostCreateMember {
+    let post_obj = CreateMember {
       nickname: "asdasd asdfsdfs".to_string(),
       mail: "abc@test.de".to_string(),
       password: "dgsdfsfd".to_string(),
@@ -123,7 +123,7 @@ mod tests {
   #[test]
   fn confirm_mail() {
     let account = Account::default();
-    let post_obj = PostCreateMember {
+    let post_obj = CreateMember {
       nickname: "SomeNameWuuh".to_string(),
       mail: "someNameWuuuuh@jaylappTest.dev".to_string(),
       password: "Password123456Password123456Password123456".to_string(),

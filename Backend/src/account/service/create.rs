@@ -1,13 +1,13 @@
 use crate::account::material::Account;
 use crate::account::tools::Create;
 use crate::account::domain_value::ValidationPair;
-use crate::account::domain_value::PostCreateMember;
+use crate::account::domain_value::CreateMember;
 
 use rocket::State;
 use rocket_contrib::json::Json;
 
 #[post("/create/send", data = "<params>")]
-pub fn create(me: State<Account>, params: Json<PostCreateMember>) -> Result<Json<ValidationPair>, String>
+pub fn create(me: State<Account>, params: Json<CreateMember>) -> Result<Json<ValidationPair>, String>
 {
   match me.create(&params) {
     Ok(val_pair) => Ok(Json(val_pair)),
