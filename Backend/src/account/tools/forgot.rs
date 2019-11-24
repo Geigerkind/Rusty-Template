@@ -88,7 +88,9 @@ impl Forgot for Account {
               entry.forgot_password = false;
             }
             removable = true;
-            self.update_password(user_id, &user_pass);
+
+            // TODO: Return error here
+            self.update_password(&user_pass, *member_id);
           }
         }
         None => return Err(self.dictionary.get("forgot.error.no_forgot_issued", Language::English))

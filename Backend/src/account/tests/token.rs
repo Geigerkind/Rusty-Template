@@ -2,7 +2,7 @@
 mod tests {
   use mysql_connection::tools::Execute;
 
-  use crate::account::domain_value::{CreateMember, Credentials, ValidationPair, UpdateContent};
+  use crate::account::domain_value::{CreateMember, Credentials, ValidationPair};
   use crate::account::material::Account;
   use crate::account::tools::{Create, Login, Token, Update};
 
@@ -16,7 +16,7 @@ mod tests {
     };
 
     let val_pair = account.create(&post_obj).unwrap();
-    assert!(account.validate(&val_pair));
+    assert!(account.validate_token(&val_pair));
 
     account.db_main.execute("DELETE FROM member WHERE mail='cvcbmnbjfie@jaylappTest.dev'");
   }
@@ -29,7 +29,7 @@ mod tests {
       member_id: 42,
     };
 
-    assert!(!account.validate(&val_pair));
+    assert!(!account.validate_token(&val_pair));
   }
 
   #[test]
@@ -47,17 +47,12 @@ mod tests {
       mail: post_obj.mail,
       password: post_obj.password,
     }).unwrap();
+    assert!(account.validate_token(&val_pair));
+    assert!(account.validate_token(&val_pair2));
 
-    assert!(account.validate(&val_pair));
-    assert!(account.validate(&val_pair2));
-
-    let val_pair3 = account.change_password(&UpdateContent {
-      content: "SuperDuperSecretPasswordDefNotSecretTho".to_string(),
-      validation: val_pair,
-    }).unwrap();
-
-    assert!(!account.validate(&val_pair2));
-    assert!(account.validate(&val_pair3));
+    let val_pair3 = account.change_password("SuperDuperSecretPasswordDefNotSecretTho", val_pair.member_id).unwrap();
+    assert!(!account.validate_token(&val_pair2));
+    assert!(account.validate_token(&val_pair3));
 
     account.db_main.execute("DELETE FROM member WHERE mail='klsdkfsowerf@jaylappTest.dev'");
   }
@@ -87,15 +82,15 @@ mod tests {
       password: "Password123456Password123456Password123456".to_string(),
     };
     let val_pair = account.create(&post_obj).unwrap();
-    assert!(account.validate(&val_pair));
+    assert!(account.validate_token(&val_pair));
 
     let new_token_res = account.create_token("Login", val_pair.member_id, 42);
     assert!(new_token_res.is_ok());
     let new_token = new_token_res.unwrap();
-    assert!(account.validate(&new_token.to_validation_pair()));
+    assert!(account.validate_token(&new_token.to_validation_pair()));
 
     assert!(account.delete_token(new_token.id, val_pair.member_id).is_ok());
-    assert!(!account.validate(&new_token.to_validation_pair()));
+    assert!(!account.validate_token(&new_token.to_validation_pair()));
 
     account.db_main.execute("DELETE FROM member WHERE mail='sadgsdfgsddfgsdg@jaylappTest.dev'");
   }

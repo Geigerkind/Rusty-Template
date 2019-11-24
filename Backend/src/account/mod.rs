@@ -1,6 +1,9 @@
-pub mod domain_value;
-pub mod material;
+mod domain_value;
+mod material;
+mod tools;
+mod language;
+mod tests;
+
 pub mod transfer;
-pub mod tools;
-pub mod language;
-pub mod tests;
+
+pub use self::material::Account;

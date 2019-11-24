@@ -10,7 +10,7 @@ use language::tools::Get;
 #[post("/token/create", data = "<params>")]
 pub fn create_token(me: State<Account>, params: Json<CreateToken>) -> Result<Json<APIToken>, String>
 {
-  if !me.validate(&params.val_pair) {
+  if !me.validate_token(&params.val_pair) {
     return Err(me.dictionary.get("general.error.validate", Language::English));
   }
 
@@ -22,7 +22,7 @@ pub fn create_token(me: State<Account>, params: Json<CreateToken>) -> Result<Jso
 
 #[post("/token/get", data = "<params>")]
 pub fn get_tokens(me: State<Account>, params: Json<ValidationPair>) -> Result<Json<Vec<APIToken>>, String> {
-  if !me.validate(&params) {
+  if !me.validate_token(&params) {
     return Err(me.dictionary.get("general.error.validate", Language::English));
   }
 
@@ -32,7 +32,7 @@ pub fn get_tokens(me: State<Account>, params: Json<ValidationPair>) -> Result<Js
 #[post("/token/delete", data = "<params>")]
 pub fn delete_token(me: State<Account>, params: Json<DeleteToken>) -> Result<(), String>
 {
-  if !me.validate(&params.val_pair) {
+  if !me.validate_token(&params.val_pair) {
     return Err(me.dictionary.get("general.error.validate", Language::English));
   }
   me.delete_token(params.token_id, params.val_pair.member_id)

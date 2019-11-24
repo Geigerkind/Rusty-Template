@@ -24,7 +24,7 @@ pub fn confirm(me: State<Account>, id: String) -> Json<bool>
 #[post("/create/resend", data = "<params>")]
 pub fn resend_confirm(me: State<Account>, params: Json<ValidationPair>) -> Json<bool>
 {
-  if !me.validate(&params) {
+  if !me.validate_token(&params) {
     return Json(false);
   }
   Json(me.send_confirmation(params.member_id))

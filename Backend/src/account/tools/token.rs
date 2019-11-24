@@ -8,7 +8,7 @@ use crate::account::material::{Account, APIToken};
 
 pub trait Token {
   fn get_all_token(&self, member_id: u32) -> Vec<APIToken>;
-  fn validate(&self, params: &ValidationPair) -> bool;
+  fn validate_token(&self, params: &ValidationPair) -> bool;
   fn clear_tokens(&self, member_id: u32) -> Result<(), String>;
   fn create_token(&self, purpose: &str, member_id: u32, exp_date: u64) -> Result<APIToken, String>;
   fn create_validation(&self, purpose: &str, member_id: u32, exp_date: u64) -> Result<ValidationPair, String>;
@@ -24,7 +24,7 @@ impl Token for Account {
     }
   }
 
-  fn validate(&self, params: &ValidationPair) -> bool {
+  fn validate_token(&self, params: &ValidationPair) -> bool {
     let api_tokens = self.api_token.read().unwrap();
     match api_tokens.get(&params.member_id) {
       Some(token_vec) => {

@@ -19,7 +19,7 @@ pub fn confirm(me: State<Account>, id: String) -> String
 #[delete("/delete/send", data = "<params>")]
 pub fn request(me: State<Account>, params: Json<ValidationPair>) -> Result<Json<AccountInformation>, String>
 {
-  if !me.validate(&params) {
+  if !me.validate_token(&params) {
     return Err(me.dictionary.get("general.error.validate", Language::English));
   }
 

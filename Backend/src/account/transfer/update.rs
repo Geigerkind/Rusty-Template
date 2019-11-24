@@ -3,12 +3,18 @@ use rocket_contrib::json::Json;
 
 use crate::account::domain_value::{AccountInformation, ValidationPair, UpdateContent, UpdateContentCredentials};
 use crate::account::material::Account;
-use crate::account::tools::Update;
+use crate::account::tools::{Update, Token, Login};
+use language::tools::Get;
+use language::domain_value::Language;
 
 #[post("/update/password", data = "<params>")]
 pub fn password(me: State<Account>, params: Json<UpdateContent>) -> Result<Json<ValidationPair>, String>
 {
-  match me.change_password(&params) {
+  if !me.validate_token(&params.validation) {
+    return Err(me.dictionary.get("general.error.validate", Language::English));
+  }
+
+  match me.change_password(&params.content, params.validation.member_id) {
     Ok(val_pair) => Ok(Json(val_pair)),
     Err(error_str) => Err(error_str)
   }
@@ -17,7 +23,11 @@ pub fn password(me: State<Account>, params: Json<UpdateContent>) -> Result<Json<
 #[post("/update/nickname", data = "<params>")]
 pub fn nickname(me: State<Account>, params: Json<UpdateContent>) -> Result<Json<AccountInformation>, String>
 {
-  match me.change_name(&params) {
+  if !me.validate_token(&params.validation) {
+    return Err(me.dictionary.get("general.error.validate", Language::English));
+  }
+
+  match me.change_name(&params.content, params.validation.member_id) {
     Ok(acc_info) => Ok(Json(acc_info)),
     Err(error_str) => Err(error_str)
   }
@@ -26,8 +36,7 @@ pub fn nickname(me: State<Account>, params: Json<UpdateContent>) -> Result<Json<
 #[post("/update/mail", data = "<params>")]
 pub fn mail(me: State<Account>, params: Json<UpdateContentCredentials>) -> Result<Json<ValidationPair>, String>
 {
-  match me.change_mail(&params) {
-    Ok(val_pair) => Ok(Json(val_pair)),
-    Err(error_str) => Err(error_str)
-  }
+  me.validate_credentials(&params.credentials)
+    .and_then(|member_id| me.change_mail(&params.content, member_id))
+    .and_then(|val_pair| Ok(Json(val_pair)))
 }
