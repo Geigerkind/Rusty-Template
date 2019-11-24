@@ -1,9 +1,9 @@
-@import "../../../../../styles/global";
+@import "../../../../../../../styles/global";
 
 :host {
   display: block;
 
-  PasswordInput {
+  GeneralInput {
     margin-bottom: $spacing;
   }
 }

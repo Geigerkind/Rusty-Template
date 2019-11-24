@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
 import { TranslateModule } from "@ngx-translate/core";
-import { AccountComponent } from "./account";
+import { AccountComponent } from "./component/account/account";
 import { NavigationBarComponent } from "./component/navigation_bar/navigation_bar";
-import { AccountRoutingModule } from "./routing.module";
+import { AccountRouting } from "./routing";
 import { CommonModule } from "@angular/common";
 import { CaretButtonModule } from "../../template/caret_button/caret_button.module";
 
@@ -14,7 +14,7 @@ import { CaretButtonModule } from "../../template/caret_button/caret_button.modu
   imports: [
     CommonModule,
     TranslateModule,
-    AccountRoutingModule,
+    AccountRouting,
     CaretButtonModule
   ],
   exports: [AccountComponent]

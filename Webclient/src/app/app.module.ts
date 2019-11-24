@@ -13,7 +13,7 @@ import { FooterBarModule } from "./component/footer_bar/footer_bar.module";
 import { NavigationBarModule } from "./component/navigation_bar/navigation_bar.module";
 import { CookieBannerComponent } from "./module/cookie_banner/cookie_banner";
 import { ReactiveComponentLoaderModule } from "@wishtack/reactive-component-loader";
-import { AccountModule } from "./module/account/account.module";
+import { AccountModule } from "./module/account/module";
 import { SettingsService } from "./service/settings.service";
 import { NotificationListModule } from "./component/notification_list/notification_list.module";
 import { NotificationService } from "./service/notification.service";

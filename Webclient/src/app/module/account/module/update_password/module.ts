@@ -1,13 +1,13 @@
 import { NgModule } from "@angular/core";
 import { TranslateModule } from "@ngx-translate/core";
 import { CommonModule } from "@angular/common";
-import { DeleteAccountComponent } from "./delete_account";
+import { UpdatePasswordComponent } from "./component/update_password/update_password";
 import { PasswordInputModule } from "src/app/template/password_input/password_input.module";
 import { ConfirmButtonModule } from "src/app/template/confirm_button/confirm_button.module";
 import { BriefNoteModule } from "src/app/template/brief_note/brief_note.module";
 
 @NgModule({
-  declarations: [DeleteAccountComponent],
+  declarations: [UpdatePasswordComponent],
   imports: [
     CommonModule,
     TranslateModule,
@@ -15,7 +15,7 @@ import { BriefNoteModule } from "src/app/template/brief_note/brief_note.module";
     ConfirmButtonModule,
     BriefNoteModule
   ],
-  exports: [DeleteAccountComponent],
-  bootstrap: [DeleteAccountComponent]
+  exports: [UpdatePasswordComponent],
+  bootstrap: [UpdatePasswordComponent]
 })
-export class DeleteAccountModule { }
+export class UpdatePasswordModule { }

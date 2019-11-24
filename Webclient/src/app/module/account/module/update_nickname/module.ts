@@ -1,19 +1,19 @@
 import { NgModule } from "@angular/core";
 import { TranslateModule } from "@ngx-translate/core";
 import { CommonModule } from "@angular/common";
-import { ConfirmButtonModule } from "src/app/template/confirm_button/confirm_button.module";
+import { UpdateNicknameComponent } from "./component/update_nickname/update_nickname";
 import { GeneralInputModule } from "src/app/template/general_input/general_input.module";
-import { APITokensComponent } from "./api_tokens";
+import { ConfirmButtonModule } from "src/app/template/confirm_button/confirm_button.module";
 
 @NgModule({
-  declarations: [APITokensComponent],
+  declarations: [UpdateNicknameComponent],
   imports: [
     CommonModule,
     TranslateModule,
     GeneralInputModule,
     ConfirmButtonModule
   ],
-  exports: [APITokensComponent],
-  bootstrap: [APITokensComponent]
+  exports: [UpdateNicknameComponent],
+  bootstrap: [UpdateNicknameComponent]
 })
-export class APITokensModule { }
+export class UpdateNicknameModule { }
