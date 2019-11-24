@@ -12,7 +12,6 @@ pub fn init(dictionary: &Dictionary) {
   dictionary.register("general.error.validate", Language::English, "Invalid credentials!");
   dictionary.register("general.error.invalid.mail", Language::English, "Invalid mail!");
   dictionary.register("general.error.invalid.nickname", Language::English, "Invalid nickname!");
-  dictionary.register("general.error.mail_send", Language::English, "Mail could not be send!");
   dictionary.register("general.error.unknown", Language::English, "An unknown error occurred!");
 
   dictionary.register("create.confirmation.subject", Language::English, "Confirm your account!");
