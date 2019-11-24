@@ -4,46 +4,42 @@ use mail;
 use mysql_connection::tools::Execute;
 use str_util::{sha3, strformat};
 
-use crate::account::domain_value::{AccountInformation, ValidationPair};
+use crate::account::domain_value::AccountInformation;
 use crate::account::material::Account;
 use crate::account::tools::{GetAccountInformation, Token};
 
 pub trait Delete {
-  fn issue_delete(&self, params: &ValidationPair) -> Result<AccountInformation, String>;
+  fn issue_delete(&self, member_id: u32) -> Result<AccountInformation, String>;
   fn confirm_delete(&self, id: &str) -> Result<(), String>;
 }
 
 impl Delete for Account {
-  fn issue_delete(&self, params: &ValidationPair) -> Result<AccountInformation, String>
+  fn issue_delete(&self, member_id: u32) -> Result<AccountInformation, String>
   {
-    if !self.validate(params) {
-      return Err(self.dictionary.get("general.error.validate", Language::English));
-    }
-
     let delete_id: String;
     {
       {
         let member = self.member.read().unwrap();
-        let entry = member.get(&params.member_id).unwrap();
-        delete_id = sha3::hash(&[&params.member_id.to_string(), "delete", &entry.salt]);
+        let entry = member.get(&member_id).unwrap();
+        delete_id = sha3::hash(&[&member_id.to_string(), "delete", &entry.salt]);
         if !mail::send(&entry.mail, &entry.nickname, self.dictionary.get("create.confirmation.subject", Language::English),
                        strformat::fmt(self.dictionary.get("create.confirmation.text", Language::English), &[&delete_id])) {
           return Err(self.dictionary.get("general.error.mail_send", Language::English));
         }
       }
-      if self.db_main.execute_wparams("UPDATE member SET delete_account=1 WHERE id=:id", params!("id" => params.member_id)) {
+      if self.db_main.execute_wparams("UPDATE member SET delete_account=1 WHERE id=:id", params!("id" => member_id)) {
         let mut member = self.member.write().unwrap();
-        let entry = member.get_mut(&params.member_id).unwrap();
+        let entry = member.get_mut(&member_id).unwrap();
         entry.delete_account = true;
       }
     }
 
     {
       let mut delete_account = self.delete_account.write().unwrap();
-      delete_account.insert(delete_id, params.member_id);
+      delete_account.insert(delete_id, member_id);
     }
 
-    Ok(self.get(params.member_id).unwrap())
+    Ok(self.get(member_id).unwrap())
   }
 
   fn confirm_delete(&self, id: &str) -> Result<(), String>

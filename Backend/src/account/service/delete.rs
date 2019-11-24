@@ -5,7 +5,7 @@ use rocket_contrib::json::Json;
 
 use crate::account::domain_value::{AccountInformation, ValidationPair};
 use crate::account::material::Account;
-use crate::account::tools::Delete;
+use crate::account::tools::{Delete, Token};
 
 #[get("/delete/confirm/<id>")]
 pub fn confirm(me: State<Account>, id: String) -> String
@@ -19,7 +19,11 @@ pub fn confirm(me: State<Account>, id: String) -> String
 #[delete("/delete/send", data = "<params>")]
 pub fn request(me: State<Account>, params: Json<ValidationPair>) -> Result<Json<AccountInformation>, String>
 {
-  match me.issue_delete(&params) {
+  if !me.validate(&params) {
+    return Err(me.dictionary.get("general.error.validate", Language::English));
+  }
+
+  match me.issue_delete(params.member_id) {
     Ok(acc_info) => Ok(Json(acc_info)),
     Err(error_str) => Err(error_str)
   }
