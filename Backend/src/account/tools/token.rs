@@ -17,7 +17,7 @@ pub trait Token {
 
 impl Token for Account {
   fn get_all_token(&self, member_id: u32) -> Vec<APIToken> {
-    let api_tokens = self.api_token.read().unwrap();
+    let api_tokens = self.api_tokens.read().unwrap();
     match api_tokens.get(&member_id) {
       Some(token_vec) => token_vec.to_vec(),
       None => vec![]
@@ -25,7 +25,7 @@ impl Token for Account {
   }
 
   fn validate_token(&self, params: &ValidationPair) -> bool {
-    let api_tokens = self.api_token.read().unwrap();
+    let api_tokens = self.api_tokens.read().unwrap();
     match api_tokens.get(&params.member_id) {
       Some(token_vec) => {
         for token in token_vec {
@@ -55,14 +55,7 @@ impl Token for Account {
       return Err(self.dictionary.get("general.error.unknown", Language::English));
     }
 
-    let mut api_token_to_member_id = self.api_token_to_member_id.write().unwrap();
-    let mut api_token = self.api_token.write().unwrap();
-
-    // Next clearing internal data structures
-    for token in api_token.get(&member_id).unwrap() {
-      api_token_to_member_id.remove(&token.token);
-    }
-
+    let mut api_token = self.api_tokens.write().unwrap();
     api_token.get_mut(&member_id).unwrap().clear();
 
     Ok(())
@@ -106,14 +99,12 @@ impl Token for Account {
       ),
     ) {
       Some(token) => {
-        let mut api_token_to_member_id = self.api_token_to_member_id.write().unwrap();
-        let mut api_tokens = self.api_token.write().unwrap();
+        let mut api_tokens = self.api_tokens.write().unwrap();
         if api_tokens.get(&member_id).is_none() {
           api_tokens.insert(member_id, vec![token.clone()]);
         } else {
           api_tokens.get_mut(&member_id).unwrap().push(token.clone());
         }
-        api_token_to_member_id.insert(token.token.clone(), member_id);
         Ok(token)
       }
       None => return Err(self.dictionary.get("general.error.unknown", Language::English))
@@ -138,8 +129,7 @@ impl Token for Account {
       return Err(self.dictionary.get("general.error.unknown", Language::English));
     }
 
-    let mut api_token_to_member_id = self.api_token_to_member_id.write().unwrap();
-    let mut api_tokens = self.api_token.write().unwrap();
+    let mut api_tokens = self.api_tokens.write().unwrap();
 
     let mut token: String = String::from("");
     let mut token_index: usize = 0;
@@ -155,7 +145,6 @@ impl Token for Account {
       return Err(self.dictionary.get("general.error.unknown", Language::English));
     }
 
-    api_token_to_member_id.remove(&token);
     api_tokens.get_mut(&member_id).unwrap().remove(token_index);
 
     Ok(())

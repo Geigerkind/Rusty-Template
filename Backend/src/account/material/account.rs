@@ -13,8 +13,7 @@ pub struct Account {
   pub db_main: MySQLConnection,
   pub dictionary: Dictionary,
   pub member: RwLock<HashMap<u32, Member>>,
-  pub api_token: RwLock<HashMap<u32, Vec<APIToken>>>,
-  pub api_token_to_member_id: RwLock<HashMap<String, u32>>,
+  pub api_tokens: RwLock<HashMap<u32, Vec<APIToken>>>,
   pub requires_mail_confirmation: RwLock<HashMap<String, u32>>,
   pub forgot_password: RwLock<HashMap<String, u32>>,
   pub delete_account: RwLock<HashMap<String, u32>>,
@@ -29,8 +28,7 @@ impl Default for Account {
       db_main: MySQLConnection::new("main"),
       dictionary,
       member: RwLock::new(HashMap::new()),
-      api_token: RwLock::new(HashMap::new()),
-      api_token_to_member_id: RwLock::new(HashMap::new()),
+      api_tokens: RwLock::new(HashMap::new()),
       requires_mail_confirmation: RwLock::new(HashMap::new()),
       forgot_password: RwLock::new(HashMap::new()),
       delete_account: RwLock::new(HashMap::new()),
@@ -44,9 +42,8 @@ impl Account {
     let mut requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();
     let mut forgot_password = self.forgot_password.write().unwrap();
     let mut delete_account = self.delete_account.write().unwrap();
-    let mut api_token_to_member_id = self.api_token_to_member_id.write().unwrap();
     let mut member = self.member.write().unwrap();
-    let mut api_token = self.api_token.write().unwrap();
+    let mut api_token = self.api_tokens.write().unwrap();
 
     // We are a little wasteful here because we do not insert it directly but rather create a vector first and then copy it over
     for entry in self.db_main.select("SELECT id, nickname, mail, password, salt, mail_confirmed, forgot_password, delete_account FROM member", &|mut row| {
@@ -91,9 +88,6 @@ impl Account {
         exp_date: row.take(4).unwrap(),
       }
     }) {
-      // Chance should be fairly low that we a have a duplicate key
-      api_token_to_member_id.insert(entry.token.clone(), entry.member_id);
-
       api_token.get_mut(&entry.member_id).unwrap().push(entry);
     }
   }
