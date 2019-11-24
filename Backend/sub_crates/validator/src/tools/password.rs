@@ -1,6 +1,6 @@
 use pwned::api::*;
 
-use crate::domainvalue::PasswordFailure;
+use crate::domain_value::PasswordFailure;
 
 pub fn valid_password(input: &str) -> Result<(), PasswordFailure>
 {

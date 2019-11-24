@@ -1,11 +1,10 @@
-use language::domainvalue::Language;
+use language::domain_value::Language;
 use language::tools::Get;
 use str_util::sha3;
 
-use crate::account::domainvalue::post_login::PostLogin;
-use crate::account::domainvalue::validation_pair::ValidationPair;
-use crate::account::material::account::Account;
-use crate::account::tools::token::Token;
+use crate::account::domain_value::{PostLogin, ValidationPair};
+use crate::account::material::Account;
+use crate::account::tools::Token;
 
 pub trait Login {
   fn login(&self, params: &PostLogin) -> Result<ValidationPair, String>;

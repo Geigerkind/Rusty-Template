@@ -1,12 +1,11 @@
-use crate::account::material::account::Account;
-use crate::account::tools::delete::Delete;
-use crate::account::domainvalue::validation_pair::ValidationPair;
+use language::domain_value::Language;
 use language::tools::Get;
-use language::domainvalue::Language;
-use crate::account::domainvalue::account_information::AccountInformation;
-
 use rocket::State;
 use rocket_contrib::json::Json;
+
+use crate::account::domain_value::{AccountInformation, ValidationPair};
+use crate::account::material::Account;
+use crate::account::tools::Delete;
 
 #[get("/delete/confirm/<id>")]
 pub fn confirm(me: State<Account>, id: String) -> String

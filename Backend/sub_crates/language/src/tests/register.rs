@@ -3,7 +3,7 @@ mod tests {
   use crate::tools::Register;
   use crate::tools::Get;
   use crate::material::Dictionary;
-  use crate::domainvalue::Language;
+  use crate::domain_value::Language;
 
   #[test]
   #[should_panic]

@@ -1,9 +1,10 @@
-use crate::account::domainvalue::validation_pair::ValidationPair;
-
 use schemars::JsonSchema;
+
+use crate::account::domain_value::ValidationPair;
+
 #[derive(Deserialize, Serialize, Debug, JsonSchema)]
-pub struct PostToken{
+pub struct PostToken {
   pub purpose: String,
   pub exp_date: u64,
-  pub val_pair: ValidationPair
+  pub val_pair: ValidationPair,
 }

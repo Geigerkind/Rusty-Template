@@ -4,15 +4,8 @@ use expose_api::expose_api_fn;
 use rocket_contrib::json::Json;
 use schemars::schema_for;
 
-use crate::account::domainvalue::account_information::AccountInformation;
-use crate::account::domainvalue::post_create_member::PostCreateMember;
-use crate::account::domainvalue::post_delete_token::PostDeleteToken;
-use crate::account::domainvalue::post_login::PostLogin;
-use crate::account::domainvalue::post_token::PostToken;
-use crate::account::domainvalue::validation_pair::ValidationPair;
-use crate::account::material::api_token::APIToken;
-use crate::account::material::post_change_str::PostChangeStr;
-use crate::account::material::post_change_str_login::PostChangeStrLogin;
+use crate::account::domain_value::{AccountInformation, PostCreateMember, PostDeleteToken, PostLogin, PostToken, ValidationPair};
+use crate::account::material::{APIToken, PostChangeStr, PostChangeStrLogin};
 
 #[get("/")]
 pub fn api() -> Json<Vec<serde_json::Value>> {

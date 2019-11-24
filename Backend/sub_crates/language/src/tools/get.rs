@@ -1,4 +1,4 @@
-use crate::domainvalue::Language;
+use crate::domain_value::Language;
 use crate::material::Dictionary;
 pub trait Get {
   fn get(&self, key: &str, language: Language) -> String;

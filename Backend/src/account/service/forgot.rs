@@ -1,11 +1,11 @@
-use crate::account::material::account::Account;
-use crate::account::tools::forgot::Forgot;
+use language::domain_value::Language;
 use language::tools::Get;
-use language::domainvalue::Language;
-use crate::account::domainvalue::validation_pair::ValidationPair;
-
 use rocket::State;
 use rocket_contrib::json::Json;
+
+use crate::account::domain_value::ValidationPair;
+use crate::account::material::Account;
+use crate::account::tools::Forgot;
 
 #[get("/forgot/confirm/<id>")]
 pub fn receive_confirmation(me: State<Account>, id: String) -> Result<Json<ValidationPair>, String>

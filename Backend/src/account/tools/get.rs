@@ -1,8 +1,8 @@
-use language::domainvalue::Language;
+use language::domain_value::Language;
 use language::tools::Get;
 
-use crate::account::domainvalue::account_information::AccountInformation;
-use crate::account::material::account::Account;
+use crate::account::domain_value::AccountInformation;
+use crate::account::material::Account;
 
 pub trait GetAccountInformation {
   fn get(&self, id: u32) -> Result<AccountInformation, String>;

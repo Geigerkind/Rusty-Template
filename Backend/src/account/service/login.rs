@@ -1,10 +1,9 @@
-use crate::account::material::account::Account;
-use crate::account::tools::login::Login;
-use crate::account::domainvalue::post_login::PostLogin;
-use crate::account::domainvalue::validation_pair::ValidationPair;
-
 use rocket::State;
 use rocket_contrib::json::Json;
+
+use crate::account::domain_value::{PostLogin, ValidationPair};
+use crate::account::material::Account;
+use crate::account::tools::Login;
 
 #[post("/login", data = "<params>")]
 pub fn login(me: State<Account>, params: Json<PostLogin>) -> Result<Json<ValidationPair>, String>

@@ -1,12 +1,9 @@
-use crate::account::material::account::Account;
-use crate::account::tools::update::Update;
-use crate::account::material::post_change_str::PostChangeStr;
-use crate::account::material::post_change_str_login::PostChangeStrLogin;
-use crate::account::domainvalue::validation_pair::ValidationPair;
-use crate::account::domainvalue::account_information::AccountInformation;
-
 use rocket::State;
 use rocket_contrib::json::Json;
+
+use crate::account::domain_value::{AccountInformation, ValidationPair};
+use crate::account::material::{Account, PostChangeStr, PostChangeStrLogin};
+use crate::account::tools::Update;
 
 #[post("/update/password", data = "<params>")]
 pub fn password(me: State<Account>, params: Json<PostChangeStr>) -> Result<Json<ValidationPair>, String>

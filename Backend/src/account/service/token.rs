@@ -1,12 +1,9 @@
 use rocket::State;
 use rocket_contrib::json::Json;
 
-use crate::account::domainvalue::post_delete_token::PostDeleteToken;
-use crate::account::domainvalue::post_token::PostToken;
-use crate::account::domainvalue::validation_pair::ValidationPair;
-use crate::account::material::account::Account;
-use crate::account::material::api_token::APIToken;
-use crate::account::tools::token::Token;
+use crate::account::domain_value::{PostDeleteToken, PostToken, ValidationPair};
+use crate::account::material::{Account, APIToken};
+use crate::account::tools::Token;
 
 #[post("/token/create", data = "<params>")]
 pub fn create_token(me: State<Account>, params: Json<PostToken>) -> Result<Json<APIToken>, String>

@@ -14,7 +14,7 @@ extern crate validator;
 
 use rocket_contrib::json::Json;
 
-use account::material::account::Account;
+use account::material::Account;
 
 pub mod account;
 

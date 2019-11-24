@@ -1,13 +1,10 @@
-use language::domainvalue::Language;
+use language::domain_value::Language;
 use language::tools::Get;
-use mysql_connection::tools::{ Execute, Select };
+use mysql_connection::tools::{Execute, Select};
 use str_util::{random, sha3};
 
-use crate::account::domainvalue::post_delete_token::PostDeleteToken;
-use crate::account::domainvalue::post_token::PostToken;
-use crate::account::domainvalue::validation_pair::ValidationPair;
-use crate::account::material::account::Account;
-use crate::account::material::api_token::APIToken;
+use crate::account::domain_value::{PostDeleteToken, PostToken, ValidationPair};
+use crate::account::material::{Account, APIToken};
 
 pub trait Token {
   fn get_all_token(&self, params: &ValidationPair) -> Result<Vec<APIToken>, String>;

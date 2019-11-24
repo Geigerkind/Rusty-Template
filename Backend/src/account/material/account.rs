@@ -2,13 +2,12 @@ use std::collections::HashMap;
 use std::sync::RwLock;
 
 use language::material::Dictionary;
+use mysql_connection::material::MySQLConnection;
+use mysql_connection::tools::Select;
 use str_util::sha3;
 
 use crate::account::language::init::Init;
-use crate::account::material::api_token::APIToken;
-use crate::account::material::member::Member;
-use mysql_connection::material::MySQLConnection;
-use mysql_connection::tools::Select;
+use crate::account::material::{APIToken, Member};
 
 pub struct Account {
   pub db_main: MySQLConnection,

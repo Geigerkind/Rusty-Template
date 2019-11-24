@@ -1,4 +1,5 @@
 use language::material::Dictionary;
+
 use crate::account::language::english;
 
 pub trait Init {

@@ -1,11 +1,11 @@
 #[cfg(test)]
 mod tests {
-  use crate::account::material::account::Account;
-  use crate::account::tools::create::Create;
-  use crate::account::domainvalue::post_create_member::PostCreateMember;
   use mysql_connection::tools::Execute;
-  use crate::account::tools::get::GetAccountInformation;
   use str_util::sha3;
+
+  use crate::account::domain_value::PostCreateMember;
+  use crate::account::material::Account;
+  use crate::account::tools::{Create, GetAccountInformation};
 
   #[test]
   fn create_account() {
@@ -14,7 +14,7 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "NickName".to_string(),
       mail: acc_mail.to_string(),
-      password: "Password123456Password123456Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string(),
     };
 
     let login = account.create(&post_obj);
@@ -29,7 +29,7 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "BlaNameqqweq".to_string(),
       mail: "bla@jaylappTest.dev".to_string(),
-      password: "Password123456Password123456Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string(),
     };
 
     let _ = account.create(&post_obj);
@@ -44,13 +44,13 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "BlaName".to_string(),
       mail: "bla2@jaylappTest.dev".to_string(),
-      password: "Password123456Password123456Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string(),
     };
 
     let post_obj_two = PostCreateMember {
       nickname: "BlaName".to_string(),
       mail: "bla3@jaylappTest.dev".to_string(),
-      password: "Password123456Password123456Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string(),
     };
 
     let _ = account.create(&post_obj);
@@ -66,7 +66,7 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "NickName".to_string(),
       mail: "".to_string(),
-      password: "Password123456Password123456Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string(),
     };
 
     assert!(account.create(&post_obj).is_err());
@@ -78,7 +78,7 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "NickName".to_string(),
       mail: "34234234".to_string(),
-      password: "".to_string()
+      password: "".to_string(),
     };
 
     assert!(account.create(&post_obj).is_err());
@@ -90,7 +90,7 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "".to_string(),
       mail: "34234234".to_string(),
-      password: "dgsdfsfd".to_string()
+      password: "dgsdfsfd".to_string(),
     };
 
     assert!(account.create(&post_obj).is_err());
@@ -102,7 +102,7 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "asdasd".to_string(),
       mail: "34234234".to_string(),
-      password: "dgsdfsfd".to_string()
+      password: "dgsdfsfd".to_string(),
     };
 
     assert!(account.create(&post_obj).is_err());
@@ -114,7 +114,7 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "asdasd asdfsdfs".to_string(),
       mail: "abc@test.de".to_string(),
-      password: "dgsdfsfd".to_string()
+      password: "dgsdfsfd".to_string(),
     };
 
     assert!(account.create(&post_obj).is_err());
@@ -126,7 +126,7 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "SomeNameWuuh".to_string(),
       mail: "someNameWuuuuh@jaylappTest.dev".to_string(),
-      password: "Password123456Password123456Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string(),
     };
 
     let login = account.create(&post_obj).unwrap();

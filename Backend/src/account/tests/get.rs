@@ -1,10 +1,10 @@
 #[cfg(test)]
 mod tests {
-  use crate::account::material::account::Account;
-  use crate::account::tools::create::Create;
-  use crate::account::domainvalue::post_create_member::PostCreateMember;
   use mysql_connection::tools::Execute;
-  use crate::account::tools::get::GetAccountInformation;
+
+  use crate::account::domain_value::PostCreateMember;
+  use crate::account::material::Account;
+  use crate::account::tools::{Create, GetAccountInformation};
 
   #[test]
   fn get_does_not_exist() {
@@ -19,7 +19,7 @@ mod tests {
     let post_obj = PostCreateMember {
       nickname: "ijfeuhifsduhisdfuhiuhisdf".to_string(),
       mail: "ijfeuhifsduhisdfuhiuhisdf@jaylappTest.dev".to_string(),
-      password: "Password123456Password123456Password123456".to_string()
+      password: "Password123456Password123456Password123456".to_string(),
     };
 
     let login = account.create(&post_obj).unwrap();

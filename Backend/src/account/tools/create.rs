@@ -1,16 +1,14 @@
-use language::domainvalue::Language;
+use language::domain_value::Language;
 use language::tools::Get;
 use mail;
 use mysql_connection::tools::{ Execute, Exists, Select };
 use str_util::{random, sha3, strformat};
-use validator;
-use validator::domainvalue::PasswordFailure;
+use validator::tools::{valid_password, valid_nickname, valid_mail};
+use validator::domain_value::PasswordFailure;
 
-use crate::account::domainvalue::post_create_member::PostCreateMember;
-use crate::account::domainvalue::validation_pair::ValidationPair;
-use crate::account::material::account::Account;
-use crate::account::material::member::Member;
-use crate::account::tools::token::Token;
+use crate::account::domain_value::{PostCreateMember, ValidationPair};
+use crate::account::material::{Account, Member};
+use crate::account::tools::Token;
 
 pub trait Create {
   fn create(&self, params: &PostCreateMember) -> Result<ValidationPair, String>;
@@ -21,15 +19,15 @@ pub trait Create {
 impl Create for Account {
   fn create(&self, params: &PostCreateMember) -> Result<ValidationPair, String>
   {
-    if !validator::tools::valid_mail(&params.mail) {
+    if !valid_mail(&params.mail) {
       return Err(self.dictionary.get("general.error.invalid.mail", Language::English));
     }
 
-    if !validator::tools::valid_nickname(&params.nickname) {
+    if !valid_nickname(&params.nickname) {
       return Err(self.dictionary.get("general.error.invalid.nickname", Language::English));
     }
 
-    match validator::tools::valid_password(&params.password) {
+    match valid_password(&params.password) {
       Err(PasswordFailure::TooFewCharacters) => return Err(self.dictionary.get("general.error.password.length", Language::English)),
       Err(PasswordFailure::Pwned(num_pwned)) => return Err(strformat::fmt(self.dictionary.get("general.error.password.pwned", Language::English), &[&num_pwned.to_string()])),
       Ok(_) => ()

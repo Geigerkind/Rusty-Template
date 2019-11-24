@@ -1,18 +1,13 @@
-use language::domainvalue::Language;
+use language::domain_value::Language;
 use language::tools::Get;
 use mysql_connection::tools::Execute;
 use str_util::{sha3, strformat};
-use validator;
-use validator::domainvalue::PasswordFailure;
+use validator::tools::{valid_mail, valid_nickname, valid_password};
+use validator::domain_value::PasswordFailure;
 
-use crate::account::domainvalue::account_information::AccountInformation;
-use crate::account::domainvalue::validation_pair::ValidationPair;
-use crate::account::material::account::Account;
-use crate::account::material::post_change_str::PostChangeStr;
-use crate::account::material::post_change_str_login::PostChangeStrLogin;
-use crate::account::tools::get::GetAccountInformation;
-use crate::account::tools::login::Login;
-use crate::account::tools::token::Token;
+use crate::account::domain_value::{AccountInformation, ValidationPair};
+use crate::account::material::{Account, PostChangeStr, PostChangeStrLogin};
+use crate::account::tools::{GetAccountInformation, Login, Token};
 
 pub trait Update {
   fn change_name(&self, params: &PostChangeStr) -> Result<AccountInformation, String>;
@@ -28,7 +23,7 @@ impl Update for Account {
       return Err(self.dictionary.get("general.error.validate", Language::English));
     }
 
-    if !validator::tools::valid_nickname(&params.content) {
+    if !valid_nickname(&params.content) {
       return Err(self.dictionary.get("general.error.invalid.nickname", Language::English));
     }
 
@@ -63,7 +58,7 @@ impl Update for Account {
       return Err(self.dictionary.get("general.error.validate", Language::English));
     }
 
-    match validator::tools::valid_password(&params.content) {
+    match valid_password(&params.content) {
       Err(PasswordFailure::TooFewCharacters) => return Err(self.dictionary.get("general.error.password.length", Language::English)),
       Err(PasswordFailure::Pwned(num_pwned)) => return Err(strformat::fmt(self.dictionary.get("general.error.password.pwned", Language::English), &[&num_pwned.to_string()])),
       Ok(_) => ()
@@ -110,7 +105,7 @@ impl Update for Account {
     }
     let validation_pair = validation.unwrap();
 
-    if !validator::tools::valid_mail(&params.content) {
+    if !valid_mail(&params.content) {
       return Err(self.dictionary.get("general.error.invalid.mail", Language::English));
     }
 

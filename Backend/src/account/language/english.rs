@@ -1,6 +1,6 @@
+use language::domain_value::Language;
 use language::material::Dictionary;
 use language::tools::Register;
-use language::domainvalue::Language;
 
 pub fn init(dictionary: &Dictionary) {
   dictionary.register("general.error.password.pwned", Language::English, "This password has been pwned {0} times. Please choose another password!");

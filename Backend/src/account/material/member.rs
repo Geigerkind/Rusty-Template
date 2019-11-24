@@ -9,5 +9,5 @@ pub struct Member {
   pub salt: String,
   pub mail_confirmed: bool,
   pub forgot_password: bool,
-  pub delete_account: bool
+  pub delete_account: bool,
 }

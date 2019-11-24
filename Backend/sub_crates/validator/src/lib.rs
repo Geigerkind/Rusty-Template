@@ -3,7 +3,7 @@ extern crate lazy_static;
 extern crate pwned;
 extern crate regex;
 
-pub mod domainvalue;
+pub mod domain_value;
 pub mod tools;
 
 mod tests;
