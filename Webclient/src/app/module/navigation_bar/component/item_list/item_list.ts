@@ -5,7 +5,7 @@ import {Component, EventEmitter, Input, Output} from "@angular/core";
   templateUrl: "./item_list.html",
   styleUrls: ["./item_list.scss"]
 })
-export class ItemList {
+export class ItemListComponent {
   @Input() items: Array<Array<string>>;
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter();
 
