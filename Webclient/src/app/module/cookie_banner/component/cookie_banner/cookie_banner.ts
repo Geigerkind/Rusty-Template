@@ -12,11 +12,10 @@ import {Severity} from "../../../../domain_value/severity";
 export class CookieBannerComponent {
   @Output() close_banner: EventEmitter<boolean> = new EventEmitter();
 
-  show_options = false;
+  show_options: boolean = false;
   cookies_third_party: Array<CookieOption> = [];
   cookies_other: Array<CookieOption> = [];
   cookies_necessary: Array<CookieOption> = [];
-
 
   constructor(private settingsService: SettingsService,
               private notificationService: NotificationService) {
