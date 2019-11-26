@@ -5,7 +5,7 @@
   },
   "front": {
     "title": "We value your privacy",
-    "description": "We use cookies and technologies such as Google Analytics to count, track and analyze visits. This helps us to improve your experience on this website. Click below to consent to use these technologies. You can change your consent choices any time by returning to this site.",
+    "description": "We use cookies and technologies such as Google Analytics to count, track and analyze visits. This helps us to improve your experience on this website. Click below to consent to use these technologies. You can change your consent choices any time by clicking on 'Change Consent' in the footer.",
     "button": {
       "options": "More options",
       "agree": "I agree"
