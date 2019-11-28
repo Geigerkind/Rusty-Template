@@ -64,9 +64,21 @@
   overflow: hidden;
 
   .cr-title {
-    color: $medium_black;
-    font-weight: bold;
-    font-size: 16px;
+    display: flex;
+    flex-direction: row;
     padding-bottom: $spacing * 0.5;
+
+    div:nth-child(1) {
+      color: $medium_black;
+      font-weight: bold;
+      font-size: 16px;
+      flex: 1;
+    }
+
+    div:nth-child(2) {
+      justify-self: flex-end;
+      color: $highlight;
+      cursor: pointer;
+    }
   }
 }

@@ -1,6 +1,7 @@
 <header>{{ "CookieBanner.front.title" | translate }}</header>
 <section>{{ "CookieBanner.front.description" | translate:translation_options }}</section>
 <footer>
+  <button class="btnHighlight" (click)="emit_agree_all()">{{ "CookieBanner.front.button.agree" | translate }}</button>
+  <button class="btnNonHighlight" (click)="emit_reject_all()">{{ "CookieBanner.front.button.reject" | translate }}</button>
   <button class="btnNonHighlight" (click)="emit_show_options()">{{ "CookieBanner.front.button.options" | translate }}</button>
-  <button class="btnHighlight" (click)="emit_agree()">{{ "CookieBanner.front.button.agree" | translate }}</button>
 </footer>

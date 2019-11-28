@@ -8,7 +8,8 @@ import {environment} from "../../../../../../../environments/environment";
 })
 export class CookieFrontComponent {
   @Output() show_options: EventEmitter<boolean> = new EventEmitter();
-  @Output() agree: EventEmitter<boolean> = new EventEmitter();
+  @Output() agree_all: EventEmitter<boolean> = new EventEmitter();
+  @Output() reject_all: EventEmitter<boolean> = new EventEmitter();
 
   translation_options: any = { company: "" };
 
@@ -20,7 +21,11 @@ export class CookieFrontComponent {
     this.show_options.emit(true);
   }
 
-  emit_agree(): void {
-    this.agree.emit(true);
+  emit_reject_all(): void {
+    this.reject_all.emit(true);
+  }
+
+  emit_agree_all(): void {
+    this.agree_all.emit(true);
   }
 }

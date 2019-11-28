@@ -40,6 +40,18 @@ export class CookieBannerComponent {
     cookieDecisions.third_party.forEach((decison, i) => this.cookies_third_party[i].setEnabled(decison));
   }
 
+  agree_all(): void {
+    this.cookies_other.forEach(cookie => cookie.setEnabled(true));
+    this.cookies_third_party.forEach(cookie => cookie.setEnabled(true));
+    this.save();
+  }
+
+  reject_all(): void {
+    this.cookies_other.forEach(cookie => cookie.setEnabled(false));
+    this.cookies_third_party.forEach(cookie => cookie.setEnabled(false));
+    this.save();
+  }
+
   save(): void {
     const cookieDecisions = {
       other: this.cookies_other.map(cookie => cookie.enabled),

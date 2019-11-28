@@ -7,8 +7,9 @@
     "title": "We value your privacy",
     "description": "{{company}} uses cookies and technologies such as Google Analytics to count, track and analyze visits. This helps us to improve your experience on this website. Click below to consent to use these technologies. You can change your consent choices any time by clicking on 'Change Consent' in the footer.",
     "button": {
-      "options": "More options",
-      "agree": "I agree"
+      "options": "Manage choices",
+      "reject": "Reject all",
+      "agree": "Accept all"
     }
   },
   "options": {
@@ -17,12 +18,13 @@
     "button": {
       "back": "Back",
       "rejectAll": "Reject all",
-      "save": "Save"
+      "save": "Agree"
     },
     "vendor": {
       "thirdparty": "Third party vendors",
       "other": "Other",
-      "necessary": "Necessary"
+      "necessary": "Necessary",
+      "acceptAll": "Accept all"
     }
   },
   "cookieDecisions": {

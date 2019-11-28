@@ -4,17 +4,25 @@
 </header>
 <section class="cookieTables">
   <div class="cookieRowContainer" *ngIf="cookies_third_party.length">
-    <div class="cr-title">{{ "CookieBanner.options.vendor.thirdparty" | translate }}</div>
+    <div class="cr-title">
+      <div>{{ "CookieBanner.options.vendor.thirdparty" | translate }}</div>
+      <div (click)="accept_all(cookies_third_party)">{{ "CookieBanner.options.vendor.acceptAll" | translate }}</div>
+    </div>
     <CookieOptionRow *ngFor="let cookie of cookies_third_party" [cookie]="cookie"></CookieOptionRow>
   </div>
 
   <div class="cookieRowContainer" *ngIf="cookies_other.length">
-    <div class="cr-title">{{ "CookieBanner.options.vendor.other" | translate }}</div>
+    <div class="cr-title">
+      <div>{{ "CookieBanner.options.vendor.other" | translate }}</div>
+      <div (click)="accept_all(cookies_other)">{{ "CookieBanner.options.vendor.acceptAll" | translate }}</div>
+    </div>
     <CookieOptionRow *ngFor="let cookie of cookies_other" [cookie]="cookie"></CookieOptionRow>
   </div>
 
   <div class="cookieRowContainer" *ngIf="cookies_necessary.length">
-    <div class="cr-title">{{ "CookieBanner.options.vendor.necessary" | translate }}</div>
+    <div class="cr-title">
+      <div>{{ "CookieBanner.options.vendor.necessary" | translate }}</div>
+    </div>
     <CookieOptionRow *ngFor="let cookie of cookies_necessary" [cookie]="cookie"></CookieOptionRow>
   </div>
 </section>

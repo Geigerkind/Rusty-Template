@@ -26,4 +26,8 @@ export class CookieOptionsComponent {
     this.cookies_other.forEach(cookie => cookie.setEnabled(false));
     this.cookies_third_party.forEach(cookie => cookie.setEnabled(false));
   }
+
+  accept_all(options): void {
+    options.forEach(cookie => cookie.setEnabled(true));
+  }
 }

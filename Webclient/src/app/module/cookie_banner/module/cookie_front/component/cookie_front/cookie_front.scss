@@ -28,13 +28,20 @@ footer {
 
   button {
     width: calc(50% - #{$spacing} * 0.5);
+    margin-bottom: $spacing * 0.5;
+    margin-right: $spacing;
 
-    &:first-child {
-      margin-right: $spacing;
+    &:nth-child(2) {
+      margin-right: 0;
+    }
+
+    &:last-child {
+      width: 100%;
+      margin: none;
     }
   }
 
-  @media (max-width: 500px) {
+  @media (max-width: 540px) {
     button {
       width: 100%;
 
