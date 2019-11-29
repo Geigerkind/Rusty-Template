@@ -7,6 +7,12 @@ use schemars::schema_for;
 use crate::account::dto::{CreateMember, CreateToken, RestrictedContent};
 use crate::account::domain_value::{AccountInformation, Credentials, ValidationPair};
 use crate::account::material::APIToken;
+use crate::account::guard::authenticate::Authenticate;
+
+#[get("/auth_test")]
+pub fn auth_test(_auth: Authenticate) -> Json<String> {
+  Json("TEST".to_string())
+}
 
 #[get("/")]
 pub fn api() -> Json<Vec<serde_json::Value>> {

@@ -11,6 +11,7 @@ extern crate serde_json;
 extern crate str_util;
 extern crate time_util;
 extern crate validator;
+extern crate base64;
 
 use rocket_contrib::json::Json;
 
@@ -45,7 +46,7 @@ fn main() {
   igniter = igniter.manage(backend.account);
   igniter = igniter.mount("/API/", routes![api_overview]);
   igniter = igniter.mount("/API/account/", routes![
-    account::transfer::api::api,
+    account::transfer::api::api, account::transfer::api::auth_test,
     account::transfer::token::create_token, account::transfer::token::get_tokens, account::transfer::token::delete_token,
     account::transfer::delete::request, account::transfer::delete::confirm,
     account::transfer::create::create, account::transfer::create::confirm, account::transfer::create::resend_confirm,
