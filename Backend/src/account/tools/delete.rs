@@ -4,26 +4,24 @@ use mail;
 use mysql_connection::tools::Execute;
 use str_util::{sha3, strformat};
 
-use crate::account::domain_value::AccountInformation;
 use crate::account::material::Account;
-use crate::account::tools::{GetAccountInformation, Token};
 
 pub trait Delete {
-  fn issue_delete(&self, member_id: u32) -> Result<AccountInformation, String>;
+  fn issue_delete(&self, member_id: u32) -> Result<(), String>;
   fn confirm_delete(&self, delete_id: &str) -> Result<(), String>;
 }
 
 impl Delete for Account {
-  fn issue_delete(&self, member_id: u32) -> Result<AccountInformation, String>
+  fn issue_delete(&self, member_id: u32) -> Result<(), String>
   {
+    let mut requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();
+    let mut member = self.member.write().unwrap();
     if self.db_main.execute_wparams("UPDATE member SET delete_account=1 WHERE id=:id", params!("id" => member_id)) {
-      let mut member = self.member.write().unwrap();
       let entry = member.get_mut(&member_id).unwrap();
       entry.delete_account = true;
 
       let delete_id = sha3::hash(&[&member_id.to_string(), "delete", &entry.salt]);
-      let mut delete_account = self.delete_account.write().unwrap();
-      delete_account.insert(delete_id.clone(), member_id);
+      requires_mail_confirmation.insert(delete_id.clone(), member_id);
 
       // Send a confirmation mail to the member now
       if !mail::send(&entry.mail, &entry.nickname, self.dictionary.get("create.confirmation.subject", Language::English),
@@ -33,34 +31,56 @@ impl Delete for Account {
     } else {
       return Err(self.dictionary.get("general.error.unknown", Language::English));
     }
-    Ok(self.get(member_id).unwrap())
+    Ok(())
   }
 
   fn confirm_delete(&self, delete_id: &str) -> Result<(), String>
   {
-    {
-      let delete_account = self.delete_account.read().unwrap();
-      match delete_account.get(delete_id) {
-        Some(member_id) => {
-          if self.db_main.execute_wparams("DELETE FROM member WHERE id = :id", params!(
-            "id" => *member_id
-          )) {
-            match self.clear_tokens(*member_id) {
-              Ok(_) => {
-                let mut member = self.member.write().unwrap();
-                member.remove(member_id);
-              },
-              Err(err_str) => return Err(err_str)
-            }
-          } else {
-            return Err(self.dictionary.get("general.error.unknown", Language::English));
-          }
-        }
-        None => return Err(self.dictionary.get("delete.error.no_delete_issued", Language::English))
-      }
+    let mut requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();
+    let mut api_token_to_member_id = self.api_token_to_member_id.write().unwrap();
+    let mut api_token = self.api_tokens.write().unwrap();
+    let mut member = self.member.write().unwrap();
+
+    let delete_confirmation_res = requires_mail_confirmation.get(delete_id);
+    if delete_confirmation_res.is_none() {
+      return Err(self.dictionary.get("delete.error.no_delete_issued", Language::English));
     }
-    let mut delete_account = self.delete_account.write().unwrap();
-    delete_account.remove(delete_id);
+
+    // Due to foreign key constraints, other tables depending on the member_id will also be deleted
+    let member_id = *delete_confirmation_res.unwrap();
+    if self.db_main.execute_wparams("DELETE FROM member WHERE id = :id", params!(
+      "id" => member_id
+    )) {
+      {// Remove all other fields that somehow point to this member_id
+        let member_entry = member.get(&member_id).unwrap();
+
+        // Deleting all possible confirmation mail ids
+        if !member_entry.mail_confirmed {
+          requires_mail_confirmation.remove(&sha3::hash(&[&member_entry.id.to_string(), "mail", &member_entry.salt]));
+        }
+        if member_entry.forgot_password {
+          requires_mail_confirmation.remove(&sha3::hash(&[&member_entry.id.to_string(), "forgot", &member_entry.salt]));
+        }
+        if member_entry.delete_account {
+          requires_mail_confirmation.remove(&sha3::hash(&[&member_entry.id.to_string(), "delete", &member_entry.salt]));
+        }
+        if !member_entry.new_mail.is_empty() {
+          requires_mail_confirmation.remove(&sha3::hash(&[&member_entry.id.to_string(), "new_mail", &member_entry.salt]));
+        }
+        requires_mail_confirmation.remove(delete_id);
+
+        // Taking care of api_tokens
+        for api_token in api_token.get(&member_id).unwrap() {
+          api_token_to_member_id.remove(&api_token.token);
+        }
+        api_token.get_mut(&member_id).unwrap().clear();
+        api_token.remove(&member_id);
+      }
+
+      member.remove(&member_id);
+    } else {
+      return Err(self.dictionary.get("general.error.unknown", Language::English));
+    }
     Ok(())
   }
 }

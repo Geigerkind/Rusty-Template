@@ -2,8 +2,7 @@
 mod tests {
   use mysql_connection::tools::Execute;
 
-  use crate::account::dto::CreateMember;
-  use crate::account::domain_value::{Credentials, ValidationPair};
+  use crate::account::dto::{CreateMember, Credentials};
   use crate::account::material::Account;
   use crate::account::tools::{Create, Login, Token, Update};
 
@@ -12,12 +11,14 @@ mod tests {
     let account = Account::default();
     let post_obj = CreateMember {
       nickname: "cvcbmnbjfie".to_string(),
-      mail: "cvcbmnbjfie@jaylappTest.dev".to_string(),
-      password: "Password123456Password123456Password123456".to_string(),
+      credentials: Credentials {
+        mail: "cvcbmnbjfie@jaylappTest.dev".to_string(),
+        password: "Password123456Password123456Password123456".to_string(),
+      }
     };
 
-    let val_pair = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
-    assert!(account.validate_token(&val_pair));
+    let api_token = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();
+    assert!(account.validate_token(&api_token.token).is_some());
 
     account.db_main.execute("DELETE FROM member WHERE mail='cvcbmnbjfie@jaylappTest.dev'");
   }
@@ -25,12 +26,7 @@ mod tests {
   #[test]
   fn validate_invalid() {
     let account = Account::default();
-    let val_pair = ValidationPair {
-      api_token: "someHash".to_string(),
-      member_id: 42,
-    };
-
-    assert!(!account.validate_token(&val_pair));
+    assert!(account.validate_token("someHash").is_none());
   }
 
   #[test]
@@ -38,22 +34,21 @@ mod tests {
     let account = Account::default();
     let post_obj = CreateMember {
       nickname: "klsdkfsowerf".to_string(),
-      mail: "klsdkfsowerf@jaylappTest.dev".to_string(),
-      password: "Password123456Password123456Password123456".to_string(),
+      credentials: Credentials {
+        mail: "klsdkfsowerf@jaylappTest.dev".to_string(),
+        password: "Password123456Password123456Password123456".to_string(),
+      }
     };
 
     // First login
-    let val_pair = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
-    let val_pair2 = account.login(&Credentials {
-      mail: post_obj.mail,
-      password: post_obj.password,
-    }).unwrap();
-    assert!(account.validate_token(&val_pair));
-    assert!(account.validate_token(&val_pair2));
+    let api_token = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();
+    let api_token_two = account.login(&post_obj.credentials.mail, &post_obj.credentials.password).unwrap();
+    assert!(account.validate_token(&api_token.token).is_some());
+    assert!(account.validate_token(&api_token_two.token).is_some());
 
-    let val_pair3 = account.change_password("SuperDuperSecretPasswordDefNotSecretTho", val_pair.member_id).unwrap();
-    assert!(!account.validate_token(&val_pair2));
-    assert!(account.validate_token(&val_pair3));
+    let api_token_three = account.change_password("SuperDuperSecretPasswordDefNotSecretTho", api_token.member_id).unwrap();
+    assert!(account.validate_token(&api_token_two.token).is_none());
+    assert!(account.validate_token(&api_token_three.token).is_some());
 
     account.db_main.execute("DELETE FROM member WHERE mail='klsdkfsowerf@jaylappTest.dev'");
   }
@@ -63,13 +58,15 @@ mod tests {
     let account = Account::default();
     let post_obj = CreateMember {
       nickname: "fhfgjhfgjfghfjg".to_string(),
-      mail: "fhfgjhfgjfghfjg@jaylappTest.dev".to_string(),
-      password: "Password123456Password123456Password123456".to_string(),
+      credentials: Credentials {
+        mail: "fhfgjhfgjfghfjg@jaylappTest.dev".to_string(),
+        password: "Password123456Password123456Password123456".to_string(),
+      }
     };
-    let val_pair = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
-    let tokens = account.get_all_token(val_pair.member_id);
+    let api_token = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();
+    let tokens = account.get_all_token(api_token.member_id);
     assert_eq!(tokens.len(), 1);
-    assert_eq!(tokens[0].token, val_pair.api_token);
+    assert_eq!(tokens[0].token, api_token.token);
 
     account.db_main.execute("DELETE FROM member WHERE mail='fhfgjhfgjfghfjg@jaylappTest.dev'");
   }
@@ -79,19 +76,21 @@ mod tests {
     let account = Account::default();
     let post_obj = CreateMember {
       nickname: "sadgsdfgsddfgsdg".to_string(),
-      mail: "sadgsdfgsddfgsdg@jaylappTest.dev".to_string(),
-      password: "Password123456Password123456Password123456".to_string(),
+      credentials: Credentials {
+        mail: "sadgsdfgsddfgsdg@jaylappTest.dev".to_string(),
+        password: "Password123456Password123456Password123456".to_string(),
+      }
     };
-    let val_pair = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
-    assert!(account.validate_token(&val_pair));
+    let api_token = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();
+    assert!(account.validate_token(&api_token.token).is_some());
 
-    let new_token_res = account.create_token("Login", val_pair.member_id, 42);
+    let new_token_res = account.create_token("Login", api_token.member_id, 42);
     assert!(new_token_res.is_ok());
     let new_token = new_token_res.unwrap();
-    assert!(account.validate_token(&new_token.to_validation_pair()));
+    assert!(account.validate_token(&new_token.token).is_some());
 
-    assert!(account.delete_token(new_token.id, val_pair.member_id).is_ok());
-    assert!(!account.validate_token(&new_token.to_validation_pair()));
+    assert!(account.delete_token(new_token.id, api_token.member_id).is_ok());
+    assert!(account.validate_token(&new_token.token).is_none());
 
     account.db_main.execute("DELETE FROM member WHERE mail='sadgsdfgsddfgsdg@jaylappTest.dev'");
   }

@@ -9,17 +9,22 @@ pub trait GetAccountInformation {
 }
 
 impl GetAccountInformation for Account {
-  fn get(&self, id: u32) -> Result<AccountInformation, String>
-  {
+  fn get(&self, id: u32) -> Result<AccountInformation, String> {
     let member = self.member.read().unwrap();
-    match member.get(&id) {
-      Some(entry) => Ok(AccountInformation {
-        id: entry.id,
-        mail: entry.mail.clone(),
-        nickname: entry.nickname.clone(),
-        mail_confirmed: entry.mail_confirmed,
-      }),
-      None => Err(self.dictionary.get("get.error.nomember", Language::English))
+
+    // Although this should never happen;
+    // In the right order of execution of independent threads changing the account info, it may happen
+    let entry_res = member.get(&id);
+    if entry_res.is_none() {
+      return Err(self.dictionary.get("general.error.unknown", Language::English));
     }
+
+    let entry = entry_res.unwrap();
+    Ok(AccountInformation {
+      id: entry.id,
+      mail: entry.mail.clone(),
+      nickname: entry.nickname.clone(),
+      mail_confirmed: entry.mail_confirmed,
+    })
   }
 }

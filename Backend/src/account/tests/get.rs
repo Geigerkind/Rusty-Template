@@ -2,7 +2,7 @@
 mod tests {
   use mysql_connection::tools::Execute;
 
-  use crate::account::dto::CreateMember;
+  use crate::account::dto::{CreateMember, Credentials};
   use crate::account::material::Account;
   use crate::account::tools::{Create, GetAccountInformation};
 
@@ -18,11 +18,13 @@ mod tests {
     let account = Account::default();
     let post_obj = CreateMember {
       nickname: "ijfeuhifsduhisdfuhiuhisdf".to_string(),
-      mail: "ijfeuhifsduhisdfuhiuhisdf@jaylappTest.dev".to_string(),
-      password: "Password123456Password123456Password123456".to_string(),
+      credentials: Credentials {
+        mail: "ijfeuhifsduhisdfuhiuhisdf@jaylappTest.dev".to_string(),
+        password: "Password123456Password123456Password123456".to_string(),
+      }
     };
 
-    let login = account.create(&post_obj.mail, &post_obj.nickname, &post_obj.password).unwrap();
+    let login = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();
     let acc_info = account.get(login.member_id);
     assert!(acc_info.is_ok());
 

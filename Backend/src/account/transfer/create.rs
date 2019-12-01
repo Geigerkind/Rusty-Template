@@ -2,15 +2,15 @@ use rocket::State;
 use rocket_contrib::json::Json;
 
 use crate::account::dto::CreateMember;
-use crate::account::domain_value::ValidationPair;
-use crate::account::material::Account;
-use crate::account::tools::{Create, Token};
+use crate::account::material::{Account, APIToken};
+use crate::account::tools::Create;
+use crate::account::guard::authenticate::Authenticate;
 
 #[post("/create", data = "<params>")]
-pub fn create(me: State<Account>, params: Json<CreateMember>) -> Result<Json<ValidationPair>, String>
+pub fn create(me: State<Account>, params: Json<CreateMember>) -> Result<Json<APIToken>, String>
 {
-  me.create(&params.mail, &params.nickname, &params.password)
-    .and_then(|val_pair| Ok(Json(val_pair)))
+  me.create(&params.credentials.mail, &params.nickname, &params.credentials.password)
+    .and_then(|api_token| Ok(Json(api_token)))
 }
 
 #[get("/create/confirm/<id>")]
@@ -19,11 +19,8 @@ pub fn confirm(me: State<Account>, id: String) -> Json<bool>
   Json(me.confirm(&id))
 }
 
-#[post("/create/resend", data = "<params>")]
-pub fn resend_confirm(me: State<Account>, params: Json<ValidationPair>) -> Json<bool>
+#[get("/create/resend")]
+pub fn resend_confirm(me: State<Account>, auth: Authenticate) -> Json<bool>
 {
-  if !me.validate_token(&params) {
-    return Json(false);
-  }
-  Json(me.send_confirmation(params.member_id))
+  Json(me.send_confirmation(auth.0))
 }

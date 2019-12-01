@@ -31,6 +31,7 @@ CREATE TABLE `member` (
   `mail_confirmed` tinyint(1) unsigned NOT NULL DEFAULT 0,
   `forgot_password` tinyint(1) unsigned NOT NULL DEFAULT 0,
   `delete_account` tinyint(1) unsigned NOT NULL DEFAULT 0,
+  `new_mail` varchar(255) COLLATE utf8_unicode_ci NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

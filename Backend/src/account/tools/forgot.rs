@@ -5,13 +5,12 @@ use mysql_connection::tools::Execute;
 use str_util::{random, sha3, strformat};
 use validator::tools::valid_mail;
 
-use crate::account::domain_value::ValidationPair;
-use crate::account::material::Account;
+use crate::account::material::{Account, APIToken};
 use crate::account::tools::{Token, Update};
 
 pub trait Forgot {
   fn send_forgot_password(&self, mail: &str) -> Result<(), String>;
-  fn recv_forgot_password(&self, forgot_id: &str) -> Result<ValidationPair, String>;
+  fn recv_forgot_password(&self, forgot_id: &str) -> Result<APIToken, String>;
 }
 
 impl Forgot for Account {
@@ -21,10 +20,13 @@ impl Forgot for Account {
       return Err(self.dictionary.get("general.error.invalid.mail", Language::English));
     }
 
+    let mut requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();
+    let mut member = self.member.write().unwrap();
+
     let mut member_id = None;
     {
       let lower_mail = mail.to_lowercase();
-      for member_entry in self.member.read().unwrap().values() {
+      for member_entry in member.values() {
         if member_entry.mail == lower_mail {
           member_id = Some(member_entry.id);
           break;
@@ -38,14 +40,11 @@ impl Forgot for Account {
 
     let unwrapped_member_id = member_id.unwrap();
     if self.db_main.execute_wparams("UPDATE member SET forgot_password=1 WHERE id=:id", params!("id" => unwrapped_member_id)) {
-
-      let mut member = self.member.write().unwrap();
-      let mut forgot_password = self.forgot_password.write().unwrap();
       let entry = member.get_mut(&unwrapped_member_id).unwrap();
       let forgot_id = sha3::hash(&[&unwrapped_member_id.to_string(), "forgot", &entry.salt]);
 
       entry.forgot_password = true;
-      forgot_password.insert(forgot_id.clone(), unwrapped_member_id);
+      requires_mail_confirmation.insert(forgot_id.clone(), unwrapped_member_id);
 
       // Only send a mail if we really set up the internal structures properly
       if !mail::send(&entry.mail, &entry.nickname, self.dictionary.get("forgot.confirmation.subject", Language::English),
@@ -58,18 +57,18 @@ impl Forgot for Account {
     Err(self.dictionary.get("general.error.unknown", Language::English))
   }
 
-  fn recv_forgot_password(&self, forgot_id: &str) -> Result<ValidationPair, String>
+  fn recv_forgot_password(&self, forgot_id: &str) -> Result<APIToken, String>
   {
     let user_id;
     {
-      let forgot_password = self.forgot_password.read().unwrap();
-      match forgot_password.get(forgot_id) {
+      let requires_mail_confirmation = self.requires_mail_confirmation.read().unwrap();
+      match requires_mail_confirmation.get(forgot_id) {
         Some(member_id) => {
           user_id = *member_id;
+          let mut member = self.member.write().unwrap();
           if self.db_main.execute_wparams("UPDATE member SET forgot_password=0 WHERE id=:id", params!(
             "id" => *member_id
           )) {
-            let mut member = self.member.write().unwrap();
             let entry = member.get_mut(member_id).unwrap();
             entry.forgot_password = false;
           } else {
@@ -93,11 +92,13 @@ impl Forgot for Account {
           }
         }
 
-        let mut forgot_password = self.forgot_password.write().unwrap();
-        forgot_password.remove(forgot_id);
+        {
+          let mut requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();
+          requires_mail_confirmation.remove(forgot_id);
+        }
         return self.create_token(
           &self.dictionary.get("general.login", Language::English),
-          user_id, time_util::get_ts_from_now_in_secs(30)).and_then(|api_token| Ok(api_token.to_validation_pair()));
+          user_id, time_util::get_ts_from_now_in_secs(30));
       });
   }
 }

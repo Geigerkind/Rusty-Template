@@ -1,39 +1,30 @@
 use rocket::State;
 use rocket_contrib::json::Json;
 
-use crate::account::dto::RestrictedContent;
-use crate::account::domain_value::{AccountInformation, ValidationPair, Credentials};
-use crate::account::material::Account;
-use crate::account::tools::{Update, Token, Login};
-use language::tools::Get;
-use language::domain_value::Language;
+use crate::account::domain_value::AccountInformation;
+use crate::account::material::{Account, APIToken};
+use crate::account::tools::Update;
+use crate::account::guard::authenticate::Authenticate;
 
-#[post("/update/password", data = "<params>")]
-pub fn password(me: State<Account>, params: Json<RestrictedContent<String, ValidationPair>>) -> Result<Json<ValidationPair>, String>
-{
-  if !me.validate_token(&params.validation) {
-    return Err(me.dictionary.get("general.error.validate", Language::English));
-  }
-
-  me.change_password(&params.content, params.validation.member_id)
-    .and_then(|val_pair| Ok(Json(val_pair)))
+#[post("/update/password", data = "<content>")]
+pub fn password(me: State<Account>, auth: Authenticate, content: String) -> Result<Json<APIToken>, String> {
+  me.change_password(&content, auth.0)
+    .and_then(|api_token| Ok(Json(api_token)))
 }
 
-#[post("/update/nickname", data = "<params>")]
-pub fn nickname(me: State<Account>, params: Json<RestrictedContent<String, ValidationPair>>) -> Result<Json<AccountInformation>, String>
-{
-  if !me.validate_token(&params.validation) {
-    return Err(me.dictionary.get("general.error.validate", Language::English));
-  }
-
-  me.change_name(&params.content, params.validation.member_id)
+#[post("/update/nickname", data = "<content>")]
+pub fn nickname(me: State<Account>, auth: Authenticate, content: String) -> Result<Json<AccountInformation>, String> {
+  me.change_name(&content, auth.0)
     .and_then(|acc_info| Ok(Json(acc_info)))
 }
 
-#[post("/update/mail", data = "<params>")]
-pub fn mail(me: State<Account>, params: Json<RestrictedContent<String, Credentials>>) -> Result<Json<ValidationPair>, String>
-{
-  me.validate_credentials(&params.validation)
-    .and_then(|member_id| me.change_mail(&params.content, member_id))
-    .and_then(|val_pair| Ok(Json(val_pair)))
+#[post("/update/mail/request", data = "<content>")]
+pub fn request_mail(me: State<Account>, auth: Authenticate, content: String) -> Result<(), String> {
+  me.request_change_mail(&content, auth.0)
+}
+
+#[get("/update/mail/confirm/<id>")]
+pub fn confirm_mail(me: State<Account>, id: String) -> Result<Json<APIToken>, String> {
+  me.confirm_change_mail(&id)
+    .and_then(|api_token| Ok(Json(api_token)))
 }

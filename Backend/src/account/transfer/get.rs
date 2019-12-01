@@ -1,19 +1,14 @@
 use rocket::State;
 use rocket_contrib::json::Json;
 
-use crate::account::domain_value::{AccountInformation, ValidationPair};
+use crate::account::domain_value::AccountInformation;
 use crate::account::material::Account;
-use crate::account::tools::{GetAccountInformation, Token};
-use language::tools::Get;
-use language::domain_value::Language;
+use crate::account::tools::GetAccountInformation;
+use crate::account::guard::authenticate::Authenticate;
 
-#[post("/get", data="<params>")]
-pub fn get_account_information(me: State<Account>, params: Json<ValidationPair>) -> Result<Json<AccountInformation>, String>
+#[get("/get")]
+pub fn get_account_information(me: State<Account>, auth: Authenticate) -> Result<Json<AccountInformation>, String>
 {
-  if !me.validate_token(&params) {
-    return Err(me.dictionary.get("general.error.validate", Language::English));
-  }
-
-  me.get(params.member_id)
+  me.get(auth.0)
     .and_then(|acc_info| Ok(Json(acc_info)))
 }

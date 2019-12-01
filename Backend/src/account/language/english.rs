@@ -25,8 +25,6 @@ pub fn init(dictionary: &Dictionary) {
   dictionary.register("forgot.information.text", Language::English, "Greetings\n\nThis is your new Password: {0}\n\nPlease change it immediately!\n\nCheers!");
   dictionary.register("forgot.error.no_forgot_issued", Language::English, "The provided url is invalid!");
 
-  dictionary.register("get.error.nomember", Language::English, "There is no member with this id!");
-
   dictionary.register("login.error.credentials", Language::English, "Invalid credentials!");
 
   dictionary.register("delete.error.no_delete_issued", Language::English, "A deletion has not been requested for this token!");

@@ -1,13 +1,13 @@
 use rocket::State;
 use rocket_contrib::json::Json;
 
-use crate::account::domain_value::{Credentials, ValidationPair};
-use crate::account::material::Account;
+use crate::account::material::{Account, APIToken};
 use crate::account::tools::Login;
+use crate::account::dto::Credentials;
 
 #[post("/login", data = "<params>")]
-pub fn login(me: State<Account>, params: Json<Credentials>) -> Result<Json<ValidationPair>, String>
+pub fn login(me: State<Account>, params: Json<Credentials>) -> Result<Json<APIToken>, String>
 {
-  me.login(&params)
-    .and_then(|val_pair| Ok(Json(val_pair)))
+  me.login(&params.mail, &params.password)
+    .and_then(|api_token| Ok(Json(api_token)))
 }

@@ -13,12 +13,13 @@ pub struct Account {
   pub db_main: MySQLConnection,
   pub dictionary: Dictionary,
   pub member: RwLock<HashMap<u32, Member>>,
+  pub api_token_to_member_id: RwLock<HashMap<String, u32>>,
   pub api_tokens: RwLock<HashMap<u32, Vec<APIToken>>>,
-  pub requires_mail_confirmation: RwLock<HashMap<String, u32>>,
-  pub forgot_password: RwLock<HashMap<String, u32>>,
-  pub delete_account: RwLock<HashMap<String, u32>>,
+  pub requires_mail_confirmation: RwLock<HashMap<String, u32>>
 }
 
+// Important: Always lock resources bottom to to, in order to prevent running into a deadlock
+// Also: Write locks may not be acquired within a query
 impl Default for Account {
   fn default() -> Self
   {
@@ -29,9 +30,8 @@ impl Default for Account {
       dictionary,
       member: RwLock::new(HashMap::new()),
       api_tokens: RwLock::new(HashMap::new()),
-      requires_mail_confirmation: RwLock::new(HashMap::new()),
-      forgot_password: RwLock::new(HashMap::new()),
-      delete_account: RwLock::new(HashMap::new()),
+      api_token_to_member_id: RwLock::new(HashMap::new()),
+      requires_mail_confirmation: RwLock::new(HashMap::new())
     }
   }
 }
@@ -40,13 +40,12 @@ impl Account {
   pub fn init(&self)
   {
     let mut requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();
-    let mut forgot_password = self.forgot_password.write().unwrap();
-    let mut delete_account = self.delete_account.write().unwrap();
-    let mut member = self.member.write().unwrap();
+    let mut api_token_to_member_id = self.api_token_to_member_id.write().unwrap();
     let mut api_token = self.api_tokens.write().unwrap();
+    let mut member = self.member.write().unwrap();
 
     // We are a little wasteful here because we do not insert it directly but rather create a vector first and then copy it over
-    for entry in self.db_main.select("SELECT id, nickname, mail, password, salt, mail_confirmed, forgot_password, delete_account FROM member", &|mut row| {
+    for entry in self.db_main.select("SELECT id, nickname, mail, password, salt, mail_confirmed, forgot_password, delete_account, new_mail FROM member", &|mut row| {
       Member {
         id: row.take(0).unwrap(),
         nickname: row.take(1).unwrap(),
@@ -56,6 +55,7 @@ impl Account {
         mail_confirmed: row.take(5).unwrap(),
         forgot_password: row.take(6).unwrap(),
         delete_account: row.take(7).unwrap(),
+        new_mail: row.take(8).unwrap()
       }
     }) {
       // Prepping api_token map
@@ -63,17 +63,19 @@ impl Account {
 
       // Init remaining confirmation mails
       if !entry.mail_confirmed {
-        requires_mail_confirmation.insert(sha3::hash(&[&entry.id.to_string(), &entry.salt]), entry.id);
+        requires_mail_confirmation.insert(sha3::hash(&[&entry.id.to_string(), "mail", &entry.salt]), entry.id);
       }
-
       // Init remaining forgot password mails
       if entry.forgot_password {
-        forgot_password.insert(sha3::hash(&[&entry.id.to_string(), "forgot", &entry.salt]), entry.id);
+        requires_mail_confirmation.insert(sha3::hash(&[&entry.id.to_string(), "forgot", &entry.salt]), entry.id);
       }
-
       // Init remaining delete mails
       if entry.delete_account {
-        delete_account.insert(sha3::hash(&[&entry.id.to_string(), "delete", &entry.salt]), entry.id);
+        requires_mail_confirmation.insert(sha3::hash(&[&entry.id.to_string(), "delete", &entry.salt]), entry.id);
+      }
+      // Init remaining change mail request mails
+      if !entry.new_mail.is_empty() {
+        requires_mail_confirmation.insert(sha3::hash(&[&entry.id.to_string(), "new_mail", &entry.salt]), entry.id);
       }
 
       member.insert(entry.id, entry);
@@ -88,6 +90,7 @@ impl Account {
         exp_date: row.take(4).unwrap(),
       }
     }) {
+      api_token_to_member_id.insert(entry.token.clone(), entry.member_id);
       api_token.get_mut(&entry.member_id).unwrap().push(entry);
     }
   }

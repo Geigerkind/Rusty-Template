@@ -10,7 +10,6 @@ schemars = "*"
 serde = "*"
 serde_derive = "*"
 serde_json = "*"
-base64 = "*"
 mail = { path = "sub_crates/mail" }
 validator = { path = "sub_crates/validator" }
 str_util = { path = "sub_crates/str_util" }
