@@ -8,7 +8,7 @@ import {LoginForm} from "../../dto/login_form";
     styleUrls: ["./login.scss"]
 })
 export class LoginComponent {
-    disableSubmit: boolean = false;
+    disableSubmit = false;
     model: LoginForm = {
         mail: "",
         password: ""

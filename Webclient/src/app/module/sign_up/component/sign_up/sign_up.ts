@@ -8,7 +8,7 @@ import {SignUpForm} from "../../dto/sign_up_form";
     styleUrls: ["./sign_up.scss"]
 })
 export class SignUpComponent {
-    disableSubmit: boolean = false;
+    disableSubmit = false;
     model: SignUpForm = {
         nickname: "",
         credentials: {
