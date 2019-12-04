@@ -8,17 +8,17 @@ import {BriefNoteModule} from "src/app/template/brief_note/module";
 import {DeleteAccountRouting} from "./routing";
 
 @NgModule({
-  declarations: [DeleteAccountComponent],
-  imports: [
-    CommonModule,
-    TranslateModule,
-    PasswordInputModule,
-    ConfirmButtonModule,
-    BriefNoteModule,
-    DeleteAccountRouting
-  ],
-  exports: [DeleteAccountComponent],
-  bootstrap: [DeleteAccountComponent]
+    declarations: [DeleteAccountComponent],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        PasswordInputModule,
+        ConfirmButtonModule,
+        BriefNoteModule,
+        DeleteAccountRouting
+    ],
+    exports: [DeleteAccountComponent],
+    bootstrap: [DeleteAccountComponent]
 })
 export class DeleteAccountModule {
 }

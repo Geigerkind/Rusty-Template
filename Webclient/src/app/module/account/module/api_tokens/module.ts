@@ -7,16 +7,16 @@ import {APITokensComponent} from "./component/api_tokens/api_tokens";
 import {APITokensRouting} from "./routing";
 
 @NgModule({
-  declarations: [APITokensComponent],
-  imports: [
-    CommonModule,
-    TranslateModule,
-    GeneralInputModule,
-    ConfirmButtonModule,
-    APITokensRouting
-  ],
-  exports: [APITokensComponent],
-  bootstrap: [APITokensComponent]
+    declarations: [APITokensComponent],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        GeneralInputModule,
+        ConfirmButtonModule,
+        APITokensRouting
+    ],
+    exports: [APITokensComponent],
+    bootstrap: [APITokensComponent]
 })
 export class APITokensModule {
 }

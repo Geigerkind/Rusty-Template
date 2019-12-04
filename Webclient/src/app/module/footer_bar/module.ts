@@ -5,13 +5,13 @@ import {CommonModule} from "@angular/common";
 import {AppRouting} from "../../routing";
 
 @NgModule({
-  declarations: [FooterBarComponent],
-  imports: [
-    CommonModule,
-    TranslateModule,
-    AppRouting
-  ],
-  exports: [FooterBarComponent]
+    declarations: [FooterBarComponent],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        AppRouting
+    ],
+    exports: [FooterBarComponent]
 })
 export class FooterBarModule {
 }

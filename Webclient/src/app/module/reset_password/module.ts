@@ -7,15 +7,15 @@ import {GeneralInputModule} from "../../template/general_input/module";
 import {ConfirmButtonModule} from "../../template/confirm_button/module";
 
 @NgModule({
-  declarations: [ResetPasswordComponent],
-  imports: [
-    CommonModule,
-    TranslateModule,
-    ResetPasswordRouting,
-    GeneralInputModule,
-    ConfirmButtonModule
-  ],
-  exports: [ResetPasswordComponent]
+    declarations: [ResetPasswordComponent],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        ResetPasswordRouting,
+        GeneralInputModule,
+        ConfirmButtonModule
+    ],
+    exports: [ResetPasswordComponent]
 })
 export class ResetPasswordModule {
 }

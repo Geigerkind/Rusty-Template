@@ -5,14 +5,14 @@ import {CommonModule} from "@angular/common";
 import {AccountInformationRouting} from "./routing";
 
 @NgModule({
-  declarations: [AccountInformationComponent],
-  imports: [
-    CommonModule,
-    TranslateModule,
-    AccountInformationRouting
-  ],
-  exports: [AccountInformationComponent],
-  bootstrap: [AccountInformationComponent]
+    declarations: [AccountInformationComponent],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        AccountInformationRouting
+    ],
+    exports: [AccountInformationComponent],
+    bootstrap: [AccountInformationComponent]
 })
 export class AccountInformationModule {
 }

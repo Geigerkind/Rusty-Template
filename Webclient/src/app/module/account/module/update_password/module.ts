@@ -8,17 +8,17 @@ import {BriefNoteModule} from "src/app/template/brief_note/module";
 import {UpdatePasswordRouting} from "./routing";
 
 @NgModule({
-  declarations: [UpdatePasswordComponent],
-  imports: [
-    CommonModule,
-    TranslateModule,
-    PasswordInputModule,
-    ConfirmButtonModule,
-    BriefNoteModule,
-    UpdatePasswordRouting
-  ],
-  exports: [UpdatePasswordComponent],
-  bootstrap: [UpdatePasswordComponent]
+    declarations: [UpdatePasswordComponent],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        PasswordInputModule,
+        ConfirmButtonModule,
+        BriefNoteModule,
+        UpdatePasswordRouting
+    ],
+    exports: [UpdatePasswordComponent],
+    bootstrap: [UpdatePasswordComponent]
 })
 export class UpdatePasswordModule {
 }

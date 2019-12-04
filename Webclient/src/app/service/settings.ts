@@ -2,51 +2,51 @@ import {CookieService} from "ngx-cookie-service";
 import {Injectable} from "@angular/core";
 
 @Injectable({
-  providedIn: "root",
+    providedIn: "root",
 })
 export class SettingsService {
-  settings: Array<string> = [
-    "cookieDecisions",
-    "PWA_PROMPT"
-  ];
+    settings: Array<string> = [
+        "cookieDecisions",
+        "PWA_PROMPT",
+        "API_TOKEN"
+    ];
 
-  observers: any = {};
+    observers: any = {};
 
-  constructor(private cookieService: CookieService) {
-    for (const setting in cookieService.getAll()) {
-      if (!this.settings.includes(setting))
-        continue;
+    constructor(private cookieService: CookieService) {
+        for (const setting in cookieService.getAll()) {
+            if (!this.settings.includes(setting))
+                continue;
 
-      this[setting] = JSON.parse(this.cookieService.get(setting));
+            this[setting] = JSON.parse(this.cookieService.get(setting));
+        }
     }
-  }
 
-  set(cookieName: string, value: any, days: number): void {
-    if (!this.settings.includes(cookieName))
-      throw new Error("Cookie: " + cookieName + " was not predefined!");
+    set(cookieName: string, value: any, days: number): void {
+        if (!this.settings.includes(cookieName))
+            throw new Error("Cookie: " + cookieName + " was not predefined!");
 
-    this.cookieService.set(cookieName, JSON.stringify(value), days);
-    this[cookieName] = value;
+        this.cookieService.set(cookieName, JSON.stringify(value), days);
+        this[cookieName] = value;
 
-    // Inform observers
-    if (this.observers[cookieName]) {
-      this.observers[cookieName].forEach(callback => callback.call(callback, this[cookieName]));
+        // Inform observers
+        if (this.observers[cookieName])
+            this.observers[cookieName].forEach(callback => callback.call(callback, days > 0 ? this[cookieName] : undefined));
     }
-  }
 
-  get(cookieName: string): any {
-    return this[cookieName];
-  }
-
-  check(cookieName: string): boolean {
-    return !!this[cookieName];
-  }
-
-  subscribe(cookieName: string, callback: any): void {
-    if (!this.observers[cookieName]) {
-      this.observers[cookieName] = [];
+    get(cookieName: string): any {
+        return this[cookieName];
     }
-    this.observers[cookieName].push(callback);
-  }
+
+    check(cookieName: string): boolean {
+        return !!this[cookieName];
+    }
+
+    subscribe(cookieName: string, callback: any): void {
+        if (!this.observers[cookieName]) {
+            this.observers[cookieName] = [];
+        }
+        this.observers[cookieName].push(callback);
+    }
 
 }

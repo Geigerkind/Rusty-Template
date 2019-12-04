@@ -1,30 +1,45 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
+import {SettingsService} from "../../../../service/settings";
 
 @Component({
-  selector: "NavigationBar",
-  templateUrl: "./navigation_bar.html",
-  styleUrls: ["./navigation_bar.scss"]
+    selector: "NavigationBar",
+    templateUrl: "./navigation_bar.html",
+    styleUrls: ["./navigation_bar.scss"]
 })
-export class NavigationBarComponent {
-  sampleItems = [
-    ["url", "Entry 1"],
-    ["url", "Entry 2"],
-    ["url", "Entry 3"]
-  ];
+export class NavigationBarComponent implements OnInit {
+    sampleItems = [
+        ["url", "Entry 1"],
+        ["url", "Entry 2"],
+        ["url", "Entry 3"]
+    ];
 
-  accountItems: Array<Array<string>> = [
-    ["/account/", "NavigationBar.account.title"],
-    ["/logout/", "NavigationBar.account.logout"]
-  ];
+    accountItems: Array<Array<string>> = [
+        ["/account/", "NavigationBar.account.title"],
+        ["/logout/", "NavigationBar.account.logout"]
+    ];
 
-  show_item_list = false;
+    loggedOutItems: Array<Array<string>> = [
+        ["/login/", "NavigationBar.loggedOut.signIn"],
+        ["/sign_up/", "NavigationBar.loggedOut.signUp"]
+    ];
 
-  toggle(): void {
-    this.show_item_list = !this.show_item_list;
-  }
+    show_item_list = false;
+    loggedInState = false;
 
-  handleClose(): void {
-    this.show_item_list = false;
-  }
+    constructor(private settingsService: SettingsService) {
+        this.settingsService.subscribe("API_TOKEN", (token: string) => this.loggedInState = !!token && token.length > 0);
+    }
+
+    ngOnInit(): void {
+        this.loggedInState = this.settingsService.check("API_TOKEN");
+    }
+
+    toggle(): void {
+        this.show_item_list = !this.show_item_list;
+    }
+
+    handleClose(): void {
+        this.show_item_list = false;
+    }
 
 }

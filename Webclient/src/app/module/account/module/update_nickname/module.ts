@@ -7,16 +7,16 @@ import {ConfirmButtonModule} from "src/app/template/confirm_button/module";
 import {UpdateNicknameRouting} from "./routing";
 
 @NgModule({
-  declarations: [UpdateNicknameComponent],
-  imports: [
-    CommonModule,
-    TranslateModule,
-    GeneralInputModule,
-    ConfirmButtonModule,
-    UpdateNicknameRouting
-  ],
-  exports: [UpdateNicknameComponent],
-  bootstrap: [UpdateNicknameComponent]
+    declarations: [UpdateNicknameComponent],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        GeneralInputModule,
+        ConfirmButtonModule,
+        UpdateNicknameRouting
+    ],
+    exports: [UpdateNicknameComponent],
+    bootstrap: [UpdateNicknameComponent]
 })
 export class UpdateNicknameModule {
 }

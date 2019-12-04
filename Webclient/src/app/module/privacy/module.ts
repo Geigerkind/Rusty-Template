@@ -8,26 +8,26 @@ import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {TranslationService} from "../../service/translation";
 
 export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, "/assets/i18n/privacy/", ".json");
+    return new TranslateHttpLoader(http, "/assets/i18n/privacy/", ".json");
 }
 
 @NgModule({
-  declarations: [PrivacyComponent],
-  imports: [
-    CommonModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [HttpClient]
-      }
-    }),
-    PrivacyRouting
-  ],
-  exports: [PrivacyComponent],
-  providers: [
-    TranslationService
-  ]
+    declarations: [PrivacyComponent],
+    imports: [
+        CommonModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: (createTranslateLoader),
+                deps: [HttpClient]
+            }
+        }),
+        PrivacyRouting
+    ],
+    exports: [PrivacyComponent],
+    providers: [
+        TranslationService
+    ]
 })
 export class PrivacyModule {
 }

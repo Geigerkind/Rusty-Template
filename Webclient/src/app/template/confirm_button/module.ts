@@ -4,12 +4,12 @@ import {CommonModule} from "@angular/common";
 import {ConfirmButtonComponent} from "./component/confirm_button/confirm_button";
 
 @NgModule({
-  declarations: [ConfirmButtonComponent],
-  imports: [
-    CommonModule,
-    TranslateModule
-  ],
-  exports: [ConfirmButtonComponent]
+    declarations: [ConfirmButtonComponent],
+    imports: [
+        CommonModule,
+        TranslateModule
+    ],
+    exports: [ConfirmButtonComponent]
 })
 export class ConfirmButtonModule {
 }

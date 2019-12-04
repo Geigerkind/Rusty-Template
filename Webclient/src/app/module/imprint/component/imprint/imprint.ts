@@ -3,13 +3,13 @@ import {TranslationService} from "../../../../service/translation";
 import {environment} from "src/environments/environment";
 
 @Component({
-  selector: "Imprint",
-  templateUrl: "./imprint.html"
+    selector: "Imprint",
+    templateUrl: "./imprint.html"
 })
 export class ImprintComponent {
-  imprintParams: any;
+    imprintParams: any;
 
-  constructor(private translationService: TranslationService) {
-    this.imprintParams = environment.imprint;
-  }
+    constructor(private translationService: TranslationService) {
+        this.imprintParams = environment.imprint;
+    }
 }

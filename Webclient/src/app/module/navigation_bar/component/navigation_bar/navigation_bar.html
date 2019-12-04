@@ -13,5 +13,6 @@
   <ItemList [items]="sampleItems" (closeMenu)="handleClose()"></ItemList>
   <ItemList [items]="sampleItems" (closeMenu)="handleClose()"></ItemList>
 
-  <ItemList id="accountModule" [items]="accountItems" (closeMenu)="handleClose()"></ItemList>
+    <ItemList class="accountModule" [items]="accountItems" (closeMenu)="handleClose()" *ngIf="loggedInState"></ItemList>
+    <ItemList class="accountModule" [items]="loggedOutItems" (closeMenu)="handleClose()" *ngIf="!loggedInState"></ItemList>
 </div>

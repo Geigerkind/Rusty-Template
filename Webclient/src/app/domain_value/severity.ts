@@ -1,6 +1,6 @@
 export enum Severity {
-  Success,
-  Warning,
-  Error,
-  Info
+    Success,
+    Warning,
+    Error,
+    Info
 }

@@ -5,12 +5,12 @@ import {CommonModule} from "@angular/common";
 import {CookieFrontComponent} from "./component/cookie_front/cookie_front";
 
 @NgModule({
-  declarations: [CookieFrontComponent],
-  imports: [
-    CommonModule,
-    TranslateModule
-  ],
-  exports: [CookieFrontComponent]
+    declarations: [CookieFrontComponent],
+    imports: [
+        CommonModule,
+        TranslateModule
+    ],
+    exports: [CookieFrontComponent]
 })
 export class CookieFrontModule {
 }

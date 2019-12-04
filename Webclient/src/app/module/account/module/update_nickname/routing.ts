@@ -3,12 +3,12 @@ import {RouterModule, Routes} from "@angular/router";
 import {UpdateNicknameComponent} from "./component/update_nickname/update_nickname";
 
 const routes: Routes = [
-  {path: "", component: UpdateNicknameComponent}
+    {path: "", component: UpdateNicknameComponent}
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class UpdateNicknameRouting {
 }

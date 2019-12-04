@@ -7,15 +7,15 @@ import {CommonModule} from "@angular/common";
 import {CookieFrontModule} from "./module/cookie_front/module";
 
 @NgModule({
-  declarations: [CookieBannerComponent],
-  imports: [
-    CommonModule,
-    CookieFrontModule,
-    CookieOptionsModule,
-    TranslateModule
-  ],
-  exports: [CookieBannerComponent],
-  bootstrap: [CookieBannerComponent]
+    declarations: [CookieBannerComponent],
+    imports: [
+        CommonModule,
+        CookieFrontModule,
+        CookieOptionsModule,
+        TranslateModule
+    ],
+    exports: [CookieBannerComponent],
+    bootstrap: [CookieBannerComponent]
 })
 export class CookieBannerModule {
 }

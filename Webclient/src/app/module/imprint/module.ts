@@ -8,26 +8,26 @@ import {ImprintRouting} from "./routing";
 import {ImprintComponent} from "./component/imprint/imprint";
 
 export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, "/assets/i18n/imprint/", ".json");
+    return new TranslateHttpLoader(http, "/assets/i18n/imprint/", ".json");
 }
 
 @NgModule({
-  declarations: [ImprintComponent],
-  imports: [
-    CommonModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [HttpClient]
-      }
-    }),
-    ImprintRouting
-  ],
-  exports: [ImprintComponent],
-  providers: [
-    TranslationService
-  ]
+    declarations: [ImprintComponent],
+    imports: [
+        CommonModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: (createTranslateLoader),
+                deps: [HttpClient]
+            }
+        }),
+        ImprintRouting
+    ],
+    exports: [ImprintComponent],
+    providers: [
+        TranslationService
+    ]
 })
 export class ImprintModule {
 }

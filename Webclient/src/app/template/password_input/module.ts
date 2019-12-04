@@ -5,13 +5,13 @@ import {PasswordInputComponent} from "./component/password_input/password_input"
 import {GeneralInputModule} from "../general_input/module";
 
 @NgModule({
-  declarations: [PasswordInputComponent],
-  imports: [
-    CommonModule,
-    TranslateModule,
-    GeneralInputModule
-  ],
-  exports: [PasswordInputComponent]
+    declarations: [PasswordInputComponent],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        GeneralInputModule
+    ],
+    exports: [PasswordInputComponent]
 })
 export class PasswordInputModule {
 }

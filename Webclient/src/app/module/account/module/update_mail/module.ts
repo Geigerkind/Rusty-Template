@@ -9,18 +9,18 @@ import {BriefNoteModule} from "src/app/template/brief_note/module";
 import {UpdateMailRouting} from "./routing";
 
 @NgModule({
-  declarations: [UpdateMailComponent],
-  imports: [
-    CommonModule,
-    TranslateModule,
-    GeneralInputModule,
-    PasswordInputModule,
-    ConfirmButtonModule,
-    BriefNoteModule,
-    UpdateMailRouting
-  ],
-  exports: [UpdateMailComponent],
-  bootstrap: [UpdateMailComponent]
+    declarations: [UpdateMailComponent],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        GeneralInputModule,
+        PasswordInputModule,
+        ConfirmButtonModule,
+        BriefNoteModule,
+        UpdateMailRouting
+    ],
+    exports: [UpdateMailComponent],
+    bootstrap: [UpdateMailComponent]
 })
 export class UpdateMailModule {
 }

@@ -7,17 +7,17 @@ import {CommonModule} from "@angular/common";
 import {CaretButtonModule} from "../../template/caret_button/module";
 
 @NgModule({
-  declarations: [
-    NavigationBarComponent,
-    ItemListComponent
-  ],
-  imports: [
-    CommonModule,
-    TranslateModule,
-    RouterModule,
-    CaretButtonModule
-  ],
-  exports: [NavigationBarComponent]
+    declarations: [
+        NavigationBarComponent,
+        ItemListComponent
+    ],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        RouterModule,
+        CaretButtonModule
+    ],
+    exports: [NavigationBarComponent]
 })
 export class NavigationBarModule {
 }

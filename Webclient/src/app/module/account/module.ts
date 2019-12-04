@@ -7,17 +7,17 @@ import {CommonModule} from "@angular/common";
 import {CaretButtonModule} from "../../template/caret_button/module";
 
 @NgModule({
-  declarations: [
-    AccountComponent,
-    NavigationBarComponent
-  ],
-  imports: [
-    CommonModule,
-    TranslateModule,
-    AccountRouting,
-    CaretButtonModule
-  ],
-  exports: [AccountComponent]
+    declarations: [
+        AccountComponent,
+        NavigationBarComponent
+    ],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        AccountRouting,
+        CaretButtonModule
+    ],
+    exports: [AccountComponent]
 })
 export class AccountModule {
 }

@@ -6,18 +6,20 @@ import {SignUpComponent} from "./component/sign_up/sign_up";
 import {GeneralInputModule} from "../../template/general_input/module";
 import {PasswordInputModule} from "../../template/password_input/module";
 import {ConfirmButtonModule} from "../../template/confirm_button/module";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
-  declarations: [SignUpComponent],
-  imports: [
-    CommonModule,
-    TranslateModule,
-    SignUpRouting,
-    GeneralInputModule,
-    PasswordInputModule,
-    ConfirmButtonModule
-  ],
-  exports: [SignUpComponent]
+    declarations: [SignUpComponent],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        SignUpRouting,
+        GeneralInputModule,
+        PasswordInputModule,
+        ConfirmButtonModule,
+        FormsModule
+    ],
+    exports: [SignUpComponent]
 })
 export class SignUpModule {
 }

@@ -1,142 +1,150 @@
 {
-"CookieBanner": {
-  "notification": {
-    "saved": "Your consent settings have been saved!"
-  },
-  "front": {
-    "title": "We value your privacy",
-    "description": "{{company}} uses cookies and technologies such as Google Analytics to count, track and analyze visits. This helps us to improve your experience on this website. Click below to consent to use these technologies. You can change your consent choices any time by clicking on 'Change Consent' in the footer.",
-    "button": {
-      "options": "Manage choices",
-      "reject": "Reject all",
-      "agree": "Accept all"
-    }
-  },
-  "options": {
-    "title": "We value your privacy",
-    "description": "You can change the settings below to determine how you want your data to be used. Each purpose describes how we and our partners use your data.",
-    "button": {
-      "back": "Back",
-      "rejectAll": "Reject all",
-      "save": "Agree"
+    "CookieBanner": {
+        "notification": {
+            "saved": "Your consent settings have been saved!"
+        },
+        "front": {
+            "title": "We value your privacy",
+            "description": "{{company}} uses cookies and technologies such as Google Analytics to count, track and analyze visits. This helps us to improve your experience on this website. Click below to consent to use these technologies. You can change your consent choices any time by clicking on 'Change Consent' in the footer.",
+            "button": {
+                "options": "Manage choices",
+                "reject": "Reject all",
+                "agree": "Accept all"
+            }
+        },
+        "options": {
+            "title": "We value your privacy",
+            "description": "You can change the settings below to determine how you want your data to be used. Each purpose describes how we and our partners use your data.",
+            "button": {
+                "back": "Back",
+                "rejectAll": "Reject all",
+                "save": "Agree"
+            },
+            "vendor": {
+                "thirdparty": "Third party vendors",
+                "other": "Other",
+                "necessary": "Necessary",
+                "acceptAll": "Accept all"
+            }
+        },
+        "cookieDecisions": {
+            "title": "cookieDecisions",
+            "description": "Saves your decisions that you set here!"
+        },
+        "pwa_prompt": {
+            "title": "PWA_PROMPT",
+            "description": "This cookie saves whether or not you have been prompted to install this website as PWA."
+        },
+        "api_token": {
+            "title": "API_TOKEN",
+            "description": "This cookie saves your current API token to authenticate with the backend."
+        },
+        "googleAnalytics": {
+            "title": "Google Analytics",
+            "description": "We use Google Analytics to count, track and analyze visits. This helps us to understand how people use the site."
+        }
     },
-    "vendor": {
-      "thirdparty": "Third party vendors",
-      "other": "Other",
-      "necessary": "Necessary",
-      "acceptAll": "Accept all"
+    "FooterBar": {
+        "niceToKnow": {
+            "title": "Nice to know",
+            "restApi": "Rest API",
+            "github": "Github"
+        },
+        "needHelp": {
+            "title": "Need help?",
+            "changeConsent": "Change consent",
+            "privacy": "Privacy",
+            "imprint": "Imprint"
+        },
+        "connect": {
+            "title": "Connect",
+            "discord": "Discord"
+        },
+        "copyright": "©{{year}} {{company}}. All rights reserved."
+    },
+    "NavigationBar": {
+        "searchPlaceHolder": "Type to search",
+        "account": {
+            "title": "Account",
+            "logout": "Sign out"
+        },
+        "loggedOut": {
+            "signIn": "Sign in",
+            "signUp": "Sign up"
+        }
+    },
+    "Account": {
+        "navBar": {
+            "title": "Account settings",
+            "entries": {
+                "overview": "Overview",
+                "nickname": "Update nickname",
+                "password": "Update password",
+                "mail": "Update mail",
+                "api": "API tokens",
+                "delete": "Delete account"
+            }
+        },
+        "accountInformation": {
+            "nickname": "Nickname",
+            "mail": "Email"
+        },
+        "updatePassword": {
+            "newPassword": "New password",
+            "confirmNewPassword": "Confirm new password",
+            "typePassword": "Type your new password",
+            "update": "Update password",
+            "updateNote": "Note: All API tokens will be removed."
+        },
+        "updateNickname": {
+            "newNickname": "New nickname",
+            "typeNewNickname": "Type your new nickname",
+            "update": "Update nickname"
+        },
+        "updateMail": {
+            "password": "Password",
+            "typePassword": "Your current password",
+            "newMail": "New email",
+            "typeNewMail": "Type your new email",
+            "update": "Update email",
+            "updateNote": "Note: All API tokens will be removed."
+        },
+        "api": {
+            "purpose": "Purpose",
+            "typePurpose": "Purpose of the token",
+            "generate": "Generate",
+            "token": "Token",
+            "action": "Action",
+            "remove": "Remove",
+            "expiration": "Expiration date"
+        },
+        "delete": {
+            "password": "Password",
+            "typePassword": "Confirm by typing your password",
+            "delete": "Delete account",
+            "deleteNote": "Note: This action is not revertable!"
+        }
+    },
+    "Login": {
+        "mail": "Email address",
+        "typeMail": "Your email address",
+        "password": "Password",
+        "typePassword": "Your password",
+        "signIn": "Sign in",
+        "forgotPassword": "Forgot password?"
+    },
+    "SignUp": {
+        "nickname": "Nickname",
+        "typeNickname": "Publicly displayed nickname",
+        "mail": "Email address",
+        "typeMail": "Your email address",
+        "password": "Password",
+        "typePassword": "Your password",
+        "signUp": "Sign Up"
+    },
+    "ResetPassword": {
+        "reset": "Reset password",
+        "mail": "Email address",
+        "typeMail": "Your email address"
     }
-  },
-  "cookieDecisions": {
-    "title": "Cookie decisions",
-    "description": "Saves your decisions that you set here!"
-  },
-  "pwa_prompt": {
-    "title": "PWA prompt",
-    "description": "This cookie saves whether or not you have been prompted to install this website as PWA."
-  },
-  "googleAnalytics": {
-    "title": "Google Analytics",
-    "description": "We use Google Analytics to count, track and analyze visits. This helps us to understand how people use the site."
-  }
-},
-"FooterBar": {
-  "niceToKnow": {
-    "title": "Nice to know",
-    "restApi": "Rest API",
-    "github": "Github"
-  },
-  "needHelp": {
-    "title": "Need help?",
-    "changeConsent": "Change consent",
-    "privacy": "Privacy",
-    "imprint": "Imprint"
-  },
-  "connect": {
-    "title": "Connect",
-    "discord": "Discord"
-  },
-  "copyright": "©{{year}} {{company}}. All rights reserved."
-},
-"NavigationBar": {
-  "searchPlaceHolder": "Type to search",
-  "account": {
-    "title": "Account",
-    "logout": "Sign out"
-  }
-},
-"Account": {
-  "navBar": {
-    "title": "Account settings",
-    "entries": {
-      "overview": "Overview",
-      "nickname": "Update nickname",
-      "password": "Update password",
-      "mail": "Update mail",
-      "api": "API tokens",
-      "delete": "Delete account"
-    }
-  },
-  "accountInformation": {
-    "nickname": "Nickname",
-    "mail": "Email"
-  },
-  "updatePassword": {
-    "newPassword": "New password",
-    "confirmNewPassword": "Confirm new password",
-    "typePassword": "Type your new password",
-    "update": "Update password",
-    "updateNote": "Note: All API tokens will be removed."
-  },
-  "updateNickname": {
-    "newNickname": "New nickname",
-    "typeNewNickname": "Type your new nickname",
-    "update": "Update nickname"
-  },
-  "updateMail": {
-    "password": "Password",
-    "typePassword": "Your current password",
-    "newMail": "New email",
-    "typeNewMail": "Type your new email",
-    "update": "Update email",
-    "updateNote": "Note: All API tokens will be removed."
-  },
-  "api": {
-    "purpose": "Purpose",
-    "typePurpose": "Purpose of the token",
-    "generate": "Generate",
-    "token": "Token",
-    "action": "Action",
-    "remove": "Remove",
-    "expiration": "Expiration date"
-  },
-  "delete": {
-    "password": "Password",
-    "typePassword": "Confirm by typing your password",
-    "delete": "Delete account",
-    "deleteNote": "Note: This action is not revertable!"
-  }
-},
-"Login": {
-  "mail": "Email address",
-  "typeMail": "Your email address",
-  "password": "Password",
-  "typePassword": "Your password",
-  "signIn": "Sign in",
-  "forgotPassword": "Forgot password?"
-},
-"SignUp": {
-  "nickname": "Nickname",
-  "typeNickname": "Publicly displayed nickname",
-  "mail": "Email address",
-  "typeMail": "Your email address",
-  "password": "Password",
-  "typePassword": "Your password",
-  "signUp": "Sign Up"
-},
-"ResetPassword": {
-  "reset": "Reset password",
-  "mail": "Email address",
-  "typeMail": "Your email address"
-}
 }
