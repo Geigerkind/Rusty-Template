@@ -8,7 +8,7 @@ import {SignUpForm} from "../../dto/sign_up_form";
     styleUrls: ["./sign_up.scss"]
 })
 export class SignUpComponent {
-
+    disableSubmit: boolean = false;
     model: SignUpForm = {
         nickname: "",
         credentials: {
@@ -20,6 +20,9 @@ export class SignUpComponent {
     constructor(private signUpService: SignUpService) {}
 
     onSubmit(): void {
-        this.signUpService.signUp(this.model);
+        if (!this.disableSubmit) {
+            this.disableSubmit = true;
+            this.signUpService.signUp(this.model, () => this.disableSubmit = false);
+        }
     }
 }

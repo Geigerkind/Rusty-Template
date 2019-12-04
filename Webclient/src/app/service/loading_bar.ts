@@ -5,8 +5,8 @@ import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Route
     providedIn: "root",
 })
 export class LoadingBarService {
-    private openRequests: number = 0;
-    private observers: any = []
+    private openRequests = 0;
+    private observers: any = [];
 
     constructor(private routerService: Router) {
 
@@ -37,12 +37,12 @@ export class LoadingBarService {
     }
 
     private notifyObservers(): void {
-        this.observers.forEach(callback => callback.call(callback, this.isLoading()))
+        this.observers.forEach(callback => callback.call(callback, this.isLoading()));
     }
 
     incrementCounter(): void {
         ++this.openRequests;
-        if (this.openRequests == 1)
+        if (this.openRequests === 1)
             this.notifyObservers();
     }
 

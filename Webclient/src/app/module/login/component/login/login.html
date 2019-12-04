@@ -2,7 +2,7 @@
   <form ngNativeValidate (ngSubmit)="onSubmit()">
     <GeneralInput type="email" [required]="true" labelKey="Login.mail" placeholderKey="Login.typeMail" name="mail" [(value)]="model.mail"></GeneralInput>
     <PasswordInput placeholderKey="Login.typePassword" labelKey="Login.password" name="password" [(value)]="model.password"></PasswordInput>
-    <ConfirmButton type="submit" labelKey="Login.signIn"></ConfirmButton>
+    <ConfirmButton type="submit" labelKey="Login.signIn" [disabled]="disableSubmit"></ConfirmButton>
   </form>
   <ConfirmButton class="lessImportant" labelKey="Login.forgotPassword" routerLink="/reset_password"></ConfirmButton>
 </div>

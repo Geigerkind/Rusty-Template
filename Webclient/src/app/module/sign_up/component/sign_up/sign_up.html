@@ -3,6 +3,6 @@
       <GeneralInput type="text" [required]="true" labelKey="SignUp.nickname" placeholderKey="SignUp.typeNickname" name="nickname" [(value)]="model.nickname"></GeneralInput>
       <GeneralInput type="email" [required]="true" labelKey="SignUp.mail" placeholderKey="SignUp.typeMail" name="mail" [(value)]="model.credentials.mail"></GeneralInput>
       <PasswordInput placeholderKey="SignUp.typePassword" labelKey="SignUp.password" name="password" [(value)]="model.credentials.password"></PasswordInput>
-      <ConfirmButton type="submit" labelKey="SignUp.signUp"></ConfirmButton>
+      <ConfirmButton type="submit" labelKey="SignUp.signUp" [disabled]="disableSubmit"></ConfirmButton>
     </form>
   </div>

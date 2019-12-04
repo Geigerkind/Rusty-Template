@@ -8,6 +8,7 @@ import {LoginForm} from "../../dto/login_form";
     styleUrls: ["./login.scss"]
 })
 export class LoginComponent {
+    disableSubmit: boolean = false;
     model: LoginForm = {
         mail: "",
         password: ""
@@ -17,6 +18,9 @@ export class LoginComponent {
     }
 
     onSubmit(): void {
-        this.loginService.signIn(this.model);
+        if (!this.disableSubmit) {
+            this.disableSubmit = true;
+            this.loginService.signIn(this.model, () => this.disableSubmit = false);
+        }
     }
 }

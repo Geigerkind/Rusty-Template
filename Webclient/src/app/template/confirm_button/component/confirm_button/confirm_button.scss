@@ -2,15 +2,20 @@
 @import "../../../../../styles/buttons";
 
 :host {
-  display: block;
+    display: block;
 }
 
 button {
-  width: 100%;
-  background: $highlight;
-  color: $font_default;
+    width: 100%;
+    background: $highlight;
+    color: $font_default;
 
-  &:hover {
-    background: darken($highlight, 20%);
-  }
+    &:hover {
+        background: darken($highlight, 20%);
+    }
+
+    &.disabled {
+        background: $non_highlight;
+        color: #000000;
+    }
 }
