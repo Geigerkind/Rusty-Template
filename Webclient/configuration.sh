@@ -19,7 +19,7 @@ WEBCLIENT_OWNER_PHONE="1234567890"
 WEBCLIENT_OWNER_MAIL="mail@mail.com"
 
 WEBCLIENT_RESPONSIBLE_PERSON="Forename Surname"
-WEBCLIENT_IMAGE_SOURCES="Some Sources"
+WEBCLIENT_IMAGE_SOURCES="<a href=\"https\:\/\/fontawesome.com\/license\" target=\"_blank\">Font Awesome<\/a><br \/>Some other Sources"
 
 WEBCLIENT_META_KEYWORDS="This Is A Key Word"
 WEBCLIENT_META_DESCRIPTION="Some detailed description"
