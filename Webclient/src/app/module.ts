@@ -20,6 +20,7 @@ import {NotificationService} from "./service/notification";
 import {RouterLoadingBarModule} from "./module/router_loading_bar/module";
 import {TranslationService} from "./service/translation";
 import {APIService} from "./service/api";
+import {LoadingBarService} from "./service/loading_bar";
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -55,6 +56,7 @@ export function createTranslateLoader(http: HttpClient) {
         SettingsService,
         NotificationService,
         TranslationService,
+        LoadingBarService,
         APIService
     ],
     bootstrap: [AppComponent],

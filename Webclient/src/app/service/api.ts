@@ -4,6 +4,7 @@ import {SettingsService} from "./settings";
 import {NotificationService} from "./notification";
 import {Severity} from "../domain_value/severity";
 import {Router} from "@angular/router";
+import {LoadingBarService} from "./loading_bar";
 
 @Injectable({
     providedIn: "root",
@@ -14,7 +15,8 @@ export class APIService {
     constructor(private httpClient: HttpClient,
                 private settingsService: SettingsService,
                 private notificationService: NotificationService,
-                private routingService: Router) {
+                private routingService: Router,
+                private loadingBarService: LoadingBarService) {
     }
 
     httpHeaderFactory(): HttpHeaders {
@@ -45,23 +47,29 @@ export class APIService {
 
 
     get_auth<T>(url: string, on_success: (T) => void): void {
+        this.loadingBarService.incrementCounter();
         this.httpClient.get<T>(APIService.API_PREFIX + url, {headers: this.setAuthHeader(this.httpHeaderFactory())})
             .toPromise()
             .then(response => on_success.call(on_success, response))
-            .catch(reason => this.handleFailure(reason));
+            .catch(reason => this.handleFailure(reason))
+            .finally(() => this.loadingBarService.decrementCounter());
     }
 
     get<T>(url: string, on_success: (T) => void): void {
+        this.loadingBarService.incrementCounter();
         this.httpClient.get<T>(APIService.API_PREFIX + url, {headers: this.httpHeaderFactory()})
             .toPromise()
             .then(response => on_success.call(on_success, response))
-            .catch(reason => this.handleFailure(reason));
+            .catch(reason => this.handleFailure(reason))
+            .finally(() => this.loadingBarService.decrementCounter());
     }
 
     post<T1, T2>(url: string, on_success: (T1) => void, body: T2): void {
+        this.loadingBarService.incrementCounter();
         this.httpClient.post<T1>(APIService.API_PREFIX + url, JSON.stringify(body), {headers: this.httpHeaderFactory()})
             .toPromise()
             .then(response => on_success.call(on_success, response))
-            .catch(reason => this.handleFailure(reason));
+            .catch(reason => this.handleFailure(reason))
+            .finally(() => this.loadingBarService.decrementCounter());
     }
 }
