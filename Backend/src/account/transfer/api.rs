@@ -24,7 +24,7 @@ pub fn api() -> Json<Vec<serde_json::Value>> {
 
     // Delete
     expose_api_fn("/delete/confirm/<delete_id>", "get", false, "text/html", schema_for!(Result<(), String>), schema_for!(String)),
-    expose_api_fn("/delete/request/", "get", true, "application/json", schema_for!(Result<(), String>), schema_for!(Nothing)),
+    expose_api_fn("/delete/request/", "delete", true, "application/json", schema_for!(Result<(), String>), schema_for!(Nothing)),
 
     // Forgot
     expose_api_fn("/forgot/confirm/<confirmation_id>", "get", false, "application/json", schema_for!(Result<APIToken, String>), schema_for!(String)),
