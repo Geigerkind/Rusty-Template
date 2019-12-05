@@ -1,15 +1,15 @@
 import {Injectable} from "@angular/core";
 import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from "@angular/router";
+import {ObserverPattern} from "../template/class_template/observer_pattern";
 
 @Injectable({
     providedIn: "root",
 })
-export class LoadingBarService {
+export class LoadingBarService extends ObserverPattern {
     private openRequests = 0;
-    private observers: any = [];
 
     constructor(private routerService: Router) {
-
+        super();
         this.routerService.events.subscribe(event => {
             switch (true) {
                 case event instanceof NavigationStart: {
@@ -28,10 +28,6 @@ export class LoadingBarService {
         });
     }
 
-    subscribe(callback: any): void {
-        this.observers.push(callback);
-    }
-
     isLoading(): boolean {
         return this.openRequests > 0;
     }
@@ -39,19 +35,19 @@ export class LoadingBarService {
     incrementCounter(): void {
         ++this.openRequests;
         if (this.openRequests === 1)
-            this.notifyObservers();
+            this.notify();
     }
 
     decrementCounter(): void {
         --this.openRequests;
         if (this.openRequests <= 0) {
             this.openRequests = 0;
-            this.notifyObservers();
+            this.notify();
         }
     }
 
-    private notifyObservers(): void {
-        this.observers.forEach(callback => callback.call(callback, this.isLoading()));
+    private notify(): void {
+        super._notify(callback => callback.call(callback, this.isLoading()));
     }
 
 

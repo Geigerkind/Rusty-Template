@@ -20,10 +20,8 @@ export class PasswordInputComponent {
     }
 
     set value(newValue: string) {
-        if (this.valueData !== newValue && this.valueData !== undefined) {
-            console.log("Test");
+        if (this.valueData !== newValue && this.valueData !== undefined)
             this.valueChange.emit(newValue);
-        }
         this.valueData = newValue;
     }
 
