@@ -2,42 +2,42 @@
 @import "./colors.scss";
 
 .btn {
-  display: inline-block;
-  padding: $spacing * 0.5;
-  border-radius: 3px;
-  margin: 0;
-  font-size: 16px;
-  font-weight: bold;
-  text-decoration: none;
-  border: none;
-  transition: none;
-  min-height: 46px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  cursor: pointer;
-  appearance: none;
-  user-select: none;
+    display: inline-block;
+    padding: $spacing * 0.5;
+    border-radius: 3px;
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+    transition: none;
+    min-height: 46px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    appearance: none;
+    user-select: none;
 }
 
 .btnHighlight {
-  background: $highlight;
-  color: #fff;
+    background: $highlight;
+    color: #fff;
 
-  &:hover {
-    background: darken($highlight, 20%);
-  }
+    &:hover {
+        background: darken($highlight, 20%);
+    }
 }
 
 .btnNonHighlight {
-  background: $non_highlight;
-  color: $highlight;
+    background: $non_highlight;
+    color: $highlight;
 
-  &:hover {
-    background: $highlight;
-    color: #fff;
-  }
+    &:hover {
+        background: $highlight;
+        color: #fff;
+    }
 }
 
 button {
-  @extend .btn;
+    @extend .btn;
 }

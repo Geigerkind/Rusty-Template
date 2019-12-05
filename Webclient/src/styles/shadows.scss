@@ -2,13 +2,13 @@
 @import "./colors.scss";
 
 .floatShadow {
-  @extend .normalBox;
+    @extend .normalBox;
 
-  box-shadow: 0 4px 8px 0 $lesser_black, 0 6px 20px 0 $lesser_black;
+    box-shadow: 0 4px 8px 0 $lesser_black, 0 6px 20px 0 $lesser_black;
 }
 
 .floatShadowTiny {
-  @extend .normalBox;
+    @extend .normalBox;
 
-  box-shadow: 0 1px 1px 0 $lesser_black, 0 1px 1px 0 $lesser_black;
+    box-shadow: 0 1px 1px 0 $lesser_black, 0 1px 1px 0 $lesser_black;
 }
