@@ -42,7 +42,7 @@ export class APIService {
             return;
         }
 
-        this.notificationService.notify(Severity.Error, reason.error);
+        this.notificationService.propagate(Severity.Error, reason.error);
     }
 
 

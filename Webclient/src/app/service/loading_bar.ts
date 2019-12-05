@@ -35,19 +35,19 @@ export class LoadingBarService extends ObserverPattern {
     incrementCounter(): void {
         ++this.openRequests;
         if (this.openRequests === 1)
-            this.notify();
+            this.propagate();
     }
 
     decrementCounter(): void {
         --this.openRequests;
         if (this.openRequests <= 0) {
             this.openRequests = 0;
-            this.notify();
+            this.propagate();
         }
     }
 
-    private notify(): void {
-        super._notify(callback => callback.call(callback, this.isLoading()));
+    private propagate(): void {
+        super.notify(callback => callback.call(callback, this.isLoading()));
     }
 
 

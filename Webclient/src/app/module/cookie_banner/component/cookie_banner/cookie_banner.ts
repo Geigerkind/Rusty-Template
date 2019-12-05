@@ -60,7 +60,7 @@ export class CookieBannerComponent {
         };
 
         this.settingsService.set("cookieDecisions", cookieDecisions, 30);
-        this.notificationService.notify(Severity.Success, "CookieBanner.notification.saved");
+        this.notificationService.propagate(Severity.Success, "CookieBanner.notification.saved");
         this.close_banner.emit(false);
     }
 }
