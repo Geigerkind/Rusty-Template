@@ -14,8 +14,8 @@ export class SettingsService {
     private observers: any = {};
 
     constructor() {
-        for (let i=0; i<localStorage.length; ++i) {
-            let storageKey = localStorage.key(i);
+        for (let i = 0; i < localStorage.length; ++i) {
+            const storageKey = localStorage.key(i);
             if (!this.settings.includes(storageKey))
                 continue;
 
