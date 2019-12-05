@@ -14,20 +14,20 @@ export class CookieOptionsComponent {
     @Input() cookies_other: Array<CookieOption>;
     @Input() cookies_necessary: Array<CookieOption>;
 
-    emit_show_front(): void {
+    private emit_show_front(): void {
         this.show_front.emit(true);
     }
 
-    emit_save(): void {
+    private emit_save(): void {
         this.save.emit(true);
     }
 
-    reject_all(): void {
+    private reject_all(): void {
         this.cookies_other.forEach(cookie => cookie.setEnabled(false));
         this.cookies_third_party.forEach(cookie => cookie.setEnabled(false));
     }
 
-    accept_all(options): void {
+    private accept_all(options): void {
         options.forEach(cookie => cookie.setEnabled(true));
     }
 }

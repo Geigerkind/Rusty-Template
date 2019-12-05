@@ -7,7 +7,7 @@ import {Component, Input} from "@angular/core";
 })
 export class NavigationBarComponent {
     @Input() itemList: Array<Array<string>>;
-    show_sub_menu = false;
+    private show_sub_menu = false;
 
     closeSubMenu(): void {
         this.show_sub_menu = false;

@@ -8,7 +8,7 @@ import {Router} from "@angular/router";
     providedIn: "root",
 })
 export class LoginService {
-    static readonly URL_LOGIN: string = "/account/login";
+    private static readonly URL_LOGIN: string = "/account/login";
 
     constructor(private apiService: APIService,
                 private settingsService: SettingsService,

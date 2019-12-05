@@ -5,13 +5,13 @@ import {Injectable} from "@angular/core";
     providedIn: "root",
 })
 export class SettingsService {
-    settings: Array<string> = [
+    private settings: Array<string> = [
         "cookieDecisions",
         "PWA_PROMPT",
         "API_TOKEN"
     ];
 
-    observers: any = {};
+    private observers: any = {};
 
     constructor(private cookieService: CookieService) {
         for (const setting in cookieService.getAll()) {

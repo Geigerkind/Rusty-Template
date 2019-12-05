@@ -9,9 +9,9 @@ export class ItemListComponent {
     @Input() items: Array<Array<string>>;
     @Output() closeMenu: EventEmitter<boolean> = new EventEmitter();
 
-    show_sub_menu = false;
+    private show_sub_menu = false;
 
-    closeNavBar(): void {
+    private closeNavBar(): void {
         this.show_sub_menu = false;
         this.closeMenu.emit(true);
     }

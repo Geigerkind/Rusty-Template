@@ -12,10 +12,10 @@ import {Severity} from "../../../../domain_value/severity";
 export class CookieBannerComponent {
     @Output() close_banner: EventEmitter<boolean> = new EventEmitter();
 
-    show_options = false;
-    cookies_third_party: Array<CookieOption> = [];
-    cookies_other: Array<CookieOption> = [];
-    cookies_necessary: Array<CookieOption> = [];
+    private show_options = false;
+    private cookies_third_party: Array<CookieOption> = [];
+    private cookies_other: Array<CookieOption> = [];
+    private cookies_necessary: Array<CookieOption> = [];
 
     constructor(private settingsService: SettingsService,
                 private notificationService: NotificationService) {
@@ -29,11 +29,11 @@ export class CookieBannerComponent {
         this.load();
     }
 
-    set_show_options(show: boolean): void {
+    private set_show_options(show: boolean): void {
         this.show_options = show;
     }
 
-    load(): void {
+    private load(): void {
         if (!this.settingsService.check("cookieDecisions"))
             return;
         const cookieDecisions = this.settingsService.get("cookieDecisions");
@@ -41,19 +41,19 @@ export class CookieBannerComponent {
         cookieDecisions.third_party.forEach((decison, i) => this.cookies_third_party[i].setEnabled(decison));
     }
 
-    agree_all(): void {
+    private agree_all(): void {
         this.cookies_other.forEach(cookie => cookie.setEnabled(true));
         this.cookies_third_party.forEach(cookie => cookie.setEnabled(true));
         this.save();
     }
 
-    reject_all(): void {
+    private reject_all(): void {
         this.cookies_other.forEach(cookie => cookie.setEnabled(false));
         this.cookies_third_party.forEach(cookie => cookie.setEnabled(false));
         this.save();
     }
 
-    save(): void {
+    private save(): void {
         const cookieDecisions = {
             other: this.cookies_other.map(cookie => cookie.enabled),
             third_party: this.cookies_third_party.map(cookie => cookie.enabled)

@@ -8,7 +8,7 @@ import {Router} from "@angular/router";
     providedIn: "root",
 })
 export class SignUpService {
-    static readonly URL_SIGN_UP: string = "/account/create";
+    private static readonly URL_SIGN_UP: string = "/account/create";
 
     constructor(private apiService: APIService,
                 private settingsService: SettingsService,

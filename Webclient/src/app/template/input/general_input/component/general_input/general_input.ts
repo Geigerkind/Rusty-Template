@@ -6,7 +6,7 @@ import {Component, EventEmitter, Input, Output} from "@angular/core";
     styleUrls: ["./general_input.scss"]
 })
 export class GeneralInputComponent {
-    touched: boolean = false;
+    private touched: boolean = false;
 
     @Input() type: string;
     @Input() placeholderKey: string;

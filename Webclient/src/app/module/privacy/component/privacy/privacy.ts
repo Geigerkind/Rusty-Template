@@ -7,7 +7,7 @@ import {environment} from "src/environments/environment";
     templateUrl: "./privacy.html"
 })
 export class PrivacyComponent {
-    privacyParams: any;
+    private privacyParams: any;
 
     constructor(private translationService: TranslationService) {
         this.privacyParams = environment.privacy;

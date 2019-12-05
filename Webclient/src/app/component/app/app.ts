@@ -13,12 +13,12 @@ declare var gtag;
     styleUrls: ["./app.scss"]
 })
 export class AppComponent implements OnInit {
-    static PWA_PROMPT_TIME = 30000;
-    static show_cookie_banner = false;
-    googleAnalyticsSubscription: Subscription;
+    private static readonly PWA_PROMPT_TIME = 30000;
+    private static show_cookie_banner = false;
     title = "Webclient";
-    location: ComponentLocation = null;
-    cookie_banner: ComponentLocation = {
+    private googleAnalyticsSubscription: Subscription;
+    private location: ComponentLocation = null;
+    private cookie_banner: ComponentLocation = {
         moduleId: "cookie_banner",
         selector: "CookieBanner"
     };
@@ -39,13 +39,13 @@ export class AppComponent implements OnInit {
         this.configure_google_analytics(this.settingsService.get("cookieDecisions"));
     }
 
-    set_cookie_banner(state: boolean): void {
+    private set_cookie_banner(state: boolean): void {
         AppComponent.show_cookie_banner = state;
         if (state && this.location === null)
             this.location = this.cookie_banner;
     }
 
-    configure_google_analytics(cookieDecisions: any): void {
+    private configure_google_analytics(cookieDecisions: any): void {
         if (!cookieDecisions || !cookieDecisions.other[0]) {
             if (this.googleAnalyticsSubscription) {
                 this.googleAnalyticsSubscription.unsubscribe();
@@ -65,7 +65,7 @@ export class AppComponent implements OnInit {
         });
     }
 
-    prompt_for_pwa(e: any): void {
+    private prompt_for_pwa(e: any): void {
         if (this.settingsService.check("PWA_PROMPT"))
             return;
         e.prompt();

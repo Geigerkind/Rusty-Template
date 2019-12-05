@@ -10,7 +10,7 @@ import {LoadingBarService} from "./loading_bar";
     providedIn: "root",
 })
 export class APIService {
-    static readonly API_PREFIX: string = "/API";
+    private static readonly API_PREFIX: string = "/API";
 
     constructor(private httpClient: HttpClient,
                 private settingsService: SettingsService,
@@ -19,19 +19,19 @@ export class APIService {
                 private loadingBarService: LoadingBarService) {
     }
 
-    httpHeaderFactory(): HttpHeaders {
+    private httpHeaderFactory(): HttpHeaders {
         return new HttpHeaders()
             .set("Content-Type", "application/json");
     }
 
-    setAuthHeader(headers: HttpHeaders): HttpHeaders {
+    private setAuthHeader(headers: HttpHeaders): HttpHeaders {
         let api_token = "";
         if (this.settingsService.check("API_TOKEN"))
             api_token = this.settingsService.get("API_TOKEN");
         return headers.set("Authentication", api_token);
     }
 
-    handleFailure(reason: HttpErrorResponse): void {
+    private handleFailure(reason: HttpErrorResponse): void {
         if (reason.status <= 520)
             return;
 

@@ -7,7 +7,7 @@ import {environment} from "src/environments/environment";
     templateUrl: "./imprint.html"
 })
 export class ImprintComponent {
-    imprintParams: any;
+    private imprintParams: any;
 
     constructor(private translationService: TranslationService) {
         this.imprintParams = environment.imprint;

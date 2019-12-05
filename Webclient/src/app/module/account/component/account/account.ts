@@ -6,7 +6,7 @@ import {Component} from "@angular/core";
     styleUrls: ["./account.scss"]
 })
 export class AccountComponent {
-    settings: Array<Array<string>> = [
+    private settings: Array<Array<string>> = [
         ["./", "Account.navBar.entries.overview"],
         ["nickname", "Account.navBar.entries.nickname"],
         ["password", "Account.navBar.entries.password"],
