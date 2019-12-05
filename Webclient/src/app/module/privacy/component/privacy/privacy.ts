@@ -4,10 +4,11 @@ import {environment} from "src/environments/environment";
 
 @Component({
     selector: "Privacy",
-    templateUrl: "./privacy.html"
+    templateUrl: "./privacy.html",
+    styleUrls: ["./privacy.scss"]
 })
 export class PrivacyComponent {
-    private privacyParams: any;
+    privacyParams: any;
 
     constructor(private translationService: TranslationService) {
         this.privacyParams = environment.privacy;

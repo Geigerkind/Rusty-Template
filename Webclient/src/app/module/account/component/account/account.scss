@@ -1,6 +1,7 @@
 @import "../../../../../styles/global";
 
 :host {
+    height: 100%;
     display: flex;
     justify-content: center;
     padding-top: $spacing * 2;

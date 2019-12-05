@@ -7,5 +7,5 @@ import {AccountInformation} from "../../../../domain_value/account_information";
     styleUrls: ["./account_information.scss"]
 })
 export class AccountInformationComponent {
-    private accountInformation: AccountInformation = new AccountInformation(1, "somemail@provider.com", false, "Peter Lusting");
+    accountInformation: AccountInformation = new AccountInformation(1, "somemail@provider.com", false, "Peter Lusting");
 }

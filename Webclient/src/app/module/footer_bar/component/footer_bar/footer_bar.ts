@@ -9,9 +9,9 @@ import {environment} from "src/environments/environment";
 export class FooterBarComponent {
     @Output() consent: EventEmitter<boolean> = new EventEmitter();
 
-    private copyRightArguments: any = {company: environment.company, year: (new Date()).getFullYear().toString()};
+    copyRightArguments: any = {company: environment.company, year: (new Date()).getFullYear().toString()};
 
-    private show_consent(): void {
+    show_consent(): void {
         this.consent.emit(true);
     }
 }

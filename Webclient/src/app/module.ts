@@ -52,7 +52,6 @@ export function createTranslateLoader(http: HttpClient) {
         })
     ],
     providers: [
-        CookieService,
         SettingsService,
         NotificationService,
         TranslationService,

@@ -4,10 +4,11 @@ import {environment} from "src/environments/environment";
 
 @Component({
     selector: "Imprint",
-    templateUrl: "./imprint.html"
+    templateUrl: "./imprint.html",
+    styleUrls: ["./imprint.scss"]
 })
 export class ImprintComponent {
-    private imprintParams: any;
+    imprintParams: any;
 
     constructor(private translationService: TranslationService) {
         this.imprintParams = environment.imprint;

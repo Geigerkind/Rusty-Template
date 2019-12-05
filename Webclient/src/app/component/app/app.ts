@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
     private static show_cookie_banner = false;
     title = "Webclient";
     private googleAnalyticsSubscription: Subscription;
-    private location: ComponentLocation = null;
+    location: ComponentLocation = null;
     private cookie_banner: ComponentLocation = {
         moduleId: "cookie_banner",
         selector: "CookieBanner"
@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
         this.configure_google_analytics(this.settingsService.get("cookieDecisions"));
     }
 
-    private set_cookie_banner(state: boolean): void {
+    set_cookie_banner(state: boolean): void {
         AppComponent.show_cookie_banner = state;
         if (state && this.location === null)
             this.location = this.cookie_banner;
@@ -69,6 +69,6 @@ export class AppComponent implements OnInit {
         if (this.settingsService.check("PWA_PROMPT"))
             return;
         e.prompt();
-        this.settingsService.set("PWA_PROMPT", true, 30);
+        this.settingsService.set("PWA_PROMPT", true);
     }
 }

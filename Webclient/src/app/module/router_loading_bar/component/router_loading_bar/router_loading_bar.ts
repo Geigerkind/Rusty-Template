@@ -7,7 +7,7 @@ import {LoadingBarService} from "../../../../service/loading_bar";
     styleUrls: ["./router_loading_bar.scss"]
 })
 export class RouterLoadingBarComponent {
-    private displayBar = false;
+    displayBar = false;
 
     constructor(private loadingBarService: LoadingBarService) {
         this.loadingBarService.subscribe(state => this.displayBar = state);

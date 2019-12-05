@@ -12,10 +12,10 @@ import {Severity} from "../../../../domain_value/severity";
 export class CookieBannerComponent {
     @Output() close_banner: EventEmitter<boolean> = new EventEmitter();
 
-    private show_options = false;
-    private cookies_third_party: Array<CookieOption> = [];
-    private cookies_other: Array<CookieOption> = [];
-    private cookies_necessary: Array<CookieOption> = [];
+    show_options = false;
+    cookies_third_party: Array<CookieOption> = [];
+    cookies_other: Array<CookieOption> = [];
+    cookies_necessary: Array<CookieOption> = [];
 
     constructor(private settingsService: SettingsService,
                 private notificationService: NotificationService) {
@@ -29,7 +29,7 @@ export class CookieBannerComponent {
         this.load();
     }
 
-    private set_show_options(show: boolean): void {
+    set_show_options(show: boolean): void {
         this.show_options = show;
     }
 
@@ -41,25 +41,25 @@ export class CookieBannerComponent {
         cookieDecisions.third_party.forEach((decison, i) => this.cookies_third_party[i].setEnabled(decison));
     }
 
-    private agree_all(): void {
+    agree_all(): void {
         this.cookies_other.forEach(cookie => cookie.setEnabled(true));
         this.cookies_third_party.forEach(cookie => cookie.setEnabled(true));
         this.save();
     }
 
-    private reject_all(): void {
+    reject_all(): void {
         this.cookies_other.forEach(cookie => cookie.setEnabled(false));
         this.cookies_third_party.forEach(cookie => cookie.setEnabled(false));
         this.save();
     }
 
-    private save(): void {
+    save(): void {
         const cookieDecisions = {
             other: this.cookies_other.map(cookie => cookie.enabled),
             third_party: this.cookies_third_party.map(cookie => cookie.enabled)
         };
 
-        this.settingsService.set("cookieDecisions", cookieDecisions, 30);
+        this.settingsService.set("cookieDecisions", cookieDecisions);
         this.notificationService.propagate(Severity.Success, "CookieBanner.notification.saved");
         this.close_banner.emit(false);
     }

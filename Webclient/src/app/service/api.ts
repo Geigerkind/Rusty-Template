@@ -37,7 +37,7 @@ export class APIService {
 
         // Token invalid
         if (reason.status === 401) {
-            this.settingsService.set("API_TOKEN", undefined, -1);
+            this.settingsService.set("API_TOKEN", undefined);
             this.routingService.navigate(["/login"]);
             return;
         }

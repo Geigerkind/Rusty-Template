@@ -13,25 +13,31 @@ export class SettingsService {
 
     private observers: any = {};
 
-    constructor(private cookieService: CookieService) {
-        for (const setting in cookieService.getAll()) {
-            if (!this.settings.includes(setting))
+    constructor() {
+        for (let i=0; i<localStorage.length; ++i) {
+            let storageKey = localStorage.key(i);
+            if (!this.settings.includes(storageKey))
                 continue;
 
-            this[setting] = JSON.parse(this.cookieService.get(setting));
+            this[storageKey] = JSON.parse(localStorage.getItem(storageKey));
         }
     }
 
-    set(cookieName: string, value: any, days: number): void {
+    set(cookieName: string, value: any): void {
         if (!this.settings.includes(cookieName))
             throw new Error("Cookie: " + cookieName + " was not predefined!");
 
-        this.cookieService.set(cookieName, JSON.stringify(value), days);
+        if (value === undefined) {
+            if (localStorage.getItem(cookieName) !== null)
+                localStorage.removeItem(cookieName);
+        } else {
+            localStorage.setItem(cookieName, JSON.stringify(value));
+        }
         this[cookieName] = value;
 
         // Inform observers
         if (this.observers[cookieName])
-            this.observers[cookieName].forEach(callback => callback.call(callback, days > 0 ? this[cookieName] : undefined));
+            this.observers[cookieName].forEach(callback => callback.call(callback, this[cookieName]));
     }
 
     get(cookieName: string): any {
