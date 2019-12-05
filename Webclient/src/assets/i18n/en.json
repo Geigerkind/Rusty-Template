@@ -33,11 +33,11 @@
         },
         "pwa_prompt": {
             "title": "PWA_PROMPT",
-            "description": "This cookie saves whether or not you have been prompted to install this website as PWA."
+            "description": "This saves whether or not you have been prompted to install this website as PWA."
         },
         "api_token": {
             "title": "API_TOKEN",
-            "description": "This cookie saves your current API token to authenticate with the backend."
+            "description": "This saves your current API token to authenticate with the backend."
         },
         "googleAnalytics": {
             "title": "Google Analytics",
