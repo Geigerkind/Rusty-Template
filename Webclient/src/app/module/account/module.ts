@@ -4,7 +4,7 @@ import {AccountComponent} from "./component/account/account";
 import {NavigationBarComponent} from "./component/navigation_bar/navigation_bar";
 import {AccountRouting} from "./routing";
 import {CommonModule} from "@angular/common";
-import {CaretButtonModule} from "../../template/caret_button/module";
+import {CaretButtonModule} from "../../template/button/caret_button/module";
 
 @NgModule({
     declarations: [

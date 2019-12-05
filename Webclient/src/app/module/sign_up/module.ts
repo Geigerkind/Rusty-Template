@@ -3,9 +3,9 @@ import {TranslateModule} from "@ngx-translate/core";
 import {CommonModule} from "@angular/common";
 import {SignUpRouting} from "./routing";
 import {SignUpComponent} from "./component/sign_up/sign_up";
-import {GeneralInputModule} from "../../template/general_input/module";
-import {PasswordInputModule} from "../../template/password_input/module";
-import {ConfirmButtonModule} from "../../template/confirm_button/module";
+import {GeneralInputModule} from "../../template/input/general_input/module";
+import {PasswordInputModule} from "../../template/input/password_input/module";
+import {ConfirmButtonModule} from "../../template/button/confirm_button/module";
 import {FormsModule} from "@angular/forms";
 
 @NgModule({
