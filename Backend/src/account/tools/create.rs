@@ -80,7 +80,7 @@ impl Create for Account {
     self.send_confirmation(member_id);
     return self.create_token(
       &self.dictionary.get("general.login", Language::English),
-      member_id, time_util::get_ts_from_now_in_secs(30));
+      member_id, time_util::get_ts_from_now_in_secs(7));
   }
 
   fn send_confirmation(&self, member_id: u32) -> bool

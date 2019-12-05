@@ -16,7 +16,7 @@ impl Login for Account {
       .and_then(|member_id| self.create_token(
         &self.dictionary.get("general.login", Language::English),
         member_id,
-        time_util::get_ts_from_now_in_secs(30),
+        time_util::get_ts_from_now_in_secs(7),
       ))
   }
 

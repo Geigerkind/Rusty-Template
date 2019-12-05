@@ -98,7 +98,7 @@ impl Forgot for Account {
         }
         return self.create_token(
           &self.dictionary.get("general.login", Language::English),
-          user_id, time_util::get_ts_from_now_in_secs(30));
+          user_id, time_util::get_ts_from_now_in_secs(7));
       });
   }
 }

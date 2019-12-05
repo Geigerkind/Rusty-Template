@@ -61,7 +61,7 @@ impl Update for Account {
     self.update_password(new_password, member_id)
         .and_then(|()| self.create_token(
           &self.dictionary
-                      .get("general.login", Language::English), member_id, time_util::get_ts_from_now_in_secs(30)))
+                      .get("general.login", Language::English), member_id, time_util::get_ts_from_now_in_secs(7)))
   }
 
   fn update_password(&self, new_password: &str, member_id: u32) -> Result<(), String> {
@@ -131,7 +131,7 @@ impl Update for Account {
           }
         }
         self.create_token(&self.dictionary.get("general.login", Language::English),
-                          *member_id, time_util::get_ts_from_now_in_secs(30))
+                          *member_id, time_util::get_ts_from_now_in_secs(7))
       },
       None => Err(self.dictionary.get("general.error.unknown", Language::English))
     }
