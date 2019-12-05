@@ -1,8 +1,10 @@
 <header>{{ 'Account.navBar.entries.mail' | translate }}</header>
 
 <form>
-  <GeneralInput type="email" [required]="true" labelKey="Account.updateMail.newMail" placeholderKey="Account.updateMail.typeNewMail" name="mail"></GeneralInput>
-  <PasswordInput placeholderKey="Account.updateMail.typePassword" labelKey="Account.updateMail.password" name="password"></PasswordInput>
-  <ConfirmButton labelKey="Account.updateMail.update"></ConfirmButton>
+    <GeneralInput [required]="true" labelKey="Account.updateMail.newMail" name="mail"
+                  placeholderKey="Account.updateMail.typeNewMail" type="email"></GeneralInput>
+    <PasswordInput labelKey="Account.updateMail.password" name="password"
+                   placeholderKey="Account.updateMail.typePassword"></PasswordInput>
+    <ConfirmButton labelKey="Account.updateMail.update"></ConfirmButton>
 </form>
 <BriefNote noteKey="Account.updateMail.updateNote"></BriefNote>

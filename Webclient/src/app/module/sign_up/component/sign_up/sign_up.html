@@ -1,8 +1,11 @@
 <div class="centerContainer">
-    <form ngNativeValidate (ngSubmit)="onSubmit()">
-      <GeneralInput type="text" [required]="true" labelKey="SignUp.nickname" placeholderKey="SignUp.typeNickname" name="nickname" [(value)]="model.nickname"></GeneralInput>
-      <GeneralInput type="email" [required]="true" labelKey="SignUp.mail" placeholderKey="SignUp.typeMail" name="mail" [(value)]="model.credentials.mail"></GeneralInput>
-      <PasswordInput placeholderKey="SignUp.typePassword" labelKey="SignUp.password" name="password" [(value)]="model.credentials.password"></PasswordInput>
-      <ConfirmButton type="submit" labelKey="SignUp.signUp" [disabled]="disableSubmit"></ConfirmButton>
+    <form (ngSubmit)="onSubmit()" ngNativeValidate>
+        <GeneralInput [(value)]="model.nickname" [required]="true" labelKey="SignUp.nickname" name="nickname"
+                      placeholderKey="SignUp.typeNickname" type="text"></GeneralInput>
+        <GeneralInput [(value)]="model.credentials.mail" [required]="true" labelKey="SignUp.mail" name="mail" placeholderKey="SignUp.typeMail"
+                      type="email"></GeneralInput>
+        <PasswordInput [(value)]="model.credentials.password" labelKey="SignUp.password" name="password"
+                       placeholderKey="SignUp.typePassword"></PasswordInput>
+        <ConfirmButton [disabled]="disableSubmit" labelKey="SignUp.signUp" type="submit"></ConfirmButton>
     </form>
-  </div>
+</div>

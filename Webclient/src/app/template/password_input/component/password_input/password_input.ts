@@ -12,16 +12,20 @@ export class PasswordInputComponent {
 
     @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
     valueData: string;
+    visibility = "password";
+
     @Input()
     get value(): string {
         return this.valueData;
     }
-    set value(newValue: string) {
-        this.valueData = newValue;
-        this.valueChange.emit(newValue);
-    }
 
-    visibility = "password";
+    set value(newValue: string) {
+        if (this.valueData !== newValue && this.valueData !== undefined) {
+            console.log("Test");
+            this.valueChange.emit(newValue);
+        }
+        this.valueData = newValue;
+    }
 
     toggleVisibility(): void {
         if (this.visibility === "password")

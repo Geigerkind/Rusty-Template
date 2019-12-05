@@ -1,5 +1,4 @@
 import {Component} from "@angular/core";
-import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from "@angular/router";
 import {LoadingBarService} from "../../../../service/loading_bar";
 
 @Component({

@@ -1,17 +1,17 @@
 @import "../../../../../../../styles/global";
 
 :host {
-  display: block;
+    display: block;
 
-  PasswordInput {
-    margin-bottom: $spacing;
-  }
-
-  ConfirmButton::ng-deep button {
-    background: darken($error, 40%);
-
-    &:hover {
-      background: darken($error, 50%);
+    PasswordInput {
+        margin-bottom: $spacing;
     }
-  }
+
+    ConfirmButton::ng-deep button {
+        background: darken($error, 40%);
+
+        &:hover {
+            background: darken($error, 50%);
+        }
+    }
 }

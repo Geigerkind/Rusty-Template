@@ -36,10 +36,6 @@ export class LoadingBarService {
         return this.openRequests > 0;
     }
 
-    private notifyObservers(): void {
-        this.observers.forEach(callback => callback.call(callback, this.isLoading()));
-    }
-
     incrementCounter(): void {
         ++this.openRequests;
         if (this.openRequests === 1)
@@ -52,6 +48,10 @@ export class LoadingBarService {
             this.openRequests = 0;
             this.notifyObservers();
         }
+    }
+
+    private notifyObservers(): void {
+        this.observers.forEach(callback => callback.call(callback, this.isLoading()));
     }
 
 

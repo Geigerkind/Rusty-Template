@@ -17,7 +17,8 @@ export class SignUpComponent {
         }
     };
 
-    constructor(private signUpService: SignUpService) {}
+    constructor(private signUpService: SignUpService) {
+    }
 
     onSubmit(): void {
         if (!this.disableSubmit) {

@@ -12,6 +12,7 @@ export class ConfirmButtonComponent {
 
     // Overwriting native event to incorporate disabled state
     @Output() click: EventEmitter<boolean> = new EventEmitter();
+
     handleClick(): void {
         if (!this.disabled)
             this.click.emit(true);

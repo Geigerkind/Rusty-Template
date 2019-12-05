@@ -1,20 +1,23 @@
 <header>{{ 'Account.navBar.entries.api' | translate }}</header>
 
 <form class="purposeForm">
-  <GeneralInput type="text" [required]="true" [maximum_length]="24" labelKey="Account.api.purpose" placeholderKey="Account.api.typePurpose" name="purpose"></GeneralInput>
-  <GeneralInput type="date" [required]="true" labelKey="Account.api.expiration" name="exp_date"></GeneralInput>
-  <ConfirmButton labelKey="Account.api.generate"></ConfirmButton>
+    <GeneralInput [maximum_length]="24" [required]="true" labelKey="Account.api.purpose" name="purpose"
+                  placeholderKey="Account.api.typePurpose" type="text"></GeneralInput>
+    <GeneralInput [required]="true" labelKey="Account.api.expiration" name="exp_date" type="date"></GeneralInput>
+    <ConfirmButton labelKey="Account.api.generate"></ConfirmButton>
 </form>
 
-<form class="tableContainer" *ngIf="tokenList.length > 0">
-  <div class="tableRow tableHead">
-    <div>{{ 'Account.api.token' | translate }}</div>
-    <div>{{ 'Account.api.purpose' | translate }}</div>
-    <div>{{ 'Account.api.action' | translate }}</div>
-  </div>
-  <div class="tableRow" *ngFor="let item of tokenList">
-    <div>{{ item[0] }}</div>
-    <div>{{ item[1] }}</div>
-    <div><ConfirmButton labelKey="Account.api.remove"></ConfirmButton></div>
-  </div>
+<form *ngIf="tokenList.length > 0" class="tableContainer">
+    <div class="tableRow tableHead">
+        <div>{{ 'Account.api.token' | translate }}</div>
+        <div>{{ 'Account.api.purpose' | translate }}</div>
+        <div>{{ 'Account.api.action' | translate }}</div>
+    </div>
+    <div *ngFor="let item of tokenList" class="tableRow">
+        <div>{{ item[0] }}</div>
+        <div>{{ item[1] }}</div>
+        <div>
+            <ConfirmButton labelKey="Account.api.remove"></ConfirmButton>
+        </div>
+    </div>
 </form>

@@ -1,2 +1,4 @@
 <span>{{ labelKey | translate }}</span>
-<input [type]="type" [placeholder]="placeholderKey | translate" [value]="value" (input)="value=$event.currentTarget.value" [maxLength]="maximum_length" [minLength]="minimum_length" [required]="required" [name]="name" />
+<input (input)="value=$event.currentTarget.value" [class.touched]="touched" [maxLength]="maximum_length"
+       [minLength]="minimum_length" [name]="name" [placeholder]="placeholderKey | translate"
+       [required]="required" [type]="type" [value]="value"/>
