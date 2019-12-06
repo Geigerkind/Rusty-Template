@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {escapeRegExp} from "tslint/lib/utils";
 
 @Component({
     selector: "GeneralInput",
@@ -7,6 +8,7 @@ import {Component, EventEmitter, Input, Output} from "@angular/core";
 })
 export class GeneralInputComponent {
     touched: boolean = false;
+    pattern: string = ".+";
 
     @Input() type: string;
     @Input() placeholderKey: string;
@@ -30,5 +32,23 @@ export class GeneralInputComponent {
             this.valueChange.emit(newValue);
         }
         this.valueData = newValue;
+    }
+
+    @Output() forceInvalidChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+    forceInvalidData: boolean = false;
+
+    @Input()
+    get forceInvalid(): boolean {
+        return this.forceInvalidData;
+    }
+
+    set forceInvalid(newValue: boolean) {
+        if (this.forceInvalidData !== newValue)
+            this.forceInvalidChange.emit(true);
+        this.forceInvalidData = newValue;
+
+        if (this.forceInvalidData)
+            this.pattern = "^(?!" + escapeRegExp(this.valueData) + "$).*$";
+        else this.pattern = ".+";
     }
 }

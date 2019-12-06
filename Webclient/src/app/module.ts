@@ -3,7 +3,6 @@ import {NgModule} from "@angular/core";
 
 import {AppRouting} from "./routing";
 import {AppComponent} from "./component/app/app";
-import {CookieService} from "ngx-cookie-service";
 import {CookieBannerModule} from "./module/cookie_banner/module";
 
 import {HttpClient, HttpClientModule} from "@angular/common/http";

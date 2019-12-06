@@ -15,11 +15,11 @@ export class LoginService {
                 private routingService: Router) {
     }
 
-    signIn(loginForm: LoginForm, on_response: any): void {
+    signIn(loginForm: LoginForm, on_success: any, on_failure): void {
         this.apiService.post<any, LoginForm>(LoginService.URL_LOGIN, loginForm, (resp) => {
             this.settingsService.set("API_TOKEN", resp.token);
             this.routingService.navigate(["/account"]);
-            on_response.call(on_response);
-        }, on_response);
+            on_success.call(on_success);
+        }, on_failure);
     }
 }

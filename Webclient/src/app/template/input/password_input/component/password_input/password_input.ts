@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {escapeRegExp} from "tslint/lib/utils";
 
 @Component({
     selector: "PasswordInput",
@@ -11,9 +12,8 @@ export class PasswordInputComponent {
     @Input() name: string;
 
     @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
-    valueData: string;
-    visibility = "password";
 
+    valueData: string;
     @Input()
     get value(): string {
         return this.valueData;
@@ -25,6 +25,21 @@ export class PasswordInputComponent {
         this.valueData = newValue;
     }
 
+    @Output() forceInvalidChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+    forceInvalidData: boolean = false;
+
+    @Input()
+    get forceInvalid(): boolean {
+        return this.forceInvalidData;
+    }
+
+    set forceInvalid(newValue: boolean) {
+        if (this.forceInvalidData !== newValue)
+            this.forceInvalidChange.emit(true);
+        this.forceInvalidData = newValue;
+    }
+
+    visibility = "password";
     toggleVisibility(): void {
         if (this.visibility === "password")
             this.visibility = "text";

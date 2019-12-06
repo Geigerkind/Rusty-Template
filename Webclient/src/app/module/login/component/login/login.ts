@@ -20,7 +20,16 @@ export class LoginComponent {
     onSubmit(): void {
         if (!this.disableSubmit) {
             this.disableSubmit = true;
-            this.loginService.signIn(this.model, () => this.disableSubmit = false);
+            this.loginService.signIn(this.model, this.on_success, this.on_failure);
         }
+    }
+
+    private on_success(): void {
+        this.disableSubmit = false;
+    }
+
+    private on_failure(reason): void {
+        console.log(reason);
+        this.disableSubmit = false;
     }
 }
