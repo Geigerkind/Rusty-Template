@@ -15,7 +15,7 @@ export class LoginService {
                 private routingService: Router) {
     }
 
-    signIn(loginForm: LoginForm, on_success: any, on_failure): void {
+    signIn(loginForm: LoginForm, on_success: any, on_failure: any): void {
         this.apiService.post<any, LoginForm>(LoginService.URL_LOGIN, loginForm, (resp) => {
             this.settingsService.set("API_TOKEN", resp.token);
             this.routingService.navigate(["/account"]);

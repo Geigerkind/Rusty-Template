@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, Output} from "@angular/core";
-import {escapeRegExp} from "tslint/lib/utils";
+// @ts-ignore
+import escapeStringRegexp = require("escape-string-regexp");
 
 @Component({
     selector: "GeneralInput",
@@ -48,7 +49,7 @@ export class GeneralInputComponent {
         this.forceInvalidData = newValue;
 
         if (this.forceInvalidData)
-            this.pattern = "^(?!" + escapeRegExp(this.valueData) + "$).*$";
+            this.pattern = "^(?!" + escapeStringRegexp(this.valueData) + "$).*$";
         else this.pattern = ".+";
     }
 }
