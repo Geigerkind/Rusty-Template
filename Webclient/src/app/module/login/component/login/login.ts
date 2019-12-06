@@ -8,6 +8,8 @@ import {LoginForm} from "../../dto/login_form";
     styleUrls: ["./login.scss"]
 })
 export class LoginComponent {
+    invalidateMail = false;
+    invalidatePassword = false;
     disableSubmit = false;
     model: LoginForm = {
         mail: "",
@@ -20,7 +22,7 @@ export class LoginComponent {
     onSubmit(): void {
         if (!this.disableSubmit) {
             this.disableSubmit = true;
-            this.loginService.signIn(this.model, this.on_success, this.on_failure);
+            this.loginService.signIn(this.model, this.on_success(), callback => this.on_failure(callback));
         }
     }
 
@@ -29,7 +31,10 @@ export class LoginComponent {
     }
 
     private on_failure(reason): void {
-        console.log(reason);
+        if (reason.status === 599) {
+            this.invalidateMail = true;
+            this.invalidatePassword = true;
+        }
         this.disableSubmit = false;
     }
 }
