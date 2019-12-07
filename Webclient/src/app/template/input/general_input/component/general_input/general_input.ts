@@ -1,5 +1,6 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from "@angular/core";
 import {escapeRegExp} from "../../../../../stdlib/escapeRexExp";
+import {FormFailure} from "../../../../../material/form_failure";
 
 @Component({
     selector: "GeneralInput",
@@ -8,13 +9,13 @@ import {escapeRegExp} from "../../../../../stdlib/escapeRexExp";
 })
 export class GeneralInputComponent {
     touched: boolean = false;
-    pattern: string = ".+";
+    pattern: string;
 
+    @ViewChild("generalInput", { static: true }) inputRef: ElementRef;
     @Input() type: string;
     @Input() placeholderKey: string;
     @Input() labelKey: string;
     @Input() required: boolean;
-    @Input() minimum_length = 0;
     @Input() maximum_length = 1024;
     @Input() name: string;
 
@@ -28,29 +29,37 @@ export class GeneralInputComponent {
 
     set value(newValue: string) {
         if (this.valueData !== newValue && this.valueData !== undefined) {
-            if (this.forceInvalid)
-                this.forceInvalid = false;
+            this.formFailure.isInvalid = false;
+
             this.touched = true;
             this.valueChange.emit(newValue);
         }
         this.valueData = newValue;
     }
 
-    @Output() forceInvalidChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-    forceInvalidData: boolean = false;
-
+    formFailureData: FormFailure = FormFailure.empty();
     @Input()
-    get forceInvalid(): boolean {
-        return this.forceInvalidData;
+    get formFailure(): FormFailure {
+        return this.formFailureData;
+    }
+    set formFailure(newValue: FormFailure) {
+        this.formFailureData = newValue;
+        this.updatePattern();
+        this.formFailureData.subscribe(() => this.updatePattern());
     }
 
-    set forceInvalid(newValue: boolean) {
-        if (this.forceInvalidData !== newValue)
-            this.forceInvalidChange.emit(newValue);
-        this.forceInvalidData = newValue;
+    constructor() {
+        this.updatePattern();
+    }
 
-        if (this.forceInvalidData)
+    updatePattern(): void {
+        if (this.formFailure.isInvalid) {
             this.pattern = "^(?!" + escapeRegExp(this.valueData) + "$).*$";
-        else this.pattern = ".+";
+        } else {
+            this.pattern = undefined;
+            this.formFailure.invalidityMsg = '';
+            if (!!this.inputRef)
+                this.inputRef.nativeElement.setCustomValidity('');
+        }
     }
 }

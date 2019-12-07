@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from "@angular/core";
-import {escapeRegExp} from "tslint/lib/utils";
+import {FormFailure} from "../../../../../material/form_failure";
 
 @Component({
     selector: "PasswordInput",
@@ -10,10 +10,11 @@ export class PasswordInputComponent {
     @Input() placeholderKey: string;
     @Input() labelKey: string;
     @Input() name: string;
+    @Input() formFailure: FormFailure;
 
     @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
-
     valueData: string;
+
     @Input()
     get value(): string {
         return this.valueData;
@@ -23,20 +24,6 @@ export class PasswordInputComponent {
         if (this.valueData !== newValue && this.valueData !== undefined)
             this.valueChange.emit(newValue);
         this.valueData = newValue;
-    }
-
-    @Output() forceInvalidChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-    forceInvalidData: boolean = false;
-
-    @Input()
-    get forceInvalid(): boolean {
-        return this.forceInvalidData;
-    }
-
-    set forceInvalid(newValue: boolean) {
-        if (this.forceInvalidData !== newValue)
-            this.forceInvalidChange.emit(newValue);
-        this.forceInvalidData = newValue;
     }
 
     visibility = "password";

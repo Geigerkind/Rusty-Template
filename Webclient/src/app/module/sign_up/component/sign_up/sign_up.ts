@@ -1,6 +1,8 @@
 import {Component} from "@angular/core";
 import {SignUpService} from "../../service/sign_up";
 import {SignUpForm} from "../../dto/sign_up_form";
+import {FormFailure} from "../../../../material/form_failure";
+import {APIFailure} from "../../../../domain_value/api_failure";
 
 @Component({
     selector: "SignUp",
@@ -8,6 +10,9 @@ import {SignUpForm} from "../../dto/sign_up_form";
     styleUrls: ["./sign_up.scss"]
 })
 export class SignUpComponent {
+    formFailureNickname: FormFailure = FormFailure.empty();
+    formFailureMail: FormFailure = FormFailure.empty();
+    formFailurePassword: FormFailure = FormFailure.empty();
     disableSubmit = false;
     model: SignUpForm = {
         nickname: "",
@@ -23,7 +28,18 @@ export class SignUpComponent {
     onSubmit(): void {
         if (!this.disableSubmit) {
             this.disableSubmit = true;
-            this.signUpService.signUp(this.model, () => this.disableSubmit = false);
+            this.signUpService.signUp(this.model, () => this.on_success(), callback => this.on_failure(callback));
         }
+    }
+
+    on_success(): void {
+        this.disableSubmit = false;
+    }
+
+    on_failure(api_failure: APIFailure): void {
+        this.formFailureNickname = FormFailure.from(api_failure, 522, 526);
+        this.formFailureMail = FormFailure.from(api_failure, 521, 525);
+        this.formFailurePassword = FormFailure.from(api_failure, 523, 524);
+        this.disableSubmit = false;
     }
 }

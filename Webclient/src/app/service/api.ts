@@ -5,6 +5,7 @@ import {NotificationService} from "./notification";
 import {Severity} from "../domain_value/severity";
 import {Router} from "@angular/router";
 import {LoadingBarService} from "./loading_bar";
+import {APIFailure} from "../domain_value/api_failure";
 
 @Injectable({
     providedIn: "root",
@@ -31,7 +32,10 @@ export class APIService {
         return headers.set("Authentication", api_token);
     }
 
-    private handleFailure(reason: HttpErrorResponse): void {
+    private handleFailure(reason: HttpErrorResponse): APIFailure {
+        if (reason.status < 400)
+            return;
+
         // Token invalid
         if (reason.status === 401) {
             this.settingsService.set("API_TOKEN", undefined);
@@ -39,7 +43,15 @@ export class APIService {
             return;
         }
 
-        this.notificationService.propagate(Severity.Error, "serverResponses." + reason.status);
+        const api_failure: APIFailure = {
+            status: reason.status,
+            translation: "serverResponses." + reason.status,
+            arguments: {
+                arg1: reason.error
+            }
+        };
+        this.notificationService.propagate(Severity.Error, api_failure.translation, api_failure.arguments);
+        return api_failure;
     }
 
 
@@ -52,9 +64,9 @@ export class APIService {
                     on_success.call(on_success, response);
             })
             .catch(reason => {
-                this.handleFailure(reason);
+                const failure = this.handleFailure(reason);
                 if (!!on_failure)
-                    on_failure.call(on_failure);
+                    on_failure.call(on_failure, failure);
             })
             .finally(() => this.loadingBarService.decrementCounter());
     }
@@ -68,9 +80,9 @@ export class APIService {
                     on_success.call(on_success, response);
             })
             .catch(reason => {
-                this.handleFailure(reason);
+                const failure = this.handleFailure(reason);
                 if (!!on_failure)
-                    on_failure.call(on_failure);
+                    on_failure.call(on_failure, failure);
             })
             .finally(() => this.loadingBarService.decrementCounter());
     }
@@ -84,9 +96,9 @@ export class APIService {
                     on_success.call(on_success, response);
             })
             .catch(reason => {
-                this.handleFailure(reason);
+                const failure = this.handleFailure(reason);
                 if (!!on_failure)
-                    on_failure.call(on_failure, reason);
+                    on_failure.call(on_failure, failure);
             })
             .finally(() => this.loadingBarService.decrementCounter());
     }

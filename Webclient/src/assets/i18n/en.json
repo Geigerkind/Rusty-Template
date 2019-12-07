@@ -4,7 +4,7 @@
         "520": "Invalid credentials!",
         "521": "Invalid mail!",
         "522": "Invalid nickname!",
-        "523": "This password has been pwned {{numPwned}} times. Please choose another password!",
+        "523": "This password has been pwned {{arg1}} times. Please choose another password!",
         "524": "The minimum length for a password is 12 character.",
         "525": "This mail is already being used!",
         "526": "This nickname is already being used!",

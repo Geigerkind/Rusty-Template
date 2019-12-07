@@ -1,6 +1,8 @@
 import {Component} from "@angular/core";
 import {LoginService} from "../../service/login";
 import {LoginForm} from "../../dto/login_form";
+import {APIFailure} from "../../../../domain_value/api_failure";
+import {FormFailure} from "../../../../material/form_failure";
 
 @Component({
     selector: "Login",
@@ -8,7 +10,7 @@ import {LoginForm} from "../../dto/login_form";
     styleUrls: ["./login.scss"]
 })
 export class LoginComponent {
-    invalidateFormElements = false;
+    formFailure: FormFailure = FormFailure.empty();
     disableSubmit = false;
     model: LoginForm = {
         mail: "",
@@ -29,9 +31,8 @@ export class LoginComponent {
         this.disableSubmit = false;
     }
 
-    private on_failure(reason): void {
-        if (reason.status === 520)
-            this.invalidateFormElements = true;
+    private on_failure(api_failure: APIFailure): void {
+        this.formFailure = FormFailure.from(api_failure, 520);
         this.disableSubmit = false;
     }
 }
