@@ -11,8 +11,7 @@ import {AccountInformationRouting} from "./routing";
         TranslateModule,
         AccountInformationRouting
     ],
-    exports: [AccountInformationComponent],
-    bootstrap: [AccountInformationComponent]
+    exports: [AccountInformationComponent]
 })
 export class AccountInformationModule {
 }
