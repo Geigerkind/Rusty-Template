@@ -1,9 +1,9 @@
 <div class="centerContainer">
     <form (ngSubmit)="onSubmit()" ngNativeValidate>
         <GeneralInput [(value)]="model.mail" [required]="true" labelKey="Login.mail" name="mail" placeholderKey="Login.typeMail"
-                      type="email" [(forceInvalid)]="invalidateMail"></GeneralInput>
+                      type="email" [(forceInvalid)]="invalidateFormElements"></GeneralInput>
         <PasswordInput [(value)]="model.password" labelKey="Login.password" name="password"
-                       placeholderKey="Login.typePassword" [(forceInvalid)]="invalidatePassword"></PasswordInput>
+                       placeholderKey="Login.typePassword" [(forceInvalid)]="invalidateFormElements"></PasswordInput>
         <ConfirmButton [disabled]="disableSubmit" labelKey="Login.signIn" type="submit"></ConfirmButton>
     </form>
     <ConfirmButton class="lessImportant" labelKey="Login.forgotPassword" routerLink="/reset_password"></ConfirmButton>

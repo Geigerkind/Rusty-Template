@@ -8,27 +8,28 @@ use validator::domain_value::PasswordFailure;
 
 use crate::account::material::{Account, Member, APIToken};
 use crate::account::tools::Token;
+use crate::account::dto::Failure;
 
 pub trait Create {
-  fn create(&self, mail: &str, nickname: &str, password: &str) -> Result<APIToken, String>;
+  fn create(&self, mail: &str, nickname: &str, password: &str) -> Result<APIToken, Failure>;
   fn send_confirmation(&self, member_id: u32) -> bool;
   fn confirm(&self, id: &str) -> bool;
 }
 
 impl Create for Account {
-  fn create(&self, mail: &str, nickname: &str, password: &str) -> Result<APIToken, String>
+  fn create(&self, mail: &str, nickname: &str, password: &str) -> Result<APIToken, Failure>
   {
     if !valid_mail(mail) {
-      return Err(self.dictionary.get("general.error.invalid.mail", Language::English));
+      return Err(Failure::InvalidMail);
     }
 
     if !valid_nickname(nickname) {
-      return Err(self.dictionary.get("general.error.invalid.nickname", Language::English));
+      return Err(Failure::InvalidNickname);
     }
 
     match valid_password(password) {
-      Err(PasswordFailure::TooFewCharacters) => return Err(self.dictionary.get("general.error.password.length", Language::English)),
-      Err(PasswordFailure::Pwned(num_pwned)) => return Err(strformat::fmt(self.dictionary.get("general.error.password.pwned", Language::English), &[&num_pwned.to_string()])),
+      Err(PasswordFailure::TooFewCharacters) => return Err(Failure::PasswordTooShort),
+      Err(PasswordFailure::Pwned(num_pwned)) => return Err(Failure::PwnedPassword(num_pwned)),
       Ok(_) => ()
     };
 
@@ -40,9 +41,9 @@ impl Create for Account {
       let lower_nickname = nickname.to_lowercase();
       for entry in member.values() {
         if entry.mail == lower_mail || entry.new_mail == lower_mail {
-          return Err(self.dictionary.get("update.error.mail_taken", Language::English));
+          return Err(Failure::MailIsInUse);
         } else if entry.nickname.to_lowercase() == lower_nickname {
-          return Err(self.dictionary.get("create.error.taken.nickname", Language::English));
+          return Err(Failure::NicknameIsInUse);
         }
       }
 
@@ -73,7 +74,7 @@ impl Create for Account {
           new_mail: String::new()
         });
       } else {
-        return Err(self.dictionary.get("general.error.unknown", Language::English));
+        return Err(Failure::Unknown);
       }
     }
 

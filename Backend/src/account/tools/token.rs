@@ -1,16 +1,15 @@
-use language::domain_value::Language;
-use language::tools::Get;
 use mysql_connection::tools::{Execute, Select};
 use str_util::{random, sha3};
 
 use crate::account::material::{Account, APIToken};
+use crate::account::dto::Failure;
 
 pub trait Token {
   fn get_all_token(&self, member_id: u32) -> Vec<APIToken>;
   fn validate_token(&self, api_token: &str) -> Option<u32>;
-  fn clear_tokens(&self, member_id: u32) -> Result<(), String>;
-  fn create_token(&self, purpose: &str, member_id: u32, exp_date: u64) -> Result<APIToken, String>;
-  fn delete_token(&self, token_id: u32, member_id: u32) -> Result<(), String>;
+  fn clear_tokens(&self, member_id: u32) -> Result<(), Failure>;
+  fn create_token(&self, purpose: &str, member_id: u32, exp_date: u64) -> Result<APIToken, Failure>;
+  fn delete_token(&self, token_id: u32, member_id: u32) -> Result<(), Failure>;
 }
 
 impl Token for Account {
@@ -27,14 +26,14 @@ impl Token for Account {
     api_token_to_member_id.get(api_token).and_then(|member_id| Some(member_id.clone()))
   }
 
-  fn clear_tokens(&self, member_id: u32) -> Result<(), String> {
+  fn clear_tokens(&self, member_id: u32) -> Result<(), Failure> {
     let mut api_token_to_member_id = self.api_token_to_member_id.write().unwrap();
     let mut api_token = self.api_tokens.write().unwrap();
 
     if !self.db_main.execute_wparams("DELETE FROM api_token WHERE member_id=:member_id", params!(
       "member_id" => member_id
     )) {
-      return Err(self.dictionary.get("general.error.unknown", Language::English));
+      return Err(Failure::Unknown);
     }
 
     for api_token in api_token.get(&member_id).unwrap() {
@@ -45,7 +44,7 @@ impl Token for Account {
     Ok(())
   }
 
-  fn create_token(&self, purpose: &str, member_id: u32, exp_date: u64) -> Result<APIToken, String> {
+  fn create_token(&self, purpose: &str, member_id: u32, exp_date: u64) -> Result<APIToken, Failure> {
     let token: String;
     {
       let member = self.member.read().unwrap();
@@ -67,7 +66,7 @@ impl Token for Account {
         "exp_date" => exp_date
       ),
     ) {
-      return Err(self.dictionary.get("general.error.unknown", Language::English));
+      return Err(Failure::Unknown);
     }
 
     match self.db_main.select_wparams_value(
@@ -95,11 +94,11 @@ impl Token for Account {
         api_token_to_member_id.insert(token.token.clone(), member_id);
         Ok(token)
       }
-      None => return Err(self.dictionary.get("general.error.unknown", Language::English))
+      None => return Err(Failure::Unknown)
     }
   }
 
-  fn delete_token(&self, token_id: u32, member_id: u32) -> Result<(), String> {
+  fn delete_token(&self, token_id: u32, member_id: u32) -> Result<(), Failure> {
     // We lock before in order to be transactional
     let mut api_token_to_member_id = self.api_token_to_member_id.write().unwrap();
     let mut api_tokens = self.api_tokens.write().unwrap();
@@ -111,7 +110,7 @@ impl Token for Account {
         "member_id" => member_id
       ),
     ) {
-      return Err(self.dictionary.get("general.error.unknown", Language::English));
+      return Err(Failure::Unknown);
     }
 
     match api_tokens.get(&member_id).unwrap().iter().position(|api_token| api_token.id == token_id) {
@@ -124,7 +123,7 @@ impl Token for Account {
         token_vec.remove(token_index);
         Ok(())
       },
-      None => Err(self.dictionary.get("general.error.unknown", Language::English))
+      None => Err(Failure::Unknown)
     }
   }
 }

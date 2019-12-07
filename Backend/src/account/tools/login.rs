@@ -4,14 +4,15 @@ use str_util::sha3;
 
 use crate::account::material::{Account, APIToken};
 use crate::account::tools::Token;
+use crate::account::dto::Failure;
 
 pub trait Login {
-  fn login(&self, mail: &str, password: &str) -> Result<APIToken, String>;
-  fn validate_credentials(&self, mail: &str, password: &str) -> Result<u32, String>;
+  fn login(&self, mail: &str, password: &str) -> Result<APIToken, Failure>;
+  fn validate_credentials(&self, mail: &str, password: &str) -> Result<u32, Failure>;
 }
 
 impl Login for Account {
-  fn login(&self, mail: &str, password: &str) -> Result<APIToken, String> {
+  fn login(&self, mail: &str, password: &str) -> Result<APIToken, Failure> {
     self.validate_credentials(mail, password)
       .and_then(|member_id| self.create_token(
         &self.dictionary.get("general.login", Language::English),
@@ -20,13 +21,13 @@ impl Login for Account {
       ))
   }
 
-  fn validate_credentials(&self, mail: &str, password: &str) -> Result<u32, String> {
+  fn validate_credentials(&self, mail: &str, password: &str) -> Result<u32, Failure> {
     let lower_mail = mail.to_lowercase();
     for entry in self.member.read().unwrap().values() {
       if entry.mail != lower_mail { continue; }
       if entry.password != sha3::hash(&[&password, &entry.salt]) { break; } // Password is wrong
       return Ok(entry.id);
     }
-    Err(self.dictionary.get("login.error.credentials", Language::English))
+    Err(Failure::InvalidCredentials)
   }
 }

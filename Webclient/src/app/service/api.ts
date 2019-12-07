@@ -32,9 +32,6 @@ export class APIService {
     }
 
     private handleFailure(reason: HttpErrorResponse): void {
-        if (reason.status <= 520)
-            return;
-
         // Token invalid
         if (reason.status === 401) {
             this.settingsService.set("API_TOKEN", undefined);
@@ -42,7 +39,7 @@ export class APIService {
             return;
         }
 
-        this.notificationService.propagate(Severity.Error, reason.error);
+        this.notificationService.propagate(Severity.Error, "serverResponses." + reason.status);
     }
 
 

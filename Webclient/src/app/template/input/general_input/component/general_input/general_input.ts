@@ -28,6 +28,8 @@ export class GeneralInputComponent {
 
     set value(newValue: string) {
         if (this.valueData !== newValue && this.valueData !== undefined) {
+            if (this.forceInvalid)
+                this.forceInvalid = false;
             this.touched = true;
             this.valueChange.emit(newValue);
         }
@@ -44,7 +46,7 @@ export class GeneralInputComponent {
 
     set forceInvalid(newValue: boolean) {
         if (this.forceInvalidData !== newValue)
-            this.forceInvalidChange.emit(true);
+            this.forceInvalidChange.emit(newValue);
         this.forceInvalidData = newValue;
 
         if (this.forceInvalidData)

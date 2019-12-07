@@ -7,17 +7,18 @@ use validator::tools::valid_mail;
 
 use crate::account::material::{Account, APIToken};
 use crate::account::tools::{Token, Update};
+use crate::account::dto::Failure;
 
 pub trait Forgot {
-  fn send_forgot_password(&self, mail: &str) -> Result<(), String>;
-  fn recv_forgot_password(&self, forgot_id: &str) -> Result<APIToken, String>;
+  fn send_forgot_password(&self, mail: &str) -> Result<(), Failure>;
+  fn recv_forgot_password(&self, forgot_id: &str) -> Result<APIToken, Failure>;
 }
 
 impl Forgot for Account {
-  fn send_forgot_password(&self, mail: &str) -> Result<(), String>
+  fn send_forgot_password(&self, mail: &str) -> Result<(), Failure>
   {
     if !valid_mail(mail) {
-      return Err(self.dictionary.get("general.error.invalid.mail", Language::English));
+      return Err(Failure::InvalidMail);
     }
 
     let mut requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();
@@ -49,15 +50,15 @@ impl Forgot for Account {
       // Only send a mail if we really set up the internal structures properly
       if !mail::send(&entry.mail, &entry.nickname, self.dictionary.get("forgot.confirmation.subject", Language::English),
                      strformat::fmt(self.dictionary.get("forgot.confirmation.text", Language::English), &[&forgot_id])) {
-        return Err(self.dictionary.get("general.error.unknown", Language::English));
+        return Err(Failure::MailSend);
       }
 
       return Ok(())
     }
-    Err(self.dictionary.get("general.error.unknown", Language::English))
+    Err(Failure::Unknown)
   }
 
-  fn recv_forgot_password(&self, forgot_id: &str) -> Result<APIToken, String>
+  fn recv_forgot_password(&self, forgot_id: &str) -> Result<APIToken, Failure>
   {
     let user_id;
     {
@@ -72,10 +73,10 @@ impl Forgot for Account {
             let entry = member.get_mut(member_id).unwrap();
             entry.forgot_password = false;
           } else {
-            return Err(self.dictionary.get("general.error.unknown", Language::English));
+            return Err(Failure::Unknown);
           }
         }
-        None => return Err(self.dictionary.get("forgot.error.no_forgot_issued", Language::English))
+        None => return Err(Failure::ForgotNotIssued)
       }
     }
 
@@ -88,7 +89,7 @@ impl Forgot for Account {
           let entry = member.get(&user_id).unwrap();
           if !mail::send(&entry.mail, &entry.nickname, self.dictionary.get("forgot.information.subject", Language::English),
                          strformat::fmt(self.dictionary.get("forgot.information.text", Language::English), &[&user_pass])) {
-            return Err(self.dictionary.get("general.error.mail_send", Language::English));
+            return Err(Failure::MailSend);
           }
         }
 

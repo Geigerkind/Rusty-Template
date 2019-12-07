@@ -35,7 +35,7 @@ export class PasswordInputComponent {
 
     set forceInvalid(newValue: boolean) {
         if (this.forceInvalidData !== newValue)
-            this.forceInvalidChange.emit(true);
+            this.forceInvalidChange.emit(newValue);
         this.forceInvalidData = newValue;
     }
 

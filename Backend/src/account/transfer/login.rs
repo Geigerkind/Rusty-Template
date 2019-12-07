@@ -10,5 +10,4 @@ pub fn login(me: State<Account>, params: Json<Credentials>) -> Result<Json<APITo
 {
   me.login(&params.mail, &params.password)
     .and_then(|api_token| Ok(Json(api_token)))
-    .or_else(|err| Err(Failure::Login(err)))
 }

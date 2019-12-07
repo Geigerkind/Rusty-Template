@@ -8,8 +8,7 @@ import {LoginForm} from "../../dto/login_form";
     styleUrls: ["./login.scss"]
 })
 export class LoginComponent {
-    invalidateMail = false;
-    invalidatePassword = false;
+    invalidateFormElements = false;
     disableSubmit = false;
     model: LoginForm = {
         mail: "",
@@ -31,10 +30,8 @@ export class LoginComponent {
     }
 
     private on_failure(reason): void {
-        if (reason.status === 599) {
-            this.invalidateMail = true;
-            this.invalidatePassword = true;
-        }
+        if (reason.status === 520)
+            this.invalidateFormElements = true;
         this.disableSubmit = false;
     }
 }

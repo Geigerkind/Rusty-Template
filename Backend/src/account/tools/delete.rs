@@ -5,14 +5,15 @@ use mysql_connection::tools::Execute;
 use str_util::{sha3, strformat};
 
 use crate::account::material::Account;
+use crate::account::dto::Failure;
 
 pub trait Delete {
-  fn issue_delete(&self, member_id: u32) -> Result<(), String>;
-  fn confirm_delete(&self, delete_id: &str) -> Result<(), String>;
+  fn issue_delete(&self, member_id: u32) -> Result<(), Failure>;
+  fn confirm_delete(&self, delete_id: &str) -> Result<(), Failure>;
 }
 
 impl Delete for Account {
-  fn issue_delete(&self, member_id: u32) -> Result<(), String>
+  fn issue_delete(&self, member_id: u32) -> Result<(), Failure>
   {
     let mut requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();
     let mut member = self.member.write().unwrap();
@@ -26,15 +27,15 @@ impl Delete for Account {
       // Send a confirmation mail to the member now
       if !mail::send(&entry.mail, &entry.nickname, self.dictionary.get("create.confirmation.subject", Language::English),
                      strformat::fmt(self.dictionary.get("create.confirmation.text", Language::English), &[&delete_id])) {
-        return Err(self.dictionary.get("general.error.mail_send", Language::English));
+        return Err(Failure::MailSend);
       }
     } else {
-      return Err(self.dictionary.get("general.error.unknown", Language::English));
+      return Err(Failure::Unknown);
     }
     Ok(())
   }
 
-  fn confirm_delete(&self, delete_id: &str) -> Result<(), String>
+  fn confirm_delete(&self, delete_id: &str) -> Result<(), Failure>
   {
     let mut requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();
     let mut api_token_to_member_id = self.api_token_to_member_id.write().unwrap();
@@ -43,7 +44,7 @@ impl Delete for Account {
 
     let delete_confirmation_res = requires_mail_confirmation.get(delete_id);
     if delete_confirmation_res.is_none() {
-      return Err(self.dictionary.get("delete.error.no_delete_issued", Language::English));
+      return Err(Failure::DeleteNotIssued);
     }
 
     // Due to foreign key constraints, other tables depending on the member_id will also be deleted
@@ -79,7 +80,7 @@ impl Delete for Account {
 
       member.remove(&member_id);
     } else {
-      return Err(self.dictionary.get("general.error.unknown", Language::English));
+      return Err(Failure::Unknown);
     }
     Ok(())
   }

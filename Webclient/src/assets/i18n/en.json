@@ -1,4 +1,19 @@
 {
+    "serverResponses": {
+        "200": "Success!",
+        "520": "Invalid credentials!",
+        "521": "Invalid mail!",
+        "522": "Invalid nickname!",
+        "523": "This password has been pwned {{numPwned}} times. Please choose another password!",
+        "524": "The minimum length for a password is 12 character.",
+        "525": "This mail is already being used!",
+        "526": "This nickname is already being used!",
+        "527": "The provided url is invalid!",
+        "528": "Mail could not be send!",
+        "529": "A deletion has not been issued!",
+        "530": "No forgot issued!",
+        "599": "An unknown error occurred!"
+    },
     "CookieBanner": {
         "notification": {
             "saved": "Your consent settings have been saved!"
