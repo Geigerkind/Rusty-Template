@@ -2,6 +2,7 @@
 
 <form (ngSubmit)="on_submit()" ngNativeValidate>
     <GeneralInput [required]="true" labelKey="Account.updateNickname.newNickname" name="nickname"
-                  placeholderKey="Account.updateNickname.typeNewNickname" type="text" [(value)]="nickname"></GeneralInput>
+                  placeholderKey="Account.updateNickname.typeNewNickname" type="text" [(value)]="nickname"
+                  [formFailure]="formFailure"></GeneralInput>
     <ConfirmButton labelKey="Account.updateNickname.update" type="submit" [disabled]="disableSubmit"></ConfirmButton>
 </form>
