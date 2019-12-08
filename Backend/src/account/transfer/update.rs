@@ -3,7 +3,7 @@ use rocket_contrib::json::Json;
 
 use crate::account::domain_value::AccountInformation;
 use crate::account::dto::Failure;
-use crate::account::guard::authenticate::Authenticate;
+use crate::account::guard::Authenticate;
 use crate::account::material::{Account, APIToken};
 use crate::account::tools::Update;
 

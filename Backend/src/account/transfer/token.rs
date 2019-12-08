@@ -2,7 +2,7 @@ use rocket::State;
 use rocket_contrib::json::Json;
 
 use crate::account::dto::{CreateToken, Failure};
-use crate::account::guard::authenticate::Authenticate;
+use crate::account::guard::Authenticate;
 use crate::account::material::{Account, APIToken};
 use crate::account::tools::Token;
 

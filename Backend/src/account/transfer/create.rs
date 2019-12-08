@@ -4,7 +4,7 @@ use rocket_contrib::json::Json;
 use crate::account::dto::{CreateMember, Failure};
 use crate::account::material::{Account, APIToken};
 use crate::account::tools::Create;
-use crate::account::guard::authenticate::Authenticate;
+use crate::account::guard::Authenticate;
 
 #[post("/create", data = "<params>")]
 pub fn create(me: State<Account>, params: Json<CreateMember>) -> Result<Json<APIToken>, Failure>

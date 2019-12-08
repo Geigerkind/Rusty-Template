@@ -1,1 +1,3 @@
-pub mod authenticate;
+pub use self::authenticate::Authenticate;
+
+mod authenticate;

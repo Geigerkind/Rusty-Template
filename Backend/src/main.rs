@@ -12,27 +12,15 @@ extern crate str_util;
 extern crate time_util;
 extern crate validator;
 
+use rocket_prometheus::PrometheusMetrics;
 use rocket_contrib::json::Json;
 
 use account::Account;
 
 pub mod account;
+pub mod material;
+pub mod guard;
 
-#[allow(dead_code)]
-pub struct Backend {
-  account: Account,
-}
-
-impl Backend {
-  fn new() -> Self
-  {
-    let account = Account::default();
-    account.init();
-    Backend {
-      account
-    }
-  }
-}
 
 #[get("/")]
 fn api_overview() -> Json<Vec<String>> {
@@ -40,10 +28,13 @@ fn api_overview() -> Json<Vec<String>> {
 }
 
 fn main() {
+  let account: Account = Account::default();
+  let prometheus = PrometheusMetrics::new();
   let mut igniter = rocket::ignite();
-  let backend = Backend::new();
-  igniter = igniter.manage(backend.account);
+  igniter = igniter.manage(account);
+  igniter = igniter.attach(prometheus.clone());
   igniter = igniter.mount("/API/", routes![api_overview]);
+  igniter = igniter.mount("/API/metrics", prometheus);
   igniter = igniter.mount("/API/account/", routes![
     account::transfer::api::api,
     account::transfer::login::login,

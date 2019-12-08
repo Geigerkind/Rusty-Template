@@ -4,7 +4,7 @@ use rocket_contrib::json::Json;
 use crate::account::domain_value::AccountInformation;
 use crate::account::material::Account;
 use crate::account::tools::GetAccountInformation;
-use crate::account::guard::authenticate::Authenticate;
+use crate::account::guard::Authenticate;
 use crate::account::dto::Failure;
 
 #[get("/get")]
