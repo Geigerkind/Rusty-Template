@@ -18,6 +18,7 @@ pub enum Failure {
   MailSend,
   DeleteNotIssued,
   ForgotNotIssued,
+  TooManyDays,
   Unknown,
 }
 
@@ -39,6 +40,7 @@ impl Responder<'static> for Failure {
       Failure::MailSend => Status::new(528, ""),
       Failure::DeleteNotIssued => Status::new(529, ""),
       Failure::ForgotNotIssued => Status::new(530, ""),
+      Failure::TooManyDays => Status::new(531, ""),
       Failure::Unknown => Status::new(599, ""),
     };
     Response::build()

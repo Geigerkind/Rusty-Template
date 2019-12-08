@@ -4,7 +4,7 @@ use expose_api::expose_api_fn;
 use rocket_contrib::json::Json;
 use schemars::{schema_for, JsonSchema};
 
-use crate::account::dto::{CreateMember, CreateToken, Credentials, Failure};
+use crate::account::dto::{CreateMember, CreateToken, Credentials, Failure, ProlongToken};
 use crate::account::domain_value::{AccountInformation};
 use crate::account::material::APIToken;
 
@@ -43,5 +43,6 @@ pub fn api() -> Json<Vec<serde_json::Value>> {
     expose_api_fn("/token/create/<create_token>", "post", true, "application/json", schema_for!(Result<APIToken, Failure>), schema_for!(CreateToken)),
     expose_api_fn("/token/get/", "get", true, "application/json", schema_for!(Result<Vec<APIToken>, Failure>), schema_for!(Nothing)),
     expose_api_fn("/token/delete/<token_id>", "post", true, "application/json", schema_for!(Result<(), Failure>), schema_for!(u32)),
+    expose_api_fn("/token/update/<prolong_token>", "post", true, "application/json", schema_for!(Result<APIToken, Failure>), schema_for!(ProlongToken)),
   ])
 }

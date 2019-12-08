@@ -1,5 +1,6 @@
 use mysql_connection::tools::{Execute, Select};
 use str_util::{random, sha3};
+use time_util;
 
 use crate::account::material::{Account, APIToken};
 use crate::account::dto::Failure;
@@ -10,6 +11,7 @@ pub trait Token {
   fn clear_tokens(&self, member_id: u32) -> Result<(), Failure>;
   fn create_token(&self, purpose: &str, member_id: u32, exp_date: u64) -> Result<APIToken, Failure>;
   fn delete_token(&self, token_id: u32, member_id: u32) -> Result<(), Failure>;
+  fn prolong_token(&self, token_id: u32, member_id: u32, days: u32) -> Result<APIToken, Failure>;
 }
 
 impl Token for Account {
@@ -151,5 +153,28 @@ impl Token for Account {
       },
       None => Err(Failure::Unknown)
     }
+  }
+
+  fn prolong_token(&self, token_id: u32, member_id: u32, days: u32) -> Result<APIToken, Failure> {
+    // Tokens may be valid for a maximum time of a year
+    if days >= 365 {
+      return Err(Failure::TooManyDays);
+    }
+
+    // Continue to update the token
+    let mut api_tokens = self.api_tokens.write().unwrap();
+    let exp_date = time_util::get_ts_from_now_in_secs(days as u64);
+    if self.db_main.execute_wparams("UPDATE api_token SET exp_date=:exp_date WHERE id=:id AND member_id=:member_id", params!(
+      "exp_date" => exp_date,
+      "id" => token_id,
+      "member_id" => member_id
+    )) {
+      let token_vec = api_tokens.get_mut(&member_id).unwrap();
+      let token_pos = token_vec.iter().position(|api_token| api_token.id == token_id).unwrap();
+      let api_token = token_vec.get_mut(token_pos).unwrap();
+      api_token.exp_date = exp_date;
+      return Ok(api_token.clone());
+    }
+    Err(Failure::Unknown)
   }
 }
