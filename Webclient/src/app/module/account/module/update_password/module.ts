@@ -6,6 +6,8 @@ import {PasswordInputModule} from "src/app/template/input/password_input/module"
 import {ConfirmButtonModule} from "src/app/template/button/confirm_button/module";
 import {BriefNoteModule} from "src/app/template/brief_note/module";
 import {UpdatePasswordRouting} from "./routing";
+import {FormsModule} from "@angular/forms";
+import {UpdatePasswordService} from "./service/update_password";
 
 @NgModule({
     declarations: [UpdatePasswordComponent],
@@ -15,10 +17,11 @@ import {UpdatePasswordRouting} from "./routing";
         PasswordInputModule,
         ConfirmButtonModule,
         BriefNoteModule,
-        UpdatePasswordRouting
+        UpdatePasswordRouting,
+        FormsModule
     ],
     exports: [UpdatePasswordComponent],
-    bootstrap: [UpdatePasswordComponent]
+    providers: [UpdatePasswordService]
 })
 export class UpdatePasswordModule {
 }

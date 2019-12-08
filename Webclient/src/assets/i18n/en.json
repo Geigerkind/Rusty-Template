@@ -109,7 +109,6 @@
         },
         "updatePassword": {
             "newPassword": "New password",
-            "confirmNewPassword": "Confirm new password",
             "typePassword": "Type your new password",
             "update": "Update password",
             "updateNote": "Note: All API tokens will be removed."
