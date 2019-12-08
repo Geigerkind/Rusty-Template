@@ -15,12 +15,8 @@ extern crate validator;
 use rocket_prometheus::PrometheusMetrics;
 use rocket_contrib::json::Json;
 
-use account::Account;
-
-pub mod account;
-pub mod material;
-pub mod guard;
-
+use crate::modules::account;
+pub mod modules;
 
 #[get("/")]
 fn api_overview() -> Json<Vec<String>> {
@@ -28,7 +24,7 @@ fn api_overview() -> Json<Vec<String>> {
 }
 
 fn main() {
-  let account: Account = Account::default();
+  let account: account::Account = account::Account::default();
   let prometheus = PrometheusMetrics::new();
   let mut igniter = rocket::ignite();
   igniter = igniter.manage(account);
