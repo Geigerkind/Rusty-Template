@@ -22,8 +22,34 @@ impl Token for Account {
   }
 
   fn validate_token(&self, api_token: &str) -> Option<u32> {
-    let api_token_to_member_id = self.api_token_to_member_id.read().unwrap();
-    api_token_to_member_id.get(api_token).and_then(|member_id| Some(member_id.clone()))
+    // Check if token exists and if its still valid!
+    let mut token_id = None;
+    let member_id;
+    {
+      let api_token_to_member_id = self.api_token_to_member_id.read().unwrap();
+      let api_tokens = self.api_tokens.read().unwrap();
+      let result = api_token_to_member_id.get(api_token);
+      if result.is_none() {
+        return None;
+      }
+      member_id = *result.unwrap();
+      let token_vec = api_tokens.get(&member_id).unwrap();
+      for entry in token_vec {
+        if entry.token == api_token {
+          if entry.exp_date >= time_util::now() {
+            return Some(member_id);
+          }
+          token_id = Some(entry.id);
+          break;
+        }
+      }
+    }
+
+    // Otherwise delete token and return none!
+    if token_id.is_some() {
+      let _ = self.delete_token(token_id.unwrap(), member_id);
+    }
+    None
   }
 
   fn clear_tokens(&self, member_id: u32) -> Result<(), Failure> {

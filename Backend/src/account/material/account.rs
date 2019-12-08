@@ -3,12 +3,13 @@ use std::sync::RwLock;
 
 use language::material::Dictionary;
 use mysql_connection::material::MySQLConnection;
-use mysql_connection::tools::Select;
+use mysql_connection::tools::{Select, Execute};
 use str_util::sha3;
 
 use crate::account::language::init::Init;
 use crate::account::material::{APIToken, Member};
 
+#[derive(Debug)]
 pub struct Account {
   pub db_main: MySQLConnection,
   pub dictionary: Dictionary,
@@ -43,6 +44,9 @@ impl Account {
     let mut api_token_to_member_id = self.api_token_to_member_id.write().unwrap();
     let mut api_token = self.api_tokens.write().unwrap();
     let mut member = self.member.write().unwrap();
+
+    // Cleaning first
+    self.clean_tokens();
 
     // We are a little wasteful here because we do not insert it directly but rather create a vector first and then copy it over
     for entry in self.db_main.select("SELECT id, nickname, mail, password, salt, mail_confirmed, forgot_password, delete_account, new_mail FROM member", &|mut row| {
@@ -93,5 +97,9 @@ impl Account {
       api_token_to_member_id.insert(entry.token.clone(), entry.member_id);
       api_token.get_mut(&entry.member_id).unwrap().push(entry);
     }
+  }
+
+  fn clean_tokens(&self) {
+    self.db_main.execute("DELETE FROM api_token WHERE exp_date < UNIX_TIMESTAMP()");
   }
 }

@@ -84,7 +84,7 @@ mod tests {
     let api_token = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();
     assert!(account.validate_token(&api_token.token).is_some());
 
-    let new_token_res = account.create_token("Login", api_token.member_id, 42);
+    let new_token_res = account.create_token("Login", api_token.member_id, time_util::get_ts_from_now_in_secs(7));
     assert!(new_token_res.is_ok());
     let new_token = new_token_res.unwrap();
     assert!(account.validate_token(&new_token.token).is_some());
