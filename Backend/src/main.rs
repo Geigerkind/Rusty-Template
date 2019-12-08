@@ -18,7 +18,7 @@ use rocket_contrib::json::Json;
 use crate::modules::account;
 pub mod modules;
 
-#[get("/")]
+#[get("/", format="application/json")]
 fn api_overview() -> Json<Vec<String>> {
   Json(vec!["/API/account/".to_string()])
 }

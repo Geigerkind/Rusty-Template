@@ -11,7 +11,7 @@ use crate::modules::account::material::APIToken;
 #[derive(JsonSchema)]
 struct Nothing;
 
-#[get("/")]
+#[get("/", format="application/json")]
 pub fn api() -> Json<Vec<serde_json::Value>> {
   Json(vec![
     // Get
