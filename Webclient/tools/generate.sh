@@ -92,6 +92,7 @@ function createModule {
 }
 
 function createService {
+  NEW_DIR_PATH=${1}
   cp "${SCRIPT_PATH}/template/service/service.TEMPLATE" "${NEW_DIR_PATH}/${NAME_SNAKE_CASE_LOWER}.ts"
   sed -i -r "s/\{\{NAME_PASCAL_CASE\}\}/${NAME_PASCAL_CASE}/g" "${NEW_DIR_PATH}/${NAME_SNAKE_CASE_LOWER}.ts"
 }

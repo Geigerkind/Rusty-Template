@@ -1,9 +1,6 @@
-export class AccountInformation {
-    constructor(
-        public readonly id: number,
-        public readonly mail: string,
-        public readonly mail_confirmed: boolean,
-        public readonly nickname: string
-    ) {
-    }
+export interface AccountInformation {
+    id: number;
+    mail: string;
+    mail_confirmed: boolean;
+    nickname: string;
 }

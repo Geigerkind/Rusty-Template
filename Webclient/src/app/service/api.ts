@@ -29,7 +29,7 @@ export class APIService {
         let api_token = "";
         if (this.settingsService.check("API_TOKEN"))
             api_token = this.settingsService.get("API_TOKEN");
-        return headers.set("Authentication", api_token);
+        return headers.set("Authorization", api_token);
     }
 
     private handleFailure(reason: HttpErrorResponse): APIFailure {

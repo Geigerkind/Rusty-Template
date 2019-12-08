@@ -3,6 +3,7 @@ import {TranslateModule} from "@ngx-translate/core";
 import {AccountInformationComponent} from "./component/account_information/account_information";
 import {CommonModule} from "@angular/common";
 import {AccountInformationRouting} from "./routing";
+import {AccountInformationService} from "./service/account_information";
 
 @NgModule({
     declarations: [AccountInformationComponent],
@@ -11,7 +12,8 @@ import {AccountInformationRouting} from "./routing";
         TranslateModule,
         AccountInformationRouting
     ],
-    exports: [AccountInformationComponent]
+    exports: [AccountInformationComponent],
+    providers: [AccountInformationService]
 })
 export class AccountInformationModule {
 }

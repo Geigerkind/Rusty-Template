@@ -21,7 +21,9 @@ impl<'a, 'r> FromRequest<'a, 'r> for Authenticate {
     if account.is_failure() {
       return Failure((Status::Unauthorized, ()));
     }
-    let validation = account.unwrap().validate_token(api_token);
+
+    let acc_res = account.unwrap();
+    let validation = acc_res.validate_token(api_token);
     if validation.is_none() {
       return Failure((Status::Unauthorized, ()));
     }
