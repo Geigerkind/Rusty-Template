@@ -87,6 +87,22 @@ export class APIService {
             .finally(() => this.loadingBarService.decrementCounter());
     }
 
+    post_auth<T1, T2>(url: string, body: T2, on_success?: (T1) => void, on_failure?: (any) => void): void {
+        this.loadingBarService.incrementCounter();
+        this.httpClient.post<T1>(APIService.API_PREFIX + url, JSON.stringify(body), {headers: this.setAuthHeader(this.httpHeaderFactory())})
+            .toPromise()
+            .then(response => {
+                if (!!on_success)
+                    on_success.call(on_success, response);
+            })
+            .catch(reason => {
+                const failure = this.handleFailure(reason);
+                if (!!on_failure)
+                    on_failure.call(on_failure, failure);
+            })
+            .finally(() => this.loadingBarService.decrementCounter());
+    }
+
     post<T1, T2>(url: string, body: T2, on_success?: (T1) => void, on_failure?: (any) => void): void {
         this.loadingBarService.incrementCounter();
         this.httpClient.post<T1>(APIService.API_PREFIX + url, JSON.stringify(body), {headers: this.httpHeaderFactory()})

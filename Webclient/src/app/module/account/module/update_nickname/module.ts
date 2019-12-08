@@ -5,6 +5,7 @@ import {UpdateNicknameComponent} from "./component/update_nickname/update_nickna
 import {GeneralInputModule} from "src/app/template/input/general_input/module";
 import {ConfirmButtonModule} from "src/app/template/button/confirm_button/module";
 import {UpdateNicknameRouting} from "./routing";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
     declarations: [UpdateNicknameComponent],
@@ -13,7 +14,8 @@ import {UpdateNicknameRouting} from "./routing";
         TranslateModule,
         GeneralInputModule,
         ConfirmButtonModule,
-        UpdateNicknameRouting
+        UpdateNicknameRouting,
+        FormsModule
     ],
     exports: [UpdateNicknameComponent],
     bootstrap: [UpdateNicknameComponent]

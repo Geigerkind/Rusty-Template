@@ -44,7 +44,7 @@ impl Update for Account {
         let entry = member.get_mut(&member_id).unwrap();
         entry.nickname = new_nickname.to_owned();
       } else {
-        return Err(Failure::Unknown);
+        return Err(Failure::NicknameIsInUse);
       }
     }
 

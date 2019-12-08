@@ -16,6 +16,8 @@ use rocket_prometheus::PrometheusMetrics;
 use rocket_contrib::json::Json;
 
 use crate::modules::account;
+use crate::modules::account::Account;
+
 pub mod modules;
 
 #[get("/", format="application/json")]
@@ -25,6 +27,7 @@ fn api_overview() -> Json<Vec<String>> {
 
 fn main() {
   let account: account::Account = account::Account::default();
+  Account::init(&account);
   let prometheus = PrometheusMetrics::new();
   let mut igniter = rocket::ignite();
   igniter = igniter.manage(account);
