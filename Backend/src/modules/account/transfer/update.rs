@@ -8,19 +8,19 @@ use crate::modules::account::material::{Account, APIToken};
 use crate::modules::account::tools::Update;
 
 #[post("/update/password", format="application/json", data = "<content>")]
-pub fn password(me: State<Account>, auth: Authenticate, content: String) -> Result<Json<APIToken>, Failure> {
+pub fn password(me: State<Account>, auth: Authenticate, content: Json<String>) -> Result<Json<APIToken>, Failure> {
   me.change_password(&content, auth.0)
     .and_then(|api_token| Ok(Json(api_token)))
 }
 
 #[post("/update/nickname", format="application/json", data = "<content>")]
-pub fn nickname(me: State<Account>, auth: Authenticate, content: String) -> Result<Json<AccountInformation>, Failure> {
+pub fn nickname(me: State<Account>, auth: Authenticate, content: Json<String>) -> Result<Json<AccountInformation>, Failure> {
   me.change_name(&content, auth.0)
     .and_then(|acc_info| Ok(Json(acc_info)))
 }
 
 #[post("/update/mail/request", format="application/json", data = "<content>")]
-pub fn request_mail(me: State<Account>, auth: Authenticate, content: String) -> Result<(), Failure> {
+pub fn request_mail(me: State<Account>, auth: Authenticate, content: Json<String>) -> Result<(), Failure> {
   me.request_change_mail(&content, auth.0)
 }
 
