@@ -73,6 +73,21 @@ impl Token for Account {
   }
 
   fn create_token(&self, purpose: &str, member_id: u32, exp_date: u64) -> Result<APIToken, Failure> {
+    // Tokens may be valid for a maximum time of a year
+    let now = time_util::now();
+    if exp_date < now {
+      return Err(Failure::DateInThePast);
+    }
+
+    if exp_date-now >= 365*24*60*60 {
+      return Err(Failure::TooManyDays);
+    }
+
+    let purpose_len = purpose.len();
+    if purpose_len <= 1 || purpose_len > 24 {
+      return Err(Failure::TokenPurposeLength);
+    }
+
     let token: String;
     {
       let member = self.member.read().unwrap();

@@ -14,7 +14,9 @@
         "528": "Mail could not be send!",
         "529": "A deletion has not been issued!",
         "530": "No forgot issued!",
-        "531": "A token may only be valid for 365 days!",
+        "531": "A token may only be valid for up to 365 days!",
+        "532": "Date may not be in the past!",
+        "533": "The purpose must have a length between 1 and 24 characters!",
         "599": "An unknown error occurred!"
     },
     "CookieBanner": {

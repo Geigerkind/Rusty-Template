@@ -1,10 +1,12 @@
 <header>{{ 'Account.navBar.entries.api' | translate }}</header>
 
-<form class="purposeForm">
+<form class="purposeForm" (ngSubmit)="on_submit()" ngNativeValidate>
     <GeneralInput [maximum_length]="24" [required]="true" labelKey="Account.api.purpose" name="purpose"
-                  placeholderKey="Account.api.typePurpose" type="text"></GeneralInput>
-    <GeneralInput [required]="true" labelKey="Account.api.expiration" name="exp_date" type="date"></GeneralInput>
-    <ConfirmButton labelKey="Account.api.generate"></ConfirmButton>
+                  placeholderKey="Account.api.typePurpose" type="text" [(value)]="purpose"
+                  [formFailure]="formFailurePurpose"></GeneralInput>
+    <DateInput [required]="true" labelKey="Account.api.expiration" name="exp_date" [(value)]="exp_date"
+               [formFailure]="formFailureDate"></DateInput>
+    <ConfirmButton labelKey="Account.api.generate" type="submit" [disabled]="disabledSubmit"></ConfirmButton>
 </form>
 
 <form *ngIf="tokenList.length > 0" class="tableContainer">
@@ -13,11 +15,11 @@
         <div>{{ 'Account.api.purpose' | translate }}</div>
         <div>{{ 'Account.api.action' | translate }}</div>
     </div>
-    <div *ngFor="let item of tokenList" class="tableRow">
-        <div>{{ item[0] }}</div>
-        <div>{{ item[1] }}</div>
+    <div *ngFor="let api_token of tokenList" class="tableRow">
+        <div>{{ api_token[0].token }}</div>
+        <div>{{ api_token[0].purpose }}</div>
         <div>
-            <ConfirmButton labelKey="Account.api.remove"></ConfirmButton>
+            <ConfirmButton labelKey="Account.api.remove" (clicked)="delete_token(api_token)" [disabled]="api_token[1]"></ConfirmButton>
         </div>
     </div>
 </form>

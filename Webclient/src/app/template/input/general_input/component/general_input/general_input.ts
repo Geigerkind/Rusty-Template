@@ -17,6 +17,8 @@ export class GeneralInputComponent {
     @Input() labelKey: string;
     @Input() required: boolean;
     @Input() maximum_length = 1024;
+    @Input() min: string;
+    @Input() max: string;
     @Input() name: string;
 
     @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
@@ -28,7 +30,7 @@ export class GeneralInputComponent {
     }
 
     set value(newValue: string) {
-        if (this.valueData !== newValue && this.valueData !== undefined) {
+        if (this.valueData !== undefined && this.valueData !== newValue) {
             this.formFailure.isInvalid = false;
 
             this.touched = true;

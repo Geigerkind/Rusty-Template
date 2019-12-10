@@ -6,8 +6,8 @@
         <GeneralInput [(value)]="model.credentials.mail" [required]="true" labelKey="SignUp.mail" name="mail"
                       placeholderKey="SignUp.typeMail"
                       type="email" [formFailure]="formFailureMail"></GeneralInput>
-        <PasswordInput [(value)]="model.credentials.password" labelKey="SignUp.password" name="password"
-                       placeholderKey="SignUp.typePassword" [formFailure]="formFailurePassword" minlength="12"></PasswordInput>
+        <PasswordInput [(value)]="model.credentials.password" labelKey="SignUp.password" name="password" [required]="true"
+                       placeholderKey="SignUp.typePassword" [formFailure]="formFailurePassword"></PasswordInput>
         <ConfirmButton [disabled]="disableSubmit" labelKey="SignUp.signUp" type="submit"></ConfirmButton>
     </form>
 </div>

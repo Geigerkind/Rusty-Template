@@ -18,7 +18,7 @@ pub fn get_tokens(me: State<Account>, auth: Authenticate) -> Result<Json<Vec<API
   Ok(Json(me.get_all_token(auth.0)))
 }
 
-#[post("/token/delete", format="application/json", data = "<token_id>")]
+#[delete("/token/delete", format="application/json", data = "<token_id>")]
 pub fn delete_token(me: State<Account>, auth: Authenticate, token_id: Json<u32>) -> Result<(), Failure>
 {
   me.delete_token(token_id.0, auth.0)

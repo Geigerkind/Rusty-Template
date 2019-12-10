@@ -4,7 +4,7 @@
                       placeholderKey="Login.typeMail" [formFailure]="formFailure"
                       type="email"></GeneralInput>
         <PasswordInput [(value)]="model.password" labelKey="Login.password" name="password"
-                       [formFailure]="formFailure"
+                       [formFailure]="formFailure" [required]="true"
                        placeholderKey="Login.typePassword"></PasswordInput>
         <ConfirmButton [disabled]="disableSubmit" labelKey="Login.signIn" type="submit"></ConfirmButton>
     </form>

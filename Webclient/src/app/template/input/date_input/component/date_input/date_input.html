@@ -1,0 +1,4 @@
+<GeneralInput [required]="required" [labelKey]="labelKey" [placeholderKey]="placeholderKey" [name]="name" type="date"
+              [value]="value | date:'yyyy-MM-dd'"
+              (valueChange)="parseDate($event)" [formFailure]="formFailure" [min]="min | date:'yyyy-MM-dd'"
+              [max]="max | date:'yyyy-MM-dd'"></GeneralInput>

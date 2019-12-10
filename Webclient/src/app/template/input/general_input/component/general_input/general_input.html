@@ -3,4 +3,4 @@
        [name]="name" [placeholder]="placeholderKey | translate"
        [required]="required" [type]="type" [value]="value" [attr.pattern]="pattern"
        oninvalid="setCustomValidity(this.dataset['validity'])"
-       [attr.data-validity]="formFailure.invalidityMsg | translate:formFailure.msgArgs"/>
+       [attr.data-validity]="formFailure.invalidityMsg | translate:formFailure.msgArgs" [min]="min" [max]="max"/>

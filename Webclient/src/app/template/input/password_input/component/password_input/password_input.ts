@@ -7,6 +7,7 @@ import {FormFailure} from "../../../../../material/form_failure";
     styleUrls: ["./password_input.scss"]
 })
 export class PasswordInputComponent {
+    @Input() required: boolean;
     @Input() placeholderKey: string;
     @Input() labelKey: string;
     @Input() name: string;
@@ -21,7 +22,7 @@ export class PasswordInputComponent {
     }
 
     set value(newValue: string) {
-        if (this.valueData !== newValue && this.valueData !== undefined)
+        if (this.valueData !== undefined && this.valueData !== newValue)
             this.valueChange.emit(newValue);
         this.valueData = newValue;
     }

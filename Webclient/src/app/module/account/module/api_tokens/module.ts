@@ -5,6 +5,9 @@ import {ConfirmButtonModule} from "src/app/template/button/confirm_button/module
 import {GeneralInputModule} from "src/app/template/input/general_input/module";
 import {APITokensComponent} from "./component/api_tokens/api_tokens";
 import {APITokensRouting} from "./routing";
+import {APITokensService} from "./service/api_tokens";
+import {FormsModule} from "@angular/forms";
+import {DateInputModule} from "../../../../template/input/date_input/module";
 
 @NgModule({
     declarations: [APITokensComponent],
@@ -12,11 +15,13 @@ import {APITokensRouting} from "./routing";
         CommonModule,
         TranslateModule,
         GeneralInputModule,
+        DateInputModule,
         ConfirmButtonModule,
-        APITokensRouting
+        APITokensRouting,
+        FormsModule
     ],
     exports: [APITokensComponent],
-    bootstrap: [APITokensComponent]
+    providers: [APITokensService]
 })
 export class APITokensModule {
 }

@@ -10,11 +10,10 @@ export class ConfirmButtonComponent {
     @Input() type = "button";
     @Input() disabled = false;
 
-    // Overwriting native event to incorporate disabled state
-    @Output() click: EventEmitter<boolean> = new EventEmitter();
+    @Output() clicked: EventEmitter<boolean> = new EventEmitter();
 
     handleClick(): void {
         if (!this.disabled)
-            this.click.emit(true);
+            this.clicked.emit(true);
     }
 }

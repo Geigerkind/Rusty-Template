@@ -19,6 +19,8 @@ pub enum Failure {
   DeleteNotIssued,
   ForgotNotIssued,
   TooManyDays,
+  DateInThePast,
+  TokenPurposeLength,
   Unknown,
 }
 
@@ -41,6 +43,8 @@ impl Responder<'static> for Failure {
       Failure::DeleteNotIssued => Status::new(529, ""),
       Failure::ForgotNotIssued => Status::new(530, ""),
       Failure::TooManyDays => Status::new(531, ""),
+      Failure::DateInThePast => Status::new(532, ""),
+      Failure::TokenPurposeLength => Status::new(533, ""),
       Failure::Unknown => Status::new(599, ""),
     };
     Response::build()
