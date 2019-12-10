@@ -15,11 +15,11 @@
         <div>{{ 'Account.api.purpose' | translate }}</div>
         <div>{{ 'Account.api.action' | translate }}</div>
     </div>
-    <div *ngFor="let api_token of tokenList" class="tableRow">
-        <div>{{ api_token[0].token }}</div>
-        <div>{{ api_token[0].purpose }}</div>
+    <div *ngFor="let token_pair of tokenList" class="tableRow">
+        <div>{{ token_pair[0].token }}</div>
+        <div>{{ token_pair[0].purpose }}</div>
         <div>
-            <ConfirmButton labelKey="Account.api.remove" (clicked)="delete_token(api_token)" [disabled]="api_token[1]"></ConfirmButton>
+            <ConfirmButton labelKey="Account.api.remove" (clicked)="delete_token(token_pair)" [disabled]="token_pair[1]"></ConfirmButton>
         </div>
     </div>
 </form>
