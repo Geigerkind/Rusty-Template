@@ -37,7 +37,7 @@ pub fn api() -> Json<Vec<serde_json::Value>> {
     expose_api_fn("/update/password/<password>", "post", true, "application/json", schema_for!(Result<APIToken, Failure>), schema_for!(String)),
     expose_api_fn("/update/nickname/<nickname>", "post", true, "application/json", schema_for!(Result<AccountInformation, Failure>), schema_for!(String)),
     expose_api_fn("/update/mail/request/<mail>", "post", true, "application/json", schema_for!(Result<bool, Failure>), schema_for!(String)),
-    expose_api_fn("/update/mail/confirm/<confirmation_id>", "get", false, "application/json", schema_for!(Result<APIToken, Failure>), schema_for!(String)),
+    expose_api_fn("/update/mail/<confirmation_id>", "get", false, "application/json", schema_for!(Result<APIToken, Failure>), schema_for!(String)),
 
     // Token
     expose_api_fn("/token/create/<create_token>", "post", true, "application/json", schema_for!(Result<APIToken, Failure>), schema_for!(CreateToken)),

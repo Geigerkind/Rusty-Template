@@ -10,7 +10,7 @@ export class DeleteAccountService {
     constructor(private apiService: APIService) {
     }
 
-    delete(on_success: any, on_failure:any): void {
+    delete(on_success: any, on_failure: any): void {
         this.apiService.delete_auth(DeleteAccountService.URL_ISSUE_DELETE, '', on_success, on_failure);
     }
 }

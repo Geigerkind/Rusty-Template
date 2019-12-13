@@ -15,4 +15,7 @@ pub fn init(dictionary: &Dictionary) {
 
   dictionary.register("delete.confirmation.subject", Language::English, "Confirm the deletion of your account!");
   dictionary.register("delete.confirmation.text", Language::English, "Greetings!\n\nPlease confirm the deletion of your account by clicking on the provided url.\n\nhttps://jaylapp.dev/API/account/delete/{0}\n\nCheers!");
+
+  dictionary.register("update.mail.subject", Language::English, "Confirm the update to your account mail!");
+  dictionary.register("update.mail.text", Language::English, "Greetings!\n\nPlease confirm the update of your account mail by clicking on the provided url.\n\nhttps://jaylapp.dev/API/account/update/mail/{0}\n\nCheers!");
 }

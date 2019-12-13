@@ -1,7 +1,7 @@
 use language::domain_value::Language;
 use language::tools::Get;
 use mysql_connection::tools::Execute;
-use str_util::sha3;
+use str_util::{sha3, strformat};
 use validator::domain_value::PasswordFailure;
 use validator::tools::{valid_mail, valid_nickname, valid_password};
 
@@ -106,10 +106,15 @@ impl Update for Account {
       }
     }
 
-    let member_entry = member.get_mut(&member_id).unwrap();
-    member_entry.new_mail = lower_mail.to_owned();
-    requires_mail_confirmation.insert(sha3::hash(&[&member_id.to_string(), "new_mail", &member_entry.salt]), member_id);
-
+    let entry = member.get_mut(&member_id).unwrap();
+    let confirmation_id = sha3::hash(&[&member_id.to_string(), "new_mail", &entry.salt]);
+    entry.new_mail = lower_mail.to_owned();
+    requires_mail_confirmation.insert(confirmation_id.clone(), member_id);
+    let mail_content = strformat::fmt(self.dictionary.get("update.mail.text", Language::English), &[&confirmation_id]);
+    if !mail::send(&entry.mail, &entry.nickname,
+                  self.dictionary.get("update.mail.subject", Language::English), mail_content) {
+      return Err(Failure::MailSend);
+    }
     Ok(())
   }
 

@@ -19,12 +19,12 @@ pub fn nickname(me: State<Account>, auth: Authenticate, content: Json<String>) -
     .and_then(|acc_info| Ok(Json(acc_info)))
 }
 
-#[post("/update/mail/request", format="application/json", data = "<content>")]
+#[post("/update/mail", format="application/json", data = "<content>")]
 pub fn request_mail(me: State<Account>, auth: Authenticate, content: Json<String>) -> Result<(), Failure> {
   me.request_change_mail(&content, auth.0)
 }
 
-#[get("/update/mail/confirm/<id>", format="application/json")]
+#[get("/update/mail/<id>")]
 pub fn confirm_mail(me: State<Account>, id: String) -> Result<Json<APIToken>, Failure> {
   me.confirm_change_mail(&id)
     .and_then(|api_token| Ok(Json(api_token)))
