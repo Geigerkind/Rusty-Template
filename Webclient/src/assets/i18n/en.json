@@ -17,7 +17,8 @@
         "531": "A token may only be valid for up to 365 days!",
         "532": "Date may not be in the past!",
         "533": "The purpose must have a length between 1 and 24 characters!",
-        "599": "An unknown error occurred!"
+        "599": "An unknown error occurred!",
+        "mail_confirm": "A confirmation mail has been send to you!"
     },
     "CookieBanner": {
         "notification": {
@@ -121,8 +122,6 @@
             "update": "Update nickname"
         },
         "updateMail": {
-            "password": "Password",
-            "typePassword": "Your current password",
             "newMail": "New email",
             "typeNewMail": "Type your new email",
             "update": "Update email",

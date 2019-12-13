@@ -3,6 +3,8 @@ import {SignUpService} from "../../service/sign_up";
 import {SignUpForm} from "../../dto/sign_up_form";
 import {FormFailure} from "../../../../material/form_failure";
 import {APIFailure} from "../../../../domain_value/api_failure";
+import {Severity} from "../../../../domain_value/severity";
+import {NotificationService} from "../../../../service/notification";
 
 @Component({
     selector: "SignUp",
@@ -22,7 +24,8 @@ export class SignUpComponent {
         }
     };
 
-    constructor(private signUpService: SignUpService) {
+    constructor(private signUpService: SignUpService,
+                private notificationService: NotificationService) {
     }
 
     onSubmit(): void {
@@ -34,6 +37,7 @@ export class SignUpComponent {
 
     on_success(): void {
         this.disableSubmit = false;
+        this.notificationService.propagate(Severity.Info, 'serverResponses.mail_confirm');
     }
 
     on_failure(api_failure: APIFailure): void {

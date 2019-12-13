@@ -22,7 +22,7 @@ export class DeleteAccountComponent {
 
     on_success(): void {
         this.disableSubmit = false;
-        this.notificationService.propagate(Severity.Success, 'serverResponses.200');
+        this.notificationService.propagate(Severity.Info, 'serverResponses.mail_confirm');
     }
 
     on_failure(): void {
