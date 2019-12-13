@@ -6,6 +6,7 @@ import {PasswordInputModule} from "src/app/template/input/password_input/module"
 import {ConfirmButtonModule} from "src/app/template/button/confirm_button/module";
 import {BriefNoteModule} from "src/app/template/brief_note/module";
 import {DeleteAccountRouting} from "./routing";
+import {DeleteAccountService} from "./service/delete_account";
 
 @NgModule({
     declarations: [DeleteAccountComponent],
@@ -18,7 +19,7 @@ import {DeleteAccountRouting} from "./routing";
         DeleteAccountRouting
     ],
     exports: [DeleteAccountComponent],
-    bootstrap: [DeleteAccountComponent]
+    providers: [DeleteAccountService]
 })
 export class DeleteAccountModule {
 }

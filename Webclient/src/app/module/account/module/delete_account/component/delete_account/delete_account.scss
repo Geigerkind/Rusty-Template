@@ -3,10 +3,6 @@
 :host {
     display: block;
 
-    PasswordInput {
-        margin-bottom: $spacing;
-    }
-
     ConfirmButton::ng-deep button {
         background: darken($error, 40%);
 

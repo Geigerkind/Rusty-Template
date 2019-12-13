@@ -25,8 +25,8 @@ impl Delete for Account {
       requires_mail_confirmation.insert(delete_id.clone(), member_id);
 
       // Send a confirmation mail to the member now
-      if !mail::send(&entry.mail, &entry.nickname, self.dictionary.get("create.confirmation.subject", Language::English),
-                     strformat::fmt(self.dictionary.get("create.confirmation.text", Language::English), &[&delete_id])) {
+      if !mail::send(&entry.mail, &entry.nickname, self.dictionary.get("delete.confirmation.subject", Language::English),
+                     strformat::fmt(self.dictionary.get("delete.confirmation.text", Language::English), &[&delete_id])) {
         return Err(Failure::MailSend);
       }
     } else {

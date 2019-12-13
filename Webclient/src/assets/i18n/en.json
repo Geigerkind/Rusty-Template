@@ -138,10 +138,8 @@
             "expiration": "Expiration date"
         },
         "delete": {
-            "password": "Password",
-            "typePassword": "Confirm by typing your password",
             "delete": "Delete account",
-            "deleteNote": "Note: This action is not revertable!"
+            "deleteNote": "Note: This action is not revertible!"
         }
     },
     "Login": {

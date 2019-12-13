@@ -13,7 +13,7 @@ pub fn create(me: State<Account>, params: Json<CreateMember>) -> Result<Json<API
     .and_then(|api_token| Ok(Json(api_token)))
 }
 
-#[get("/create/confirm/<id>", format="application/json")]
+#[get("/create/<id>")]
 pub fn confirm(me: State<Account>, id: String) -> Json<bool>
 {
   Json(me.confirm(&id))
