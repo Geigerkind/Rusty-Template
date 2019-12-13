@@ -35,6 +35,6 @@ export class DateInputComponent {
     passDate(dateVal: Date): string {
         if (!dateVal)
             return '';
-        return dateVal.toISOString().slice(0,10);
+        return dateVal.toISOString().slice(0, 10);
     }
 }
