@@ -28,7 +28,7 @@ export class APIService {
     private setAuthHeader(headers: HttpHeaders): HttpHeaders {
         let api_token = "";
         if (this.settingsService.check("API_TOKEN"))
-            api_token = this.settingsService.get("API_TOKEN");
+            api_token = this.settingsService.get("API_TOKEN").token;
         return headers.set("Authorization", api_token);
     }
 

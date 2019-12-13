@@ -27,7 +27,7 @@ export class NavigationBarComponent implements OnInit {
     loggedInState = false;
 
     constructor(private settingsService: SettingsService) {
-        this.settingsService.subscribe("API_TOKEN", (token: string) => this.loggedInState = !!token && token.length > 0);
+        this.settingsService.subscribe("API_TOKEN", (api_token: any) => this.loggedInState = api_token && api_token.token.length > 0);
     }
 
     ngOnInit(): void {

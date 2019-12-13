@@ -11,8 +11,8 @@ export class DateInputComponent {
     @Input() labelKey: string;
     @Input() name: string;
     @Input() formFailure: FormFailure;
-    @Input() min: Date;
-    @Input() max: Date;
+    @Input() min_date: Date;
+    @Input() max_date: Date;
 
     @Output() valueChange: EventEmitter<Date> = new EventEmitter<Date>();
     valueData: Date;
@@ -30,5 +30,12 @@ export class DateInputComponent {
 
     parseDate(changedValue: string): void {
         this.value = new Date(changedValue);
+    }
+
+    passDate(dateVal: Date): string {
+        if (!dateVal)
+            return '';
+        console.log(dateVal.toISOString().slice(0,10))
+        return dateVal.toISOString().slice(0,10);
     }
 }

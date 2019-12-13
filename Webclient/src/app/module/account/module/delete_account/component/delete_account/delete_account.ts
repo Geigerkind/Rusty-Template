@@ -1,6 +1,4 @@
 import {Component} from "@angular/core";
-import {Severity} from "../../../../../../domain_value/severity";
-import {NotificationService} from "../../../../../../service/notification";
 import {DeleteAccountService} from "../../service/delete_account";
 
 @Component({
@@ -11,21 +9,15 @@ import {DeleteAccountService} from "../../service/delete_account";
 export class DeleteAccountComponent {
     disableSubmit: boolean = false;
 
-    constructor(private deleteAccountService: DeleteAccountService,
-                private notificationService: NotificationService) {
+    constructor(private deleteAccountService: DeleteAccountService) {
     }
 
     deleteAccount(): void {
         this.disableSubmit = true;
-        this.deleteAccountService.delete(() => this.on_success(), () => this.on_failure());
+        this.deleteAccountService.delete(() => this.on_response());
     }
 
-    on_success(): void {
-        this.disableSubmit = false;
-        this.notificationService.propagate(Severity.Info, 'serverResponses.mail_confirm');
-    }
-
-    on_failure(): void {
+    on_response(): void {
         this.disableSubmit = false;
     }
 }

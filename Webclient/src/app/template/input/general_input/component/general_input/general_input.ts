@@ -17,8 +17,8 @@ export class GeneralInputComponent {
     @Input() labelKey: string;
     @Input() required: boolean;
     @Input() maximum_length = 1024;
-    @Input() min: string;
-    @Input() max: string;
+    @Input() min_spec: string;
+    @Input() max_spec: string;
     @Input() name: string;
 
     @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();

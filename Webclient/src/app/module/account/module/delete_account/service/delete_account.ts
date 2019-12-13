@@ -1,5 +1,7 @@
 import {Injectable} from "@angular/core";
 import {APIService} from "../../../../../service/api";
+import {NotificationService} from "../../../../../service/notification";
+import {Severity} from "../../../../../domain_value/severity";
 
 @Injectable({
     providedIn: "root",
@@ -7,10 +9,14 @@ import {APIService} from "../../../../../service/api";
 export class DeleteAccountService {
     private static readonly URL_ISSUE_DELETE: string = '/account/delete';
 
-    constructor(private apiService: APIService) {
+    constructor(private apiService: APIService,
+                private notificationService: NotificationService) {
     }
 
-    delete(on_success: any, on_failure: any): void {
-        this.apiService.delete_auth(DeleteAccountService.URL_ISSUE_DELETE, '', on_success, on_failure);
+    delete(on_response: any): void {
+        this.apiService.delete_auth(DeleteAccountService.URL_ISSUE_DELETE, '', () => {
+            this.notificationService.propagate(Severity.Info, 'serverResponses.mail_confirm');
+            on_response.call(on_response);
+        }, on_response);
     }
 }

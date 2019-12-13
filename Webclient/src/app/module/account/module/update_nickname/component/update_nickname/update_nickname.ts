@@ -1,7 +1,5 @@
 import {Component} from "@angular/core";
 import {UpdateNicknameService} from "../../service/update_nickname";
-import {Severity} from "../../../../../../domain_value/severity";
-import {NotificationService} from "../../../../../../service/notification";
 import {FormFailure} from "../../../../../../material/form_failure";
 import {APIFailure} from "../../../../../../domain_value/api_failure";
 
@@ -15,8 +13,7 @@ export class UpdateNicknameComponent {
     disableSubmit: boolean = false;
     formFailure: FormFailure = FormFailure.empty();
 
-    constructor(private updateNicknameService: UpdateNicknameService,
-                private notificationService: NotificationService) {
+    constructor(private updateNicknameService: UpdateNicknameService) {
     }
 
     on_submit(): void {
@@ -26,7 +23,6 @@ export class UpdateNicknameComponent {
 
     on_success(): void {
         this.disableSubmit = false;
-        this.notificationService.propagate(Severity.Success, 'serverResponses.200');
     }
 
     on_failure(api_failure: APIFailure): void {

@@ -4,8 +4,6 @@ import {APITokensService} from "../../service/api_tokens";
 import {APIToken} from "../../../../domain_value/api_token";
 import {CreateToken} from "../../dto/create_token";
 import {APIFailure} from "../../../../../../domain_value/api_failure";
-import {NotificationService} from "../../../../../../service/notification";
-import {Severity} from "../../../../../../domain_value/severity";
 
 @Component({
     selector: "APITokens",
@@ -18,10 +16,10 @@ export class APITokensComponent {
     formFailurePurpose: FormFailure = FormFailure.empty();
     purpose: string = '';
     exp_date: Date = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+    min_exp_date: Date = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
     tokenList: Array<[APIToken, boolean]> = [];
 
-    constructor(private apiTokensService: APITokensService,
-                private notificationService: NotificationService) {
+    constructor(private apiTokensService: APITokensService) {
         this.get_tokens();
     }
 
@@ -41,7 +39,6 @@ export class APITokensComponent {
     delete_token(token_pair: [APIToken, boolean]) {
         token_pair[1] = true;
         this.apiTokensService.delete_token(token_pair[0].id, () => {
-            this.notificationService.propagate(Severity.Success, "serverResponses.200");
             this.get_tokens();
             token_pair[1] = false;
         }, () => token_pair[1] = false);
@@ -53,7 +50,6 @@ export class APITokensComponent {
 
     private add_token_success(api_token: APIToken): void {
         this.tokenList.push([api_token, false]);
-        this.notificationService.propagate(Severity.Success, "serverResponses.200");
         this.disabledSubmit = false;
     }
 

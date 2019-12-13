@@ -1,6 +1,8 @@
 import {Injectable} from "@angular/core";
 import {APIService} from "../../../../../service/api";
 import {CreateToken} from "../dto/create_token";
+import {Severity} from "../../../../../domain_value/severity";
+import {NotificationService} from "../../../../../service/notification";
 
 @Injectable({
     providedIn: "root",
@@ -10,7 +12,8 @@ export class APITokensService {
     private static readonly URL_ADD_TOKEN: string = '/account/token/create';
     private static readonly URL_DELETE_TOKEN: string = '/account/token/delete';
 
-    constructor(private apiService: APIService) {
+    constructor(private apiService: APIService,
+                private notificationService: NotificationService) {
     }
 
     get(on_success: any): void {
@@ -18,10 +21,16 @@ export class APITokensService {
     }
 
     add_token(create_token: CreateToken, on_success: any, on_failure: any): void {
-        this.apiService.post_auth(APITokensService.URL_ADD_TOKEN, create_token, on_success, on_failure);
+        this.apiService.post_auth(APITokensService.URL_ADD_TOKEN, create_token, () => {
+            this.notificationService.propagate(Severity.Success, "serverResponses.200");
+            on_success.call(on_success);
+        }, on_failure);
     }
 
     delete_token(token_id: number, on_success: any, on_failure: any): void {
-        this.apiService.delete_auth(APITokensService.URL_DELETE_TOKEN, token_id, on_success, on_failure);
+        this.apiService.delete_auth(APITokensService.URL_DELETE_TOKEN, token_id, () => {
+            this.notificationService.propagate(Severity.Success, "serverResponses.200");
+            on_success.call(on_success);
+        }, on_failure);
     }
 }

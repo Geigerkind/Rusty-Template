@@ -17,7 +17,7 @@ export class SignUpService {
 
     signUp(signUpForm: SignUpForm, on_success: any, on_failure: any): void {
         this.apiService.post<any, SignUpForm>(SignUpService.URL_SIGN_UP, signUpForm, (resp) => {
-            this.settingsService.set("API_TOKEN", resp.token);
+            this.settingsService.set("API_TOKEN", resp);
             this.routingService.navigate(["/account"]);
             on_success.call(on_success);
         }, on_failure);

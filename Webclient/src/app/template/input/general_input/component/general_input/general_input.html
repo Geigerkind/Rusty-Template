@@ -1,6 +1,6 @@
 <span>{{ labelKey | translate }}</span>
 <input #generalInput (input)="value=$event.currentTarget.value" [class.touched]="touched" [maxLength]="maximum_length"
-       [name]="name" [placeholder]="placeholderKey | translate"
+       [name]="name" [attr.placeholder]="placeholderKey | translate"
        [required]="required" [type]="type" [value]="value" [attr.pattern]="pattern"
        oninvalid="setCustomValidity(this.dataset['validity'])"
-       [attr.data-validity]="formFailure.invalidityMsg | translate:formFailure.msgArgs" [min]="min" [max]="max"/>
+       [attr.data-validity]="formFailure.invalidityMsg | translate:formFailure.msgArgs" [min]="min_spec" [attr.max]="max_spec"/>

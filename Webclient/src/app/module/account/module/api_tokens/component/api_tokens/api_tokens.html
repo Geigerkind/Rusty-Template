@@ -5,7 +5,7 @@
                   placeholderKey="Account.api.typePurpose" type="text" [(value)]="purpose"
                   [formFailure]="formFailurePurpose"></GeneralInput>
     <DateInput [required]="true" labelKey="Account.api.expiration" name="exp_date" [(value)]="exp_date"
-               [formFailure]="formFailureDate"></DateInput>
+               [formFailure]="formFailureDate" [min_date]="min_exp_date"></DateInput>
     <ConfirmButton labelKey="Account.api.generate" type="submit" [disabled]="disabledSubmit"></ConfirmButton>
 </form>
 

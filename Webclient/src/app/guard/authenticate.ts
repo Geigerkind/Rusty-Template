@@ -11,8 +11,7 @@ export class AuthenticateGuard implements CanLoad {
     }
 
     canLoad(): boolean {
-        if (!this.settingsService.check("API_TOKEN")
-            || this.settingsService.get("API_TOKEN").length === 0) {
+        if (!this.settingsService.check("API_TOKEN")) {
             this.routingService.navigate(["/login"]);
             return false;
         }
