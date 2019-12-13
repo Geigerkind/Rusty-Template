@@ -121,6 +121,7 @@ impl Create for Account {
       let entry = member.get_mut(&member_id).unwrap();
       entry.mail_confirmed = true;
       requires_mail_confirmation.remove(id);
+      return true;
     }
     return false;
   }
