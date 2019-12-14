@@ -9,7 +9,7 @@ import {Severity} from "../../../../../domain_value/severity";
 })
 export class AccountInformationService {
     private static readonly URL_GET: string = '/account/get';
-    private static readonly URL_CREATE_RESEND: string = '/account/create/resend'
+    private static readonly URL_CREATE_RESEND: string = '/account/create/resend';
 
     constructor(private apiService: APIService,
                 private notificationService: NotificationService) {
