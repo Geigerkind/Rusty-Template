@@ -7,6 +7,7 @@ import {GeneralInputModule} from "../../template/input/general_input/module";
 import {PasswordInputModule} from "../../template/input/password_input/module";
 import {ConfirmButtonModule} from "../../template/button/confirm_button/module";
 import {FormsModule} from "@angular/forms";
+import {FormValidDirectiveModule} from "../../directive/form_valid/module";
 
 @NgModule({
     declarations: [SignUpComponent],
@@ -17,7 +18,8 @@ import {FormsModule} from "@angular/forms";
         GeneralInputModule,
         PasswordInputModule,
         ConfirmButtonModule,
-        FormsModule
+        FormsModule,
+        FormValidDirectiveModule
     ],
     exports: [SignUpComponent]
 })

@@ -8,6 +8,7 @@ import {BriefNoteModule} from "src/app/template/brief_note/module";
 import {UpdatePasswordRouting} from "./routing";
 import {FormsModule} from "@angular/forms";
 import {UpdatePasswordService} from "./service/update_password";
+import {FormValidDirectiveModule} from "../../../../directive/form_valid/module";
 
 @NgModule({
     declarations: [UpdatePasswordComponent],
@@ -18,7 +19,8 @@ import {UpdatePasswordService} from "./service/update_password";
         ConfirmButtonModule,
         BriefNoteModule,
         UpdatePasswordRouting,
-        FormsModule
+        FormsModule,
+        FormValidDirectiveModule
     ],
     exports: [UpdatePasswordComponent],
     providers: [UpdatePasswordService]

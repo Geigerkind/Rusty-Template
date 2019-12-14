@@ -1,5 +1,5 @@
 <div class="centerContainer">
-    <form (ngSubmit)="onSubmit()" ngNativeValidate>
+    <form formValid (ngSubmit)="onSubmit()" ngNativeValidate>
         <GeneralInput [(value)]="model.nickname" [required]="true" labelKey="SignUp.nickname" name="nickname"
                       placeholderKey="SignUp.typeNickname" type="text"
                       [formFailure]="formFailureNickname"></GeneralInput>

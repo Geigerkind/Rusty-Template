@@ -1,6 +1,6 @@
 <header>{{ 'Account.navBar.entries.api' | translate }}</header>
 
-<form class="purposeForm" (ngSubmit)="on_submit()" ngNativeValidate>
+<form class="purposeForm" formValid (ngSubmit)="on_submit()" ngNativeValidate>
     <GeneralInput [maximum_length]="24" [required]="true" labelKey="Account.api.purpose" name="purpose"
                   placeholderKey="Account.api.typePurpose" type="text" [(value)]="purpose"
                   [formFailure]="formFailurePurpose"></GeneralInput>

@@ -7,6 +7,7 @@ import {GeneralInputModule} from "../../template/input/general_input/module";
 import {ConfirmButtonModule} from "../../template/button/confirm_button/module";
 import {FormsModule} from "@angular/forms";
 import {ResetPasswordService} from "./service/reset_password";
+import {FormValidDirectiveModule} from "../../directive/form_valid/module";
 
 @NgModule({
     declarations: [ResetPasswordComponent],
@@ -16,7 +17,8 @@ import {ResetPasswordService} from "./service/reset_password";
         ResetPasswordRouting,
         GeneralInputModule,
         ConfirmButtonModule,
-        FormsModule
+        FormsModule,
+        FormValidDirectiveModule
     ],
     exports: [ResetPasswordComponent],
     providers: [ResetPasswordService]

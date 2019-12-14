@@ -6,6 +6,7 @@ import {GeneralInputModule} from "src/app/template/input/general_input/module";
 import {ConfirmButtonModule} from "src/app/template/button/confirm_button/module";
 import {UpdateNicknameRouting} from "./routing";
 import {FormsModule} from "@angular/forms";
+import {FormValidDirectiveModule} from "../../../../directive/form_valid/module";
 
 @NgModule({
     declarations: [UpdateNicknameComponent],
@@ -15,7 +16,8 @@ import {FormsModule} from "@angular/forms";
         GeneralInputModule,
         ConfirmButtonModule,
         UpdateNicknameRouting,
-        FormsModule
+        FormsModule,
+        FormValidDirectiveModule
     ],
     exports: [UpdateNicknameComponent],
     bootstrap: [UpdateNicknameComponent]
