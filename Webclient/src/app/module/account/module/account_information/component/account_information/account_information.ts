@@ -8,6 +8,7 @@ import {AccountInformationService} from "../../service/account_information";
     styleUrls: ["./account_information.scss"]
 })
 export class AccountInformationComponent {
+    initialLoading: boolean = true;
     disabledSubmit: boolean = false;
     accountInformation: AccountInformation;
 
@@ -17,6 +18,7 @@ export class AccountInformationComponent {
 
     on_success(account_information: AccountInformation): void {
         this.accountInformation = account_information;
+        this.initialLoading = false;
     }
 
     resend_confirmation(): void {

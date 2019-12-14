@@ -39,8 +39,9 @@ export class APITokensComponent {
     delete_token(token_pair: [APIToken, boolean]) {
         token_pair[1] = true;
         this.apiTokensService.delete_token(token_pair[0].id, () => {
-            this.get_tokens();
-            token_pair[1] = false;
+            const index = this.tokenList.indexOf(token_pair);
+            if (index > -1)
+                this.tokenList.splice(index, 1);
         }, () => token_pair[1] = false);
     }
 
