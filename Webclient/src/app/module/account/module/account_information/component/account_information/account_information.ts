@@ -8,6 +8,7 @@ import {AccountInformationService} from "../../service/account_information";
     styleUrls: ["./account_information.scss"]
 })
 export class AccountInformationComponent {
+    disabledSubmit: boolean = false;
     accountInformation: AccountInformation;
 
     constructor(private accountInformationService: AccountInformationService) {
@@ -16,5 +17,9 @@ export class AccountInformationComponent {
 
     on_success(account_information: AccountInformation): void {
         this.accountInformation = account_information;
+    }
+
+    resend_confirmation(): void {
+        this.accountInformationService.resend_confirmation(() => this.disabledSubmit = false);
     }
 }

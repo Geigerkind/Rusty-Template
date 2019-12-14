@@ -14,8 +14,11 @@ export class UpdateMailService {
     }
 
     update(mail: string, on_success: any, on_failure: any): void {
-        this.apiService.post_auth(UpdateMailService.URL_UPDATE_MAIL, mail, () => {
-            this.notificationService.propagate(Severity.Info, 'serverResponses.mail_confirm');
+        this.apiService.post_auth(UpdateMailService.URL_UPDATE_MAIL, mail, (pw_changed) => {
+            if (pw_changed)
+                this.notificationService.propagate(Severity.Success, 'serverResponses.200');
+            else
+                this.notificationService.propagate(Severity.Info, 'serverResponses.mail_confirm');
             on_success.call(on_success);
         }, on_failure);
     }

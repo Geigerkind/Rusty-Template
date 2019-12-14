@@ -4,13 +4,15 @@ import {AccountInformationComponent} from "./component/account_information/accou
 import {CommonModule} from "@angular/common";
 import {AccountInformationRouting} from "./routing";
 import {AccountInformationService} from "./service/account_information";
+import {ConfirmButtonModule} from "../../../../template/button/confirm_button/module";
 
 @NgModule({
     declarations: [AccountInformationComponent],
     imports: [
         CommonModule,
         TranslateModule,
-        AccountInformationRouting
+        AccountInformationRouting,
+        ConfirmButtonModule
     ],
     exports: [AccountInformationComponent],
     providers: [AccountInformationService]

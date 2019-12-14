@@ -14,7 +14,7 @@ pub trait Update {
   fn change_name(&self, new_nickname: &str, member_id: u32) -> Result<AccountInformation, Failure>;
   fn change_password(&self, new_password: &str, member_id: u32) -> Result<APIToken, Failure>;
   fn update_password(&self, new_password: &str, member_id: u32) -> Result<(), Failure>;
-  fn request_change_mail(&self, new_mail: &str, member_id: u32) -> Result<(), Failure>;
+  fn request_change_mail(&self, new_mail: &str, member_id: u32) -> Result<bool, Failure>;
   fn confirm_change_mail(&self, confirmation_id: &str) -> Result<APIToken, Failure>;
 }
 
@@ -87,7 +87,7 @@ impl Update for Account {
     Err(Failure::Unknown)
   }
 
-  fn request_change_mail(&self, new_mail: &str, member_id: u32) -> Result<(), Failure>
+  fn request_change_mail(&self, new_mail: &str, member_id: u32) -> Result<bool, Failure>
   {
     if !valid_mail(new_mail) {
       return Err(Failure::InvalidMail);
@@ -107,6 +107,13 @@ impl Update for Account {
     }
 
     let entry = member.get_mut(&member_id).unwrap();
+    // If the mail has not been confirmed yet then it can be changed without
+    // confirmation, because the user could have had a typo
+    if !entry.mail_confirmed {
+      entry.mail = lower_mail.to_owned();
+      return Ok(true)
+    }
+
     let confirmation_id = sha3::hash(&[&member_id.to_string(), "new_mail", &entry.salt]);
     entry.new_mail = lower_mail.to_owned();
     requires_mail_confirmation.insert(confirmation_id.clone(), member_id);
@@ -115,7 +122,7 @@ impl Update for Account {
                   self.dictionary.get("update.mail.subject", Language::English), mail_content) {
       return Err(Failure::MailSend);
     }
-    Ok(())
+    Ok(false)
   }
 
   fn confirm_change_mail(&self, confirmation_id: &str) -> Result<APIToken, Failure> {

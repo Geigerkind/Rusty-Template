@@ -2,10 +2,17 @@
 
 <div class="information">
     <div class="label">{{ 'Account.accountInformation.nickname' | translate }}</div>
-    <div class="content">{{ accountInformation?.nickname }}</div>
+    <div>{{ accountInformation?.nickname }}</div>
 </div>
 
 <div class="information">
     <div class="label">{{ 'Account.accountInformation.mail' | translate }}</div>
-    <div class="content">{{ accountInformation?.mail }}</div>
+    <div>{{ accountInformation?.mail }}</div>
+</div>
+
+<div class="information" *ngIf="accountInformation && !accountInformation.mail_confirmed">
+    <div class="label">{{ 'Account.accountInformation.mail_confirmed' | translate }}</div>
+    <div>
+        <ConfirmButton labelKey="Account.accountInformation.resend_mail" [disabled]="disabledSubmit" (clicked)="resend_confirmation()"></ConfirmButton>
+    </div>
 </div>

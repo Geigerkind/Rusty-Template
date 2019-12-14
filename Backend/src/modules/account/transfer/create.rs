@@ -22,7 +22,7 @@ pub fn confirm(me: State<Account>, id: String) -> Result<(), Failure>
   Err(Failure::Unknown)
 }
 
-#[get("/create/resend", format="application/json")]
+#[post("/create/resend", format="application/json")]
 pub fn resend_confirm(me: State<Account>, auth: Authenticate) -> Result<(), Failure>
 {
   if me.send_confirmation(auth.0) {

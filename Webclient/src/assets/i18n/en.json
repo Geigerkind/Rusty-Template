@@ -109,7 +109,9 @@
         },
         "accountInformation": {
             "nickname": "Nickname",
-            "mail": "Email"
+            "mail": "Email",
+            "mail_confirmed": "Confirmation status",
+            "resend_mail": "Resend confirmation mail"
         },
         "updatePassword": {
             "newPassword": "New password",

@@ -20,8 +20,9 @@ pub fn nickname(me: State<Account>, auth: Authenticate, content: Json<String>) -
 }
 
 #[post("/update/mail", format="application/json", data = "<content>")]
-pub fn request_mail(me: State<Account>, auth: Authenticate, content: Json<String>) -> Result<(), Failure> {
+pub fn request_mail(me: State<Account>, auth: Authenticate, content: Json<String>) -> Result<Json<bool>, Failure> {
   me.request_change_mail(&content, auth.0)
+    .and_then(|changed_password| Ok(Json(changed_password)))
 }
 
 #[get("/update/mail/<id>")]
