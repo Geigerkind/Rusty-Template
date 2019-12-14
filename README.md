@@ -36,7 +36,7 @@ to maintain a small memory footprint.
 
 #### Tools
 - The Webclient uses a custom naming convention. To make the creation of such components easier, a
-scirpt is provided in Webclient/tools/generate.sh <(component|module|service)> <PATH> <SNAKE_CASE_NAME>
+script is provided in Webclient/tools/generate.sh <(component|module|service)> <PATH> <SNAKE_CASE_NAME>
 
 and much more...
 
