@@ -30,8 +30,6 @@ export function createTranslateLoader(http: HttpClient) {
     imports: [
         BrowserModule,
         AppRouting,
-        CookieBannerModule,
-        AccountModule,
         NotificationListModule,
         NavigationBarModule,
         RouterLoadingBarModule,

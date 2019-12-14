@@ -27,6 +27,10 @@ const routes: Routes = [
         loadChildren: () => import("./module/reset_password/module").then(m => m.ResetPasswordModule),
         canLoad: [SignedInGuard]
     },
+    {
+        path: "confirm/:type/:confirm_id",
+        loadChildren: () => import("./module/confirm/module").then(m => m.ConfirmModule),
+    },
     {path: "privacy", loadChildren: () => import("./module/privacy/module").then(m => m.PrivacyModule)},
     {path: "imprint", loadChildren: () => import("./module/imprint/module").then(m => m.ImprintModule)}
 ];

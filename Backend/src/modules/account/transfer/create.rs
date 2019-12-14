@@ -14,13 +14,19 @@ pub fn create(me: State<Account>, params: Json<CreateMember>) -> Result<Json<API
 }
 
 #[get("/create/<id>")]
-pub fn confirm(me: State<Account>, id: String) -> Json<bool>
+pub fn confirm(me: State<Account>, id: String) -> Result<(), Failure>
 {
-  Json(me.confirm(&id))
+  if me.confirm(&id) {
+    return Ok(())
+  }
+  Err(Failure::Unknown)
 }
 
 #[get("/create/resend", format="application/json")]
-pub fn resend_confirm(me: State<Account>, auth: Authenticate) -> Json<bool>
+pub fn resend_confirm(me: State<Account>, auth: Authenticate) -> Result<(), Failure>
 {
-  Json(me.send_confirmation(auth.0))
+  if me.send_confirmation(auth.0) {
+    return Ok(())
+  }
+  Err(Failure::Unknown)
 }

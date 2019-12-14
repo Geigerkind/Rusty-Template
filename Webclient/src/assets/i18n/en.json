@@ -163,5 +163,8 @@
         "reset": "Reset password",
         "mail": "Email address",
         "typeMail": "Your email address"
+    },
+    "Confirm": {
+        "wait": "Validating..."
     }
 }
