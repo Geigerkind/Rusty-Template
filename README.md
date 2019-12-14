@@ -38,7 +38,7 @@ and much more...
 
 ## Disclaimer GDPR
 I have written the cookie banner to my best understanding of the current GDPR laws. I am a 
-computer scientist and a lawyer. The privacy and imprint are generated from sites of law 
+computer scientist and not a lawyer. The privacy and imprint are generated from sites of law 
 companies (links in the respective page). Use on your own risk. Consult a lawyer for confirmation.
 
 ## Operating systems
