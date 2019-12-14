@@ -1,4 +1,5 @@
 import {Component} from "@angular/core";
+import {AccountService} from "../../service/account";
 
 @Component({
     selector: "Account",
@@ -14,4 +15,7 @@ export class AccountComponent {
         ["api", "Account.navBar.entries.api"],
         ["delete", "Account.navBar.entries.delete"],
     ];
+
+    constructor(private accountService: AccountService) {
+    }
 }

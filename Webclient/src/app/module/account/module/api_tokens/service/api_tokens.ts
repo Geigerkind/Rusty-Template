@@ -19,9 +19,9 @@ export class APITokensService {
     }
 
     add_token(create_token: CreateToken, on_success: any, on_failure: any): void {
-        this.apiService.post_auth(APITokensService.URL_TOKEN, create_token, () => {
+        this.apiService.post_auth(APITokensService.URL_TOKEN, create_token, (api_token) => {
             this.notificationService.propagate(Severity.Success, "serverResponses.200");
-            on_success.call(on_success);
+            on_success.call(on_success, api_token);
         }, on_failure);
     }
 

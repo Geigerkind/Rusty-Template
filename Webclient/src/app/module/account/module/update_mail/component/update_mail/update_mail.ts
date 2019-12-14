@@ -26,7 +26,7 @@ export class UpdateMailComponent {
     }
 
     on_failure(api_failure: APIFailure): void {
-        this.formFailure = FormFailure.from(api_failure, 521, 525, 528);
+        this.formFailure = FormFailure.from(api_failure, 521, 525);
         this.disableSubmit = false;
     }
 }
