@@ -1,12 +1,5 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js');
 
-// Resending google analytics stuff when connectivity is on again
-try {
-    workbox.googleAnalytics.initialize();
-} catch (e) {
-    // fail silently due to adblocker etc.
-}
-
 // Caching cachable API calls
 workbox.routing.registerRoute(
     new RegExp('/API/'),
