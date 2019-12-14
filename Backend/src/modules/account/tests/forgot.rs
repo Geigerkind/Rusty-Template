@@ -27,7 +27,7 @@ mod tests {
       credentials: Credentials {
         mail: "fscngsuzfdcsv@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let val_pair = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();

@@ -1,11 +1,11 @@
 #[cfg(test)]
 mod tests {
   use mysql_connection::tools::Execute;
+  use str_util::sha3;
 
   use crate::modules::account::dto::{CreateMember, Credentials};
   use crate::modules::account::material::Account;
   use crate::modules::account::tools::{Create, Update};
-  use str_util::sha3;
 
   #[test]
   fn change_name() {
@@ -15,7 +15,7 @@ mod tests {
       credentials: Credentials {
         mail: "ijofsdiojsdfgiuhig@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let api_token = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();
@@ -34,7 +34,7 @@ mod tests {
       credentials: Credentials {
         mail: "siodjfijsiojiospq@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let api_token = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();
@@ -52,7 +52,7 @@ mod tests {
       credentials: Credentials {
         mail: "ihsdfoiosdf@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let api_token = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();
@@ -71,7 +71,7 @@ mod tests {
       credentials: Credentials {
         mail: "oasijidhaais@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let post_obj_two = CreateMember {
@@ -79,7 +79,7 @@ mod tests {
       credentials: Credentials {
         mail: "guhzasooas@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let api_token = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();
@@ -99,7 +99,7 @@ mod tests {
       credentials: Credentials {
         mail: "mvfhhbvidsd@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let api_token = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();
@@ -117,7 +117,7 @@ mod tests {
       credentials: Credentials {
         mail: "xdsdfgsdgs@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let api_token = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();
@@ -139,7 +139,7 @@ mod tests {
       credentials: Credentials {
         mail: "nsigsvbsdsd@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let api_token = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();
@@ -157,7 +157,7 @@ mod tests {
       credentials: Credentials {
         mail: "asiudfuhisduifs@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let api_token = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();
@@ -175,7 +175,7 @@ mod tests {
       credentials: Credentials {
         mail: "csdazgtsdczas@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let post_obj_two = CreateMember {
@@ -183,7 +183,7 @@ mod tests {
       credentials: Credentials {
         mail: "bdvshudvbsdv@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let api_token = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();
@@ -203,7 +203,7 @@ mod tests {
       credentials: Credentials {
         mail: "xdssdfsdfg@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let api_token = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();

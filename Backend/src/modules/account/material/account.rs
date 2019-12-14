@@ -3,7 +3,7 @@ use std::sync::RwLock;
 
 use language::material::Dictionary;
 use mysql_connection::material::MySQLConnection;
-use mysql_connection::tools::{Select, Execute};
+use mysql_connection::tools::{Execute, Select};
 use str_util::sha3;
 
 use crate::modules::account::language::init::Init;
@@ -16,7 +16,7 @@ pub struct Account {
   pub member: RwLock<HashMap<u32, Member>>,
   pub api_token_to_member_id: RwLock<HashMap<String, u32>>,
   pub api_tokens: RwLock<HashMap<u32, Vec<APIToken>>>,
-  pub requires_mail_confirmation: RwLock<HashMap<String, u32>>
+  pub requires_mail_confirmation: RwLock<HashMap<String, u32>>,
 }
 
 // Important: Always lock resources bottom to to, in order to prevent running into a deadlock
@@ -32,7 +32,7 @@ impl Default for Account {
       member: RwLock::new(HashMap::new()),
       api_tokens: RwLock::new(HashMap::new()),
       api_token_to_member_id: RwLock::new(HashMap::new()),
-      requires_mail_confirmation: RwLock::new(HashMap::new())
+      requires_mail_confirmation: RwLock::new(HashMap::new()),
     }
   }
 }
@@ -59,7 +59,7 @@ impl Account {
         mail_confirmed: row.take(5).unwrap(),
         forgot_password: row.take(6).unwrap(),
         delete_account: row.take(7).unwrap(),
-        new_mail: row.take(8).unwrap()
+        new_mail: row.take(8).unwrap(),
       }
     }) {
       // Prepping api_token map

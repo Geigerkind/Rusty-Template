@@ -1,4 +1,5 @@
 use mysql;
+
 use crate::material::MySQLConnection;
 
 pub trait Select {
@@ -12,21 +13,21 @@ impl Select for MySQLConnection {
   fn select<T>(&self, query_str: &str, process_row: &dyn Fn(mysql::Row) -> T) -> Vec<T>
   {
     self.con.prep_exec(query_str, ())
-    .map(|result| {
-      result.map(|x| x.unwrap())
-      .map(|row| process_row(row))
-      .collect()
-    }).unwrap()
+      .map(|result| {
+        result.map(|x| x.unwrap())
+          .map(|row| process_row(row))
+          .collect()
+      }).unwrap()
   }
 
   fn select_wparams<T>(&self, query_str: &str, process_row: &dyn Fn(mysql::Row) -> T, params: std::vec::Vec<(std::string::String, mysql::Value)>) -> Vec<T>
   {
     self.con.prep_exec(query_str, params)
-    .map(|result| {
-      result.map(|x| x.unwrap())
-      .map(|row| process_row(row))
-      .collect()
-    }).unwrap()
+      .map(|result| {
+        result.map(|x| x.unwrap())
+          .map(|row| process_row(row))
+          .collect()
+      }).unwrap()
   }
 
   fn select_value<T>(&self, query_str: &str, process_row: &dyn Fn(mysql::Row) -> T) -> Option<T>

@@ -20,41 +20,6 @@ export class APIService {
                 private loadingBarService: LoadingBarService) {
     }
 
-    private httpHeaderFactory(): HttpHeaders {
-        return new HttpHeaders()
-            .set("Content-Type", "application/json");
-    }
-
-    private setAuthHeader(headers: HttpHeaders): HttpHeaders {
-        let api_token = "";
-        if (this.settingsService.check("API_TOKEN"))
-            api_token = this.settingsService.get("API_TOKEN").token;
-        return headers.set("Authorization", api_token);
-    }
-
-    private handleFailure(reason: HttpErrorResponse): APIFailure {
-        if (reason.status < 400)
-            return;
-
-        // Token invalid
-        if (reason.status === 401) {
-            this.settingsService.set("API_TOKEN", undefined);
-            this.routingService.navigate(["/login"]);
-            return;
-        }
-
-        const api_failure: APIFailure = {
-            status: reason.status,
-            translation: "serverResponses." + reason.status,
-            arguments: {
-                arg1: reason.error
-            }
-        };
-        this.notificationService.propagate(Severity.Error, api_failure.translation, api_failure.arguments);
-        return api_failure;
-    }
-
-
     get_auth<T>(url: string, on_success?: (T) => void, on_failure?: (any) => void): void {
         this.loadingBarService.incrementCounter();
         this.httpClient.get<T>(APIService.API_PREFIX + url, {headers: this.setAuthHeader(this.httpHeaderFactory())})
@@ -136,5 +101,39 @@ export class APIService {
                     on_failure.call(on_failure, failure);
             })
             .finally(() => this.loadingBarService.decrementCounter());
+    }
+
+    private httpHeaderFactory(): HttpHeaders {
+        return new HttpHeaders()
+            .set("Content-Type", "application/json");
+    }
+
+    private setAuthHeader(headers: HttpHeaders): HttpHeaders {
+        let api_token = "";
+        if (this.settingsService.check("API_TOKEN"))
+            api_token = this.settingsService.get("API_TOKEN").token;
+        return headers.set("Authorization", api_token);
+    }
+
+    private handleFailure(reason: HttpErrorResponse): APIFailure {
+        if (reason.status < 400)
+            return;
+
+        // Token invalid
+        if (reason.status === 401) {
+            this.settingsService.set("API_TOKEN", undefined);
+            this.routingService.navigate(["/login"]);
+            return;
+        }
+
+        const api_failure: APIFailure = {
+            status: reason.status,
+            translation: "serverResponses." + reason.status,
+            arguments: {
+                arg1: reason.error
+            }
+        };
+        this.notificationService.propagate(Severity.Error, api_failure.translation, api_failure.arguments);
+        return api_failure;
     }
 }

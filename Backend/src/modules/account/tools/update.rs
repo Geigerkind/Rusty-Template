@@ -111,7 +111,7 @@ impl Update for Account {
     // confirmation, because the user could have had a typo
     if !entry.mail_confirmed {
       entry.mail = lower_mail.to_owned();
-      return Ok(true)
+      return Ok(true);
     }
 
     let confirmation_id = sha3::hash(&[&member_id.to_string(), "new_mail", &entry.salt]);
@@ -119,7 +119,7 @@ impl Update for Account {
     requires_mail_confirmation.insert(confirmation_id.clone(), member_id);
     let mail_content = strformat::fmt(self.dictionary.get("update.mail.text", Language::English), &[&confirmation_id]);
     if !mail::send(&entry.mail, &entry.nickname,
-                  self.dictionary.get("update.mail.subject", Language::English), mail_content) {
+                   self.dictionary.get("update.mail.subject", Language::English), mail_content) {
       return Err(Failure::MailSend);
     }
     Ok(false)

@@ -1,14 +1,14 @@
 use language::domain_value::Language;
 use language::tools::Get;
 use mail;
-use mysql_connection::tools::{ Execute, Select };
+use mysql_connection::tools::{Execute, Select};
 use str_util::{random, sha3, strformat};
-use validator::tools::{valid_password, valid_nickname, valid_mail};
 use validator::domain_value::PasswordFailure;
+use validator::tools::{valid_mail, valid_nickname, valid_password};
 
-use crate::modules::account::material::{Account, Member, APIToken};
-use crate::modules::account::tools::Token;
 use crate::modules::account::dto::Failure;
+use crate::modules::account::material::{Account, APIToken, Member};
+use crate::modules::account::tools::Token;
 
 pub trait Create {
   fn create(&self, mail: &str, nickname: &str, password: &str) -> Result<APIToken, Failure>;
@@ -71,7 +71,7 @@ impl Create for Account {
           mail_confirmed: false,
           forgot_password: false,
           delete_account: false,
-          new_mail: String::new()
+          new_mail: String::new(),
         });
       } else {
         return Err(Failure::Unknown);

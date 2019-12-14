@@ -16,7 +16,7 @@ mod tests {
       credentials: Credentials {
         mail: acc_mail.to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let login = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password);
@@ -33,7 +33,7 @@ mod tests {
       credentials: Credentials {
         mail: "bla@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let _ = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();
@@ -50,7 +50,7 @@ mod tests {
       credentials: Credentials {
         mail: "bla2@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let post_obj_two = CreateMember {
@@ -58,7 +58,7 @@ mod tests {
       credentials: Credentials {
         mail: "bla3@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let _ = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();
@@ -76,7 +76,7 @@ mod tests {
       credentials: Credentials {
         mail: "".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     assert!(account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).is_err());
@@ -90,7 +90,7 @@ mod tests {
       credentials: Credentials {
         mail: "34234234".to_string(),
         password: "".to_string(),
-      }
+      },
     };
 
     assert!(account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).is_err());
@@ -104,7 +104,7 @@ mod tests {
       credentials: Credentials {
         mail: "34234234".to_string(),
         password: "dgsdfsfd".to_string(),
-      }
+      },
     };
 
     assert!(account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).is_err());
@@ -118,7 +118,7 @@ mod tests {
       credentials: Credentials {
         mail: "34234234".to_string(),
         password: "dgsdfsfd".to_string(),
-      }
+      },
     };
 
     assert!(account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).is_err());
@@ -132,7 +132,7 @@ mod tests {
       credentials: Credentials {
         mail: "abc@test.de".to_string(),
         password: "dgsdfsfd".to_string(),
-      }
+      },
     };
 
     assert!(account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).is_err());
@@ -146,7 +146,7 @@ mod tests {
       credentials: Credentials {
         mail: "someNameWuuuuh@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let login = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();

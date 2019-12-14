@@ -16,8 +16,8 @@ export class AppComponent implements OnInit {
     private static readonly PWA_PROMPT_TIME = 30000;
     private static show_cookie_banner = false;
     title = "Webclient";
-    private googleAnalyticsSubscription: Subscription;
     location: ComponentLocation = null;
+    private googleAnalyticsSubscription: Subscription;
     private cookie_banner: ComponentLocation = {
         moduleId: "cookie_banner",
         selector: "CookieBanner"

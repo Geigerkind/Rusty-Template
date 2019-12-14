@@ -15,6 +15,7 @@ export class PasswordInputComponent {
 
     @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
     valueData: string;
+    visibility = "password";
 
     @Input()
     get value(): string {
@@ -27,7 +28,6 @@ export class PasswordInputComponent {
         this.valueData = newValue;
     }
 
-    visibility = "password";
     toggleVisibility(): void {
         if (this.visibility === "password")
             this.visibility = "text";

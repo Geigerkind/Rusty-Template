@@ -14,7 +14,7 @@ mod tests {
       credentials: Credentials {
         mail: "hdfgfdgdfd@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let val_pair = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();
@@ -32,7 +32,7 @@ mod tests {
       credentials: Credentials {
         mail: "hfghsdssdgdfg@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let val_pair = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();

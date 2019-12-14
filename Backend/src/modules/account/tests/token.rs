@@ -14,7 +14,7 @@ mod tests {
       credentials: Credentials {
         mail: "cvcbmnbjfie@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let api_token = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();
@@ -37,7 +37,7 @@ mod tests {
       credentials: Credentials {
         mail: "klsdkfsowerf@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     // First login
@@ -61,7 +61,7 @@ mod tests {
       credentials: Credentials {
         mail: "fhfgjhfgjfghfjg@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
     let api_token = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();
     let tokens = account.get_all_token(api_token.member_id);
@@ -79,7 +79,7 @@ mod tests {
       credentials: Credentials {
         mail: "sadgsdfgsddfgsdg@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
     let api_token = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();
     assert!(account.validate_token(&api_token.token).is_some());
@@ -103,7 +103,7 @@ mod tests {
       credentials: Credentials {
         mail: "sdfjikoijhsdfuhiihud@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let api_token = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();

@@ -1,4 +1,5 @@
 use mysql;
+
 use crate::material::MySQLConnection;
 
 pub trait Execute {

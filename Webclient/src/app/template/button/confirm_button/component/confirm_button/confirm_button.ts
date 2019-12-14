@@ -6,7 +6,7 @@ import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from "@an
     styleUrls: ["./confirm_button.scss"]
 })
 export class ConfirmButtonComponent {
-    @ViewChild("confirmButton", { static: true }) inputRef: ElementRef;
+    @ViewChild("confirmButton", {static: true}) inputRef: ElementRef;
     @Input() labelKey: string;
     @Input() type = "button";
     @Input() disabled = false;

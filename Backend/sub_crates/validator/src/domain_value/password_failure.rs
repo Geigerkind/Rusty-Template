@@ -1,4 +1,4 @@
 pub enum PasswordFailure {
   TooFewCharacters,
-  Pwned(u64)
+  Pwned(u64),
 }

@@ -33,14 +33,6 @@ export class CookieBannerComponent {
         this.show_options = show;
     }
 
-    private load(): void {
-        if (!this.settingsService.check("cookieDecisions"))
-            return;
-        const cookieDecisions = this.settingsService.get("cookieDecisions");
-        cookieDecisions.other.forEach((decison, i) => this.cookies_other[i].setEnabled(decison));
-        cookieDecisions.third_party.forEach((decison, i) => this.cookies_third_party[i].setEnabled(decison));
-    }
-
     agree_all(): void {
         this.cookies_other.forEach(cookie => cookie.setEnabled(true));
         this.cookies_third_party.forEach(cookie => cookie.setEnabled(true));
@@ -62,5 +54,13 @@ export class CookieBannerComponent {
         this.settingsService.set("cookieDecisions", cookieDecisions);
         this.notificationService.propagate(Severity.Success, "CookieBanner.notification.saved");
         this.close_banner.emit(false);
+    }
+
+    private load(): void {
+        if (!this.settingsService.check("cookieDecisions"))
+            return;
+        const cookieDecisions = this.settingsService.get("cookieDecisions");
+        cookieDecisions.other.forEach((decison, i) => this.cookies_other[i].setEnabled(decison));
+        cookieDecisions.third_party.forEach((decison, i) => this.cookies_third_party[i].setEnabled(decison));
     }
 }

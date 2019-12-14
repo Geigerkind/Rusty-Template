@@ -2,8 +2,8 @@ use mysql_connection::tools::{Execute, Select};
 use str_util::{random, sha3};
 use time_util;
 
-use crate::modules::account::material::{Account, APIToken};
 use crate::modules::account::dto::Failure;
+use crate::modules::account::material::{Account, APIToken};
 
 pub trait Token {
   fn get_all_token(&self, member_id: u32) -> Vec<APIToken>;
@@ -79,7 +79,7 @@ impl Token for Account {
       return Err(Failure::DateInThePast);
     }
 
-    if exp_date-now >= 365*24*60*60 {
+    if exp_date - now >= 365 * 24 * 60 * 60 {
       return Err(Failure::TooManyDays);
     }
 
@@ -165,7 +165,7 @@ impl Token for Account {
         }
         token_vec.remove(token_index);
         Ok(())
-      },
+      }
       None => Err(Failure::Unknown)
     }
   }

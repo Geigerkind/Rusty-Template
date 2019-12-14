@@ -1,6 +1,8 @@
 extern crate dotenv;
-use dotenv::dotenv;
+
 use std::env;
+
+use dotenv::dotenv;
 
 #[derive(Debug)]
 pub struct MySQLConnection {

@@ -2,9 +2,9 @@ use language::domain_value::Language;
 use language::tools::Get;
 use str_util::sha3;
 
+use crate::modules::account::dto::Failure;
 use crate::modules::account::material::{Account, APIToken};
 use crate::modules::account::tools::Token;
-use crate::modules::account::dto::Failure;
 
 pub trait Login {
   fn login(&self, mail: &str, password: &str) -> Result<APIToken, Failure>;

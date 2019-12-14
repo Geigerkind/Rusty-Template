@@ -1,5 +1,6 @@
 use crate::domain_value::Language;
 use crate::material::Dictionary;
+
 pub trait Get {
   fn get(&self, key: &str, language: Language) -> String;
 }
@@ -18,10 +19,10 @@ impl Get for Dictionary {
             } else {
               return value.to_string();
             }
-          },
+          }
           None => panic!("Key {} is not registered for language {}", key, lang_index)
         }
-      },
+      }
       None => panic!("Key {} is not registered", key)
     }
   }

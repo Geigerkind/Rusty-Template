@@ -14,6 +14,7 @@ export class FormFailure extends ObserverPattern {
     get isInvalid(): boolean {
         return this.isInvalidData;
     }
+
     set isInvalid(newValue: boolean) {
         if (this.isInvalidData !== newValue) {
             this.isInvalidData = newValue;

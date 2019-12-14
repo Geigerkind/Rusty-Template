@@ -11,7 +11,7 @@ export class GeneralInputComponent {
     touched: boolean = false;
     pattern: string;
 
-    @ViewChild("generalInput", { static: true }) inputRef: ElementRef;
+    @ViewChild("generalInput", {static: true}) inputRef: ElementRef;
     @Input() type: string;
     @Input() placeholderKey: string;
     @Input() labelKey: string;
@@ -23,6 +23,11 @@ export class GeneralInputComponent {
 
     @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
     valueData = "";
+    formFailureData: FormFailure = FormFailure.empty();
+
+    constructor() {
+        this.updatePattern();
+    }
 
     @Input()
     get value(): string {
@@ -38,19 +43,15 @@ export class GeneralInputComponent {
         this.valueData = newValue;
     }
 
-    formFailureData: FormFailure = FormFailure.empty();
     @Input()
     get formFailure(): FormFailure {
         return this.formFailureData;
     }
+
     set formFailure(newValue: FormFailure) {
         this.formFailureData = newValue;
         this.updatePattern();
         this.formFailureData.subscribe(() => this.updatePattern());
-    }
-
-    constructor() {
-        this.updatePattern();
     }
 
     updatePattern(): void {

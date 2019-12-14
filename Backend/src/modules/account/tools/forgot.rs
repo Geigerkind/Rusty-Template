@@ -5,9 +5,9 @@ use mysql_connection::tools::Execute;
 use str_util::{random, sha3, strformat};
 use validator::tools::valid_mail;
 
+use crate::modules::account::dto::Failure;
 use crate::modules::account::material::{Account, APIToken};
 use crate::modules::account::tools::{Token, Update};
-use crate::modules::account::dto::Failure;
 
 pub trait Forgot {
   fn send_forgot_password(&self, mail: &str) -> Result<(), Failure>;
@@ -36,7 +36,7 @@ impl Forgot for Account {
     }
 
     if member_id.is_none() {
-      return Ok(()) // Don't leak information about existence
+      return Ok(()); // Don't leak information about existence
     }
 
     let unwrapped_member_id = member_id.unwrap();
@@ -53,7 +53,7 @@ impl Forgot for Account {
         return Err(Failure::MailSend);
       }
 
-      return Ok(())
+      return Ok(());
     }
     Err(Failure::Unknown)
   }

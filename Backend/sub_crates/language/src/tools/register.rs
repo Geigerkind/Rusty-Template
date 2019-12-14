@@ -1,8 +1,9 @@
 extern crate dotenv;
-use self::dotenv::dotenv;
 
 use crate::domain_value::Language;
 use crate::material::Dictionary;
+
+use self::dotenv::dotenv;
 
 pub trait Register {
   fn register(&self, key: &str, language: Language, value: &str);
@@ -16,7 +17,7 @@ impl Register for Dictionary {
     // Replacing environmental variables
     dotenv().ok();
     for (key, val) in dotenv::vars() {
-      value_str = value_str.replace(&format!("{{{env_key}}}", env_key=key), &val);
+      value_str = value_str.replace(&format!("{{{env_key}}}", env_key = key), &val);
     }
     let lang_index = language as usize;
     match lang_table.get_mut(&key_str) {

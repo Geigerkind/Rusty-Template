@@ -21,7 +21,7 @@ mod tests {
       credentials: Credentials {
         mail: "ijfeuhifsduhisdfuhiuhisdf@jaylappTest.dev".to_string(),
         password: "Password123456Password123456Password123456".to_string(),
-      }
+      },
     };
 
     let login = account.create(&post_obj.credentials.mail, &post_obj.nickname, &post_obj.credentials.password).unwrap();

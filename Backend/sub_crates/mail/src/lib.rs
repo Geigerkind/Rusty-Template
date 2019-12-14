@@ -1,13 +1,14 @@
+extern crate dotenv;
 extern crate lettre;
 extern crate lettre_email;
-extern crate dotenv;
+
+use std::env;
 
 use dotenv::dotenv;
-use std::env;
-use lettre_email::EmailBuilder;
-use lettre::Transport;
 use lettre::ClientSecurity;
 use lettre::smtp::SmtpClient;
+use lettre::Transport;
+use lettre_email::EmailBuilder;
 
 pub fn send(recipient: &str, username: &str, subject: String, text: String) -> bool
 {

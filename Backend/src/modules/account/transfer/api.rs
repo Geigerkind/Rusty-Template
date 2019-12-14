@@ -2,16 +2,16 @@ extern crate expose_api;
 
 use expose_api::expose_api_fn;
 use rocket_contrib::json::Json;
-use schemars::{schema_for, JsonSchema};
+use schemars::{JsonSchema, schema_for};
 
+use crate::modules::account::domain_value::AccountInformation;
 use crate::modules::account::dto::{CreateMember, CreateToken, Credentials, Failure, ProlongToken};
-use crate::modules::account::domain_value::{AccountInformation};
 use crate::modules::account::material::APIToken;
 
 #[derive(JsonSchema)]
 struct Nothing;
 
-#[get("/", format="application/json")]
+#[get("/", format = "application/json")]
 pub fn api() -> Json<Vec<serde_json::Value>> {
   Json(vec![
     // Get

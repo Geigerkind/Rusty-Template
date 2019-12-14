@@ -1,3 +1,4 @@
-<GeneralInput [required]="required" [labelKey]="labelKey" [placeholderKey]="placeholderKey" [name]="name" type="date"
-              [value]="passDate(value)" (valueChange)="parseDate($event)" [formFailure]="formFailure" [min_spec]="passDate(min_date)"
-              [max_spec]="passDate(max_date)"></GeneralInput>
+<GeneralInput (valueChange)="parseDate($event)" [formFailure]="formFailure" [labelKey]="labelKey" [max_spec]="passDate(max_date)" [min_spec]="passDate(min_date)"
+              [name]="name" [placeholderKey]="placeholderKey" [required]="required"
+              [value]="passDate(value)"
+              type="date"></GeneralInput>

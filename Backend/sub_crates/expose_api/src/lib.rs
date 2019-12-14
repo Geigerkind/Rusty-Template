@@ -1,9 +1,9 @@
-extern crate str_util;
 extern crate serde;
 extern crate serde_json;
+extern crate str_util;
 
-use str_util::strformat;
 use serde::ser::Serialize;
+use str_util::strformat;
 
 pub fn expose_api_fn<T: Serialize, U: Serialize>(url: &str, request_type: &str, requires_authentication: bool, response_type: &str, schema_response: T, schema_arg1: U) -> serde_json::Value
 {

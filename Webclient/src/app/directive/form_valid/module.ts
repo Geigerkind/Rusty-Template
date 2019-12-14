@@ -5,4 +5,5 @@ import {FormValidDirective} from "./form_valid";
     declarations: [FormValidDirective],
     exports: [FormValidDirective]
 })
-export class FormValidDirectiveModule {}
+export class FormValidDirectiveModule {
+}

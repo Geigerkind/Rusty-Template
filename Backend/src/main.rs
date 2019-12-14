@@ -12,8 +12,8 @@ extern crate str_util;
 extern crate time_util;
 extern crate validator;
 
-use rocket_prometheus::PrometheusMetrics;
 use rocket_contrib::json::Json;
+use rocket_prometheus::PrometheusMetrics;
 
 use crate::modules::account;
 use crate::modules::account::Account;
@@ -21,7 +21,7 @@ use crate::modules::account::Account;
 pub mod dto;
 pub mod modules;
 
-#[get("/", format="application/json")]
+#[get("/", format = "application/json")]
 fn api_overview() -> Json<Vec<String>> {
   Json(vec!["/API/account/".to_string()])
 }
