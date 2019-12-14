@@ -27,7 +27,7 @@ $columnHeight: 40px;
             padding-left: $spacing;
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 820px) {
             CaretButton {
                 display: block;
             }
@@ -46,7 +46,7 @@ $columnHeight: 40px;
         border: 1px solid $tdc_accent;
         border-radius: 0 0 3px 3px;
 
-        @media (max-width: 640px) {
+        @media (max-width: 820px) {
             display: none;
             &.open {
                 display: block;
