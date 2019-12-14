@@ -18,6 +18,7 @@ use rocket_contrib::json::Json;
 use crate::modules::account;
 use crate::modules::account::Account;
 
+pub mod dto;
 pub mod modules;
 
 #[get("/", format="application/json")]

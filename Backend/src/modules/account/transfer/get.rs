@@ -7,7 +7,7 @@ use crate::modules::account::tools::GetAccountInformation;
 use crate::modules::account::guard::Authenticate;
 use crate::modules::account::dto::Failure;
 
-#[get("/get", format="application/json")]
+#[get("/get")]
 pub fn get_account_information(me: State<Account>, auth: Authenticate) -> Result<Json<AccountInformation>, Failure>
 {
   me.get(auth.0)

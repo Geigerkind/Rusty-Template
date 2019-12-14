@@ -10,15 +10,19 @@ try {
 // Caching cachable API calls
 workbox.routing.registerRoute(
     new RegExp('/API/'),
-    new workbox.strategies.StaleWhileRevalidate({
+    new workbox.strategies.CacheFirst({
         cacheName: 'api-cache',
         plugins: [
-          new workbox.cacheableResponse.Plugin({
-            statuses: [200],
-            headers: {
-              'X-Is-Cacheable': 'true',
-            },
-          })
+            new workbox.expiration.Plugin({
+                maxEntries: 1000,
+                maxAgeSeconds: 2 * 60 * 60, // 2 Hours
+            }),
+            new workbox.cacheableResponse.Plugin({
+                statuses: [200],
+                headers: {
+                    'X-Is-Cachable': 'true',
+                },
+            })
         ]
     })
 );
@@ -29,10 +33,10 @@ workbox.routing.registerRoute(
     new workbox.strategies.CacheFirst({
         cacheName: 'images',
         plugins: [
-        new workbox.expiration.Plugin({
-            maxEntries: 1000,
-            maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
-        }),
+            new workbox.expiration.Plugin({
+                maxEntries: 1000,
+                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+            }),
         ],
     })
 );
