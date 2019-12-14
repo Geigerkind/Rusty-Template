@@ -210,8 +210,9 @@ mod tests {
 
     let salt;
     {
-      let member = account.member.read().unwrap();
-      let member_entry = member.get(&api_token.member_id).unwrap();
+      let mut member = account.member.write().unwrap();
+      let mut member_entry = member.get_mut(&api_token.member_id).unwrap();
+      member_entry.mail_confirmed = true;
       salt = member_entry.salt.clone();
     }
 
