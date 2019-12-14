@@ -4,7 +4,10 @@ import {AfterViewInit, Directive, ElementRef, HostListener} from '@angular/core'
     selector: '[formValid]'
 })
 export class FormValidDirective implements AfterViewInit {
+    private static readonly UPDATE_INTERVAL: number = 500;
+
     constructor(private form: ElementRef) {
+        setInterval(() => this.updateValidity(), FormValidDirective.UPDATE_INTERVAL);
     }
 
     ngAfterViewInit(): void {
