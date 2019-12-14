@@ -4,6 +4,7 @@ import {APITokensService} from "../../service/api_tokens";
 import {APIToken} from "../../../../domain_value/api_token";
 import {CreateToken} from "../../dto/create_token";
 import {APIFailure} from "../../../../../../domain_value/api_failure";
+import {AccountService} from "../../../../service/account";
 
 @Component({
     selector: "APITokens",
@@ -19,7 +20,8 @@ export class APITokensComponent {
     min_exp_date: Date = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
     tokenList: Array<[APIToken, boolean]> = [];
 
-    constructor(private apiTokensService: APITokensService) {
+    constructor(private apiTokensService: APITokensService,
+                private accountService: AccountService) {
         this.get_tokens();
     }
 

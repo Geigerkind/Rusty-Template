@@ -5,6 +5,7 @@ import {NavigationBarComponent} from "./component/navigation_bar/navigation_bar"
 import {AccountRouting} from "./routing";
 import {CommonModule} from "@angular/common";
 import {CaretButtonModule} from "../../template/button/caret_button/module";
+import {AccountService} from "./service/account";
 
 @NgModule({
     declarations: [
@@ -17,7 +18,8 @@ import {CaretButtonModule} from "../../template/button/caret_button/module";
         AccountRouting,
         CaretButtonModule
     ],
-    exports: [AccountComponent]
+    exports: [AccountComponent],
+    providers: [AccountService]
 })
 export class AccountModule {
 }
