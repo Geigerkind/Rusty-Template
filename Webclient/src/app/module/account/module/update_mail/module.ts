@@ -9,6 +9,7 @@ import {BriefNoteModule} from "src/app/template/brief_note/module";
 import {UpdateMailRouting} from "./routing";
 import {UpdateMailService} from "./service/update_mail";
 import {FormsModule} from "@angular/forms";
+import {FormValidDirectiveModule} from "../../../../directive/form_valid/module";
 
 @NgModule({
     declarations: [UpdateMailComponent],
@@ -20,7 +21,8 @@ import {FormsModule} from "@angular/forms";
         ConfirmButtonModule,
         BriefNoteModule,
         UpdateMailRouting,
-        FormsModule
+        FormsModule,
+        FormValidDirectiveModule
     ],
     exports: [UpdateMailComponent],
     providers: [UpdateMailService]
