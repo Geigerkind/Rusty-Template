@@ -32,8 +32,7 @@ export class GeneralInputComponent {
     set value(newValue: string) {
         if (this.valueData !== undefined && this.valueData !== newValue) {
             this.formFailure.isInvalid = false;
-
-            this.touched = true;
+            this.touch();
             this.valueChange.emit(newValue);
         }
         this.valueData = newValue;
@@ -63,5 +62,9 @@ export class GeneralInputComponent {
             if (!!this.inputRef)
                 this.inputRef.nativeElement.setCustomValidity('');
         }
+    }
+
+    touch(): void {
+        this.touched = true;
     }
 }

@@ -2,5 +2,5 @@
 <input #generalInput (input)="value=$event.currentTarget.value" [class.touched]="touched" [maxLength]="maximum_length"
        [name]="name" [attr.placeholder]="placeholderKey | translate"
        [required]="required" [type]="type" [value]="value" [attr.pattern]="pattern"
-       oninvalid="setCustomValidity(this.dataset['validity'])"
+       oninvalid="setCustomValidity(this.dataset['validity'])" (focus)="touch()" (invalid)="touch()"
        [attr.data-validity]="formFailure.invalidityMsg | translate:formFailure.msgArgs" [min]="min_spec" [attr.max]="max_spec"/>
