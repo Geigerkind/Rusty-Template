@@ -10,6 +10,9 @@ to maintain a small memory footprint.
 - Automatic deployment to the production server
 - Database changes management
 - NGINX hardening (h2 and Brotli compression enabled)
+- SSH hardening
+- Port hardening
+- Backend and system metrics visualization using Prometheus and Grafana
 - Clean and maintainable architecture
 
 #### Backend
