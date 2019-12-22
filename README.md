@@ -22,7 +22,7 @@ to maintain a small memory footprint.
     - Modification nickname, mail, password
     - Reset password
     - Token based Authentication
-- API is exposed in a verbose way
+- API is exposed using the OpenAPI3 standard (including swagger-ui integration)
 
 #### Webclient
 - GDPR ready cookie banner (Does not include ADs), privacy (and imprint for Germany)
