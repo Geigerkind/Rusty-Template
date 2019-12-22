@@ -11,6 +11,7 @@ WEBCLIENT_WEBSITE_DOMAIN="DomainName.com"
 WEBCLIENT_WEBSITE_NOSCRIPT_MESSAGE="This website requires JavaScript to be enabled!"
 WEBCLIENT_WEBSITE_SEARCH_URL="search?q="
 WEBCLIENT_WEBSITE_SEARCH_VARIABLE="search_term_string"
+WEBCLIENT_GITHUB_URL="Geigerkind\/Rusty-Template"
 
 WEBCLIENT_OWNER_ADDRESS="Street HouseNumber"
 WEBCLIENT_OWNER_CITY="12345 City"
