@@ -72,3 +72,4 @@ Non-UNIX users are on their own!
 3. Adjust scheduler.py
 4. Execute bootstrap.sh
 5. Add WebHook to github for the scheduler url
+6. Grafana: Change admin password and adjust edit discord notifier webhook url
