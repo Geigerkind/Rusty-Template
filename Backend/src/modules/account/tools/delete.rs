@@ -4,8 +4,8 @@ use mail;
 use mysql_connection::tools::Execute;
 use str_util::{sha3, strformat};
 
-use crate::modules::account::dto::Failure;
 use crate::modules::account::material::Account;
+use crate::modules::account::dto::Failure;
 
 pub trait Delete {
   fn issue_delete(&self, member_id: u32) -> Result<(), Failure>;
@@ -17,7 +17,7 @@ impl Delete for Account {
   {
     let mut requires_mail_confirmation = self.requires_mail_confirmation.write().unwrap();
     let mut member = self.member.write().unwrap();
-    if self.db_main.execute_wparams("UPDATE member SET delete_account=1 WHERE id=:id", params!("id" => member_id)) {
+    if self.db_main.execute_wparams("UPDATE account_member SET delete_account=1 WHERE id=:id", params!("id" => member_id)) {
       let entry = member.get_mut(&member_id).unwrap();
       entry.delete_account = true;
 
@@ -49,7 +49,7 @@ impl Delete for Account {
 
     // Due to foreign key constraints, other tables depending on the member_id will also be deleted
     let member_id = *delete_confirmation_res.unwrap();
-    if self.db_main.execute_wparams("DELETE FROM member WHERE id = :id", params!(
+    if self.db_main.execute_wparams("DELETE FROM account_member WHERE id = :id", params!(
       "id" => member_id
     )) {
       {// Remove all other fields that somehow point to this member_id
@@ -72,7 +72,7 @@ impl Delete for Account {
 
         // Taking care of api_tokens
         for api_token in api_token.get(&member_id).unwrap() {
-          api_token_to_member_id.remove(&api_token.token);
+          api_token_to_member_id.remove(&api_token.token.as_ref().unwrap().clone());
         }
         api_token.get_mut(&member_id).unwrap().clear();
         api_token.remove(&member_id);

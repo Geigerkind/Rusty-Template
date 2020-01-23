@@ -86,16 +86,16 @@ impl Account {
       member.insert(entry.id, entry);
     }
 
-    for entry in self.db_main.select("SELECT id, member_id, token, purpose, exp_date FROM api_token", &|mut row| {
+    for entry in self.db_main.select("SELECT id, member_id, token, purpose, exp_date FROM account_api_token", &|mut row| {
       APIToken {
         id: row.take(0).unwrap(),
         member_id: row.take(1).unwrap(),
-        token: row.take(2).unwrap(),
+        token: Some(row.take(2).unwrap()),
         purpose: row.take(3).unwrap(),
         exp_date: row.take(4).unwrap(),
       }
     }) {
-      api_token_to_member_id.insert(entry.token.clone(), entry.member_id);
+      api_token_to_member_id.insert(entry.token.as_ref().unwrap().clone(), entry.member_id);
       api_token.get_mut(&entry.member_id).unwrap().push(entry);
     }
   }
